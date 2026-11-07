@@ -364,3 +364,4 @@ if "pipeline_data" in st.session_state:
             df_bench.set_index("paradigm")["qcr_score"]
         )
         st.caption("Higher is better. AdaptManim achieves the superior Pareto frontier by eliminating wasteful critic calls via the 5-Tier Early-Exit Cascade and Zero-Token AutoGrid repair.")
+

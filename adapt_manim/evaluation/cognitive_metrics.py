@@ -44,3 +44,4 @@ class CognitiveMetricsEvaluator:
         results["cognitive_learning_index"] = round(cli, 1)
 
         return results
+

@@ -48,3 +48,4 @@ unit_circle = Circle(radius=1.0, color=BLUE_B, stroke_width=2)
 
     def register_template(self, name: str, code_snippet: str):
         self.asset_cache[name] = code_snippet
+

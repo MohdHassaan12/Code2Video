@@ -132,3 +132,4 @@ adapt-manim ui
 | **AdaptManim (Ours)** | **10.5** | **6.5** | **83.5** | **96.0** | **81.5** | **84.5%** | **86%** | **98%** | **10.87** |
 
 *AdaptManim matches or exceeds human-level instructional quality while slashing token consumption by ~78% and dramatically boosting Pass@1 reliability.*
+

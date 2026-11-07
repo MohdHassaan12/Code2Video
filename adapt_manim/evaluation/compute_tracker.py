@@ -68,3 +68,4 @@ class ComputeTracker:
             "qcr_pareto_score": round(qcr, 3),
             "quiz_efficiency_score": round(quiz_eff, 3)
         }
+

@@ -69,3 +69,4 @@ class ParallelRunner:
             combined_lines.append("\n")
 
         return "\n".join(combined_lines)
+

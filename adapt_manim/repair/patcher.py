@@ -53,3 +53,4 @@ class CodePatcher:
             new_block = "\n".join(b_lines)
             return cls.patch_block(code, block_number, new_block)
         return code
+

@@ -248,3 +248,4 @@ class PipelineResult(BaseModel):
     quality_metrics: QualityMetrics = Field(default_factory=QualityMetrics)
     compute_metrics: ComputeMetrics = Field(default_factory=ComputeMetrics)
     success: bool = False
+

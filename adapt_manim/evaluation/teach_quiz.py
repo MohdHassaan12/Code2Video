@@ -90,3 +90,4 @@ class TeachQuizEvaluator:
             "es_gain": es_gain,  # TeachQuiz Relative Transfer Score
             "sample_efficiency": round(es_gain / 100.0, 3)
         }
+

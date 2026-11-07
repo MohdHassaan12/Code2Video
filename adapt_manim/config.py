@@ -61,3 +61,4 @@ class AdaptManimConfig:
     enable_sandbox_rendering: bool = True
     manim_quality: str = "ql"  # ql: low quality (480p 15fps), qm: medium, qh: high
     use_mock_llm_if_no_key: bool = True
+

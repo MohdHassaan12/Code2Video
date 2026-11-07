@@ -113,3 +113,4 @@ class SymbolLedgerManager:
                     # Check if color is explicitly set differently
                     pass
         return issues
+

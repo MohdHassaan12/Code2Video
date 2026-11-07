@@ -84,3 +84,4 @@ class TopicComplexityProfiler:
             search_budget_tier=budget_tier,
             requires_symbol_ledger=True
         )
+

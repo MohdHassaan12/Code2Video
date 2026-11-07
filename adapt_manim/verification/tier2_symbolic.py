@@ -73,3 +73,4 @@ class Tier2SymbolicVerifier:
                 pass
 
         return issues
+

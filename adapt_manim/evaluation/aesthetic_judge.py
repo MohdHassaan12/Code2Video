@@ -62,3 +62,4 @@ class AestheticJudge:
             pedagogical_alignment=round((lf + ad) * 2.5, 1),
             verdict="PASS" if total >= 70.0 else "NEEDS_REVISION"
         )
+

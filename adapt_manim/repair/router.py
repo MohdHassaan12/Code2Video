@@ -112,3 +112,4 @@ class AdaptiveRepairRouter:
         history.final_success = current_report.passed
 
         return (current_code, current_report, history)
+
