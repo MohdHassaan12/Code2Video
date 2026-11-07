@@ -146,3 +146,4 @@ class Code2VideoCoder:
         issues, _, _, _ = Tier3ExecutionVerifier.verify(current_code, section, output_dir=output_dir)
 
         return current_code, (len(issues) == 0), total_tokens, attempts
+

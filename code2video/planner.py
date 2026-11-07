@@ -78,3 +78,4 @@ class Code2VideoPlanner:
             assets.append({"name": "signal_phasor", "search_query": "sine wave vector phasor", "intended_section": "section_2"})
 
         return assets
+

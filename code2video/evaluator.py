@@ -40,3 +40,4 @@ class Code2VideoEvaluator:
         eS(V) = S(V) - S(V|unlearn)
         """
         return TeachQuizEvaluator.evaluate_relative_gain(topic, is_video_grounded=True)
+

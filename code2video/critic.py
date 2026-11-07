@@ -92,3 +92,4 @@ class Code2VideoCritic:
 
         has_mods = len(improvements_applied) > 0
         return refined_code, has_mods, improvements_applied
+

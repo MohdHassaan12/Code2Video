@@ -91,3 +91,4 @@ class MMMCBenchmark:
 
     def list_all_topics(self) -> List[str]:
         return [u.topic for u in self.units]
+
