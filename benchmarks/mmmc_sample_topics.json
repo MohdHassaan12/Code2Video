@@ -1,0 +1,68 @@
+{
+  "benchmark_name": "MMMC (Multimodal Manim Mastery Corpus) Sample Suite",
+  "source": "3Blue1Brown & Professional STEM Instructional Corpus",
+  "domains": [
+    {
+      "domain": "Machine Learning",
+      "topics": [
+        {
+          "topic": "Support Vector Machine",
+          "audience": "undergraduate",
+          "target_duration_minutes": 3.0,
+          "key_concepts": ["separating hyperplane", "geometric margin", "support vectors", "dual optimization"],
+          "governing_equation": "\\min \\frac{1}{2} ||w||^2 \\text{ s.t. } y_i(w^T x_i + b) \\ge 1"
+        },
+        {
+          "topic": "Neural Network Learning and Backpropagation",
+          "audience": "undergraduate",
+          "target_duration_minutes": 3.5,
+          "key_concepts": ["forward pass", "activation functions", "chain rule", "gradient descent"],
+          "governing_equation": "\\frac{\\partial \\mathcal{L}}{\\partial W^{[l]}} = \\delta^{[l]} (a^{[l-1]})^T"
+        }
+      ]
+    },
+    {
+      "domain": "Calculus & Signal Processing",
+      "topics": [
+        {
+          "topic": "Pure Fourier Series and Frequency Transform",
+          "audience": "undergraduate",
+          "target_duration_minutes": 3.0,
+          "key_concepts": ["waveform superposition", "complex winding machine", "center of mass", "frequency spectrum"],
+          "governing_equation": "\\hat{f}(\\omega) = \\int_{-\\infty}^{\\infty} f(t) e^{-i \\omega t} dt"
+        },
+        {
+          "topic": "Euler's Formula and the Unit Circle",
+          "audience": "high_school",
+          "target_duration_minutes": 2.5,
+          "key_concepts": ["imaginary unit", "complex plane", "Taylor series expansion", "phasor rotation"],
+          "governing_equation": "e^{i \\theta} = \\cos(\\theta) + i \\sin(\\theta)"
+        }
+      ]
+    },
+    {
+      "domain": "Physics & Optics",
+      "topics": [
+        {
+          "topic": "Snell's Law and Optical Refraction",
+          "audience": "undergraduate",
+          "target_duration_minutes": 2.5,
+          "key_concepts": ["index of refraction", "wave speed in media", "Fermat principle of least time", "angle of incidence"],
+          "governing_equation": "n_1 \\sin(\\theta_1) = n_2 \\sin(\\theta_2)"
+        }
+      ]
+    },
+    {
+      "domain": "Geometry & Foundations",
+      "topics": [
+        {
+          "topic": "Pythagorean Theorem and Geometric Proof",
+          "audience": "middle_school",
+          "target_duration_minutes": 2.0,
+          "key_concepts": ["right triangle", "hypotenuse", "square area rearrangement", "visual proof"],
+          "governing_equation": "a^2 + b^2 = c^2"
+        }
+      ]
+    }
+  ]
+}
