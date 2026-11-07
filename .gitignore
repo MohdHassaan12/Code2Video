@@ -5,6 +5,8 @@ __pycache__/
 .venv/
 demo_outputs/media/
 demo_outputs/test_media/
+demo_outputs/code2video_svm/media/
+media/
 *.egg-info/
 build/
 dist/

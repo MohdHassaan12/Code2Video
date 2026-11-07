@@ -1,0 +1,469 @@
+{
+  "benchmark_name": "MMMC: Multimodal Manim Mastery Corpus",
+  "version": "1.0.0",
+  "source": "3Blue1Brown Instructional Corpus (Show Lab, NUS / arXiv:2510.01174)",
+  "total_categories": 13,
+  "categories": [
+    "Calculus",
+    "Linear Algebra",
+    "Neural Networks",
+    "Differential Equations",
+    "Cryptography & Number Theory",
+    "Probability & Statistics",
+    "Information Theory",
+    "Geometry",
+    "Physics & Mechanics",
+    "Computer Graphics & Algorithms",
+    "Group Theory & Abstract Algebra",
+    "Topology & Manifolds",
+    "Complex Analysis & Fractals"
+  ],
+  "domains": [
+    {
+      "domain": "Calculus",
+      "topics": [
+        {
+          "id": "calc_01",
+          "topic": "Essence of Calculus: The Derivative",
+          "target_duration_minutes": 3.5,
+          "complexity_score": 2,
+          "governing_equation": "\\frac{df}{dx} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}",
+          "pedagogical_goals": [
+            "Geometric intuition of secant line approaching tangent line",
+            "Nudge dx leading to small change df",
+            "Rate of change as instantaneous slope"
+          ],
+          "required_assets": ["curve_plot.png", "tangent_arrow.png"],
+          "teach_quiz": [
+            {
+              "question": "What geometric entity does the derivative represent at a point on a smooth curve?",
+              "options": ["The area under the curve", "The slope of the tangent line", "The curvature radius", "The secant chord"],
+              "answer_index": 1,
+              "explanation": "The derivative is the limit of secant slopes as step size approaches zero, yielding the instantaneous tangent slope."
+            },
+            {
+              "question": "As dx approaches zero, what happens to the ratio df/dx?",
+              "options": ["It approaches 0/0 and is undefined", "It approaches the instantaneous rate of change", "It diverges to infinity", "It equals f(x)"],
+              "answer_index": 1,
+              "explanation": "The quotient approaches a well-defined finite limit known as the derivative."
+            }
+          ]
+        },
+        {
+          "id": "calc_02",
+          "topic": "Taylor Series and Higher-Order Approximations",
+          "target_duration_minutes": 3.8,
+          "complexity_score": 4,
+          "governing_equation": "f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(a)}{n!} (x-a)^n",
+          "pedagogical_goals": [
+            "Matching value, first derivative, curvature, and higher derivatives at a single point",
+            "Factorial denominator scaling for powers of x",
+            "Polynomial convergence to transcendental curves"
+          ],
+          "required_assets": ["cos_curve.png", "polynomial_degree.png"],
+          "teach_quiz": [
+            {
+              "question": "Why does the n-th term of a Taylor series include a 1/n! factor?",
+              "options": ["To normalize probability", "To counteract repeated power rule differentiation", "To enforce periodicity", "To guarantee bounded variance"],
+              "answer_index": 1,
+              "explanation": "Differentiating x^n n times yields n!, so dividing by n! matches the n-th derivative f^(n)(a)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Linear Algebra",
+      "topics": [
+        {
+          "id": "la_01",
+          "topic": "The Determinant and Area Scaling",
+          "target_duration_minutes": 3.0,
+          "complexity_score": 2,
+          "governing_equation": "\\det(A) = ad - bc",
+          "pedagogical_goals": [
+            "Linear transformation as space deformation",
+            "Determinant as the factor by which areas scale",
+            "Negative determinant indicating orientation reversal"
+          ],
+          "required_assets": ["grid_basis.png", "unit_square.png"],
+          "teach_quiz": [
+            {
+              "question": "What does a determinant of 0 geometrically signify about a 2D linear transformation?",
+              "options": ["The transformation rotates space by 90 degrees", "Space is squished into a lower dimension (line or point)", "The area is doubled", "All vectors become orthogonal"],
+              "answer_index": 1,
+              "explanation": "det(A) = 0 means the transformation collapses the 2D area into 0 area (1D line or 0D point)."
+            },
+            {
+              "question": "What does a negative determinant imply about the transformation of space?",
+              "options": ["The matrix has imaginary eigenvalues", "The orientation of space is inverted (flipped)", "All vectors shrink", "The matrix is non-invertible"],
+              "answer_index": 1,
+              "explanation": "A negative determinant indicates that orientation (e.g. right-hand rule) has been inverted."
+            }
+          ]
+        },
+        {
+          "id": "la_02",
+          "topic": "Eigenvectors and Eigenvalues: Directions that Stay Still",
+          "target_duration_minutes": 3.6,
+          "complexity_score": 3,
+          "governing_equation": "A\\mathbf{v} = \\lambda \\mathbf{v}",
+          "pedagogical_goals": [
+            "Vectors that do not get knocked off their span during transformation",
+            "Eigenvalue as the scaling factor along the eigen-axis",
+            "Diagonalization as decoupled coordinate changes"
+          ],
+          "required_assets": ["eigen_axis.png", "transformation_matrix.png"],
+          "teach_quiz": [
+            {
+              "question": "Under a linear transformation, what characterizes an eigenvector?",
+              "options": ["Its length is preserved", "It stays on its own span, only scaling by a scalar", "It is always perpendicular to other vectors", "It maps to the origin"],
+              "answer_index": 1,
+              "explanation": "An eigenvector v satisfies Av = lambda v, meaning it does not rotate off its original span."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Neural Networks",
+      "topics": [
+        {
+          "id": "nn_01",
+          "topic": "Support Vector Machine and Maximum Margin Hyperplanes",
+          "target_duration_minutes": 3.2,
+          "complexity_score": 3,
+          "governing_equation": "\\min_{\\mathbf{w}, b} \\frac{1}{2} \\|\\mathbf{w}\\|^2 \\quad \\text{s.t.} \\quad y_i (\\mathbf{w} \\cdot \\mathbf{x}_i + b) \\ge 1",
+          "pedagogical_goals": [
+            "Separating hyperplane for two distinct classes",
+            "Margin distance defined by support vectors",
+            "Constrained quadratic optimization for maximum generalization"
+          ],
+          "required_assets": ["svm_hyperplane.png", "data_clusters.png"],
+          "teach_quiz": [
+            {
+              "question": "Which data points directly determine the position and angle of the decision boundary in an SVM?",
+              "options": ["The cluster centroids", "All data points equally", "Only the support vectors on the margin boundaries", "The outermost outliers"],
+              "answer_index": 2,
+              "explanation": "Only the support vectors lying on the margins constrain the optimization problem."
+            },
+            {
+              "question": "Why does maximizing the margin margin = 2 / ||w|| lead to minimizing (1/2)||w||^2?",
+              "options": ["Because ||w|| is inversely proportional to margin width", "Because w must be unit length", "To avoid calculating dot products", "Because gradients vanish otherwise"],
+              "answer_index": 0,
+              "explanation": "The margin width is 2/||w||; maximizing 2/||w|| is mathematically equivalent to minimizing (1/2)||w||^2."
+            }
+          ]
+        },
+        {
+          "id": "nn_02",
+          "topic": "Neural Network Learning and Backpropagation",
+          "target_duration_minutes": 3.5,
+          "complexity_score": 4,
+          "governing_equation": "\\frac{\\partial \\mathcal{L}}{\\partial w_{jk}^{(l)}} = a_k^{(l-1)} \\delta_j^{(l)}",
+          "pedagogical_goals": [
+            "Forward pass computing layer activations",
+            "Loss surface and steepest descent trajectory",
+            "Chain rule propagating error gradients backwards"
+          ],
+          "required_assets": ["network_graph.png", "loss_surface.png"],
+          "teach_quiz": [
+            {
+              "question": "In backpropagation, what calculus rule enables computing gradients through nested layers?",
+              "options": ["Product Rule", "Chain Rule", "Quotient Rule", "Fundamental Theorem of Calculus"],
+              "answer_index": 1,
+              "explanation": "The chain rule allows decomposing the derivative of composite activation functions backwards."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Differential Equations",
+      "topics": [
+        {
+          "id": "de_01",
+          "topic": "Harmonic Oscillators and Phase Space Trajectories",
+          "target_duration_minutes": 3.1,
+          "complexity_score": 3,
+          "governing_equation": "m \\frac{d^2 x}{dt^2} + c \\frac{dx}{dt} + k x = 0",
+          "pedagogical_goals": [
+            "Converting second-order ODE to system of first-order ODEs",
+            "Phase space with position on x-axis and velocity on y-axis",
+            "Damped oscillator as a spiral towards the origin"
+          ],
+          "required_assets": ["spring_mass.png", "phase_orbit.png"],
+          "teach_quiz": [
+            {
+              "question": "What is the shape of an undamped simple harmonic oscillator's trajectory in phase space (x, v)?",
+              "options": ["A parabola", "An ellipse (or circle)", "A diverging spiral", "A straight line"],
+              "answer_index": 1,
+              "explanation": "In an undamped system, energy conservation (1/2 k x^2 + 1/2 m v^2 = E) traces closed elliptical orbits."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Cryptography & Number Theory",
+      "topics": [
+        {
+          "id": "crypto_01",
+          "topic": "RSA Encryption and Modular Arithmetic",
+          "target_duration_minutes": 3.4,
+          "complexity_score": 4,
+          "governing_equation": "c \\equiv m^e \\pmod{n}, \\quad m \\equiv c^d \\pmod{n}",
+          "pedagogical_goals": [
+            "Trapdoor one-way functions based on prime factorization",
+            "Euler's totient function phi(n) = (p-1)(q-1)",
+            "Public encryption key and private decryption exponent"
+          ],
+          "required_assets": ["lock_icon.png", "prime_factors.png"],
+          "teach_quiz": [
+            {
+              "question": "What mathematical problem provides the primary computational hardness for RSA?",
+              "options": ["Discrete Fourier transform", "Factoring large composite numbers into distinct primes", "Finding eigenvalues of sparse matrices", "Solving linear equations"],
+              "answer_index": 1,
+              "explanation": "Multiplying primes p*q is fast, but recovering p and q from large n is computationally intractable."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Probability & Statistics",
+      "topics": [
+        {
+          "id": "prob_01",
+          "topic": "Bayes' Theorem and Prior Probability Updating",
+          "target_duration_minutes": 3.0,
+          "complexity_score": 2,
+          "governing_equation": "P(A \\mid B) = \\frac{P(B \\mid A) P(A)}{P(B)}",
+          "pedagogical_goals": [
+            "Visualizing sample space as area partition",
+            "Conditioning as zooming into a sub-area",
+            "Updating prior belief with likelihood of evidence"
+          ],
+          "required_assets": ["venn_boxes.png", "probability_tree.png"],
+          "teach_quiz": [
+            {
+              "question": "In Bayes' formula, what does P(A) represent?",
+              "options": ["Posterior probability", "Likelihood of evidence", "Prior probability of hypothesis A", "Marginal probability of B"],
+              "answer_index": 2,
+              "explanation": "P(A) is the prior belief in hypothesis A before observing evidence B."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Information Theory",
+      "topics": [
+        {
+          "id": "info_01",
+          "topic": "Claude Shannon's Entropy: Measuring Surprise",
+          "target_duration_minutes": 3.3,
+          "complexity_score": 3,
+          "governing_equation": "H(X) = -\\sum_{i=1}^n P(x_i) \\log_2 P(x_i)",
+          "pedagogical_goals": [
+            "Information content of rare vs common events",
+            "Logarithmic surprise measure -log2(p)",
+            "Average bits needed to encode a message"
+          ],
+          "required_assets": ["coin_toss.png", "bit_stream.png"],
+          "teach_quiz": [
+            {
+              "question": "Which distribution over a finite set of outcomes maximizes Shannon entropy?",
+              "options": ["A deterministic single outcome", "A uniform distribution", "A power law distribution", "A bimodal distribution"],
+              "answer_index": 1,
+              "explanation": "When all outcomes are equally likely (uniform), uncertainty and entropy are maximized."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Geometry",
+      "topics": [
+        {
+          "id": "geom_01",
+          "topic": "Pythagorean Theorem: Visual Proof Without Words",
+          "target_duration_minutes": 2.5,
+          "complexity_score": 1,
+          "governing_equation": "a^2 + b^2 = c^2",
+          "pedagogical_goals": [
+            "Decomposing square of side (a+b) into 4 right triangles and c^2",
+            "Rearranging triangles to show remaining area is a^2 + b^2",
+            "Area conservation under rigid translation"
+          ],
+          "required_assets": ["right_triangle.png", "square_decomposition.png"],
+          "teach_quiz": [
+            {
+              "question": "In the classic rearrangement proof, what quantity is held constant when moving the 4 triangles?",
+              "options": ["The perimeter of the large square", "The total area of the bounding (a+b) square", "The hypotenuse angle", "The circumcircle diameter"],
+              "answer_index": 1,
+              "explanation": "The outer square has fixed area (a+b)^2; subtracting 4 congruent triangles leaves c^2 or a^2+b^2."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Physics & Mechanics",
+      "topics": [
+        {
+          "id": "phys_01",
+          "topic": "Pure Fourier Series: Drawing with Rotating Epicycles",
+          "target_duration_minutes": 3.4,
+          "complexity_score": 4,
+          "governing_equation": "f(t) = \\sum_{n=-\\infty}^{\\infty} c_n e^{i n \\omega t}",
+          "pedagogical_goals": [
+            "Decomposing complex closed loops into rotating circular epicycles",
+            "Frequency, amplitude, and initial phase of each circle",
+            "Tracing continuous paths through sum of rotating vectors"
+          ],
+          "required_assets": ["epicycle_circles.png", "traced_curve.png"],
+          "teach_quiz": [
+            {
+              "question": "In a complex Fourier series, what does each term c_n * e^(i*n*omega*t) represent visually?",
+              "options": ["A static polygon", "A rotating circle/vector with frequency n*omega", "A damped oscillation", "A hyperbolic curve"],
+              "answer_index": 1,
+              "explanation": "e^(i*theta) is uniform circular motion; c_n specifies its initial radius and angular offset."
+            }
+          ]
+        },
+        {
+          "id": "phys_02",
+          "topic": "Snell's Law and Fermat's Principle of Least Time",
+          "target_duration_minutes": 2.8,
+          "complexity_score": 2,
+          "governing_equation": "n_1 \\sin\\theta_1 = n_2 \\sin\\theta_2",
+          "pedagogical_goals": [
+            "Light taking path of minimal travel time between two media",
+            "Speed differences v1 vs v2 creating angle change",
+            "Lifeguard analogy running on sand vs swimming in water"
+          ],
+          "required_assets": ["ray_path.png", "medium_interface.png"],
+          "teach_quiz": [
+            {
+              "question": "According to Fermat's Principle, why does light bend toward the normal when entering a denser medium?",
+              "options": ["To avoid magnetic attraction", "To minimize total travel time given slower speed in the second medium", "To preserve momentum", "Because frequency drops"],
+              "answer_index": 1,
+              "explanation": "Light bends to spend more distance in the faster medium and less distance in the slower medium."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Computer Graphics & Algorithms",
+      "topics": [
+        {
+          "id": "algo_01",
+          "topic": "Tower of Hanoi: Recursive Binary Pattern",
+          "target_duration_minutes": 3.0,
+          "complexity_score": 2,
+          "governing_equation": "T(n) = 2^n - 1",
+          "pedagogical_goals": [
+            "Recursive reduction of n disks to n-1 disks",
+            "Binary counting rhythm of disk movements",
+            "Sierpinski triangle graph topology of game states"
+          ],
+          "required_assets": ["pegs_disks.png", "sierpinski_graph.png"],
+          "teach_quiz": [
+            {
+              "question": "What is the minimum number of moves required to solve the Tower of Hanoi with n disks?",
+              "options": ["n^2", "2^n - 1", "n!", "2n + 1"],
+              "answer_index": 1,
+              "explanation": "T(n) = 2*T(n-1) + 1, which telescopes to 2^n - 1."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Group Theory & Abstract Algebra",
+      "topics": [
+        {
+          "id": "group_01",
+          "topic": "Symmetries and the Dihedral Group D4",
+          "target_duration_minutes": 3.2,
+          "complexity_score": 3,
+          "governing_equation": "D_4 = \\langle r, s \\mid r^4 = 1, s^2 = 1, srs = r^{-1} \\rangle",
+          "pedagogical_goals": [
+            "Rigid symmetries of a square: 4 rotations and 4 reflections",
+            "Group closure, associativity, identity, and inverses",
+            "Non-commutativity: rotation followed by reflection differs from opposite order"
+          ],
+          "required_assets": ["square_symmetry.png", "cayley_table.png"],
+          "teach_quiz": [
+            {
+              "question": "How many total symmetry elements are there in the Dihedral group D4 (symmetries of a square)?",
+              "options": ["4", "8", "16", "24"],
+              "answer_index": 1,
+              "explanation": "A square has 4 rotational symmetries (0, 90, 180, 270 deg) and 4 reflection axes, totalling 8 operations."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Topology & Manifolds",
+      "topics": [
+        {
+          "id": "top_01",
+          "topic": "Euler Characteristic and the Möbius Strip",
+          "target_duration_minutes": 3.3,
+          "complexity_score": 4,
+          "governing_equation": "\\chi = V - E + F = 2 - 2g",
+          "pedagogical_goals": [
+            "Topological invariance under continuous deformation without tearing",
+            "Möbius strip having only one boundary and one surface side",
+            "Polyhedral formula V - E + F = 2 for sphere-equivalent surfaces"
+          ],
+          "required_assets": ["mobius_band.png", "polyhedron.png"],
+          "teach_quiz": [
+            {
+              "question": "What is the Euler characteristic V - E + F of any convex polyhedron homeomorphic to a sphere?",
+              "options": ["0", "1", "2", "-2"],
+              "answer_index": 2,
+              "explanation": "By Euler's formula, any spherical polyhedral surface satisfies V - E + F = 2."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "Complex Analysis & Fractals",
+      "topics": [
+        {
+          "id": "comp_01",
+          "topic": "Euler's Formula: The Most Beautiful Equation",
+          "target_duration_minutes": 3.2,
+          "complexity_score": 3,
+          "governing_equation": "e^{i\\pi} + 1 = 0 \\iff e^{i\\theta} = \\cos\\theta + i\\sin\\theta",
+          "pedagogical_goals": [
+            "Multiplying by i as a 90-degree rotation on the Argand plane",
+            "Exponential growth at 90 degrees tracing circular motion",
+            "Unifying e, i, pi, 1, and 0 in a single identity"
+          ],
+          "required_assets": ["complex_plane.png", "unit_circle_vector.png"],
+          "teach_quiz": [
+            {
+              "question": "Geometrically, what does multiplication by the imaginary unit i correspond to in the complex plane?",
+              "options": ["A horizontal shift by +1", "A 90-degree counterclockwise rotation", "A reflection across the imaginary axis", "A scaling of length by e"],
+              "answer_index": 1,
+              "explanation": "Multiplication by i rotates any complex number by 90 degrees counterclockwise."
+            },
+            {
+              "question": "Why does e^(i*pi) equal -1?",
+              "options": ["Because pi is an irrational period", "Because a continuous rotation of pi radians (180 degrees) reaches (-1, 0)", "Because sin(pi) = 1", "Due to Taylor truncation"],
+              "answer_index": 1,
+              "explanation": "Starting at 1 + 0i and rotating by pi radians lands exactly at -1 + 0i on the real axis."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

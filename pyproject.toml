@@ -26,3 +26,6 @@ adapt-manim = "adapt_manim.cli:main"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["adapt_manim*", "code2video*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

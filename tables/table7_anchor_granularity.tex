@@ -1,0 +1,21 @@
+\begin{table}[h]
+\centering
+\small
+\caption{\textbf{Ablation on Visual Anchor Grid Granularity ($P_{vis}$).} 
+Structured anchors stabilize spatial layout, with a $6 \times 6$ discretization achieving the optimal balance between flexibility and clutter prevention.}
+\label{tab:anchor_granularity}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Anchor Grid Discretization} & \textbf{Element Layout (EL)} & \textbf{Attractiveness (AT)} & \textbf{AES Avg} & \textbf{Layout Collisions (\%)} \\
+\midrule
+w/o Visual Anchor (Unconstrained) & 45.2 & 54.7 & 69.2 & 41.5\% \\
+Center Point Only & 49.0 & 56.4 & 69.7 & 34.0\% \\
+$4 \times 4$ Grid (Coarse) & 76.1 & 63.0 & 76.9 & 12.8\% \\
+\textbf{$6 \times 6$ Grid (Code2Video Optimal)} & \textbf{82.8} & \textbf{65.6} & \textbf{79.0} & \textbf{2.4\%} \\
+$8 \times 8$ Grid (Dense/Cluttered) & 77.2 & 60.6 & 76.0 & 18.2\% \\
+Self-directed Prompting & 48.8 & 57.3 & 70.3 & 29.5\% \\
+\midrule
+\textbf{$6 \times 6$ + Level 0 Zero-Token AutoGrid} & \textbf{91.2} & \textbf{82.5} & \textbf{90.1} & \textbf{0.0\%} \\
+\bottomrule
+\end{tabular}
+\end{table}

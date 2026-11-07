@@ -1,0 +1,22 @@
+\begin{table}[h]
+\centering
+\small
+\caption{\textbf{Effect of Pipeline Components on Video Quality (Aesthetics and TeachQuiz).} 
+Ablation analysis on GPT-4.1 evaluating the necessity of each architectural component.}
+\label{tab:quality_ablation}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Method / Configuration} & \multicolumn{2}{c}{\textbf{Aesthetics (AES)}} & \multicolumn{2}{c}{\textbf{TeachQuiz ($eS$)}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+& \textbf{Score} & $\Delta$ & \textbf{Score} & $\Delta$ \\
+\midrule
+\textbf{Code2Video Full Pipeline} & \textbf{79.0} & -- & \textbf{82.0} & -- \\
+\quad $\diamond$ w/o Planner & 38.1 & $-40.9$ & 40.5 & $-41.5$ \\
+\quad $\diamond$ w/o External Database $\mathcal{D}$ & 68.1 & $-10.9$ & 52.0 & $-30.0$ \\
+\quad $\diamond$ w/o Visual Anchor ($P_{vis}$) & 69.2 & $-9.8$ & 55.2 & $-26.8$ \\
+\quad $\diamond$ w/o Critic ($P_{refine}$) & 72.5 & $-6.5$ & 60.7 & $-21.3$ \\
+\midrule
+\textbf{AdaptManim (+ Adaptive Cascade \& Ledger)} & \textbf{90.1} & $+11.1$ & \textbf{88.5} & $+6.5$ \\
+\bottomrule
+\end{tabular}
+\end{table}

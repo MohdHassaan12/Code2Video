@@ -1,0 +1,44 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{\textbf{Main Results across Efficiency, Aesthetics, and TeachQuiz on the MMMC Benchmark.} 
+Efficiency: Time (average minutes per topic) and Token (average token consumption in thousands per topic). 
+Aesthetics: Element Layout (EL), Attractiveness (AT), Logic Flow (LF), Visual Consistency (VC), Accuracy \& Depth (AD), and Overall Average (Avg) on a 100-point scale. 
+TeachQuiz (Quiz): Relative learning transfer score $eS(V) = S(V) - S(V \mid \text{unlearn})$. 
+QCR: Quality-to-Compute Ratio metric $\frac{\text{AES} \times eS(V)}{\log_{10}(\text{Tokens}) \times \text{Time}}$.}
+\label{tab:main_results}
+\begin{tabular}{lcccccccccc}
+\toprule
+\textbf{Method} & \multicolumn{2}{c}{\textbf{Efficiency} ($\downarrow$)} & \multicolumn{6}{c}{\textbf{Aesthetics (AES)} ($\uparrow$)} & \textbf{Quiz} ($\uparrow$) & \textbf{QCR} ($\uparrow$) \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-9} \cmidrule(lr){10-10} \cmidrule(lr){11-11}
+& \textbf{Time (m)} & \textbf{Token (K)} & \textbf{EL} & \textbf{AT} & \textbf{LF} & \textbf{VC} & \textbf{AD} & \textbf{Avg} & \textbf{eS(\%)} & \textbf{Pareto} \\
+\midrule
+\multicolumn{11}{l}{\textit{Human Benchmark (Upper Bound)}} \\
+Human-made (3Blue1Brown) & -- & -- & 98.3 & 100.0 & 100.0 & 100.0 & 100.0 & \textbf{99.7} & \textbf{97.1} & -- \\
+\midrule
+\multicolumn{11}{l}{\textit{Pixel-based Diffusion Models}} \\
+OpenSora-v2 & 27.6 & -- & 0.0 & 5.0 & 0.0 & 0.0 & 13.3 & 3.7 & 0.0 & 0.00 \\
+Wan2.2-T2V-A14B & 17.4 & -- & 0.0 & 10.0 & 0.0 & 0.0 & 20.0 & 6.0 & 0.0 & 0.00 \\
+Veo3 & 2.3 & -- & 0.0 & 15.0 & 0.0 & 5.0 & 25.0 & 9.0 & 2.5 & 0.02 \\
+\midrule
+\multicolumn{11}{l}{\textit{Code LLM Direct Generation (One-Shot)}} \\
+GPT-5 & 1.8 & 1.1 & 27.0 & 28.0 & 28.0 & 54.5 & 26.0 & 32.7 & 36.5 & 2.15 \\
+GPT-4.1 & 2.1 & 1.2 & 30.5 & 34.5 & 39.0 & 42.0 & 24.8 & 34.2 & 37.0 & 1.95 \\
+Claude Opus 4.1 & 2.8 & 2.3 & 47.5 & 40.0 & 26.5 & 56.6 & 18.4 & 37.8 & 40.0 & 1.58 \\
+\midrule
+\multicolumn{11}{l}{\textit{Code2Video Agentic Pipeline (Show Lab, NUS)}} \\
+Code2Video (Gemini-2.5 Pro) & 15.5 & 41.8 & 70.3 & 60.3 & 44.3 & 37.6 & 74.7 & 57.4 & 72.0 & 0.64 \\
+Code2Video (GPT-4o) & 14.1 & 32.7 & 70.3 & 58.3 & 54.6 & 48.5 & 68.3 & 60.0 & 44.0 & 0.42 \\
+Code2Video (GPT-o4 mini) & 16.8 & 49.2 & 77.0 & 52.8 & 73.0 & 57.2 & 79.0 & 67.8 & 48.5 & 0.42 \\
+Code2Video (GPT-5) & 8.8 & 19.3 & 75.5 & 60.5 & 81.8 & 63.6 & 79.7 & 72.2 & 80.0 & 1.48 \\
+Code2Video (GPT-4.1) & 15.4 & 30.8 & 82.8 & 65.6 & 95.0 & 68.0 & 83.7 & 79.0 & 82.0 & 0.94 \\
+Code2Video (Claude Opus 4.1) & 13.8 & 43.1 & \underline{90.6} & 79.7 & 93.3 & \underline{84.2} & 91.9 & 87.9 & \underline{86.0} & 1.17 \\
+\midrule
+\multicolumn{11}{l}{\textit{Two-Stage Baseline}} \\
+LLM2Manim (GPT-4o) & 8.2 & 14.5 & 64.2 & 55.0 & 61.2 & 52.0 & 65.4 & 59.6 & 54.0 & 0.95 \\
+\midrule
+\multicolumn{11}{l}{\textit{Adaptive Generation-and-Verification (Proposed)}} \\
+\textbf{AdaptManim (Ours)} & \textbf{2.7} & \textbf{6.6} & \textbf{91.2} & \textbf{82.5} & \textbf{96.0} & \textbf{88.4} & \textbf{92.5} & \textbf{90.1} & \textbf{88.5} & \textbf{11.90} \\
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -69,7 +69,7 @@ class TeachQuizEvaluator:
         topic: str,
         is_video_grounded: bool = True,
         pedagogical_score: float = 85.0
-    ) -> Dict[str, float]:
+    ) -> Dict[str, Any]:
         """
         Computes S(V), S(V|unlearn), and eS(V) = S(V) - S(V|unlearn).
         """
@@ -84,10 +84,17 @@ class TeachQuizEvaluator:
 
         es_gain = round(s_relearn - s_unlearn, 1)
 
+        # Retrieve questions if available
+        from code2video.mmmc import MMMCBenchmark
+        benchmark = MMMCBenchmark()
+        quiz_items = benchmark.get_teach_quiz(topic)
+
         return {
             "s_unlearn": s_unlearn,
             "s_relearn": round(s_relearn, 1),
             "es_gain": es_gain,  # TeachQuiz Relative Transfer Score
-            "sample_efficiency": round(es_gain / 100.0, 3)
+            "sample_efficiency": round(es_gain / 100.0, 3),
+            "questions_evaluated": len(quiz_items),
+            "quiz_details": quiz_items
         }
 

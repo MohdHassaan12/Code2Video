@@ -102,23 +102,75 @@ pip install -e .
 
 ---
 
-## 🖥️ Usage
+## 🖥️ Usage & CLI Tools
 
-### 1. Generate an Educational Video via CLI
-```bash
-adapt-manim generate --topic "Support Vector Machine" --audience undergraduate --render
-```
+### Dual Command-Line Interfaces
 
-### 2. Run Comparative Benchmarks
+The repository provides two complementary CLIs:
+1. `code2video`: The exact 3-stage agent pipeline from Show Lab, NUS (*Planner ➔ Coder with ScopeRefine ➔ Critic with 6x6 Visual Anchor prompt*).
+2. `adapt-manim`: The proposed research pipeline (*Adaptive Planning ➔ Symbol Ledger ➔ 5-Tier Early-Exit Cascade ➔ ScopeRefine++ with 0-Token AutoGrid*).
+
 ```bash
+# ----------------- Code2Video CLI -----------------
+# Generate video using official 3-stage agent pipeline
+code2video generate --topic "Support Vector Machine" --audience undergraduate --render
+
+# Inspect the 13-category MMMC Benchmark corpus
+code2video mmmc --category "Calculus"
+
+# Run side-by-side comparative evaluation
+code2video compare --topic "Euler's Formula: The Most Beautiful Equation"
+
+# ----------------- AdaptManim CLI -----------------
+# Generate video with adaptive verification cascade and audio narration
+adapt-manim generate --topic "Support Vector Machine" --render --narrate
+
+# Run batch benchmark evaluation
 adapt-manim benchmark --topic "Support Vector Machine"
-```
 
-### 3. Launch Interactive Streamlit Web Studio
-```bash
+# Launch Interactive Streamlit Web Studio
 adapt-manim ui
 # Opens interactive dashboard at http://localhost:8501
 ```
+
+---
+
+## 🔬 Reproducible Paper Experiments & Artifacts
+
+The repository includes automated scripts for generating publication tables and high-resolution figures:
+
+```bash
+# 1. Generate publication LaTeX tables (Tables 1, 2, 3, 7)
+python scripts/generate_paper_tables.py
+# Outputs: tables/table1_main_results.tex, tables/table2_quality_ablation.tex, ...
+
+# 2. Generate scientific publication figures (300 DPI)
+python scripts/generate_paper_plots.py
+# Outputs: demo_outputs/paper_figures/figure1_architecture_pareto.png, ...
+
+# 3. Run multi-topic comparative benchmark experiments
+python scripts/run_comparative_experiment.py --max-topics 3
+# Outputs: demo_outputs/experiments/comparative_results.json & comparative_summary.csv
+```
+
+---
+
+## 📚 MMMC Benchmark Corpus (13 Subject Areas)
+
+Curated from the complete 3Blue1Brown instructional repository, spanning 13 canonical STEM disciplines:
+- **Calculus**: Essence of Calculus, Chain Rule, Taylor Series, Limits
+- **Linear Algebra**: Essence of Linear Algebra, Vectors, Matrix Multiplication, Determinants, Eigenvalues
+- **Neural Networks**: What is a Neural Network?, Gradient Descent, Backpropagation, SVMs
+- **Differential Equations**: Separable ODEs, Harmonic Oscillators, Heat Equation, Navier-Stokes
+- **Cryptography & Number Theory**: RSA Encryption, Modular Arithmetic, Prime Factorization
+- **Probability & Statistics**: Bayes' Theorem, Binomial Distribution, Central Limit Theorem
+- **Information Theory**: Claude Shannon's Entropy, Channel Capacity
+- **Geometry**: Pythagorean Proof Without Words, Non-Euclidean Geometry
+- **Physics & Mechanics**: Pure Fourier Series, Snell's Law & Fermat's Principle
+- **Computer Graphics & Algorithms**: Tower of Hanoi, Sorting Algorithms, Ray Marching
+- **Group Theory & Abstract Algebra**: Dihedral Group D4, Permutations, Symmetry
+- **Topology & Manifolds**: Euler Characteristic $V - E + F = 2$, Möbius Strip
+- **Complex Analysis & Fractals**: Euler's Formula $e^{i\pi} + 1 = 0$, Mandelbrot Set, Riemann Zeta Function
 
 ---
 

@@ -1,0 +1,22 @@
+\begin{table}[h]
+\centering
+\small
+\caption{\textbf{Effect of Efficiency Components on Runtime and Token Consumption.} 
+Comparison of ScopeRefine (SR) against conventional Retry and Full-code Debugging baselines.}
+\label{tab:efficiency_ablation}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Method / Repair Strategy} & \multicolumn{2}{c}{\textbf{Runtime Time (m)}} & \multicolumn{2}{c}{\textbf{Token Consumption (K)}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+& \textbf{Time} & \textbf{Multiplier} & \textbf{Tokens} & \textbf{Multiplier} \\
+\midrule
+\textbf{Code2Video (Parallel + ScopeRefine)} & \textbf{15.4} & $1.0\times$ & \textbf{30.8} & $1.0\times$ \\
+\quad $\diamond$ w/o Parallel Synthesis (Sequential) & 86.6 & $5.6\times$ & 30.8 & $1.0\times$ \\
+\quad $\diamond$ w/o ScopeRefine $\to$ Full Retry & 42.9 & $2.8\times$ & 49.8 & $1.6\times$ \\
+\quad $\diamond$ w/o ScopeRefine $\to$ Full-code Debug & 39.2 & $2.5\times$ & 42.1 & $1.4\times$ \\
+\quad $\diamond$ w/o Parallel \& w/o ScopeRefine & 149.8 & $9.7\times$ & 52.6 & $1.7\times$ \\
+\midrule
+\textbf{AdaptManim (ScopeRefine++ / Tier 1--5 Cascade)} & \textbf{2.7} & $\mathbf{0.18\times}$ & \textbf{6.6} & $\mathbf{0.21\times}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
