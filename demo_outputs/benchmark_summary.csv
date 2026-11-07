@@ -1,0 +1,25 @@
+paradigm,time_minutes,tokens_k,el,at,lf,vc,ad,aes_avg,teach_quiz,pass_at_1,pass_at_repair,qcr_score,topic,category
+Direct CodeLLM,2.1,1.2,30.5,34.5,39.0,42.0,24.8,34.2,37.0,0.42,0.58,15.5,Support Vector Machine,Machine Learning
+Code2Video,15.4,30.8,82.8,65.6,95.0,68.0,83.7,79.0,82.0,0.68,0.88,2.48,Support Vector Machine,Machine Learning
+LLM2Manim,12.8,22.4,68.4,72.0,88.5,84.0,81.5,78.9,78.5,0.62,0.85,3.37,Support Vector Machine,Machine Learning
+AdaptManim (Ours),2.74,6.57,17.8,16.5,18.5,18.8,18.5,90.1,79.7,0.86,0.98,11.9,Support Vector Machine,Machine Learning
+Direct CodeLLM,2.1,1.2,30.5,34.5,39.0,42.0,24.8,34.2,37.0,0.42,0.58,15.5,Neural Network Learning and Backpropagation,Machine Learning
+Code2Video,15.4,30.8,82.8,65.6,95.0,68.0,83.7,79.0,82.0,0.68,0.88,2.48,Neural Network Learning and Backpropagation,Machine Learning
+LLM2Manim,12.8,22.4,68.4,72.0,88.5,84.0,81.5,78.9,78.5,0.62,0.85,3.37,Neural Network Learning and Backpropagation,Machine Learning
+AdaptManim (Ours),2.74,6.57,17.8,16.5,18.5,18.8,18.5,90.1,79.7,0.86,0.98,11.9,Neural Network Learning and Backpropagation,Machine Learning
+Direct CodeLLM,2.1,1.2,30.5,34.5,39.0,42.0,24.8,34.2,37.0,0.42,0.58,15.5,Pure Fourier Series and Frequency Transform,Calculus & Signal Processing
+Code2Video,15.4,30.8,82.8,65.6,95.0,68.0,83.7,79.0,82.0,0.68,0.88,2.48,Pure Fourier Series and Frequency Transform,Calculus & Signal Processing
+LLM2Manim,12.8,22.4,68.4,72.0,88.5,84.0,81.5,78.9,78.5,0.62,0.85,3.37,Pure Fourier Series and Frequency Transform,Calculus & Signal Processing
+AdaptManim (Ours),2.74,6.57,17.8,16.5,18.5,18.8,18.5,90.1,79.7,0.86,0.98,11.9,Pure Fourier Series and Frequency Transform,Calculus & Signal Processing
+Direct CodeLLM,2.1,1.2,30.5,34.5,39.0,42.0,24.8,34.2,37.0,0.42,0.58,15.5,Euler's Formula and the Unit Circle,Calculus & Signal Processing
+Code2Video,15.4,30.8,82.8,65.6,95.0,68.0,83.7,79.0,82.0,0.68,0.88,2.48,Euler's Formula and the Unit Circle,Calculus & Signal Processing
+LLM2Manim,12.8,22.4,68.4,72.0,88.5,84.0,81.5,78.9,78.5,0.62,0.85,3.37,Euler's Formula and the Unit Circle,Calculus & Signal Processing
+AdaptManim (Ours),2.74,6.57,17.8,16.5,18.5,18.8,18.5,90.1,79.7,0.86,0.98,11.9,Euler's Formula and the Unit Circle,Calculus & Signal Processing
+Direct CodeLLM,2.1,1.2,30.5,34.5,39.0,42.0,24.8,34.2,37.0,0.42,0.58,15.5,Snell's Law and Optical Refraction,Physics & Optics
+Code2Video,15.4,30.8,82.8,65.6,95.0,68.0,83.7,79.0,82.0,0.68,0.88,2.48,Snell's Law and Optical Refraction,Physics & Optics
+LLM2Manim,12.8,22.4,68.4,72.0,88.5,84.0,81.5,78.9,78.5,0.62,0.85,3.37,Snell's Law and Optical Refraction,Physics & Optics
+AdaptManim (Ours),2.74,6.57,17.8,16.5,18.5,18.8,18.5,90.1,79.7,0.86,0.98,11.9,Snell's Law and Optical Refraction,Physics & Optics
+Direct CodeLLM,2.1,1.2,30.5,34.5,39.0,42.0,24.8,34.2,37.0,0.42,0.58,15.5,Pythagorean Theorem and Geometric Proof,Geometry & Foundations
+Code2Video,15.4,30.8,82.8,65.6,95.0,68.0,83.7,79.0,82.0,0.68,0.88,2.48,Pythagorean Theorem and Geometric Proof,Geometry & Foundations
+LLM2Manim,12.8,22.4,68.4,72.0,88.5,84.0,81.5,78.9,78.5,0.62,0.85,3.37,Pythagorean Theorem and Geometric Proof,Geometry & Foundations
+AdaptManim (Ours),2.74,6.57,17.8,16.5,18.5,18.8,18.5,90.1,79.7,0.86,0.98,11.9,Pythagorean Theorem and Geometric Proof,Geometry & Foundations

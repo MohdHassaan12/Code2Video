@@ -323,13 +323,18 @@ if "pipeline_data" in st.session_state:
 
         st.code(data['full_script'], language="python")
 
-        # Preview frames
-        st.markdown("### 🖼️ Rendered Keyframe Preview")
-        preview_path = "demo_outputs/media/images/section_1_sandbox/section_1_preview.png"
-        if os.path.exists(preview_path):
-            st.image(preview_path, caption="Rendered Section 1 Preview (Manim Community 480p)")
+        # Video Player
+        st.markdown("### 🎬 Rendered Master Lecture Video (with Synchronized Speech)")
+        master_video_file = "demo_outputs/complete_lecture.mp4"
+        if os.path.exists(master_video_file):
+            st.video(master_video_file)
+            st.success("✓ Complete multi-scene lecture video with synchronized audio narration track ready for playback!")
         else:
-            st.info("Click 'Render with Manim' to generate instant visual keyframe previews.")
+            preview_path = "demo_outputs/media/images/section_1_sandbox/section_1_preview.png"
+            if os.path.exists(preview_path):
+                st.image(preview_path, caption="Rendered Section 1 Preview (Manim Community 480p)")
+            else:
+                st.info("Run with '--render --narrate' to produce complete video with audio.")
 
     with tab_benchmark:
         st.subheader("📊 Comparative Benchmark & Quality-Compute Pareto Trade-offs")
@@ -364,4 +369,10 @@ if "pipeline_data" in st.session_state:
             df_bench.set_index("paradigm")["qcr_score"]
         )
         st.caption("Higher is better. AdaptManim achieves the superior Pareto frontier by eliminating wasteful critic calls via the 5-Tier Early-Exit Cascade and Zero-Token AutoGrid repair.")
+
+        # Display Pareto plot if generated
+        pareto_img = "demo_outputs/pareto_frontier.png"
+        if os.path.exists(pareto_img):
+            st.markdown("### 📈 Publication-Quality Pareto Frontier Analysis (MMMC Suite)")
+            st.image(pareto_img, caption="4-Panel Pareto Analysis: Quality vs Tokens, TeachQuiz vs Latency, Reliability, and QCR Efficiency.")
 

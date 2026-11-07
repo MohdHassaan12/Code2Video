@@ -39,8 +39,9 @@ def main():
 @click.option("--topic", "-t", required=True, help="Educational STEM topic to generate.")
 @click.option("--audience", "-a", default="undergraduate", type=click.Choice(["middle_school", "high_school", "undergraduate", "researcher"]))
 @click.option("--render", "-r", is_flag=True, default=False, help="Render the generated code with Manim.")
+@click.option("--narrate", "-n", is_flag=True, default=False, help="Synthesize and mux synchronized audio narration.")
 @click.option("--output-dir", "-o", default="demo_outputs", help="Output directory for code and videos.")
-def generate(topic: str, audience: str, render: bool, output_dir: str):
+def generate(topic: str, audience: str, render: bool, narrate: bool, output_dir: str):
     """Generate complete educational video pipeline from topic."""
     aud = AudienceLevel(audience)
     console.print(Panel(f"[bold cyan]AdaptManim Pipeline[/bold cyan]\n[white]Topic:[/white] {topic}\n[white]Audience:[/white] {aud.value}", expand=False))
@@ -103,7 +104,16 @@ def generate(topic: str, audience: str, render: bool, output_dir: str):
 
     console.print(f"\n[bold green]Success![/bold green] Complete verified Manim script saved to: [cyan]{combined_path}[/cyan]")
 
-    # 6. Evaluation Metrics Display
+    # 6. Optional Full Multi-Scene Rendering and Audio Muxing
+    if render or narrate:
+        from adapt_manim.coding.video_stitcher import VideoStitcher
+        stitcher = VideoStitcher(combined_path, output_dir=output_dir)
+        with console.status("[bold green]Rendering and stitching video scenes with FFmpeg..."):
+            master_path, sec_videos = stitcher.render_and_stitch_all(storyboard, narrate=narrate)
+        if master_path:
+            console.print(f"[bold green]✓ Master Lecture Video Produced:[/bold green] [cyan]{master_path}[/cyan] ({len(sec_videos)} scenes)")
+
+    # 7. Evaluation Metrics Display
     qm = AestheticJudge.evaluate(full_script, topic)
     tq = TeachQuizEvaluator.evaluate_relative_gain(topic, is_video_grounded=True, pedagogical_score=qm.overall_aes)
 
@@ -154,6 +164,21 @@ def benchmark(topic: str):
             f"{v['qcr_score']:.2f}"
         )
     console.print(table)
+
+
+@main.command()
+@click.option("--max-topics", "-m", default=6, help="Number of MMMC topics to evaluate.")
+@click.option("--output-dir", "-o", default="demo_outputs", help="Output directory for reports.")
+def mmmc(max_topics: int, output_dir: str):
+    """Run batch MMMC benchmark evaluation and plot Pareto frontiers."""
+    console.print(Panel(f"[bold magenta]Running MMMC Batch Evaluation ({max_topics} topics)...[/bold magenta]", expand=False))
+    from adapt_manim.evaluation.mmmc_evaluator import MMMCBatchEvaluator
+    with console.status("[bold green]Evaluating topics across STEM domains..."):
+        res = MMMCBatchEvaluator.run_suite(max_topics=max_topics, output_dir=output_dir)
+    console.print(f"[green]✓[/green] Evaluated {res['num_topics_evaluated']} topics.")
+    console.print(f"[green]✓[/green] Summary CSV: [cyan]{res['csv_path']}[/cyan]")
+    console.print(f"[green]✓[/green] Detailed JSON: [cyan]{res['json_path']}[/cyan]")
+    console.print(f"[bold green]✓ Pareto Frontier Plot:[/bold green] [cyan]{res['plot_path']}[/cyan]")
 
 
 @main.command()

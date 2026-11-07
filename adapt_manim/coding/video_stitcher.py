@@ -142,3 +142,4 @@ class VideoStitcher:
             os.remove(list_file)
 
         return output_path if res.returncode == 0 and os.path.exists(output_path) else None
+
