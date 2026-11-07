@@ -91,3 +91,4 @@ def test_scientific_plot_generation():
     assert os.path.getsize(p2) > 10000
     assert os.path.getsize(p3) > 10000
     assert os.path.getsize(p4) > 10000
+

@@ -37,3 +37,4 @@ def test_audio_concatenation(tmp_path):
     assert res is not None
     assert os.path.exists(combined_wav)
     assert os.path.getsize(combined_wav) > os.path.getsize(wav1)
+

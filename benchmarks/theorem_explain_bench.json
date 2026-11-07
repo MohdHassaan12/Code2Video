@@ -1,0 +1,113 @@
+{
+  "benchmark_name": "TheoremExplainBench",
+  "version": "1.0.0",
+  "reference": "Ku et al., 2025; Code2Video Appendix A.1.4 (Table 8)",
+  "description": "Evaluation benchmark for LLM agents explaining mathematical theorems via multimodal animations.",
+  "metrics": [
+    "Accuracy and Depth",
+    "Visual Relevance",
+    "Logical Flow",
+    "Element Layout",
+    "Visual Consistency",
+    "Overall"
+  ],
+  "theorems": [
+    {
+      "id": "thm_01",
+      "theorem_name": "Central Limit Theorem",
+      "domain": "Probability & Statistics",
+      "statement": "The normalized sum of n independent, identically distributed random variables with finite variance converges in distribution to a standard normal distribution as n approaches infinity.",
+      "formula": "\\lim_{n \\to \\infty} P\\left( \\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sigma \\sqrt{n}} \\le z \\right) = \\Phi(z)",
+      "target_duration_sec": 180,
+      "key_visuals": ["dice_sum_histogram", "bell_curve_overlay", "variance_narrowing"],
+      "eval_criteria": {
+        "accuracy_depth": "Correctly states requirements: finite variance and i.i.d.",
+        "visual_relevance": "Demonstrates arbitrary non-normal distribution transforming into Gaussian bell curve",
+        "logical_flow": "Stepwise progression from n=1, n=2, to large n",
+        "element_layout": "Histogram on right grid, equation on top, no lecture bullet occlusion",
+        "visual_consistency": "Consistent color for random variables vs limiting Gaussian"
+      }
+    },
+    {
+      "id": "thm_02",
+      "theorem_name": "Fundamental Theorem of Calculus",
+      "domain": "Calculus",
+      "statement": "Differentiation and integration are inverse operations: if f is continuous on [a, b] and F is an antiderivative of f, then \\int_a^b f(x) dx = F(b) - F(a).",
+      "formula": "\\frac{d}{dx} \\int_a^x f(t) dt = f(x) \\quad \\text{and} \\quad \\int_a^b f(x) dx = F(b) - F(a)",
+      "target_duration_sec": 200,
+      "key_visuals": ["accumulating_area", "dx_thin_slice", "height_matching_slope"],
+      "eval_criteria": {
+        "accuracy_depth": "Rigorous link between accumulating area function A(x) and height f(x)",
+        "visual_relevance": "Slice of width dx having area f(x)*dx causing change dA in total area",
+        "logical_flow": "Starts with area definition, zooms into marginal strip, shows dA/dx = f(x)",
+        "element_layout": "Area under curve aligned with derivative tangent on coordinate system",
+        "visual_consistency": "Area color corresponds to integral notation in formula"
+      }
+    },
+    {
+      "id": "thm_03",
+      "theorem_name": "Pythagorean Theorem",
+      "domain": "Geometry",
+      "statement": "In any right-angled triangle, the area of the square whose side is the hypotenuse is equal to the sum of the areas of the squares on the other two sides.",
+      "formula": "a^2 + b^2 = c^2",
+      "target_duration_sec": 150,
+      "key_visuals": ["right_triangle_abc", "outer_square_aplusb", "four_triangles_rearrangement"],
+      "eval_criteria": {
+        "accuracy_depth": "Flawless geometric deduction showing conservation of area",
+        "visual_relevance": "Rigid animation of triangles without distortion",
+        "logical_flow": "Shows first configuration with inner c^2, shifts triangles to form a^2 and b^2",
+        "element_layout": "Square placement inside right 6x6 grid, equations in top/bottom anchors",
+        "visual_consistency": "Triangles maintain congruent colors throughout rearrangement"
+      }
+    },
+    {
+      "id": "thm_04",
+      "theorem_name": "Spectral Theorem for Symmetric Matrices",
+      "domain": "Linear Algebra",
+      "statement": "Every real symmetric matrix A can be diagonalized by an orthogonal matrix Q consisting of its orthonormal eigenvectors, with real eigenvalues.",
+      "formula": "A = Q \\Lambda Q^T \\quad \\text{where} \\quad Q^T Q = I",
+      "target_duration_sec": 210,
+      "key_visuals": ["orthogonal_eigenvectors", "unit_sphere_ellipsoid_transformation", "decoupled_scaling"],
+      "eval_criteria": {
+        "accuracy_depth": "Explicit mention of orthogonality of eigenspaces and reality of eigenvalues",
+        "visual_relevance": "Transforming unit circle into ellipse whose principal axes are orthogonal eigenvectors",
+        "logical_flow": "Spatial transformation -> perpendicular axes preserved -> matrix factorization",
+        "element_layout": "Vector grid positioned in B2-E5, eigenvalues listed in F anchors",
+        "visual_consistency": "Eigenvector colors match their respective eigenvalues"
+      }
+    },
+    {
+      "id": "thm_05",
+      "theorem_name": "Banach Fixed Point Theorem",
+      "domain": "Analysis & Topology",
+      "statement": "Let (X, d) be a non-empty complete metric space with a contraction mapping T: X -> X. Then T admits a unique fixed point x* in X.",
+      "formula": "d(T(x), T(y)) \\le q \\cdot d(x, y) \\quad (0 \\le q < 1) \\implies T(x^*) = x^*",
+      "target_duration_sec": 190,
+      "key_visuals": ["shrinking_distance", "iterative_step_spiral", "cauchy_sequence_limit"],
+      "eval_criteria": {
+        "accuracy_depth": "Clear definition of metric completeness and Lipschitz contraction constant q < 1",
+        "visual_relevance": "Geometric shrinking of points x_0 -> x_1 -> x_2 converging to stationary point",
+        "logical_flow": "Contraction mapping definition -> iterative sequence -> Cauchy convergence -> uniqueness",
+        "element_layout": "Contraction mapping visually mapped inside B1-E5 grid",
+        "visual_consistency": "Convergence point x* uniquely highlighted"
+      }
+    },
+    {
+      "id": "thm_06",
+      "theorem_name": "Cauchy-Schwarz Inequality",
+      "domain": "Linear Algebra & Analysis",
+      "statement": "For all vectors u and v in an inner product space, the absolute value of their inner product is less than or equal to the product of their norms.",
+      "formula": "|\\langle \\mathbf{u}, \\mathbf{v} \\rangle|^2 \\le \\langle \\mathbf{u}, \\mathbf{u} \\rangle \\cdot \\langle \\mathbf{v}, \\mathbf{v} \\rangle \\iff |\\mathbf{u} \\cdot \\mathbf{v}| \\le \\|\\mathbf{u}\\| \\|\\mathbf{v}\\|",
+      "target_duration_sec": 170,
+      "key_visuals": ["vector_projection", "orthogonal_decomposition", "quadratic_discriminant"],
+      "eval_criteria": {
+        "accuracy_depth": "Proves equality holds if and only if u and v are linearly dependent",
+        "visual_relevance": "Geometric dot product as projection length ||u|| cos(theta) <= ||u||",
+        "logical_flow": "Vector projection -> orthogonal remainder -> norm inequality",
+        "element_layout": "Vectors plotted cleanly in C2-E4 with angle theta labeled",
+        "visual_consistency": "Consistent vector arrow notation and coordinate axes"
+      }
+    }
+  ]
+}
+

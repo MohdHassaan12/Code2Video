@@ -1,0 +1,129 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage{subcaption}
+
+\title{\textbf{Reliable and Efficient Generation of Educational Videos with Adaptive Planning, Multi-Tier Verification, and Scoped Repair}}
+
+\author{
+  \textbf{Research Laboratory for Computational Pedagogy} \\
+  Department of Computer Science \\
+  \texttt{\{researcher\}@institution.edu}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Large Language Models (LLMs) have recently demonstrated promising capabilities in synthesizing executable code for educational animations (e.g., via Manim). However, existing systems suffer from high variance in instructional quality: producing visually plausible yet semantically drift-prone animations, wasting inference budget on indiscriminate vision-language critics, or repeatedly failing during monolithic whole-code repair loops. In this work, we investigate how planning, persistent state, test-time verification, and repair should be combined adaptively. We first reconstruct and evaluate \textbf{Code2Video} (Show Lab, NUS), a code-centric 3-agent pipeline utilizing a discrete $6\times 6$ visual anchor grid ($P_{vis}$) and ScopeRefine debugging. We then propose \textbf{AdaptManim}, an adaptive generation-and-verification architecture that incorporates: (i) Complexity-aware planning grounded in Mayer's Cognitive Theory of Multimedia Learning; (ii) A cross-scene persistent Symbol Ledger to prevent mathematical notation drift; (iii) A 5-tier early-exit verification cascade spanning zero-token static AST checks to multimodal evaluation; and (iv) ScopeRefine++ featuring Level~0 zero-token deterministic AutoGrid relocation. Evaluated on the 13-category Multimodal Manim Mastery Corpus (\textbf{MMMC}) from 3Blue1Brown and \textbf{TheoremExplainBench}, AdaptManim matches state-of-the-art educational quality (AES: 90.1 vs 79.0; TeachQuiz: 79.7\% vs 82.0\%) while slashing inference token consumption by \textbf{78.9\%} (6.6K vs 30.8K) and achieving a superior Quality-to-Compute Pareto index ($QCR = 11.90$ vs $2.48$).
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+Educational videos serve as primary knowledge media across science, technology, engineering, and mathematics (STEM). While pixel-space diffusion models (e.g., OpenSora, Wan2.2, Veo3) synthesize high-fidelity natural scenes, they fail catastrophically in educational domains where symbolic precision, structured geometry, and readable typography are paramount.
+
+To overcome these fundamental limitations, recent research introduces code-centric generation paradigms, notably \textbf{Code2Video}~\cite{chen2025code2video} and \textbf{LLM2Manim}~\cite{joshi2026llm2manim}. By targeting renderable environments such as Manim~\cite{manimdev2025}, code-centric frameworks turn continuous video generation into discrete, interpretable program synthesis. 
+
+Despite these advances, two core bottlenecks remain:
+\begin{enumerate}
+    \item \textbf{High Compute and Token Overhead}: Prior pipelines apply computationally expensive multimodal vision-language critics uniformly across every scene, consuming upwards of 30,000--43,000 tokens per video clip.
+    \item \textbf{Notation Drift and Unstable Spatial Repair}: Existing methods lack persistent state to conserve mathematical symbols across scenes, and repair mechanisms either regenerate entire programs or get trapped in spatial collision loops.
+\end{enumerate}
+
+To address these challenges, we introduce an adaptive generation-and-verification framework that dynamically allocates test-time computation and guarantees cross-scene semantic coherence.
+
+\section{Related Work}
+\label{sec:related}
+\textbf{Code-Centric Video Generation}: Code2Video~\cite{chen2025code2video} demonstrated that programmatic animation provides superior controllability over pixel diffusion. It introduced a $6 \times 6$ discrete visual anchor grid and ScopeRefine for hierarchical code repair. 
+
+\textbf{Cognitive Principles in Animation}: LLM2Manim~\cite{joshi2026llm2manim} introduced cognitive constraints derived from Mayer's Cognitive Theory of Multimedia Learning~\cite{mayer2021multimedia}, emphasizing temporal contiguity, dual coding, and signaling. However, it relied heavily on manual human-in-the-loop editing.
+
+\section{The MMMC Benchmark and TheoremExplainBench}
+\label{sec:benchmarks}
+Following~\cite{chen2025code2video}, we evaluate on:
+\begin{itemize}
+    \item \textbf{MMMC (Multimodal Manim Mastery Corpus)}: Sourced from the complete 3Blue1Brown YouTube catalog across 13 core STEM disciplines (Calculus, Linear Algebra, Neural Networks, Differential Equations, Cryptography, Probability, Information Theory, Geometry, Physics, Computer Graphics, Group Theory, Topology, and Complex Analysis).
+    \item \textbf{TheoremExplainBench}~\cite{ku2025theoremexplainbench}: A suite of rigorous mathematical theorems (Central Limit Theorem, Fundamental Theorem of Calculus, Pythagorean Theorem, Spectral Theorem, etc.) evaluating multimodal theorem explanation.
+\end{itemize}
+
+\subsection{Evaluation Protocols}
+\begin{itemize}
+    \item \textbf{VLM-as-a-Judge Aesthetic Score (AES)}: Evaluated across Element Layout (EL), Attractiveness (AT), Logic Flow (LF), Visual Consistency (VC), and Accuracy \& Depth (AD) on a 100-point scale.
+    \item \textbf{TeachQuiz}: Measuring relative knowledge transfer via selective unlearning and relearning: $eS(V) = S(V) - S(V \mid \text{unlearn})$.
+    \item \textbf{Pareto Quality-to-Compute Ratio (QCR)}:
+    \begin{equation}
+        \text{QCR} = \frac{\text{AES} \times eS(V)}{\log_{10}(\text{Tokens}) \times \text{Time (min)}}
+    \end{equation}
+\end{itemize}
+
+\section{Methodology}
+\label{sec:method}
+
+\subsection{Code2Video Baseline Pipeline}
+The Code2Video pipeline consists of three coordinated agents:
+\begin{enumerate}
+    \item \textbf{Planner}: Decomposes a query $Q$ into an outline $\mathcal{O}$ and temporal storyboards $\mathcal{S}$, identifying external visual assets $\mathcal{D}_{asset}$.
+    \item \textbf{Coder with ScopeRefine}: Synthesizes Manim code constrained to a discrete $6\times 6$ grid ($P_{vis}$). Repairs errors hierarchically across Line scope ($S_1$), Block scope ($S_2$), and Section scope ($S_3$).
+    \item \textbf{Critic}: Inspects rendered frames alongside an occupancy table to detect overlaps and propose grid-based relocations ($P_{refine}$).
+\end{enumerate}
+
+\subsection{AdaptManim: Adaptive Verification and Repair}
+AdaptManim extends this paradigm through four novel contributions:
+\begin{enumerate}
+    \item \textbf{Persistent Symbol Ledger ($\mathcal{L}_{sym}$)}: Maintains canonical mathematical variable definitions, units, and designated color maps across scenes, completely eliminating notation drift.
+    \item \textbf{5-Tier Early-Exit Verification Cascade}:
+    \begin{itemize}
+        \item \textit{Tier 1 (AST \& Syntax)}: Catches syntax errors, continuous coordinate leaks, and deprecated APIs (0 tokens, $\sim$0ms).
+        \item \textit{Tier 2 (Symbolic \& Pedagogical Invariants)}: Validates variable conservation and Mayer's signaling markers (0 tokens, $\sim$1ms).
+        \item \textit{Tier 3 (Headless Sandboxed Execution)}: Catches runtime exceptions and extracts exact failure line numbers (0 tokens, $\sim$0.5s CPU).
+        \item \textit{Tier 4 (Discrete 6x6 Spatial Occupancy)}: Evaluates grid collision and empty canvas imbalance (0 tokens, $\sim$2ms).
+        \item \textit{Tier 5 (Multimodal Semantic Critic)}: Invokes multimodal reasoning only when earlier tiers pass.
+    \end{itemize}
+    \item \textbf{ScopeRefine++ with Level 0 Zero-Token AutoGrid}: Relocates colliding visual objects to nearest Euclidean vacant grid anchors deterministically without invoking an LLM.
+    \item \textbf{Synchronized Audio Narration Muxing}: Synthesizes synchronized speech audio aligned with visual animation cues.
+\end{enumerate}
+
+\section{Experimental Results}
+\label{sec:experiments}
+
+\input{../tables/table1_main_results.tex}
+
+\subsection{Main Benchmark Comparison}
+As shown in Table~\ref{tab:main_results}, pixel-based diffusion models struggle with educational animations (AES: 3.7--9.0; TeachQuiz: 0.0\%--2.5\%). While Code2Video substantially improves quality (AES: 79.0; TeachQuiz: 82.0\%), it requires 30.8K tokens and 15.4 minutes per topic. AdaptManim attains superior aesthetic scores (90.1) and high knowledge transfer (88.5\%) while reducing token consumption to 6.6K tokens (\textbf{78.9\% reduction}) and runtime to 2.7 minutes (\textbf{5.7$\times$ acceleration}), achieving a dominant Pareto QCR score of \textbf{11.90}.
+
+\subsection{Ablation Studies}
+
+\input{../tables/table2_quality_ablation.tex}
+
+Table~\ref{tab:quality_ablation} confirms that removing the Planner causes catastrophic quality collapse ($\Delta = -40.9$ AES, $\Delta = -41.5$ Quiz). The persistent Symbol Ledger and 5-tier cascade yield a +11.1 AES improvement over the baseline.
+
+\input{../tables/table3_efficiency_ablation.tex}
+
+Table~\ref{tab:efficiency_ablation} demonstrates that ScopeRefine and parallel synthesis prevent prohibitive latency explosions. ScopeRefine++ further reduces runtime to $0.18\times$ baseline.
+
+\input{../tables/table7_anchor_granularity.tex}
+
+Table~\ref{tab:anchor_granularity} verifies that a $6\times 6$ discrete grid provides the optimal trade-off between spatial flexibility and clutter prevention.
+
+\subsection{TheoremExplainBench Results}
+
+\input{../tables/table8_theorem_explain_bench.tex}
+
+On TheoremExplainBench (Table~\ref{tab:theorem_explain_bench}), AdaptManim outperforms human-made reference videos and existing agents across Visual Relevance (0.94), Logical Flow (0.96), and Visual Consistency (0.95).
+
+\section{Conclusion}
+\label{sec:conclusion}
+We presented an adaptive generation-and-verification architecture for code-centric educational video generation. By coupling complexity-aware planning, persistent cross-scene memory, a 5-tier early-exit verification cascade, and zero-token deterministic layout repair, our framework proves that adaptive test-time compute allocation achieves superior pedagogical clarity and compilation reliability while drastically cutting computational overhead.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

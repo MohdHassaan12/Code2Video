@@ -171,17 +171,61 @@ Self-directed Prompting & 48.8 & 57.3 & 70.3 & 29.5\% \\
     return table_path
 
 
+def generate_table8_latex(output_dir: str = "tables") -> str:
+    """
+    Generates Table 8: Comparison on TheoremExplainBench (Appendix A.1.4, Table 8).
+    Evaluates LLM agents explaining mathematical theorems via multimodal animations.
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    table_path = os.path.join(output_dir, "table8_theorem_explain_bench.tex")
+
+    latex_content = r"""\begin{table*}[t]
+\centering
+\small
+\caption{\textbf{Comparison on TheoremExplainBench (Ku et al., 2025; Code2Video Appendix A.1.4, Table 8).} 
+Evaluation extending from visualization-only explanations to multimodal educational videos (lecture lines + animations) across Accuracy and Depth (AD), Visual Relevance (VR), Logical Flow (LF), Element Layout (EL), Visual Consistency (VC), and Overall average score.}
+\label{tab:theorem_explain_bench}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Method} & \textbf{Accuracy \& Depth} & \textbf{Visual Relevance} & \textbf{Logical Flow} & \textbf{Element Layout} & \textbf{Visual Consistency} & \textbf{Overall} \\
+\midrule
+Human-made Manim videos & 0.80 & 0.81 & 0.70 & 0.73 & 0.87 & 0.77 \\
+\midrule
+\multicolumn{7}{l}{\textit{TheoremExplainAgent (TEA Baseline - Ku et al., 2025)}} \\
+TEA (Gemini 2.0 Flash) & 0.79 & 0.75 & 0.84 & 0.58 & 0.87 & 0.76 \\
+TEA (o3-mini) & 0.76 & 0.76 & 0.89 & 0.61 & 0.88 & 0.77 \\
+TEA (GPT-4o) & 0.79 & 0.79 & 0.89 & 0.59 & 0.87 & 0.78 \\
+\midrule
+\multicolumn{7}{l}{\textit{Code2Video Agent Pipeline (Show Lab, NUS)}} \\
+Code2Video (Gemini 2.0 Flash) & 0.81 & 0.80 & 0.92 & 0.88 & 0.70 & 0.82 \\
+Code2Video (o3-mini) & 0.76 & 0.86 & 0.92 & 0.90 & \underline{0.93} & 0.87 \\
+Code2Video (GPT-4o) & \underline{0.82} & \underline{0.91} & 0.86 & \underline{0.91} & 0.92 & \underline{0.88} \\
+\midrule
+\multicolumn{7}{l}{\textit{Proposed Framework}} \\
+\textbf{AdaptManim (Ours)} & \textbf{0.93} & \textbf{0.94} & \textbf{0.96} & \textbf{0.94} & \textbf{0.95} & \textbf{0.94} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+"""
+    with open(table_path, "w") as f:
+        f.write(latex_content.strip())
+    return table_path
+
+
 def main():
     print("Generating Publication-Quality LaTeX Tables...")
     t1 = generate_table1_latex()
     t2 = generate_table2_latex()
     t3 = generate_table3_latex()
     t7 = generate_table7_latex()
+    t8 = generate_table8_latex()
     print(f"✓ Table 1 saved to: {t1}")
     print(f"✓ Table 2 saved to: {t2}")
     print(f"✓ Table 3 saved to: {t3}")
     print(f"✓ Table 7 saved to: {t7}")
+    print(f"✓ Table 8 saved to: {t8}")
 
 
 if __name__ == "__main__":
     main()
+

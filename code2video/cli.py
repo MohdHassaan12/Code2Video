@@ -114,5 +114,50 @@ def compare(topic: str):
     console.print(table)
 
 
+@main.command()
+@click.option("--id", "-i", default=None, help="Specific theorem ID (e.g. thm_01).")
+def theorem(id: Optional[str]):
+    """Inspect TheoremExplainBench evaluation suite (Appendix A.1.4, Table 8)."""
+    from code2video.theorem_bench import TheoremExplainBench
+    tb = TheoremExplainBench()
+    console.print(Panel("[bold magenta]TheoremExplainBench (Ku et al., 2025; Code2Video Table 8)[/bold magenta]", expand=False))
+
+    theorems = [t for t in tb.theorems if t.id == id] if id else tb.theorems
+
+    table = Table(title=f"Mathematical Theorems ({len(theorems)} entries)")
+    table.add_column("ID", style="dim")
+    table.add_column("Theorem Name", style="cyan")
+    table.add_column("Domain", style="yellow")
+    table.add_column("Duration", justify="right")
+    table.add_column("Key Visual Elements", style="green")
+
+    for t in theorems:
+        table.add_row(t.id, t.theorem_name, t.domain, f"{t.target_duration_sec}s", ", ".join(t.key_visuals))
+    console.print(table)
+
+    # Baselines comparison summary
+    console.print("\n")
+    b_table = Table(title="TheoremExplainBench Baseline Comparison (Table 8)")
+    b_table.add_column("Method", style="cyan")
+    b_table.add_column("AD", justify="right")
+    b_table.add_column("VR", justify="right")
+    b_table.add_column("LF", justify="right")
+    b_table.add_column("EL", justify="right")
+    b_table.add_column("VC", justify="right")
+    b_table.add_column("Overall", justify="right", style="bold green")
+
+    for k, v in tb.BASELINE_RESULTS.items():
+        b_table.add_row(
+            v["method"],
+            f"{v['accuracy_depth']:.2f}",
+            f"{v['visual_relevance']:.2f}",
+            f"{v['logical_flow']:.2f}",
+            f"{v['element_layout']:.2f}",
+            f"{v['visual_consistency']:.2f}",
+            f"{v['overall']:.2f}"
+        )
+    console.print(b_table)
+
+
 if __name__ == "__main__":
     main()
