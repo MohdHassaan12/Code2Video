@@ -28,3 +28,4 @@ def test_prompt_context_generation():
     ctx = mgr.get_prompt_context()
     assert "PERSISTENT SYMBOL LEDGER" in ctx
     assert "\\omega" in ctx or "f(t)" in ctx
+

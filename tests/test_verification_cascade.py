@@ -46,3 +46,4 @@ def test_cascade_early_exit_on_syntax_error():
     )
     assert not report.passed
     assert report.highest_failing_tier == VerificationTier.TIER1_AST
+

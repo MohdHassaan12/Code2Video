@@ -44,3 +44,4 @@ def test_zero_token_migrates_resize():
     repaired, success = ScopeRefineRepairer.repair_zero_token_autogrid(code, issue)
     assert success
     assert "obj.scale(0.8)" in repaired
+

@@ -50,3 +50,4 @@ class MyScene(Scene):
     assert 2 in blocks
     assert "FadeIn(dot)" in blocks[1][2]
     assert "Create(line)" in blocks[2][2]
+

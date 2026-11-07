@@ -54,3 +54,4 @@ def test_full_pipeline_synthesis():
 
     tq = TeachQuizEvaluator.evaluate_relative_gain(topic, is_video_grounded=True, pedagogical_score=qm.overall_aes)
     assert tq["es_gain"] > 50.0
+

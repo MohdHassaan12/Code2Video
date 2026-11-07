@@ -41,3 +41,4 @@ def test_find_nearest_vacant_anchor():
     assert nearest not in occupied
     # Should pick an adjacent cell like B1, A2, or C2
     assert nearest in ["B1", "A2", "C2"]
+
