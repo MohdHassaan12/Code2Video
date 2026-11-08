@@ -204,13 +204,14 @@ if "pipeline_data" in st.session_state:
     st.markdown("---")
 
     # Main Tabs
-    tab_overview, tab_grid, tab_verify, tab_code, tab_headtohead, tab_mmmc, tab_benchmark = st.tabs([
+    tab_overview, tab_grid, tab_verify, tab_code, tab_headtohead, tab_mmmc, tab_theorem, tab_benchmark = st.tabs([
         "📋 Pedagogical Plan & Storyboard",
         "🎯 6x6 Visual Anchor System",
         "🛡️ Multi-Tier Verification & Repair",
         "🐍 Verified Manim Code",
         "🎥 Code2Video vs AdaptManim",
         "📚 MMMC Corpus Explorer",
+        "📐 TheoremExplainBench",
         "📊 Comparative Benchmark & Pareto Frontier"
     ])
 
@@ -431,6 +432,64 @@ if "pipeline_data" in st.session_state:
                             else:
                                 st.error(f"✗ Incorrect. Correct: {q['options'][correct_idx]}. {q.get('explanation', '')}")
                         st.markdown("---")
+
+    with tab_theorem:
+        st.subheader("📐 TheoremExplainBench Explorer (Ku et al., 2025; Code2Video Appendix A.1.4)")
+        st.write("Evaluating LLM agents on multimodal mathematical theorem explanations across 6 rigorous dimensions:")
+
+        from code2video.theorem_bench import TheoremExplainBench
+        tb = TheoremExplainBench()
+
+        thm_names = [t.theorem_name for t in tb.theorems]
+        selected_thm_name = st.selectbox("Select Mathematical Theorem", thm_names, index=0)
+        selected_thm = next((t for t in tb.theorems if t.theorem_name == selected_thm_name), tb.theorems[0])
+
+        t_col1, t_col2 = st.columns([1, 1])
+        with t_col1:
+            st.markdown(f"### 📜 {selected_thm.theorem_name}")
+            st.markdown(f"**Domain**: `{selected_thm.domain}` | **Target Duration**: `{selected_thm.target_duration_sec}s`")
+            st.info(f"**Theorem Statement**: {selected_thm.statement}")
+            st.markdown("**Governing Formula:**")
+            st.latex(selected_thm.formula)
+            st.markdown(f"**Key Visual Assets Required**: `{', '.join(selected_thm.key_visuals)}`")
+
+        with t_col2:
+            st.markdown("### 🎯 Pedagogical Evaluation Rubric")
+            for dim, crit in selected_thm.eval_criteria.items():
+                st.markdown(f"- **{dim.replace('_', ' ').title()}**: {crit}")
+
+            # Interactive evaluation tester
+            st.markdown("---")
+            st.markdown("#### Test Code on this Theorem")
+            sample_eval_code = st.text_area(
+                "Manim Code Snippet",
+                value=f"# {selected_thm.theorem_name} Scene\nself.setup_layout('{selected_thm.theorem_name}', ['Key intuition'])\nself.highlight_lecture(0)\nformula = MathTex(r'{selected_thm.formula}')\nself.place_at_grid(formula, 'B2')\nself.play(Write(formula))",
+                height=110,
+                key=f"eval_code_{selected_thm.id}"
+            )
+            if st.button("Run Automated Theorem Scoring", key=f"btn_eval_{selected_thm.id}"):
+                scores = tb.evaluate_code(sample_eval_code, selected_thm.id)
+                st.success(f"**Overall Score: {scores['overall']:.2f} / 1.00**")
+                s_c1, s_c2, s_c3, s_c4, s_c5 = st.columns(5)
+                s_c1.metric("AD", f"{scores['accuracy_depth']:.2f}")
+                s_c2.metric("VR", f"{scores['visual_relevance']:.2f}")
+                s_c3.metric("LF", f"{scores['logical_flow']:.2f}")
+                s_c4.metric("EL", f"{scores['element_layout']:.2f}")
+                s_c5.metric("VC", f"{scores['visual_consistency']:.2f}")
+
+        # Baselines from Table 8
+        st.markdown("---")
+        st.markdown("### 📊 Benchmark Comparison Across Baselines (Table 8)")
+        tb_df = pd.DataFrame(list(tb.BASELINE_RESULTS.values())).rename(columns={
+            "method": "Method",
+            "accuracy_depth": "Accuracy & Depth (AD)",
+            "visual_relevance": "Visual Relevance (VR)",
+            "logical_flow": "Logical Flow (LF)",
+            "element_layout": "Element Layout (EL)",
+            "visual_consistency": "Visual Consistency (VC)",
+            "overall": "Overall Score"
+        })
+        st.dataframe(tb_df, use_container_width=True)
 
     with tab_benchmark:
         st.subheader("📊 Comparative Benchmark & Quality-Compute Pareto Trade-offs")
