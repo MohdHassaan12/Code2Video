@@ -40,7 +40,8 @@ class Code2VideoPipeline:
         topic: str,
         audience: str = "undergraduate",
         duration: float = 3.0,
-        render: bool = True
+        render: bool = True,
+        narrate: bool = False
     ) -> Dict[str, Any]:
         """Executes full Code2Video pipeline from query to educational video."""
         start_time = time.time()
@@ -85,7 +86,7 @@ class Code2VideoPipeline:
         master_video_path = None
         if render:
             stitcher = VideoStitcher(script_path, output_dir=self.output_dir)
-            master_video_path, _ = stitcher.render_and_stitch_all(storyboard, narrate=False)
+            master_video_path, _ = stitcher.render_and_stitch_all(storyboard, narrate=narrate)
 
         elapsed = time.time() - start_time
 

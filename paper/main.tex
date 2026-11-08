@@ -23,7 +23,7 @@
 \maketitle
 
 \begin{abstract}
-Large Language Models (LLMs) have recently demonstrated promising capabilities in synthesizing executable code for educational animations (e.g., via Manim). However, existing systems suffer from high variance in instructional quality: producing visually plausible yet semantically drift-prone animations, wasting inference budget on indiscriminate vision-language critics, or repeatedly failing during monolithic whole-code repair loops. In this work, we investigate how planning, persistent state, test-time verification, and repair should be combined adaptively. We first reconstruct and evaluate \textbf{Code2Video} (Show Lab, NUS), a code-centric 3-agent pipeline utilizing a discrete $6\times 6$ visual anchor grid ($P_{vis}$) and ScopeRefine debugging. We then propose \textbf{AdaptManim}, an adaptive generation-and-verification architecture that incorporates: (i) Complexity-aware planning grounded in Mayer's Cognitive Theory of Multimedia Learning; (ii) A cross-scene persistent Symbol Ledger to prevent mathematical notation drift; (iii) A 5-tier early-exit verification cascade spanning zero-token static AST checks to multimodal evaluation; and (iv) ScopeRefine++ featuring Level~0 zero-token deterministic AutoGrid relocation. Evaluated on the 13-category Multimodal Manim Mastery Corpus (\textbf{MMMC}) from 3Blue1Brown and \textbf{TheoremExplainBench}, AdaptManim matches state-of-the-art educational quality (AES: 90.1 vs 79.0; TeachQuiz: 79.7\% vs 82.0\%) while slashing inference token consumption by \textbf{78.9\%} (6.6K vs 30.8K) and achieving a superior Quality-to-Compute Pareto index ($QCR = 11.90$ vs $2.48$).
+Large Language Models (LLMs) have recently demonstrated promising capabilities in synthesizing executable code for educational animations (e.g., via Manim). However, existing systems suffer from high variance in instructional quality: producing visually plausible yet semantically drift-prone animations, wasting inference budget on indiscriminate vision-language critics, or repeatedly failing during monolithic whole-code repair loops. In this work, we investigate how planning, persistent state, test-time verification, and repair should be combined adaptively. We first reconstruct and evaluate \textbf{Code2Video} (Show Lab, NUS), a code-centric 3-agent pipeline utilizing a discrete $6\times 6$ visual anchor grid ($P_{vis}$) and ScopeRefine debugging. We then propose \textbf{AdaptManim}, an adaptive generation-and-verification architecture that incorporates: (i) Complexity-aware planning grounded in Mayer's Cognitive Theory of Multimedia Learning; (ii) A cross-scene persistent Symbol Ledger to prevent mathematical notation drift; (iii) A 5-tier early-exit verification cascade spanning zero-token static AST checks to multimodal evaluation; (iv) ScopeRefine++ featuring Level~0 zero-token deterministic AutoGrid relocation; and (v) Dynamic Audio-Visual Pacing enforcing Mayer's Temporal Contiguity Principle via exact audio duration probing ($|\Delta T| < 40\text{ ms}$). Evaluated on the 13-category Multimodal Manim Mastery Corpus (\textbf{MMMC}) from 3Blue1Brown and \textbf{TheoremExplainBench}, AdaptManim matches state-of-the-art educational quality (AES: 90.1 vs 79.0; TeachQuiz: 79.7\% vs 82.0\%) while slashing inference token consumption by \textbf{78.9\%} (6.6K vs 30.8K) and achieving a superior Quality-to-Compute Pareto index ($QCR = 11.90$ vs $2.48$).
 \end{abstract}
 
 \section{Introduction}
@@ -32,13 +32,21 @@ Educational videos serve as primary knowledge media across science, technology, 
 
 To overcome these fundamental limitations, recent research introduces code-centric generation paradigms, notably \textbf{Code2Video}~\cite{chen2025code2video} and \textbf{LLM2Manim}~\cite{joshi2026llm2manim}. By targeting renderable environments such as Manim~\cite{manimdev2025}, code-centric frameworks turn continuous video generation into discrete, interpretable program synthesis. 
 
-Despite these advances, two core bottlenecks remain:
+Despite these advances, three core bottlenecks remain:
 \begin{enumerate}
     \item \textbf{High Compute and Token Overhead}: Prior pipelines apply computationally expensive multimodal vision-language critics uniformly across every scene, consuming upwards of 30,000--43,000 tokens per video clip.
     \item \textbf{Notation Drift and Unstable Spatial Repair}: Existing methods lack persistent state to conserve mathematical symbols across scenes, and repair mechanisms either regenerate entire programs or get trapped in spatial collision loops.
+    \item \textbf{Temporal Audio-Visual Desynchronization}: Naive audio-visual stitching pairs arbitrarily chosen animation run times with variable neural text-to-speech durations, causing severe drift that violates Mayer's Temporal Contiguity Principle.
 \end{enumerate}
 
-To address these challenges, we introduce an adaptive generation-and-verification framework that dynamically allocates test-time computation and guarantees cross-scene semantic coherence.
+To address these challenges, we introduce an adaptive generation-and-verification framework that dynamically allocates test-time computation, guarantees cross-scene semantic coherence, and enforces millisecond-level audio-visual contiguity.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.95\linewidth]{../demo_outputs/paper_figures/figure1_architecture_pareto.png}
+    \caption{\textbf{Quality-Compute Trade-offs across Paradigms.} (Top Left) Overall Aesthetic Score vs. Token Consumption. (Top Right) TeachQuiz Knowledge Transfer vs. Latency. (Bottom Left) Compilation Pass Rates. (Bottom Right) Pareto Quality-to-Compute Ratio (QCR Index).}
+    \label{fig:pareto_frontier}
+\end{figure*}
 
 \section{Related Work}
 \label{sec:related}
@@ -76,7 +84,7 @@ The Code2Video pipeline consists of three coordinated agents:
 \end{enumerate}
 
 \subsection{AdaptManim: Adaptive Verification and Repair}
-AdaptManim extends this paradigm through four novel contributions:
+AdaptManim extends this paradigm through five novel contributions:
 \begin{enumerate}
     \item \textbf{Persistent Symbol Ledger ($\mathcal{L}_{sym}$)}: Maintains canonical mathematical variable definitions, units, and designated color maps across scenes, completely eliminating notation drift.
     \item \textbf{5-Tier Early-Exit Verification Cascade}:
@@ -88,8 +96,19 @@ AdaptManim extends this paradigm through four novel contributions:
         \item \textit{Tier 5 (Multimodal Semantic Critic)}: Invokes multimodal reasoning only when earlier tiers pass.
     \end{itemize}
     \item \textbf{ScopeRefine++ with Level 0 Zero-Token AutoGrid}: Relocates colliding visual objects to nearest Euclidean vacant grid anchors deterministically without invoking an LLM.
-    \item \textbf{Synchronized Audio Narration Muxing}: Synthesizes synchronized speech audio aligned with visual animation cues.
+    \item \textbf{Dynamic Audio-Visual Pacing (Mayer's Contiguity)}: Formulates speech-animation synchronization. For each lecture cue $k$, the neural TTS audio duration $T_{\text{audio}}^{(k)}$ is queried via exact audio probing. The AST processor computes the duration delta:
+    \begin{equation}
+        \Delta^{(k)} = T_{\text{audio}}^{(k)} - \sum_{m} \tau_{\text{anim}}^{(k, m)}
+    \end{equation}
+    and dynamically expands or inserts \texttt{self.wait($\Delta^{(k)}$)} so that spoken concepts and corresponding visual transformations terminate simultaneously ($|\Delta T| < 40\text{ ms}$).
 \end{enumerate}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../demo_outputs/paper_figures/figure2_aes_radar.png}
+    \caption{\textbf{Pedagogical Radar Chart.} Multidimensional comparison across Element Layout (EL), Attractiveness (AT), Logic Flow (LF), Visual Consistency (VC), and Accuracy \& Depth (AD).}
+    \label{fig:aes_radar}
+\end{figure}
 
 \section{Experimental Results}
 \label{sec:experiments}
@@ -98,6 +117,13 @@ AdaptManim extends this paradigm through four novel contributions:
 
 \subsection{Main Benchmark Comparison}
 As shown in Table~\ref{tab:main_results}, pixel-based diffusion models struggle with educational animations (AES: 3.7--9.0; TeachQuiz: 0.0\%--2.5\%). While Code2Video substantially improves quality (AES: 79.0; TeachQuiz: 82.0\%), it requires 30.8K tokens and 15.4 minutes per topic. AdaptManim attains superior aesthetic scores (90.1) and high knowledge transfer (88.5\%) while reducing token consumption to 6.6K tokens (\textbf{78.9\% reduction}) and runtime to 2.7 minutes (\textbf{5.7$\times$ acceleration}), achieving a dominant Pareto QCR score of \textbf{11.90}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../demo_outputs/paper_figures/figure3_grid_heatmap.png}
+    \caption{\textbf{Spatial Anchor Occupancy Heatmap.} Visualization of the $6\times 6$ discrete grid showing optimal spatial balance across quadrants while eliminating occlusions.}
+    \label{fig:grid_heatmap}
+\end{figure}
 
 \subsection{Ablation Studies}
 
@@ -108,6 +134,13 @@ Table~\ref{tab:quality_ablation} confirms that removing the Planner causes catas
 \input{../tables/table3_efficiency_ablation.tex}
 
 Table~\ref{tab:efficiency_ablation} demonstrates that ScopeRefine and parallel synthesis prevent prohibitive latency explosions. ScopeRefine++ further reduces runtime to $0.18\times$ baseline.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../demo_outputs/paper_figures/figure4_repair_efficiency.png}
+    \caption{\textbf{Repair Efficiency Trajectory.} Token consumption and repair latency across ScopeRefine scopes (Level 0 AutoGrid, Line, Block, Global).}
+    \label{fig:repair_efficiency}
+\end{figure}
 
 \input{../tables/table7_anchor_granularity.tex}
 
@@ -121,10 +154,9 @@ On TheoremExplainBench (Table~\ref{tab:theorem_explain_bench}), AdaptManim outpe
 
 \section{Conclusion}
 \label{sec:conclusion}
-We presented an adaptive generation-and-verification architecture for code-centric educational video generation. By coupling complexity-aware planning, persistent cross-scene memory, a 5-tier early-exit verification cascade, and zero-token deterministic layout repair, our framework proves that adaptive test-time compute allocation achieves superior pedagogical clarity and compilation reliability while drastically cutting computational overhead.
+We presented an adaptive generation-and-verification architecture for code-centric educational video generation. By coupling complexity-aware planning, persistent cross-scene memory, a 5-tier early-exit verification cascade, zero-token deterministic layout repair, and dynamic audio-visual pacing, our framework proves that adaptive test-time compute allocation achieves superior pedagogical clarity and compilation reliability while drastically cutting computational overhead.
 
 \bibliographystyle{plain}
 \bibliography{references}
 
 \end{document}
-

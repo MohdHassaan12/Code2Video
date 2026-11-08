@@ -98,6 +98,7 @@ audience_input = st.sidebar.selectbox(
 )
 duration_input = st.sidebar.slider("Target Duration (Minutes)", 1.5, 5.0, 3.0, 0.5)
 render_manim = st.sidebar.checkbox("Render with Manim (Full Headless Run)", value=True)
+narrate_audio = st.sidebar.checkbox("Synthesize Neural Narration (Edge-TTS)", value=True)
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🔬 Architecture Mode")
@@ -162,8 +163,16 @@ if st.button("🚀 Run Adaptive Generation & Verification Pipeline", type="prima
         # Combine
         runner = ParallelRunner(output_dir="demo_outputs")
         full_script = runner.combine_section_codes(codes, topic_input)
-        with open("demo_outputs/complete_lecture.py", "w") as f:
+        combined_py = "demo_outputs/complete_lecture.py"
+        with open(combined_py, "w") as f:
             f.write(full_script)
+
+        # Video Rendering & Dynamic Pacing
+        master_video_path = None
+        if render_manim:
+            from adapt_manim.coding.video_stitcher import VideoStitcher
+            stitcher = VideoStitcher(combined_py, output_dir="demo_outputs")
+            master_video_path, _ = stitcher.render_and_stitch_all(storyboard, narrate=narrate_audio)
 
         # Aesthetics and metrics
         qm = AestheticJudge.evaluate(full_script, topic_input)
@@ -178,6 +187,7 @@ if st.button("🚀 Run Adaptive Generation & Verification Pipeline", type="prima
             "ledger": ledger_mgr.ledger,
             "sec_results": sec_results,
             "full_script": full_script,
+            "master_video_path": master_video_path,
             "qm": qm,
             "tq": tq,
             "cog": cog
@@ -328,7 +338,7 @@ if "pipeline_data" in st.session_state:
 
         # Video Player
         st.markdown("### 🎬 Rendered Master Lecture Video (with Synchronized Speech)")
-        master_video_file = "demo_outputs/complete_lecture.mp4"
+        master_video_file = data.get("master_video_path") or "demo_outputs/complete_lecture.mp4"
         if os.path.exists(master_video_file):
             st.video(master_video_file)
             st.success("✓ Complete multi-scene lecture video with synchronized audio narration track ready for playback!")

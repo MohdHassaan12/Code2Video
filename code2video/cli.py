@@ -31,14 +31,15 @@ def main():
 @click.option("--topic", "-t", required=True, help="Learning topic query Q.")
 @click.option("--audience", "-a", default="undergraduate", help="Target audience level.")
 @click.option("--render", "-r", is_flag=True, default=False, help="Render the generated Manim code.")
+@click.option("--narrate", "-n", is_flag=True, default=False, help="Synthesize neural narration audio with dynamic audio-visual pacing.")
 @click.option("--output-dir", "-o", default="demo_outputs/code2video", help="Output directory.")
-def generate(topic: str, audience: str, render: bool, output_dir: str):
+def generate(topic: str, audience: str, render: bool, narrate: bool, output_dir: str):
     """Execute the full 3-stage Code2Video agent pipeline (Planner -> Coder -> Critic)."""
-    console.print(Panel(f"[bold cyan]Code2Video Generation Pipeline[/bold cyan]\nTopic: {topic}\nAudience: {audience}", expand=False))
+    console.print(Panel(f"[bold cyan]Code2Video Generation Pipeline[/bold cyan]\nTopic: {topic}\nAudience: {audience}\nNarrate: {narrate}", expand=False))
 
     pipeline = Code2VideoPipeline(output_dir=output_dir)
     with console.status("[bold green]Executing Planner, Coder (ScopeRefine), and Critic..."):
-        res = pipeline.run(topic=topic, audience=audience, render=render)
+        res = pipeline.run(topic=topic, audience=audience, render=render, narrate=narrate)
 
     console.print(f"[green]✓[/green] Completed in {res['wall_clock_time_sec']}s (Est. Tokens: {res['tokens_consumed']}).")
     console.print(f"[green]✓[/green] Code written to: [cyan]{res['script_path']}[/cyan]")
