@@ -60,6 +60,7 @@ def generate(topic: str, audience: str, render: bool, output_dir: str):
     table.add_row("Accuracy & Depth (AD)", f"{aes['accuracy_depth']:.1f}", "0-20")
     table.add_row("Overall Aesthetic Score (AES)", f"[bold green]{aes['overall_aes']:.1f}[/bold green]", "0-100")
     table.add_row("TeachQuiz Relative Transfer (eS)", f"[bold green]{tq['es_gain']:.1f}%[/bold green]", "0-100%")
+    table.add_row("Pareto Efficiency (QCR Index)", f"[bold yellow]{res.get('pareto_qcr_score', 0.0):.2f}[/bold yellow]", "Higher is better")
     console.print(table)
 
 

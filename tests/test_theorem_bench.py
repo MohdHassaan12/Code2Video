@@ -77,3 +77,4 @@ def test_multimodal_critic_occlusion_detection(tmp_path):
             occ = critic.inspect_visual_occlusion(fr)
             assert "has_occlusion" in occ
             assert "lecture_zone_density" in occ
+

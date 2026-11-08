@@ -78,3 +78,31 @@ def test_code2video_end_to_end_pipeline():
     assert os.path.exists(res["script_path"])
     assert res["aesthetics"]["overall_aes"] > 70.0
     assert res["teach_quiz"]["es_gain"] > 50.0
+    assert "efficiency" in res
+    assert res["efficiency"]["tokens_consumed"] > 0
+    assert res["pareto_qcr_score"] > 0.0
+
+
+def test_code2video_evaluator_full_suite():
+    evaluator = Code2VideoEvaluator()
+    code = """
+class TestScene(TeachingScene):
+    def construct(self):
+        self.setup_layout("Title", ["Lecture line 1"])
+        self.highlight_lecture(0)
+        dot = Dot()
+        self.place_at_grid(dot, "B2")
+        self.play(Create(dot))
+    """
+    res = evaluator.evaluate_full_suite(
+        code=code,
+        topic="Support Vector Machine",
+        tokens_consumed=4200,
+        wall_clock_time_sec=12.5
+    )
+    assert res["topic"] == "Support Vector Machine"
+    assert "aesthetics" in res
+    assert "teach_quiz" in res
+    assert "efficiency" in res
+    assert res["pareto_qcr_score"] > 0.0
+    assert res["efficiency"]["tokens_per_sec"] > 0.0

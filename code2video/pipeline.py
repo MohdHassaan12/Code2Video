@@ -89,9 +89,14 @@ class Code2VideoPipeline:
 
         elapsed = time.time() - start_time
 
-        # Evaluation
-        aes = self.evaluator.evaluate_aesthetics(full_script, topic)
-        teach_quiz = self.evaluator.evaluate_teach_quiz(topic, master_video_path)
+        # 3-Pronged Evaluation (Section 3.3)
+        eval_suite = self.evaluator.evaluate_full_suite(
+            code=full_script,
+            topic=topic,
+            tokens_consumed=tokens_consumed,
+            wall_clock_time_sec=elapsed,
+            video_path=master_video_path
+        )
 
         return {
             "topic": topic,
@@ -104,7 +109,9 @@ class Code2VideoPipeline:
             "critique_traces": section_critique_traces,
             "tokens_consumed": tokens_consumed,
             "wall_clock_time_sec": round(elapsed, 2),
-            "aesthetics": aes,
-            "teach_quiz": teach_quiz
+            "aesthetics": eval_suite["aesthetics"],
+            "teach_quiz": eval_suite["teach_quiz"],
+            "efficiency": eval_suite["efficiency"],
+            "pareto_qcr_score": eval_suite["pareto_qcr_score"]
         }
 

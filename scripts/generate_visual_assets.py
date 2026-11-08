@@ -84,3 +84,4 @@ def generate_assets(output_dir: str = "assets"):
 
 if __name__ == "__main__":
     generate_assets()
+
