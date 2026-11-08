@@ -35,16 +35,22 @@ console = Console()
 @click.command()
 @click.option("--topics", "-t", default=None, help="Comma-separated topic names to evaluate.")
 @click.option("--category", "-c", default=None, help="Filter topics by MMMC category (e.g. Calculus, Neural Networks).")
-@click.option("--max-topics", "-m", default=3, help="Max topics to run in this experiment.")
+@click.option("--all-categories", is_flag=True, default=False, help="Evaluate 1 topic from each of all 13 MMMC categories.")
+@click.option("--max-topics", "-m", default=15, help="Max topics to run in this experiment.")
 @click.option("--output-dir", "-o", default="demo_outputs/experiments", help="Output directory.")
-def run_experiment(topics: Optional[str], category: Optional[str], max_topics: int, output_dir: str):
+def run_experiment(topics: Optional[str], category: Optional[str], all_categories: bool, max_topics: int, output_dir: str):
     """Executes multi-paradigm comparative benchmark experiments across MMMC topics."""
     os.makedirs(output_dir, exist_ok=True)
     benchmark = MMMCBenchmark()
 
     # Determine topic list
     selected_units = []
-    if topics:
+    if all_categories:
+        for cat in benchmark.CATEGORIES:
+            units = benchmark.get_topics_by_category(cat)
+            if units:
+                selected_units.append(units[0])
+    elif topics:
         topic_names = [t.strip() for t in topics.split(",")]
         for name in topic_names:
             u = benchmark.get_topic_by_name(name)

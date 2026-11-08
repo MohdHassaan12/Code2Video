@@ -11,6 +11,7 @@ import shutil
 from typing import List, Dict, Optional, Tuple
 from adapt_manim.core.types import Storyboard
 from adapt_manim.core.audio import NarrationEngine
+from adapt_manim.coding.ast_processor import AstProcessor
 
 
 class VideoStitcher:
@@ -65,22 +66,44 @@ class VideoStitcher:
     ) -> Tuple[Optional[str], List[str]]:
         """
         Renders all section scenes in order and stitches them into a continuous master MP4.
+        If narrate is enabled, synthesizes audio cues first, applies Mayer's Temporal
+        Contiguity Principle by pacing the Manim animation blocks to the exact spoken durations,
+        and then muxes each section's video with its synchronized narration track.
         Returns: (master_video_path, list_of_section_video_paths)
         """
         section_video_paths: List[str] = []
 
         for sec in storyboard.sections:
+            audio_paths = []
+            audio_dir = None
+
+            # If narrate enabled, synthesize audio first & dynamically pace visual code
+            if narrate:
+                audio_dir = os.path.join(self.output_dir, "audio", sec.id)
+                cue_metadata = NarrationEngine.synthesize_section_narration(sec, audio_dir)
+                if cue_metadata:
+                    cue_durations = [item["duration_sec"] for item in cue_metadata]
+                    audio_paths = [item["wav_path"] for item in cue_metadata]
+
+                    # Mayer's Temporal Contiguity Principle: Align animation pacing to audio
+                    if os.path.exists(self.script_path):
+                        try:
+                            with open(self.script_path, "r", encoding="utf-8") as f:
+                                code = f.read()
+                            paced_code = AstProcessor.align_animation_durations_to_audio(
+                                code, cue_durations, section_id=sec.id
+                            )
+                            with open(self.script_path, "w", encoding="utf-8") as f:
+                                f.write(paced_code)
+                        except Exception:
+                            pass
+
             video_path = self.render_section_video(sec.id)
             if video_path and os.path.exists(video_path):
-                # If narrate enabled, synthesize audio and mux into section clip
-                if narrate:
-                    audio_dir = os.path.join(self.output_dir, "audio", sec.id)
-                    cue_audios = NarrationEngine.synthesize_section_narration(sec, audio_dir)
-                    if cue_audios:
-                        # Concat cue audios
-                        combined_wav = os.path.join(audio_dir, f"{sec.id}_narration.wav")
-                        self._concat_audios(cue_audios, combined_wav)
-
+                # If narrate enabled, mux aligned audio into section clip
+                if narrate and audio_paths and audio_dir:
+                    combined_wav = os.path.join(audio_dir, f"{sec.id}_narration.wav")
+                    if self._concat_audios(audio_paths, combined_wav):
                         narrated_video = video_path.replace(".mp4", "_narrated.mp4")
                         if NarrationEngine.mux_video_and_audio(video_path, combined_wav, narrated_video):
                             section_video_paths.append(narrated_video)
@@ -98,7 +121,7 @@ class VideoStitcher:
         return stitched_path, section_video_paths
 
     def _concat_videos(self, video_paths: List[str], output_path: str) -> Optional[str]:
-        """Concatenates videos using FFmpeg concat demuxer."""
+        """Concatenates videos using FFmpeg concat demuxer with re-encode fallback."""
         if len(video_paths) == 1:
             shutil.copy(video_paths[0], output_path)
             return output_path
@@ -117,6 +140,21 @@ class VideoStitcher:
             output_path
         ]
         res = subprocess.run(cmd, capture_output=True, text=True)
+
+        # Fallback re-encode if stream copy fails
+        if res.returncode != 0 or not os.path.exists(output_path):
+            cmd_fallback = [
+                "ffmpeg", "-y",
+                "-f", "concat",
+                "-safe", "0",
+                "-i", list_file,
+                "-c:v", "libx264",
+                "-pix_fmt", "yuv420p",
+                "-c:a", "aac",
+                output_path
+            ]
+            res = subprocess.run(cmd_fallback, capture_output=True, text=True)
+
         if os.path.exists(list_file):
             os.remove(list_file)
 
@@ -124,6 +162,12 @@ class VideoStitcher:
 
     def _concat_audios(self, audio_paths: List[str], output_path: str) -> Optional[str]:
         """Concatenates audio files using FFmpeg concat demuxer."""
+        if not audio_paths:
+            return None
+        if len(audio_paths) == 1:
+            shutil.copy(audio_paths[0], output_path)
+            return output_path
+
         list_file = output_path + ".txt"
         with open(list_file, "w") as f:
             for p in audio_paths:

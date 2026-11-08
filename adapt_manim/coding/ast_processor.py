@@ -122,3 +122,92 @@ class AstProcessor:
                 return (match.group(1), match.group(2), match.group(0))
         return None
 
+    @classmethod
+    def align_animation_durations_to_audio(
+        cls,
+        code: str,
+        cue_durations: List[float],
+        section_id: Optional[str] = None
+    ) -> str:
+        """
+        Dynamically paces Manim animation blocks to synchronize with speech audio durations
+        following Mayer's Temporal Contiguity Principle.
+        
+        For each lecture block (# === Animation for Lecture Line k ===):
+          - Computes T_existing = sum(run_time) + sum(self.wait).
+          - If T_existing < T_audio: adjusts or appends self.wait(round(T_audio - T_existing, 2)).
+          - If T_existing >= T_audio: ensures a minimum 0.5s pause or scales run_time.
+        """
+        if not cue_durations:
+            return code
+
+        lines = code.split("\n")
+
+        # If section_id is provided, find the class boundary for that section
+        class_start_idx = 0
+        class_end_idx = len(lines)
+        if section_id:
+            cls_pattern = re.compile(rf"class\s+{re.escape(section_id.title().replace('_', ''))}Scene\b", re.IGNORECASE)
+            for idx, line in enumerate(lines):
+                if cls_pattern.search(line):
+                    class_start_idx = idx
+                    for end_i in range(idx + 1, len(lines)):
+                        if re.match(r"^class\s+", lines[end_i]):
+                            class_end_idx = end_i
+                            break
+                    break
+
+        # Extract lecture blocks within the target range
+        pattern = re.compile(r"#\s*===\s*Animation for Lecture Line\s*(\d+)\s*===", re.IGNORECASE)
+        block_starts = []
+        for idx in range(class_start_idx, class_end_idx):
+            m = pattern.search(lines[idx])
+            if m:
+                block_starts.append((int(m.group(1)), idx))
+
+        if not block_starts:
+            return code
+
+        new_lines = list(lines)
+
+        # Process blocks in reverse order so inserted lines don't invalidate earlier line indices
+        for i in reversed(range(len(block_starts))):
+            b_num, start_idx = block_starts[i]
+            end_idx = block_starts[i + 1][1] if i + 1 < len(block_starts) else class_end_idx
+            if b_num - 1 >= len(cue_durations):
+                continue
+
+            t_audio = float(cue_durations[b_num - 1])
+            block_lines = new_lines[start_idx:end_idx]
+            block_text = "\n".join(block_lines)
+
+            # Detect indentation
+            indent = "        "
+            for bl in block_lines[1:]:
+                if bl.strip():
+                    indent = bl[:len(bl) - len(bl.lstrip())]
+                    break
+
+            # Calculate existing durations
+            runs = [float(x) for x in re.findall(r"run_time\s*=\s*([0-9.]+)", block_text)]
+            waits = [float(x) for x in re.findall(r"self\.wait\(\s*([0-9.]+)\s*\)", block_text)]
+            t_existing = sum(runs) + sum(waits)
+            delta = t_audio - t_existing
+
+            wait_matches = list(re.finditer(r"self\.wait\(\s*([0-9.]+)\s*\)", block_text))
+            if wait_matches:
+                last_m = wait_matches[-1]
+                old_w = float(last_m.group(1))
+                if delta > 0:
+                    new_w = round(old_w + delta, 2)
+                else:
+                    new_w = max(0.5, round(old_w, 2))
+                span_s, span_e = last_m.span()
+                new_block_text = block_text[:span_s] + f"self.wait({new_w})" + block_text[span_e:]
+                new_lines[start_idx:end_idx] = new_block_text.split("\n")
+            else:
+                wait_val = max(0.5, round(delta, 2)) if delta > 0 else 0.5
+                new_lines.insert(end_idx, f"{indent}self.wait({wait_val})")
+
+        return "\n".join(new_lines)
+
