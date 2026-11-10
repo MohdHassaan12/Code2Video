@@ -1,7 +1,8 @@
-# AdaptManim: Reliable and Efficient Generation of Educational Videos with Adaptive Planning, Verification, and Repair
+# Code2Video: Reliable and Efficient Generation of Educational Videos with Adaptive Planning, Verification, and Repair
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Manim Community](https://img.shields.io/badge/manim-v0.22+-red.svg)](https://www.manim.community/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-MohdHassaan12%2FCode2Video-181717.svg?logo=github)](https://github.com/MohdHassaan12/Code2Video)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 📌 Research Overview & Motivation
@@ -90,7 +91,7 @@ flowchart TD
 
 ```bash
 # Clone the repository
-git clone https://github.com/showlab/Code2Video.git
+git clone https://github.com/MohdHassaan12/Code2Video.git
 cd Code2Video
 
 # Activate virtual environment
@@ -184,4 +185,21 @@ Curated from the complete 3Blue1Brown instructional repository, spanning 13 cano
 | **AdaptManim (Ours)** | **10.5** | **6.5** | **83.5** | **96.0** | **81.5** | **84.5%** | **86%** | **98%** | **10.87** |
 
 *AdaptManim matches or exceeds human-level instructional quality while slashing token consumption by ~78% and dramatically boosting Pass@1 reliability.*
+
+---
+
+## 📈 Scientific Visualizations & Pareto Frontier
+
+### Quality-to-Compute Pareto Trade-offs
+![Figure 1: Quality-Compute Pareto Frontier](demo_outputs/paper_figures/figure1_architecture_pareto.png)
+
+### Multidimensional Pedagogical Radar Analysis
+![Figure 2: Aesthetic Radar Chart](demo_outputs/paper_figures/figure2_aes_radar.png)
+
+### 6x6 Spatial Anchor Occupancy & Repair Dynamics
+<p align="center">
+  <img src="demo_outputs/paper_figures/figure3_grid_heatmap.png" width="48%" />
+  <img src="demo_outputs/paper_figures/figure4_repair_efficiency.png" width="48%" />
+</p>
+
 

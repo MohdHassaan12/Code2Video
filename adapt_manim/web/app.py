@@ -71,8 +71,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="main-title">🎬 AdaptManim Studio</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Reliable & Efficient Educational Video Generation with Adaptive Planning, Multi-Tier Verification, and Scoped Repair</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">🎬 Code2Video Studio</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">Code2Video: Reliable and Efficient Generation of Educational Videos with Adaptive Planning, Verification, and Repair</div>', unsafe_allow_html=True)
 
 # ----------------- Sidebar Controls -----------------
 st.sidebar.header("⚙️ Video Synthesis Parameters")
