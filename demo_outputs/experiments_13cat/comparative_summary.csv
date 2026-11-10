@@ -1,0 +1,53 @@
+Topic,Category,Paradigm,Tokens_K,Time_Min,AES_Avg,TeachQuiz_Gain,Pass_Rate,QCR_Score
+Essence of Calculus: The Derivative,Calculus,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Essence of Calculus: The Derivative,Calculus,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Essence of Calculus: The Derivative,Calculus,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Essence of Calculus: The Derivative,Calculus,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+The Determinant and Area Scaling,Linear Algebra,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+The Determinant and Area Scaling,Linear Algebra,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+The Determinant and Area Scaling,Linear Algebra,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+The Determinant and Area Scaling,Linear Algebra,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Support Vector Machine and Maximum Margin Hyperplanes,Neural Networks,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Support Vector Machine and Maximum Margin Hyperplanes,Neural Networks,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Support Vector Machine and Maximum Margin Hyperplanes,Neural Networks,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Support Vector Machine and Maximum Margin Hyperplanes,Neural Networks,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Harmonic Oscillators and Phase Space Trajectories,Differential Equations,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Harmonic Oscillators and Phase Space Trajectories,Differential Equations,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Harmonic Oscillators and Phase Space Trajectories,Differential Equations,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Harmonic Oscillators and Phase Space Trajectories,Differential Equations,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+RSA Encryption and Modular Arithmetic,Cryptography & Number Theory,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+RSA Encryption and Modular Arithmetic,Cryptography & Number Theory,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+RSA Encryption and Modular Arithmetic,Cryptography & Number Theory,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+RSA Encryption and Modular Arithmetic,Cryptography & Number Theory,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Bayes' Theorem and Prior Probability Updating,Probability & Statistics,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Bayes' Theorem and Prior Probability Updating,Probability & Statistics,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Bayes' Theorem and Prior Probability Updating,Probability & Statistics,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Bayes' Theorem and Prior Probability Updating,Probability & Statistics,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Claude Shannon's Entropy: Measuring Surprise,Information Theory,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Claude Shannon's Entropy: Measuring Surprise,Information Theory,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Claude Shannon's Entropy: Measuring Surprise,Information Theory,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Claude Shannon's Entropy: Measuring Surprise,Information Theory,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Pythagorean Theorem: Visual Proof Without Words,Geometry,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Pythagorean Theorem: Visual Proof Without Words,Geometry,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Pythagorean Theorem: Visual Proof Without Words,Geometry,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Pythagorean Theorem: Visual Proof Without Words,Geometry,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Pure Fourier Series: Drawing with Rotating Epicycles,Physics & Mechanics,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Pure Fourier Series: Drawing with Rotating Epicycles,Physics & Mechanics,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Pure Fourier Series: Drawing with Rotating Epicycles,Physics & Mechanics,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Pure Fourier Series: Drawing with Rotating Epicycles,Physics & Mechanics,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Tower of Hanoi: Recursive Binary Pattern,Computer Graphics & Algorithms,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Tower of Hanoi: Recursive Binary Pattern,Computer Graphics & Algorithms,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Tower of Hanoi: Recursive Binary Pattern,Computer Graphics & Algorithms,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Tower of Hanoi: Recursive Binary Pattern,Computer Graphics & Algorithms,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Symmetries and the Dihedral Group D4,Group Theory & Abstract Algebra,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Symmetries and the Dihedral Group D4,Group Theory & Abstract Algebra,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Symmetries and the Dihedral Group D4,Group Theory & Abstract Algebra,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Symmetries and the Dihedral Group D4,Group Theory & Abstract Algebra,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Euler Characteristic and the Möbius Strip,Topology & Manifolds,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Euler Characteristic and the Möbius Strip,Topology & Manifolds,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Euler Characteristic and the Möbius Strip,Topology & Manifolds,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Euler Characteristic and the Möbius Strip,Topology & Manifolds,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9
+Euler's Formula: The Most Beautiful Equation,Complex Analysis & Fractals,Direct CodeLLM,1.2,2.1,34.2,37.0,57.99999999999999,15.5
+Euler's Formula: The Most Beautiful Equation,Complex Analysis & Fractals,Code2Video,30.8,15.4,79.0,82.0,88.0,2.48
+Euler's Formula: The Most Beautiful Equation,Complex Analysis & Fractals,LLM2Manim,22.4,12.8,78.9,78.5,85.0,3.37
+Euler's Formula: The Most Beautiful Equation,Complex Analysis & Fractals,AdaptManim (Ours),6.57,2.74,90.1,79.7,98.0,11.9

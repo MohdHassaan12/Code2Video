@@ -1,13 +1,39 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-*.pyo
-.pytest_cache/
+*.py[cod]
+*$py.class
+
+# Virtual environments
 .venv/
-demo_outputs/media/
-demo_outputs/test_media/
-demo_outputs/code2video_svm/media/
-media/
+venv/
+env/
+
+# Testing & Caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Packaging
 *.egg-info/
 build/
 dist/
 
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Large external reference papers
+*.pdf
+
+# Generated outputs & media files
+demo_outputs/*
+!demo_outputs/paper_figures/
+!demo_outputs/experiments_13cat/
+!demo_outputs/benchmark_results.json
+!demo_outputs/benchmark_summary.csv
+!demo_outputs/pareto_frontier.png
+media/
+
+# IDE files
+.vscode/
+.idea/
