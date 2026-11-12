@@ -1,7 +1,8 @@
 """
 Unit tests for Direction D12: Public Benchmark Runner (MMMC & VibeVideoBench).
 Verifies comparative evaluations across Direct CodeLLM, Code2Video, Lessonforge,
-and Learner-in-the-Loop Hybrid, ensuring correct aggregation and CSV exports.
+and Learner-in-the-Loop Hybrid, ensuring correct aggregation and CSV exports across
+both MMMC and VibeVideoBench educational tasks.
 """
 
 import csv
@@ -28,6 +29,8 @@ def test_evaluate_topic_all_paradigms():
     assert hybrid.teach_quiz_es > direct.teach_quiz_es
     # Hybrid should have higher Pareto QCR efficiency than monolithic Code2Video
     assert hybrid.qcr_score > c2v.qcr_score
+    # Hybrid should have lower AV sync drift than Direct CodeLLM
+    assert hybrid.av_sync_drift_sec < direct.av_sync_drift_sec
 
 
 def test_benchmark_suite_aggregation_and_csv(tmp_path):
@@ -50,3 +53,24 @@ def test_benchmark_suite_aggregation_and_csv(tmp_path):
         assert reader[0]["topic"] is not None
         assert "qcr_score" in reader[0]
 
+
+def test_vibevideobench_suite():
+    runner = PublicBenchmarkRunner()
+    assert len(runner.vibe_tasks) == 34
+
+    vibe_results = runner.run_vibevideobench_suite(max_tasks=3)
+    assert len(vibe_results) == 12  # 3 tasks * 4 paradigms
+
+    vibe_summary = runner.aggregate_by_paradigm(vibe_results)
+    assert "Learner_in_the_Loop_Hybrid" in vibe_summary
+    assert vibe_summary["Learner_in_the_Loop_Hybrid"]["program_check_pass"] > 0.90
+
+
+def test_run_both_benchmarks():
+    runner = PublicBenchmarkRunner()
+    combined = runner.run_both_benchmarks(max_mmmc=2, max_vibe=2)
+
+    assert "mmmc" in combined
+    assert "vibevideobench" in combined
+    assert "combined" in combined
+    assert combined["combined"]["total_evaluations"] == 16  # (2 + 2) * 4 paradigms

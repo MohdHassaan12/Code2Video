@@ -1,0 +1,394 @@
+{
+  "benchmark_name": "VibeVideoBench Educational Benchmark",
+  "version": "1.0.0",
+  "reference": "VibeVideoBench: A Multi-Dimensional Benchmark for Automated Instructional Video Generation (arXiv:2610.35864)",
+  "total_tasks": 34,
+  "domains": [
+    "Mathematics & Geometry",
+    "Mathematics & Calculus",
+    "Mathematics & Linear Algebra",
+    "Probability & Statistics",
+    "Physics & Mechanics",
+    "Physics & Electromagnetism",
+    "Physics & Wave Mechanics",
+    "Chemistry & Matter",
+    "Biology & Life Sciences"
+  ],
+  "tasks": [
+    {
+      "id": "vibe_01",
+      "topic": "Pythagorean Theorem Proof",
+      "domain": "Mathematics & Geometry",
+      "target_duration_minutes": 2.5,
+      "governing_equation": "a^2 + b^2 = c^2",
+      "pedagogical_goals": ["Visual square area rearrangement", "Right triangle hypotenuse relationship", "Area conservation proof"],
+      "quiz": [
+        {"question": "In the geometric proof, what quantity is preserved during tile rearrangement?", "options": ["Perimeter", "Total square area", "Angle measures", "Aspect ratio"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_02",
+      "topic": "Derivative Intuition",
+      "domain": "Mathematics & Calculus",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "\\frac{df}{dx} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}",
+      "pedagogical_goals": ["Secant line approaching tangent line", "Instantaneous rate of change as slope"],
+      "quiz": [
+        {"question": "What happens geometrically to the secant line as step size h approaches zero?", "options": ["It becomes vertical", "It converges to the tangent line", "It rotates 90 degrees", "It vanishes"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_03",
+      "topic": "What is an Integral",
+      "domain": "Mathematics & Calculus",
+      "target_duration_minutes": 3.2,
+      "governing_equation": "\\int_a^b f(x) dx = \\lim_{n \\to \\infty} \\sum_{i=1}^n f(x_i^*) \\Delta x",
+      "pedagogical_goals": ["Accumulation of thin rectangular slices", "Riemann sum converging to exact area under curve"],
+      "quiz": [
+        {"question": "Why does a Riemann sum converge to the true area as Delta x shrinks?", "options": ["Error bounds between upper and lower rectangles vanish", "The function values increase", "The interval expands", "The antiderivative is negative"], "answer_index": 0}
+      ]
+    },
+    {
+      "id": "vibe_04",
+      "topic": "Chain Rule",
+      "domain": "Mathematics & Calculus",
+      "target_duration_minutes": 2.8,
+      "governing_equation": "\\frac{d}{dx}[f(g(x))] = f'(g(x)) \\cdot g'(x)",
+      "pedagogical_goals": ["Composite function nesting", "Multiplication of instantaneous stretching factors"],
+      "quiz": [
+        {"question": "How are the local rates of change combined in a composite function?", "options": ["Added together", "Multiplied together", "Averaged", "Subtracted"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_05",
+      "topic": "Eigenvectors and Eigenvalues",
+      "domain": "Mathematics & Linear Algebra",
+      "target_duration_minutes": 3.5,
+      "governing_equation": "A v = \\lambda v",
+      "pedagogical_goals": ["Directions that do not rotate during linear transformation", "Scaling factor lambda"],
+      "quiz": [
+        {"question": "What is unique about an eigenvector under its associated linear transformation?", "options": ["It reverses direction only", "It remains on its original span line while scaled by lambda", "Its length is always 1", "It rotates perpendicular to itself"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_06",
+      "topic": "Fourier Transform",
+      "domain": "Mathematics & Signal Processing",
+      "target_duration_minutes": 4.0,
+      "governing_equation": "\\hat{f}(\\omega) = \\int_{-\\infty}^{\\infty} f(t) e^{-i \\omega t} dt",
+      "pedagogical_goals": ["Winding time-domain signals around complex plane", "Center of mass peak at constituent frequency"],
+      "quiz": [
+        {"question": "At what winding frequency does the center of mass spike away from the origin?", "options": ["At resonant harmonic frequencies of the signal", "At zero frequency only", "At infinite frequency", "Randomly"], "answer_index": 0}
+      ]
+    },
+    {
+      "id": "vibe_07",
+      "topic": "Bayes' Theorem",
+      "domain": "Probability & Statistics",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "P(A|B) = \\frac{P(B|A) P(A)}{P(B)}",
+      "pedagogical_goals": ["Prior probability updating", "Conditioning on observed visual evidence space"],
+      "quiz": [
+        {"question": "How does new evidence B update the prior probability P(A)?", "options": ["By replacing P(A) with P(B)", "By filtering the sample space to the region where B occurred", "By squaring P(A)", "By adding P(B|A)"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_08",
+      "topic": "Central Limit Theorem",
+      "domain": "Probability & Statistics",
+      "target_duration_minutes": 3.2,
+      "governing_equation": "\\lim_{n \\to \\infty} Z_n = \\mathcal{N}(0, 1)",
+      "pedagogical_goals": ["Sum of independent arbitrary distributions", "Emergence of Gaussian bell curve"],
+      "quiz": [
+        {"question": "Under what condition does the normalized sample mean converge to a normal distribution?", "options": ["Only if the original distribution was Gaussian", "For any distribution with finite variance as sample size n grows", "Only for discrete dice rolls", "When variance is infinite"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_09",
+      "topic": "Normal Distribution",
+      "domain": "Probability & Statistics",
+      "target_duration_minutes": 2.8,
+      "governing_equation": "f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}",
+      "pedagogical_goals": ["Symmetry about mean mu", "68-95-99.7 empirical rule of standard deviations"],
+      "quiz": [
+        {"question": "Approximately what percentage of values lie within one standard deviation of the mean?", "options": ["50%", "68%", "95%", "99.7%"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_10",
+      "topic": "Prime Numbers and Sieve of Eratosthenes",
+      "domain": "Discrete Math & Number Theory",
+      "target_duration_minutes": 2.5,
+      "governing_equation": "\\pi(x) \\sim \\frac{x}{\\ln x}",
+      "pedagogical_goals": ["Fundamental building blocks of integers", "Systematic elimination of multiples in grid"],
+      "quiz": [
+        {"question": "In the Sieve of Eratosthenes, when crossing out multiples of prime p, where can one start?", "options": ["At 2p", "At p^2", "At p+1", "At 2p+1"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_11",
+      "topic": "Complex Numbers and Imaginary Plane",
+      "domain": "Complex Analysis",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "i^2 = -1, \\quad z = r e^{i \\theta}",
+      "pedagogical_goals": ["Geometric interpretation of multiplication as 90-degree rotation", "Polar form"],
+      "quiz": [
+        {"question": "What transformation does multiplying by i perform on the 2D plane?", "options": ["Reflection across x-axis", "90-degree counterclockwise rotation", "Scaling by a factor of 2", "Translation along real line"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_12",
+      "topic": "Logarithms",
+      "domain": "Foundations & Algebra",
+      "target_duration_minutes": 2.5,
+      "governing_equation": "\\log_b(x \\cdot y) = \\log_b(x) + \\log_b(y)",
+      "pedagogical_goals": ["Logarithms as inverse of exponentiation", "Converting multiplicative scaling to additive intervals"],
+      "quiz": [
+        {"question": "What fundamental operation converts multiplication into addition on a slide rule?", "options": ["Logarithm", "Derivative", "Polynomial power", "Integral"], "answer_index": 0}
+      ]
+    },
+    {
+      "id": "vibe_13",
+      "topic": "Exponential Growth",
+      "domain": "Applied Calculus & Dynamics",
+      "target_duration_minutes": 2.5,
+      "governing_equation": "\\frac{dy}{dt} = k y \\implies y(t) = y_0 e^{k t}",
+      "pedagogical_goals": ["Rate of growth proportional to current size", "Doubling time constancy"],
+      "quiz": [
+        {"question": "In pure exponential growth, what happens to the doubling time as the quantity grows?", "options": ["It decreases rapidly", "It remains constant", "It doubles each cycle", "It approaches zero"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_14",
+      "topic": "Newton's Laws of Motion",
+      "domain": "Physics & Mechanics",
+      "target_duration_minutes": 3.5,
+      "governing_equation": "F_{\\text{net}} = m a, \\quad F_{12} = -F_{21}",
+      "pedagogical_goals": ["Inertia in first law", "Net force producing acceleration", "Action-reaction pairs on separate bodies"],
+      "quiz": [
+        {"question": "Why do action and reaction force pairs never cancel each other out?", "options": ["They have different magnitudes", "They act on two different bodies", "They occur at different times", "They are perpendicular"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_15",
+      "topic": "Conservation of Energy",
+      "domain": "Physics & Mechanics",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "E_{\\text{total}} = K + U = \\text{constant}",
+      "pedagogical_goals": ["Exchange between gravitational potential energy and kinetic energy", "Rollercoaster / pendulum"],
+      "quiz": [
+        {"question": "At the highest point of a swinging frictionless pendulum, what is true of its energy?", "options": ["Kinetic is maximum, potential is zero", "Potential is maximum, kinetic is zero", "Both are zero", "Total energy is zero"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_16",
+      "topic": "Momentum and Collisions",
+      "domain": "Physics & Mechanics",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "p = m v, \\quad \\sum p_{\\text{initial}} = \\sum p_{\\text{final}}",
+      "pedagogical_goals": ["Elastic vs inelastic collisions", "Isolated system conservation of linear momentum"],
+      "quiz": [
+        {"question": "In a completely inelastic collision between two carts, what happens to kinetic energy?", "options": ["It is fully conserved", "Part of it is converted to thermal/deformation energy", "It doubles", "It turns completely to potential energy"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_17",
+      "topic": "Gravity and Orbital Mechanics",
+      "domain": "Physics & Astrophysics",
+      "target_duration_minutes": 3.5,
+      "governing_equation": "F_g = G \\frac{m_1 m_2}{r^2}, \\quad v_{\\text{orbit}} = \\sqrt{\\frac{GM}{r}}",
+      "pedagogical_goals": ["Newton's cannon thought experiment", "Falling around the curvature of the Earth"],
+      "quiz": [
+        {"question": "Why does an orbiting spacecraft feel weightless?", "options": ["There is zero gravity in space", "It is in perpetual free-fall towards Earth while moving horizontally", "Centrifugal force destroys gravity", "Its mass becomes zero"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_18",
+      "topic": "Electric Current and Voltage",
+      "domain": "Physics & Electromagnetism",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "V = I R, \\quad I = \\frac{dQ}{dt}",
+      "pedagogical_goals": ["Water pipe hydraulic analogy: potential pressure vs charge flow rate", "Ohm's law"],
+      "quiz": [
+        {"question": "What does electrical voltage physically represent in a circuit?", "options": ["The speed of individual electrons", "The electric potential energy difference per unit charge", "The total count of coulombs", "The magnetic resistance"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_19",
+      "topic": "Magnetism and Magnetic Fields",
+      "domain": "Physics & Electromagnetism",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "F_B = q (v \\times B)",
+      "pedagogical_goals": ["Moving charges creating magnetic fields", "Lorentz right-hand rule force"],
+      "quiz": [
+        {"question": "In what direction does the magnetic force act relative to particle velocity and B-field?", "options": ["Parallel to velocity", "Perpendicular to both velocity and magnetic field", "Parallel to magnetic field", "Towards the positive pole"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_20",
+      "topic": "Electromagnetic Induction",
+      "domain": "Physics & Electromagnetism",
+      "target_duration_minutes": 3.2,
+      "governing_equation": "\\mathcal{E} = -\\frac{d\\Phi_B}{dt}",
+      "pedagogical_goals": ["Faraday's law: changing magnetic flux creating emf", "Lenz's law opposing change"],
+      "quiz": [
+        {"question": "What does the negative sign in Faraday's law of induction signify?", "options": ["Energy is destroyed", "The induced current creates a field that opposes the flux change (Lenz's law)", "The voltage is always negative", "Charge flows backwards"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_21",
+      "topic": "Waves and Sound Propagation",
+      "domain": "Physics & Wave Mechanics",
+      "target_duration_minutes": 2.8,
+      "governing_equation": "v = f \\lambda, \\quad \\frac{\\partial^2 y}{\\partial t^2} = v^2 \\frac{\\partial^2 y}{\\partial x^2}",
+      "pedagogical_goals": ["Longitudinal compression and rarefaction", "Relationship between frequency, wavelength, and wave speed"],
+      "quiz": [
+        {"question": "What kind of wave is sound in air?", "options": ["Transverse electromagnetic", "Longitudinal pressure wave", "Static torsional wave", "Surface capillary wave"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_22",
+      "topic": "Why the Sky is Blue: Rayleigh Scattering",
+      "domain": "Physics & Optics",
+      "target_duration_minutes": 2.5,
+      "governing_equation": "I \\propto \\frac{1}{\\lambda^4}",
+      "pedagogical_goals": ["Atmospheric gas molecules scattering short wavelengths far more than long wavelengths", "Red sunsets"],
+      "quiz": [
+        {"question": "Why is blue light scattered much more strongly than red light by air molecules?", "options": ["Blue light travels slower", "Scattering intensity is inversely proportional to wavelength to the fourth power", "Blue light has more mass", "Air molecules absorb red light"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_23",
+      "topic": "Photosynthesis and Light Reactions",
+      "domain": "Biology & Life Sciences",
+      "target_duration_minutes": 3.2,
+      "governing_equation": "6 CO_2 + 6 H_2O + \\text{photons} \\to C_6H_{12}O_6 + 6 O_2",
+      "pedagogical_goals": ["Chloroplast thylakoid light absorption", "Splitting water to release oxygen and fuel Calvin cycle"],
+      "quiz": [
+        {"question": "Where does the oxygen released in photosynthesis originate?", "options": ["From carbon dioxide molecules", "From the splitting of water molecules in light reactions", "From glucose breakdown", "From ATP synthase"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_24",
+      "topic": "Cell Division: Mitosis",
+      "domain": "Biology & Life Sciences",
+      "target_duration_minutes": 3.2,
+      "governing_equation": "2n \\to 2 \\times 2n",
+      "pedagogical_goals": ["Prophase, Metaphase, Anaphase, Telophase", "Spindle fibers separating sister chromatids"],
+      "quiz": [
+        {"question": "During which phase of mitosis do chromosomes align along the cell equator?", "options": ["Prophase", "Metaphase", "Anaphase", "Telophase"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_25",
+      "topic": "DNA Replication",
+      "domain": "Biology & Life Sciences",
+      "target_duration_minutes": 3.5,
+      "governing_equation": "5' \\to 3' \\text{ synthesis}",
+      "pedagogical_goals": ["Helicase unzipping double helix", "DNA polymerase continuous leading strand vs lagging Okazaki fragments"],
+      "quiz": [
+        {"question": "Why is the lagging strand synthesized discontinuously in Okazaki fragments?", "options": ["Helicase moves backward", "DNA polymerase can only synthesize in the 5' to 3' direction", "RNA primers are toxic", "Ligase runs out"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_26",
+      "topic": "Natural Selection and Evolution",
+      "domain": "Biology & Life Sciences",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "\\Delta p = \\frac{p q s}{1 - s q^2}",
+      "pedagogical_goals": ["Genetic variation", "Differential reproductive success", "Adaptive allele frequency shift"],
+      "quiz": [
+        {"question": "What is the primary engine that alters allele frequencies in natural selection?", "options": ["Random chance alone", "Differential survival and reproductive success based on heritable traits", "Organisms consciously willing changes", "Static environmental conditions"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_27",
+      "topic": "How Vaccines Work",
+      "domain": "Biology & Life Sciences",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "\\text{Primary Response} \\to \\text{Memory B & T Cells}",
+      "pedagogical_goals": ["Antigen recognition without disease", "Formation of memory cells for rapid secondary response"],
+      "quiz": [
+        {"question": "What is the core evolutionary purpose of memory B and T cells generated by vaccines?", "options": ["They continuously produce toxic poisons", "They enable a rapid, potent antibody response upon subsequent real pathogen exposure", "They eliminate white blood cells", "They alter host DNA permanently"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_28",
+      "topic": "Atoms and the Periodic Table",
+      "domain": "Chemistry & Matter",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "Z = p^+, \\quad A = p^+ + n^0",
+      "pedagogical_goals": ["Protons determining atomic identity", "Electron valence shells explaining column periodic trends"],
+      "quiz": [
+        {"question": "What fundamentally determines the chemical reactivity and column grouping of an element?", "options": ["Total neutron count in nucleus", "Number of electrons in the outermost valence shell", "Atomic mass number", "Nuclear spin"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_29",
+      "topic": "Chemical Bonding: Ionic vs Covalent",
+      "domain": "Chemistry & Matter",
+      "target_duration_minutes": 3.0,
+      "governing_equation": "\\Delta \\text{Electronegativity} \\implies \\text{Bond Type}",
+      "pedagogical_goals": ["Electron transfer in ionic bonds (lattice)", "Electron sharing in covalent bonds"],
+      "quiz": [
+        {"question": "What distinguishes a covalent bond from an ionic bond?", "options": ["In covalent bonds electrons are shared between atoms, while in ionic bonds electrons are transferred", "Covalent bonds only occur between metals", "Ionic bonds involve sharing pairs", "Ionic bonds are always gases"], "answer_index": 0}
+      ]
+    },
+    {
+      "id": "vibe_30",
+      "topic": "Acids and Bases: The pH Scale",
+      "domain": "Chemistry & Matter",
+      "target_duration_minutes": 2.8,
+      "governing_equation": "\\text{pH} = -\\log_{10}[H^+], \\quad K_w = [H^+][OH^-] = 10^{-14}",
+      "pedagogical_goals": ["Proton donors vs acceptors", "Logarithmic 10-fold concentration changes per pH unit"],
+      "quiz": [
+        {"question": "How much more acidic is a solution with pH 3 compared to a solution with pH 5?", "options": ["2 times more acidic", "20 times more acidic", "100 times more acidic", "1000 times more acidic"], "answer_index": 2}
+      ]
+    },
+    {
+      "id": "vibe_31",
+      "topic": "The Mole and Avogadro's Number",
+      "domain": "Chemistry & Matter",
+      "target_duration_minutes": 2.5,
+      "governing_equation": "N_A = 6.022 \\times 10^{23} \\text{ mol}^{-1}",
+      "pedagogical_goals": ["Counting atoms by weighing", "Connecting atomic mass units to macroscopic grams"],
+      "quiz": [
+        {"question": "What is the physical utility of the mole in chemistry?", "options": ["It measures liquid volume only", "It bridges atomic-scale mass units directly to macroscopic laboratory grams", "It measures reaction temperature", "It is the speed of chemical reactions"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_32",
+      "topic": "Entropy and the Second Law of Thermodynamics",
+      "domain": "Physics & Mechanics",
+      "target_duration_minutes": 3.2,
+      "governing_equation": "S = k_B \\ln \\Omega, \\quad \\Delta S_{\\text{universe}} \\ge 0",
+      "pedagogical_goals": ["Microstates vs macrostates", "Statistical inevitability of higher probability states (arrow of time)"],
+      "quiz": [
+        {"question": "Why does entropy in an isolated system spontaneously increase?", "options": ["Energy is destroyed", "High-entropy macrostates correspond to vastly more microscopic configurations (microstates)", "Molecules slow down to rest", "Gravity attracts disorder"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_33",
+      "topic": "Special Relativity: Time Dilation",
+      "domain": "Physics & Mechanics",
+      "target_duration_minutes": 3.5,
+      "governing_equation": "\\Delta t' = \\frac{\\Delta t}{\\sqrt{1 - v^2/c^2}} = \\gamma \\Delta t",
+      "pedagogical_goals": ["Constancy of speed of light in all inertial frames", "Light clock thought experiment leading to time dilation"],
+      "quiz": [
+        {"question": "In the light clock thought experiment, why does a moving clock tick slower according to a stationary observer?", "options": ["The clock mechanism is damaged by speed", "Light must travel a longer diagonal path while keeping the universal constant speed c", "Light slows down inside moving frames", "Time ceases to exist"], "answer_index": 1}
+      ]
+    },
+    {
+      "id": "vibe_34",
+      "topic": "The Doppler Effect",
+      "domain": "Physics & Wave Mechanics",
+      "target_duration_minutes": 2.8,
+      "governing_equation": "f' = f \\left( \\frac{v \\pm v_o}{v \\mp v_s} \\right)",
+      "pedagogical_goals": ["Wavefront compression in front of moving source", "Wavefront stretching behind moving source"],
+      "quiz": [
+        {"question": "As an ambulance with a siren approaches an observer, why is the perceived pitch higher?", "options": ["The siren emits sound with greater amplitude", "Successive wave crests are emitted closer together in space, shortening the observed wavelength", "The speed of sound in air increases", "The observer's eardrums accelerate"], "answer_index": 1}
+      ]
+    }
+  ]
+}
+
