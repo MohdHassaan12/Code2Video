@@ -85,6 +85,24 @@ flowchart TD
    - **Level 2 (Block Scope)**: Replaces only the specific animation block corresponding to the failing lecture cue.
    - **Level 3 (Section Scope)**: Full section regeneration only as a last resort.
 
+6. **Active-Recall Interactive Companion (Beyond Passive Video)**:
+   - Overcomes the passive consumption trap using the cognitive **Testing Effect** (*Roediger & Karpicke, 2006*).
+   - Generates a standalone, responsive HTML5/JS learning companion (`interactive_lecture.html`) with chapter navigation, automated boundary pause checkpoints, embedded Concept Check quizzes with real-time explanatory feedback, and mastery score tracking.
+
+7. **Multi-Lingual Dynamic Re-Pacing Engine**:
+   - Supports 7 global languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`), Hindi (`hi`), Mandarin (`zh`), Japanese (`ja`).
+   - Automatically phonetizes mathematical formulas into natural speech.
+   - **Visual Re-Pacing**: Automatically stretches or compresses Manim visual animations to match target language speech duration ($|\Delta T| < 40\text{ ms}$) and exports synchronized WebVTT subtitle tracks.
+
+8. **Zero-Token Computer Vision & WCAG Accessibility Auditor**:
+   - Deterministic image-processing quality gate computing:
+     - **WCAG 2.1 Contrast Ratio** (AAA $\ge 7:1$, AA $\ge 4.5:1$).
+     - **Visual Clutter Index**: 2D Laplacian high-frequency edge variance to prevent cognitive overload.
+     - **Mayer's Spatial Contiguity**: Split-Attention normalized Euclidean distance between lecture notes and visual diagrams.
+
+9. **Explorable Mathematical Parameter Playground**:
+   - Exports standalone dynamic HTML5 Canvas parameter sandboxes (e.g. Euler complex phasor rotation $e^{i\theta}$, SVM maximum margin hyperplane $w^T x + b = 0$) allowing learners to manipulate real-time sliders and visually observe mathematical transformations.
+
 ---
 
 ## 📦 Installation & Setup
@@ -113,8 +131,20 @@ The repository provides two complementary CLIs:
 
 ```bash
 # ----------------- Code2Video CLI -----------------
-# Generate video using official 3-stage agent pipeline
-code2video generate --topic "Support Vector Machine" --audience undergraduate --render
+# Generate video with neural narration, active-recall companion, and vision audit
+code2video generate --topic "Euler's Formula" --render --narrate --interactive --audit-vision
+
+# Export active-recall interactive HTML5 player for an existing video
+code2video interactive --topic "Euler's Formula" --video demo_outputs/complete_lecture.mp4
+
+# Run zero-token computer vision WCAG accessibility and clutter audit
+code2video audit --image demo_outputs/paper_figures/figure1_architecture_pareto.png
+
+# Generate interactive parameter exploration sandbox (Euler Phasor / SVM)
+code2video playground --concept euler --output demo_outputs/euler_playground.html
+
+# List supported multi-lingual TTS voice synthesizers
+code2video languages
 
 # Inspect the 13-category MMMC Benchmark corpus
 code2video mmmc --category "Calculus"
@@ -123,8 +153,8 @@ code2video mmmc --category "Calculus"
 code2video compare --topic "Euler's Formula: The Most Beautiful Equation"
 
 # ----------------- AdaptManim CLI -----------------
-# Generate video with adaptive verification cascade and audio narration
-adapt-manim generate --topic "Support Vector Machine" --render --narrate
+# Generate video with adaptive verification cascade, audio narration, and Spanish dubbing
+adapt-manim generate --topic "Euler's Formula" --render --narrate --language es --interactive
 
 # Run batch benchmark evaluation
 adapt-manim benchmark --topic "Support Vector Machine"

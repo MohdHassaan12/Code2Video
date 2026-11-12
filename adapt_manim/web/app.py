@@ -100,6 +100,13 @@ duration_input = st.sidebar.slider("Target Duration (Minutes)", 1.5, 5.0, 3.0, 0
 render_manim = st.sidebar.checkbox("Render with Manim (Full Headless Run)", value=True)
 narrate_audio = st.sidebar.checkbox("Synthesize Neural Narration (Edge-TTS)", value=True)
 
+lang_choice = st.sidebar.selectbox(
+    "Speech & Subtitle Language",
+    ["en (English)", "es (Spanish)", "de (German)", "fr (French)", "hi (Hindi)", "zh (Mandarin)", "ja (Japanese)"],
+    index=0
+)
+target_lang = lang_choice.split()[0]
+
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🔬 Architecture Mode")
 st.sidebar.info("""
@@ -214,11 +221,14 @@ if "pipeline_data" in st.session_state:
     st.markdown("---")
 
     # Main Tabs
-    tab_overview, tab_grid, tab_verify, tab_code, tab_headtohead, tab_mmmc, tab_theorem, tab_benchmark = st.tabs([
+    tab_overview, tab_grid, tab_verify, tab_code, tab_interactive, tab_playground, tab_vision, tab_headtohead, tab_mmmc, tab_theorem, tab_benchmark = st.tabs([
         "📋 Pedagogical Plan & Storyboard",
         "🎯 6x6 Visual Anchor System",
         "🛡️ Multi-Tier Verification & Repair",
         "🐍 Verified Manim Code",
+        "🎮 Active-Recall Companion",
+        "🎛️ Math Parameter Playground",
+        "👁️ Vision & WCAG Audit",
         "🎥 Code2Video vs AdaptManim",
         "📚 MMMC Corpus Explorer",
         "📐 TheoremExplainBench",
@@ -348,6 +358,85 @@ if "pipeline_data" in st.session_state:
                 st.image(preview_path, caption="Rendered Section 1 Preview (Manim Community 480p)")
             else:
                 st.info("Run with '--render --narrate' to produce complete video with audio.")
+
+    with tab_interactive:
+        st.subheader("🎮 Active-Recall Interactive Companion Player")
+        st.write("Transcend passive video consumption into active learning via the cognitive 'Testing Effect' (Roediger & Karpicke):")
+
+        interactive_file = "demo_outputs/interactive_lecture.html"
+        if st.button("Generate / Refresh Interactive Player HTML", key="btn_gen_player"):
+            from code2video.interactive_player import InteractivePlayerGenerator
+            from code2video.mmmc import MMMCBenchmark
+            bench = MMMCBenchmark()
+            quizzes = bench.get_teach_quiz(data['topic']) or []
+            InteractivePlayerGenerator.generate_player_html(
+                topic=data['topic'],
+                video_filename="complete_lecture.mp4",
+                storyboard=data['storyboard'],
+                quiz_items=quizzes,
+                output_path=interactive_file
+            )
+            st.success("✓ Standalone Interactive Player HTML generated at demo_outputs/interactive_lecture.html!")
+
+        if os.path.exists(interactive_file):
+            st.markdown(f"**Standalone Web Player**: `demo_outputs/interactive_lecture.html`")
+            with open(interactive_file, "r", encoding="utf-8") as f:
+                html_raw = f.read()
+            st.download_button("⬇️ Download Standalone Interactive Player (.html)", html_raw, file_name="interactive_lecture.html", mime="text/html")
+            st.components.v1.html(html_raw, height=620, scrolling=True)
+        else:
+            st.info("Click 'Generate / Refresh Interactive Player HTML' to build the active-recall player.")
+
+    with tab_playground:
+        st.subheader("🎛️ Interactive Mathematical Parameter Playground")
+        st.write("Explorable explanations: dynamic HTML5 Canvas parameter sandboxes allowing learners to manipulate variables and inspect geometrical responses:")
+
+        concept_choice = st.selectbox("Select Parameter Sandbox", ["Euler's Formula (Phasor Rotation)", "Support Vector Machine (Margin & Hyperplane)"])
+        from code2video.math_playground import MathPlaygroundGenerator
+
+        if "Euler" in concept_choice:
+            p_file = "demo_outputs/euler_playground.html"
+            MathPlaygroundGenerator.generate_euler_playground(p_file)
+        else:
+            p_file = "demo_outputs/svm_playground.html"
+            MathPlaygroundGenerator.generate_svm_playground(p_file)
+
+        with open(p_file, "r", encoding="utf-8") as f:
+            st.components.v1.html(f.read(), height=540, scrolling=False)
+
+    with tab_vision:
+        st.subheader("👁️ Zero-Token Computer Vision & WCAG Accessibility Audit")
+        st.write("Deterministic, 0-token image analysis evaluating color contrast, visual clutter, and split-attention spatial contiguity:")
+
+        from code2video.vision_auditor import VisionAccessibilityAuditor
+        sample_img = "demo_outputs/paper_figures/figure1_architecture_pareto.png"
+        preview_img = "demo_outputs/media/images/section_1_sandbox/section_1_preview.png"
+        target_img = preview_img if os.path.exists(preview_img) else sample_img
+
+        if os.path.exists(target_img):
+            va = VisionAccessibilityAuditor.audit_keyframe(target_img)
+            wcag = va["wcag_contrast"]
+            clutter = va["visual_clutter"]
+            contiguity = va["spatial_contiguity"]
+
+            v_c1, v_c2, v_c3, v_c4 = st.columns(4)
+            v_c1.metric("WCAG Contrast Ratio", f"{wcag['contrast_ratio']}:1", wcag['rating'])
+            v_c2.metric("Visual Clutter Index", f"{clutter['clutter_index']}/100", clutter['status'])
+            v_c3.metric("Spatial Contiguity", f"{contiguity['spatial_contiguity_score']}%", f"{contiguity['split_attention_level']} Split")
+            v_c4.metric("Accessibility Score", f"{va['composite_accessibility_score']}/100", "0-Token Static Gate")
+
+            st.markdown("---")
+            v_left, v_right = st.columns([1, 1])
+            with v_left:
+                st.image(target_img, caption="Audited Keyframe / Diagram", use_column_width=True)
+            with v_right:
+                st.markdown("### 📋 Detailed Ergonomic Diagnostics")
+                st.markdown(f"- **Background Color**: `rgb{wcag.get('background_color_rgb', [0,0,0])}`")
+                st.markdown(f"- **Foreground Color**: `rgb{wcag.get('foreground_color_rgb', [255,255,255])}`")
+                st.markdown(f"- **WCAG 2.1 AA Compliant**: `{'✅ Yes' if wcag.get('passed_wcag_aa') else '❌ No'}`")
+                st.markdown(f"- **WCAG 2.1 AAA Compliant**: `{'✅ Yes' if wcag.get('passed_wcag_aaa') else '❌ No'}`")
+                st.markdown(f"- **Cognitive Overload Risk**: `{'⚠️ Overload Risk' if clutter.get('cognitive_overload_risk') else '✅ Safe Density'}`")
+                st.markdown(f"- **Normalized Distance (COM)**: `{contiguity.get('normalized_distance', 0.0)}%`")
 
     with tab_headtohead:
         st.subheader("🎥 Code2Video (Show Lab, NUS) vs. AdaptManim Head-to-Head Comparison")

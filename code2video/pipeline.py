@@ -41,7 +41,10 @@ class Code2VideoPipeline:
         audience: str = "undergraduate",
         duration: float = 3.0,
         render: bool = True,
-        narrate: bool = False
+        narrate: bool = False,
+        interactive: bool = False,
+        audit_vision: bool = False,
+        language: str = "en"
     ) -> Dict[str, Any]:
         """Executes full Code2Video pipeline from query to educational video."""
         start_time = time.time()
@@ -90,6 +93,37 @@ class Code2VideoPipeline:
 
         elapsed = time.time() - start_time
 
+        # Interactive Active-Recall Companion Export
+        interactive_player_path = None
+        if interactive:
+            from code2video.interactive_player import InteractivePlayerGenerator
+            from code2video.mmmc import MMMCBenchmark
+            bench = MMMCBenchmark()
+            quizzes = bench.get_teach_quiz(topic) or []
+            video_fn = os.path.basename(master_video_path) if master_video_path else "code2video_lecture.mp4"
+            interactive_player_path = os.path.join(self.output_dir, "interactive_lecture.html")
+            InteractivePlayerGenerator.generate_player_html(
+                topic=topic,
+                video_filename=video_fn,
+                storyboard=storyboard,
+                quiz_items=quizzes,
+                output_path=interactive_player_path
+            )
+
+        # Static Computer Vision & Accessibility Audit
+        vision_audit_results = None
+        if audit_vision:
+            from code2video.vision_auditor import VisionAccessibilityAuditor
+            from code2video.multimodal_critic import MultimodalCritic
+            critic = MultimodalCritic()
+            keyframes = critic.extract_keyframes(master_video_path, self.output_dir, num_frames=2) if (master_video_path and os.path.exists(master_video_path)) else []
+            if keyframes:
+                vision_audit_results = VisionAccessibilityAuditor.audit_keyframe(keyframes[0])
+            else:
+                preview_img = os.path.join(self.output_dir, "media", "images", "section_1_sandbox", "section_1_preview.png")
+                if os.path.exists(preview_img):
+                    vision_audit_results = VisionAccessibilityAuditor.audit_keyframe(preview_img)
+
         # 3-Pronged Evaluation (Section 3.3)
         eval_suite = self.evaluator.evaluate_full_suite(
             code=full_script,
@@ -102,11 +136,14 @@ class Code2VideoPipeline:
         return {
             "topic": topic,
             "audience": audience,
+            "language": language,
             "outline": outline.model_dump(),
             "storyboard": storyboard.model_dump(),
             "assets": assets,
             "script_path": script_path,
             "master_video_path": master_video_path,
+            "interactive_player_path": interactive_player_path,
+            "vision_audit": vision_audit_results,
             "critique_traces": section_critique_traces,
             "tokens_consumed": tokens_consumed,
             "wall_clock_time_sec": round(elapsed, 2),

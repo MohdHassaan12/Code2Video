@@ -40,11 +40,13 @@ def main():
 @click.option("--audience", "-a", default="undergraduate", type=click.Choice(["middle_school", "high_school", "undergraduate", "researcher"]))
 @click.option("--render", "-r", is_flag=True, default=False, help="Render the generated code with Manim.")
 @click.option("--narrate", "-n", is_flag=True, default=False, help="Synthesize and mux synchronized audio narration.")
+@click.option("--interactive", "-i", is_flag=True, default=False, help="Generate interactive active-recall HTML5 web companion.")
+@click.option("--language", "-l", default="en", help="Speech and subtitle language code (en, es, de, fr, hi, zh, ja).")
 @click.option("--output-dir", "-o", default="demo_outputs", help="Output directory for code and videos.")
-def generate(topic: str, audience: str, render: bool, narrate: bool, output_dir: str):
+def generate(topic: str, audience: str, render: bool, narrate: bool, interactive: bool, language: str, output_dir: str):
     """Generate complete educational video pipeline from topic."""
     aud = AudienceLevel(audience)
-    console.print(Panel(f"[bold cyan]AdaptManim Pipeline[/bold cyan]\n[white]Topic:[/white] {topic}\n[white]Audience:[/white] {aud.value}", expand=False))
+    console.print(Panel(f"[bold cyan]AdaptManim Pipeline[/bold cyan]\n[white]Topic:[/white] {topic}\n[white]Audience:[/white] {aud.value}\n[white]Language:[/white] {language}", expand=False))
 
     # 1. Complexity Profile & Symbol Ledger
     profile = TopicComplexityProfiler.profile(topic, aud)
@@ -113,7 +115,24 @@ def generate(topic: str, audience: str, render: bool, narrate: bool, output_dir:
         if master_path:
             console.print(f"[bold green]✓ Master Lecture Video Produced:[/bold green] [cyan]{master_path}[/cyan] ({len(sec_videos)} scenes)")
 
-    # 7. Evaluation Metrics Display
+    # 7. Interactive Active-Recall Companion
+    if interactive:
+        from code2video.interactive_player import InteractivePlayerGenerator
+        from code2video.mmmc import MMMCBenchmark
+        bench = MMMCBenchmark()
+        quizzes = bench.get_teach_quiz(topic) or []
+        video_fn = os.path.basename(master_path) if (master_path and os.path.exists(master_path)) else "complete_lecture.mp4"
+        companion_path = os.path.join(output_dir, "interactive_lecture.html")
+        InteractivePlayerGenerator.generate_player_html(
+            topic=topic,
+            video_filename=video_fn,
+            storyboard=storyboard,
+            quiz_items=quizzes,
+            output_path=companion_path
+        )
+        console.print(f"[bold magenta]✓ Interactive Active-Recall Companion Generated:[/bold magenta] [cyan]{companion_path}[/cyan]")
+
+    # 8. Evaluation Metrics Display
     qm = AestheticJudge.evaluate(full_script, topic)
     tq = TeachQuizEvaluator.evaluate_relative_gain(topic, is_video_grounded=True, pedagogical_score=qm.overall_aes)
 
@@ -189,6 +208,105 @@ def ui(port: int):
     cmd = [".venv/bin/streamlit", "run", "adapt_manim/web/app.py", "--server.port", str(port)]
     console.print(f"[bold green]Launching AdaptManim Studio on http://localhost:{port}...[/bold green]")
     subprocess.run(cmd)
+
+
+@main.command()
+@click.option("--image", "-img", default=None, help="Path to image keyframe to audit.")
+@click.option("--video", "-v", default=None, help="Path to video file to extract and audit keyframes from.")
+def audit(image: str, video: str):
+    """Run zero-token static computer vision WCAG contrast and clutter audit."""
+    from code2video.vision_auditor import VisionAccessibilityAuditor
+    target_img = image
+
+    if video and os.path.exists(video):
+        from code2video.multimodal_critic import MultimodalCritic
+        critic = MultimodalCritic()
+        frames = critic.extract_keyframes(video, "demo_outputs/audit_temp", num_frames=1)
+        if frames:
+            target_img = frames[0]
+
+    if not target_img or not os.path.exists(target_img):
+        console.print("[red]Error: Please specify a valid --image or --video to audit.[/red]")
+        return
+
+    console.print(Panel(f"[bold cyan]Vision & WCAG Accessibility Audit[/bold cyan]\nTarget: {target_img}", expand=False))
+    res = VisionAccessibilityAuditor.audit_keyframe(target_img)
+
+    wcag = res["wcag_contrast"]
+    clutter = res["visual_clutter"]
+    contiguity = res["spatial_contiguity"]
+
+    table = Table(title="Computer Vision Accessibility Scorecard")
+    table.add_column("Criterion", style="cyan")
+    table.add_column("Measurement", style="magenta")
+    table.add_column("Compliance / Status", style="green")
+
+    table.add_row("WCAG Contrast Ratio", f"{wcag['contrast_ratio']}:1", f"{wcag['rating']}")
+    table.add_row("Visual Clutter Index", f"{clutter['clutter_index']} / 100", f"{clutter['status']}")
+    table.add_row("Spatial Contiguity Score", f"{contiguity['spatial_contiguity_score']}%", f"{contiguity['split_attention_level']} Split Attention")
+    table.add_row("Overall Accessibility Score", f"[bold green]{res['composite_accessibility_score']} / 100[/bold green]", "Zero-Token Static Vision Pass")
+
+    console.print(table)
+
+
+@main.command()
+@click.option("--topic", "-t", required=True, help="Topic of the lecture.")
+@click.option("--video", "-v", default="demo_outputs/complete_lecture.mp4", help="Path to rendered MP4 video.")
+@click.option("--output", "-o", default="demo_outputs/interactive_lecture.html", help="Output HTML file path.")
+def interactive(topic: str, video: str, output: str):
+    """Generate standalone active-recall HTML5 interactive companion player."""
+    from code2video.interactive_player import InteractivePlayerGenerator
+    from adapt_manim.planning.complexity_profiler import TopicComplexityProfiler
+    from adapt_manim.planning.outline_planner import OutlinePlanner
+    from adapt_manim.planning.storyboard_builder import StoryboardBuilder
+    from adapt_manim.core.ledger import SymbolLedgerManager
+    from code2video.mmmc import MMMCBenchmark
+
+    aud = AudienceLevel.UNDERGRADUATE
+    outline = OutlinePlanner.generate_outline(topic, aud)
+    ledger_mgr = SymbolLedgerManager(topic)
+    storyboard = StoryboardBuilder.build_storyboard(outline, ledger_mgr)
+
+    bench = MMMCBenchmark()
+    quizzes = bench.get_teach_quiz(topic) or []
+
+    out = InteractivePlayerGenerator.generate_player_html(
+        topic=topic,
+        video_filename=os.path.basename(video),
+        storyboard=storyboard,
+        quiz_items=quizzes,
+        output_path=output
+    )
+    console.print(f"[bold green]✓ Interactive Active-Recall Companion Produced:[/bold green] [cyan]{out}[/cyan]")
+
+
+@main.command()
+@click.option("--concept", "-c", type=click.Choice(["euler", "svm"]), default="euler", help="Mathematical concept playground.")
+@click.option("--output", "-o", default="demo_outputs/playground.html", help="Output HTML path.")
+def playground(concept: str, output: str):
+    """Generate interactive parameter exploration sandbox (Euler Phasor, SVM Margin)."""
+    from code2video.math_playground import MathPlaygroundGenerator
+    if concept == "euler":
+        p = MathPlaygroundGenerator.generate_euler_playground(output)
+    else:
+        p = MathPlaygroundGenerator.generate_svm_playground(output)
+    console.print(f"[bold green]✓ Interactive Parameter Sandbox Exported:[/bold green] [cyan]{p}[/cyan]")
+
+
+@main.command()
+def languages():
+    """List supported multi-lingual TTS voice synthesizers and language codes."""
+    from code2video.multilingual import MultiLingualEngine
+    langs = MultiLingualEngine.get_supported_languages()
+
+    table = Table(title="Supported Multi-Lingual Neural Synthesizers (Dynamic Re-Pacing)")
+    table.add_column("Code", style="cyan")
+    table.add_column("Language", style="magenta")
+    table.add_column("Neural TTS Voice (Edge-TTS)", style="green")
+
+    for l in langs:
+        table.add_row(l["code"], l["name"], l["voice"])
+    console.print(table)
 
 
 if __name__ == "__main__":

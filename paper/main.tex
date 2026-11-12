@@ -84,7 +84,7 @@ The Code2Video pipeline consists of three coordinated agents:
 \end{enumerate}
 
 \subsection{AdaptManim: Adaptive Verification and Repair}
-AdaptManim extends this paradigm through five novel contributions:
+AdaptManim extends this paradigm through seven novel contributions:
 \begin{enumerate}
     \item \textbf{Persistent Symbol Ledger ($\mathcal{L}_{sym}$)}: Maintains canonical mathematical variable definitions, units, and designated color maps across scenes, completely eliminating notation drift.
     \item \textbf{5-Tier Early-Exit Verification Cascade}:
@@ -101,6 +101,9 @@ AdaptManim extends this paradigm through five novel contributions:
         \Delta^{(k)} = T_{\text{audio}}^{(k)} - \sum_{m} \tau_{\text{anim}}^{(k, m)}
     \end{equation}
     and dynamically expands or inserts \texttt{self.wait($\Delta^{(k)}$)} so that spoken concepts and corresponding visual transformations terminate simultaneously ($|\Delta T| < 40\text{ ms}$).
+    \item \textbf{Active-Recall Interactive Web Companion}: Transcends passive video consumption by operationalizing the cognitive \textit{Testing Effect}~\cite{roediger2006test}. Generates self-contained HTML5 interactive players that pause at chapter boundaries and challenge students with embedded Concept Check quizzes.
+    \item \textbf{Multi-Lingual Dynamic Re-Pacing Engine}: Extends video synthesis across 7 global languages (English, Spanish, German, French, Hindi, Mandarin, Japanese). Automatically translates cues, phoneticizes mathematical notation, and re-paces visual animations to match target language speech cadences without drift.
+    \item \textbf{Zero-Token Vision \& WCAG Accessibility Auditor}: Employs deterministic computer vision to evaluate WCAG 2.1 AAA contrast ratios ($\ge 7.0:1$), Laplacian edge-density clutter, and split-attention normalized Euclidean distances, eliminating expensive VLM calls for visual ergonomic checks.
 \end{enumerate}
 
 \begin{figure}[t]

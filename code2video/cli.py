@@ -32,19 +32,46 @@ def main():
 @click.option("--audience", "-a", default="undergraduate", help="Target audience level.")
 @click.option("--render", "-r", is_flag=True, default=False, help="Render the generated Manim code.")
 @click.option("--narrate", "-n", is_flag=True, default=False, help="Synthesize neural narration audio with dynamic audio-visual pacing.")
+@click.option("--interactive", "-i", is_flag=True, default=False, help="Generate interactive active-recall HTML5 web companion.")
+@click.option("--audit-vision", is_flag=True, default=False, help="Run zero-token static computer vision WCAG contrast and clutter audit.")
+@click.option("--language", "-l", default="en", help="Speech and subtitle language code (en, es, de, fr, hi, zh, ja).")
 @click.option("--output-dir", "-o", default="demo_outputs/code2video", help="Output directory.")
-def generate(topic: str, audience: str, render: bool, narrate: bool, output_dir: str):
+def generate(topic: str, audience: str, render: bool, narrate: bool, interactive: bool, audit_vision: bool, language: str, output_dir: str):
     """Execute the full 3-stage Code2Video agent pipeline (Planner -> Coder -> Critic)."""
-    console.print(Panel(f"[bold cyan]Code2Video Generation Pipeline[/bold cyan]\nTopic: {topic}\nAudience: {audience}\nNarrate: {narrate}", expand=False))
+    console.print(Panel(f"[bold cyan]Code2Video Generation Pipeline[/bold cyan]\nTopic: {topic}\nAudience: {audience}\nNarrate: {narrate} | Language: {language} | Interactive: {interactive}", expand=False))
 
     pipeline = Code2VideoPipeline(output_dir=output_dir)
     with console.status("[bold green]Executing Planner, Coder (ScopeRefine), and Critic..."):
-        res = pipeline.run(topic=topic, audience=audience, render=render, narrate=narrate)
+        res = pipeline.run(
+            topic=topic,
+            audience=audience,
+            render=render,
+            narrate=narrate,
+            interactive=interactive,
+            audit_vision=audit_vision,
+            language=language
+        )
 
     console.print(f"[green]✓[/green] Completed in {res['wall_clock_time_sec']}s (Est. Tokens: {res['tokens_consumed']}).")
     console.print(f"[green]✓[/green] Code written to: [cyan]{res['script_path']}[/cyan]")
     if res.get("master_video_path"):
         console.print(f"[bold green]✓ Master Video Rendered:[/bold green] [cyan]{res['master_video_path']}[/cyan]")
+    if res.get("interactive_player_path"):
+        console.print(f"[bold magenta]✓ Interactive Active-Recall Companion:[/bold magenta] [cyan]{res['interactive_player_path']}[/cyan]")
+
+    # Static Vision & Accessibility Audit Output
+    if res.get("vision_audit"):
+        va = res["vision_audit"]
+        wcag = va.get("wcag_contrast", {})
+        clutter = va.get("visual_clutter", {})
+        v_table = Table(title="Computer Vision & WCAG Accessibility Audit")
+        v_table.add_column("Criterion", style="cyan")
+        v_table.add_column("Measurement", style="magenta")
+        v_table.add_column("Standard", style="green")
+        v_table.add_row("WCAG Contrast Ratio", f"{wcag.get('contrast_ratio', 0.0)}:1", f"{wcag.get('rating', 'N/A')}")
+        v_table.add_row("Visual Clutter Index", f"{clutter.get('clutter_index', 0.0)} / 100", f"{clutter.get('status', 'N/A')}")
+        v_table.add_row("Composite Accessibility Score", f"[bold green]{va.get('composite_accessibility_score', 0.0)} / 100[/bold green]", "Zero-Token CV Gate")
+        console.print(v_table)
 
     # Aesthetic & TeachQuiz Table
     aes = res["aesthetics"]
@@ -159,6 +186,102 @@ def theorem(id: Optional[str]):
             f"{v['overall']:.2f}"
         )
     console.print(b_table)
+
+
+@main.command()
+@click.option("--image", "-img", default=None, help="Path to image keyframe to audit.")
+@click.option("--video", "-v", default=None, help="Path to video file to extract and audit keyframes from.")
+def audit(image: Optional[str], video: Optional[str]):
+    """Run zero-token static computer vision WCAG contrast and clutter audit."""
+    from code2video.vision_auditor import VisionAccessibilityAuditor
+    target_img = image
+
+    if video and os.path.exists(video):
+        from code2video.multimodal_critic import MultimodalCritic
+        critic = MultimodalCritic()
+        frames = critic.extract_keyframes(video, "demo_outputs/audit_temp", num_frames=1)
+        if frames:
+            target_img = frames[0]
+
+    if not target_img or not os.path.exists(target_img):
+        console.print("[red]Error: Please specify a valid --image or --video to audit.[/red]")
+        return
+
+    console.print(Panel(f"[bold cyan]Vision & WCAG Accessibility Audit[/bold cyan]\nTarget: {target_img}", expand=False))
+    res = VisionAccessibilityAuditor.audit_keyframe(target_img)
+
+    wcag = res["wcag_contrast"]
+    clutter = res["visual_clutter"]
+    contiguity = res["spatial_contiguity"]
+
+    table = Table(title="Computer Vision Accessibility Scorecard")
+    table.add_column("Criterion", style="cyan")
+    table.add_column("Measurement", style="magenta")
+    table.add_column("Compliance / Status", style="green")
+
+    table.add_row("WCAG Contrast Ratio", f"{wcag['contrast_ratio']}:1", f"{wcag['rating']}")
+    table.add_row("Visual Clutter Index", f"{clutter['clutter_index']} / 100", f"{clutter['status']}")
+    table.add_row("Spatial Contiguity Score", f"{contiguity['spatial_contiguity_score']}%", f"{contiguity['split_attention_level']} Split Attention")
+    table.add_row("Overall Accessibility Score", f"[bold green]{res['composite_accessibility_score']} / 100[/bold green]", "Zero-Token Static Vision Pass")
+
+    console.print(table)
+
+
+@main.command()
+@click.option("--topic", "-t", required=True, help="Topic of the lecture.")
+@click.option("--video", "-v", default="demo_outputs/complete_lecture.mp4", help="Path to rendered MP4 video.")
+@click.option("--output", "-o", default="demo_outputs/interactive_lecture.html", help="Output HTML file path.")
+def interactive(topic: str, video: str, output: str):
+    """Generate standalone active-recall HTML5 interactive companion player."""
+    from code2video.interactive_player import InteractivePlayerGenerator
+    from code2video.planner import Code2VideoPlanner
+    from code2video.mmmc import MMMCBenchmark
+
+    planner = Code2VideoPlanner()
+    outline = planner.generate_outline(topic)
+    storyboard = planner.generate_storyboards(outline)
+
+    bench = MMMCBenchmark()
+    quizzes = bench.get_teach_quiz(topic) or []
+
+    out = InteractivePlayerGenerator.generate_player_html(
+        topic=topic,
+        video_filename=os.path.basename(video),
+        storyboard=storyboard,
+        quiz_items=quizzes,
+        output_path=output
+    )
+    console.print(f"[bold green]✓ Interactive Active-Recall Companion Produced:[/bold green] [cyan]{out}[/cyan]")
+    console.print("[dim]Open this HTML file in any browser to experience interactive chapter pauses and real-time concept checks.[/dim]")
+
+
+@main.command()
+@click.option("--concept", "-c", type=click.Choice(["euler", "svm"]), default="euler", help="Mathematical concept playground.")
+@click.option("--output", "-o", default="demo_outputs/playground.html", help="Output HTML path.")
+def playground(concept: str, output: str):
+    """Generate interactive parameter exploration sandbox (Euler Phasor, SVM Margin)."""
+    from code2video.math_playground import MathPlaygroundGenerator
+    if concept == "euler":
+        p = MathPlaygroundGenerator.generate_euler_playground(output)
+    else:
+        p = MathPlaygroundGenerator.generate_svm_playground(output)
+    console.print(f"[bold green]✓ Interactive Parameter Sandbox Exported:[/bold green] [cyan]{p}[/cyan]")
+
+
+@main.command()
+def languages():
+    """List supported multi-lingual TTS voice synthesizers and language codes."""
+    from code2video.multilingual import MultiLingualEngine
+    langs = MultiLingualEngine.get_supported_languages()
+
+    table = Table(title="Supported Multi-Lingual Neural Synthesizers (Dynamic Re-Pacing)")
+    table.add_column("Code", style="cyan")
+    table.add_column("Language", style="magenta")
+    table.add_column("Neural TTS Voice (Edge-TTS)", style="green")
+
+    for l in langs:
+        table.add_row(l["code"], l["name"], l["voice"])
+    console.print(table)
 
 
 if __name__ == "__main__":
