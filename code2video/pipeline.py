@@ -44,6 +44,8 @@ class Code2VideoPipeline:
         narrate: bool = False,
         interactive: bool = False,
         audit_vision: bool = False,
+        audit_grounding: bool = False,
+        enforce_motion_budget: bool = False,
         language: str = "en"
     ) -> Dict[str, Any]:
         """Executes full Code2Video pipeline from query to educational video."""
@@ -81,9 +83,48 @@ class Code2VideoPipeline:
         # Assembly
         runner = ParallelRunner(output_dir=self.output_dir)
         full_script = runner.combine_section_codes(section_codes, topic)
+
+        # Enforce Dead-Hold Motion Budget (Direction D9+)
+        motion_report = None
+        if enforce_motion_budget:
+            from code2video.motion_budget import MotionBudgetMonitor
+            initial_motion = MotionBudgetMonitor.analyze_code_motion(full_script)
+            if initial_motion.dead_holds:
+                full_script, mods = MotionBudgetMonitor.inject_dynamic_telestration(
+                    full_script, initial_motion.dead_holds
+                )
+            motion_report = MotionBudgetMonitor.analyze_code_motion(full_script).to_dict()
+
         script_path = os.path.join(self.output_dir, "code2video_lecture.py")
         with open(script_path, "w") as f:
             f.write(full_script)
+
+        # Spoken-to-Visual Grounding Matrix Audit (Direction D9+)
+        grounding_report = None
+        if audit_grounding:
+            from code2video.grounding_matrix import SpokenVisualGroundingMatrix
+            # Compile narration lines and cues from storyboard
+            all_narration = []
+            timeline_cues = []
+            accum_t = 0.0
+            for sec in storyboard.sections:
+                for line in sec.lecture_lines:
+                    all_narration.append(line)
+                    timeline_cues.append({
+                        "phrase": line,
+                        "narration": line,
+                        "start_sec": accum_t,
+                        "duration_sec": 8.0
+                    })
+                    accum_t += 8.0
+            full_narration_text = " ".join(all_narration)
+            g_rep = SpokenVisualGroundingMatrix.compute_grounding_matrix(
+                topic=topic,
+                narration_text=full_narration_text,
+                code=full_script,
+                timeline=timeline_cues
+            )
+            grounding_report = g_rep.to_dict()
 
         # Rendering
         master_video_path = None
@@ -144,6 +185,8 @@ class Code2VideoPipeline:
             "master_video_path": master_video_path,
             "interactive_player_path": interactive_player_path,
             "vision_audit": vision_audit_results,
+            "grounding_audit": grounding_report,
+            "motion_budget": motion_report,
             "critique_traces": section_critique_traces,
             "tokens_consumed": tokens_consumed,
             "wall_clock_time_sec": round(elapsed, 2),

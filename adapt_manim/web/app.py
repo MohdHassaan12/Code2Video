@@ -108,6 +108,26 @@ lang_choice = st.sidebar.selectbox(
 target_lang = lang_choice.split()[0]
 
 st.sidebar.markdown("---")
+st.sidebar.header("🤖 LLM Backend / Model")
+llm_provider = st.sidebar.selectbox(
+    "Provider",
+    ["Ollama (Local / Llama 4)", "Offline Synthesizer (Fast Mock)", "Google Gemini", "OpenAI", "Anthropic"],
+    index=0
+)
+
+custom_model = None
+ollama_url = "http://localhost:11434"
+if "Ollama" in llm_provider:
+    custom_model = st.sidebar.text_input("Ollama Model Tag", value="llama4", help="e.g. llama4, llama3.3, llama3:8b, codellama")
+    ollama_url = st.sidebar.text_input("Ollama Host URL", value="http://localhost:11434")
+elif "Gemini" in llm_provider:
+    custom_model = st.sidebar.text_input("Gemini Model", value="gemini-2.5-pro")
+elif "OpenAI" in llm_provider:
+    custom_model = st.sidebar.text_input("OpenAI Model", value="gpt-4o")
+elif "Anthropic" in llm_provider:
+    custom_model = st.sidebar.text_input("Anthropic Model", value="claude-3-5-sonnet-20241022")
+
+st.sidebar.markdown("---")
 st.sidebar.markdown("### 🔬 Architecture Mode")
 st.sidebar.info("""
 **AdaptManim Active**:
@@ -122,15 +142,26 @@ st.sidebar.info("""
 # ----------------- Pipeline Execution -----------------
 if st.button("🚀 Run Adaptive Generation & Verification Pipeline", type="primary", use_container_width=True):
     with st.spinner("Executing AdaptManim Pipeline..."):
+        from adapt_manim.core.llm_client import UnifiedLLMClient
+        client = None
+        if "Ollama" in llm_provider:
+            client = UnifiedLLMClient(provider="ollama", model_name=custom_model or "llama4", base_url=ollama_url)
+        elif "Gemini" in llm_provider:
+            client = UnifiedLLMClient(provider="gemini", model_name=custom_model)
+        elif "OpenAI" in llm_provider:
+            client = UnifiedLLMClient(provider="openai", model_name=custom_model)
+        elif "Anthropic" in llm_provider:
+            client = UnifiedLLMClient(provider="anthropic", model_name=custom_model)
+
         aud = AudienceLevel(audience_input)
         profile = TopicComplexityProfiler.profile(topic_input, aud)
         ledger_mgr = SymbolLedgerManager(topic_input)
 
         # 1. Outline
-        outline = OutlinePlanner.generate_outline(topic_input, aud, duration_minutes=duration_input)
+        outline = OutlinePlanner.generate_outline(topic_input, aud, duration_minutes=duration_input, llm_client=client)
 
         # 2. Storyboard
-        storyboard = StoryboardBuilder.build_storyboard(outline, ledger_mgr)
+        storyboard = StoryboardBuilder.build_storyboard(outline, ledger_mgr, llm_client=client)
 
         # 3. Code Generation & Verification
         os.makedirs("demo_outputs", exist_ok=True)
@@ -138,13 +169,14 @@ if st.button("🚀 Run Adaptive Generation & Verification Pipeline", type="prima
         codes = {}
 
         for sec in storyboard.sections:
-            raw_code = ManimCoder.generate_section_code(sec, ledger_mgr)
+            raw_code = ManimCoder.generate_section_code(sec, ledger_mgr, llm_client=client)
             rep = VerificationCascade.verify_section(
                 code=raw_code,
                 section=sec,
                 ledger_manager=ledger_mgr,
                 output_dir="demo_outputs",
-                skip_execution=not render_manim
+                skip_execution=not render_manim,
+                llm_client=client
             )
 
             # Repair if needed
@@ -155,7 +187,8 @@ if st.button("🚀 Run Adaptive Generation & Verification Pipeline", type="prima
                     initial_report=rep,
                     section=sec,
                     ledger_manager=ledger_mgr,
-                    verifier_func=lambda c: VerificationCascade.verify_section(c, sec, ledger_mgr, output_dir="demo_outputs", skip_execution=not render_manim)
+                    verifier_func=lambda c: VerificationCascade.verify_section(c, sec, ledger_mgr, output_dir="demo_outputs", skip_execution=not render_manim, llm_client=client),
+                    llm_client=client
                 )
 
             codes[sec.id] = raw_code

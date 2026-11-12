@@ -7,6 +7,7 @@ adaptive repair, benchmarking, and launching the interactive Streamlit Studio.
 import sys
 import os
 import json
+from typing import Optional
 import click
 from rich.console import Console
 from rich.table import Table
@@ -43,10 +44,23 @@ def main():
 @click.option("--interactive", "-i", is_flag=True, default=False, help="Generate interactive active-recall HTML5 web companion.")
 @click.option("--language", "-l", default="en", help="Speech and subtitle language code (en, es, de, fr, hi, zh, ja).")
 @click.option("--output-dir", "-o", default="demo_outputs", help="Output directory for code and videos.")
-def generate(topic: str, audience: str, render: bool, narrate: bool, interactive: bool, language: str, output_dir: str):
+@click.option("--provider", "-p", default=None, help="LLM Provider (ollama, gemini, openai, anthropic, mock, auto).")
+@click.option("--model", "-m", default=None, help="LLM Model name (e.g. llama4, llama3.3, gpt-4o).")
+@click.option("--ollama-host", default=None, help="Ollama server host URL (default: http://localhost:11434).")
+def generate(topic: str, audience: str, render: bool, narrate: bool, interactive: bool, language: str, output_dir: str, provider: Optional[str] = None, model: Optional[str] = None, ollama_host: Optional[str] = None):
     """Generate complete educational video pipeline from topic."""
     aud = AudienceLevel(audience)
-    console.print(Panel(f"[bold cyan]AdaptManim Pipeline[/bold cyan]\n[white]Topic:[/white] {topic}\n[white]Audience:[/white] {aud.value}\n[white]Language:[/white] {language}", expand=False))
+    console.print(Panel(f"[bold cyan]AdaptManim Pipeline[/bold cyan]\n[white]Topic:[/white] {topic}\n[white]Audience:[/white] {aud.value}\n[white]Language:[/white] {language}\n[white]Provider:[/white] {provider or 'auto'} | [white]Model:[/white] {model or 'default'}", expand=False))
+
+    llm_client = None
+    if provider or model or os.environ.get("OLLAMA_MODEL") or os.environ.get("OLLAMA_HOST") or os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY"):
+        from adapt_manim.core.llm_client import UnifiedLLMClient
+        selected_provider = provider or ("ollama" if (os.environ.get("OLLAMA_MODEL") or os.environ.get("OLLAMA_HOST")) else "auto")
+        llm_client = UnifiedLLMClient(
+            provider=selected_provider,
+            model_name=model,
+            base_url=ollama_host
+        )
 
     # 1. Complexity Profile & Symbol Ledger
     profile = TopicComplexityProfiler.profile(topic, aud)
@@ -56,12 +70,12 @@ def generate(topic: str, audience: str, render: bool, narrate: bool, interactive
 
     # 2. Outline Planning
     with console.status("[bold green]Synthesizing Pedagogical Outline..."):
-        outline = OutlinePlanner.generate_outline(topic, aud)
+        outline = OutlinePlanner.generate_outline(topic, aud, llm_client=llm_client)
     console.print(f"[green]✓[/green] Outline generated: {len(outline.sections)} sections ({outline.target_duration_minutes} min).")
 
     # 3. Storyboard Construction
     with console.status("[bold green]Building Storyboard with 6x6 Anchors & Cue-Event Alignment..."):
-        storyboard = StoryboardBuilder.build_storyboard(outline, ledger_mgr)
+        storyboard = StoryboardBuilder.build_storyboard(outline, ledger_mgr, llm_client=llm_client)
     console.print(f"[green]✓[/green] Storyboard constructed with {sum(len(s.lecture_lines) for s in storyboard.sections)} synchronized lecture cues.")
 
     # 4. Code Synthesis & Multi-Tier Verification
@@ -71,14 +85,15 @@ def generate(topic: str, audience: str, render: bool, narrate: bool, interactive
 
     for sec in storyboard.sections:
         with console.status(f"[bold yellow]Synthesizing & Verifying {sec.id}..."):
-            raw_code = ManimCoder.generate_section_code(sec, ledger_mgr)
+            raw_code = ManimCoder.generate_section_code(sec, ledger_mgr, llm_client=llm_client)
             # Run verification cascade
             report = VerificationCascade.verify_section(
                 code=raw_code,
                 section=sec,
                 ledger_manager=ledger_mgr,
                 output_dir=output_dir,
-                skip_execution=not render
+                skip_execution=not render,
+                llm_client=llm_client
             )
 
             # If verification failed, run adaptive repair router
@@ -89,7 +104,8 @@ def generate(topic: str, audience: str, render: bool, narrate: bool, interactive
                     initial_report=report,
                     section=sec,
                     ledger_manager=ledger_mgr,
-                    verifier_func=lambda c: VerificationCascade.verify_section(c, sec, ledger_mgr, output_dir, skip_execution=not render)
+                    verifier_func=lambda c: VerificationCascade.verify_section(c, sec, ledger_mgr, output_dir, skip_execution=not render, llm_client=llm_client),
+                    llm_client=llm_client
                 )
                 console.print(f"[green]✓[/green] {sec.id} repaired successfully in {rh.total_attempts} attempts (tokens: {rh.total_tokens}).")
 

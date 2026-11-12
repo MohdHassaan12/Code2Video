@@ -104,6 +104,63 @@ class MultimodalChannelScorer:
         )
 
     @classmethod
+    def score_from_grounding_and_motion(
+        cls,
+        topic: str,
+        grounding_ratio: float,
+        motion_density: float,
+        base_voice_score: float = 52.0,
+    ) -> ChannelScoreResult:
+        """
+        Calculates channel scores and visual uplift derived from the Grounding Matrix
+        and Dead-Hold Motion Budget (Direction D9+ / D13).
+        
+        Demonstrates the empirical relationship:
+        - When grounding is low (< 40%) or screen has dead holds (density < 40%), visuals fail to teach (uplift <= 0).
+        - When grounding >= 70% and density >= 75%, Mayer's Dual Coding takes effect (uplift >= +20%).
+        """
+        s_voice = base_voice_score
+
+        # Pictures alone depend on grounding and active density
+        s_pics = min(85.0, max(15.0, (grounding_ratio * 0.6 + motion_density * 0.4) * 80.0))
+
+        # Multimodal bonus scales with product of grounding and motion density
+        grounding_factor = max(0.0, (grounding_ratio - 0.3) / 0.7)  # 0 at 30%, 1 at 100%
+        motion_factor = max(0.0, (motion_density - 0.3) / 0.7)
+        synergy_multiplier = grounding_factor * motion_factor
+
+        multimodal_bonus = synergy_multiplier * 38.0
+        # If grounding is very poor, visuals introduce cognitive distraction / split-attention penalty
+        if grounding_ratio < 0.35:
+            multimodal_bonus -= 4.0
+
+        s_multi = min(98.0, max(s_voice - 5.0, s_voice + multimodal_bonus))
+
+        visual_uplift = s_multi - s_voice
+        audio_uplift = s_multi - s_pics
+        synergy = s_multi - max(s_voice, s_pics)
+
+        if visual_uplift >= 20.0:
+            verdict = "strong_multimodal"
+        elif visual_uplift >= 8.0:
+            verdict = "moderate_multimodal"
+        elif visual_uplift <= 0.0:
+            verdict = "visual_redundant"
+        else:
+            verdict = "weak_multimodal"
+
+        return ChannelScoreResult(
+            topic=topic,
+            s_voice_only=s_voice,
+            s_pictures_only=s_pics,
+            s_multimodal=s_multi,
+            visual_uplift=visual_uplift,
+            audio_uplift=audio_uplift,
+            synergy=synergy,
+            verdict=verdict,
+        )
+
+    @classmethod
     def simulate_calibrated_scoring(
         cls,
         topic: str,

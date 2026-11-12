@@ -33,7 +33,11 @@ class UnifiedLLMClient:
 
         # Auto-detect provider if auto
         if self.provider == "auto":
-            if os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"):
+            if os.environ.get("OLLAMA_MODEL") or os.environ.get("OLLAMA_HOST"):
+                self.provider = "ollama"
+                self.model_name = model_name or os.environ.get("OLLAMA_MODEL", "llama4")
+                self.base_url = self.base_url or os.environ.get("OLLAMA_HOST") or "http://localhost:11434"
+            elif os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"):
                 self.provider = "gemini"
                 self.model_name = model_name or "gemini-2.5-pro"
             elif os.environ.get("OPENAI_API_KEY"):
@@ -45,6 +49,9 @@ class UnifiedLLMClient:
             else:
                 self.provider = "mock"
                 self.model_name = model_name or "offline-synthesizer"
+        elif self.provider == "ollama":
+            self.model_name = model_name or os.environ.get("OLLAMA_MODEL", "llama4")
+            self.base_url = self.base_url or os.environ.get("OLLAMA_HOST") or "http://localhost:11434"
         else:
             self.model_name = model_name or "gemini-2.5-pro"
 
@@ -114,7 +121,8 @@ class UnifiedLLMClient:
 
     def _call_ollama(self, prompt: str, temperature: float) -> str:
         """Call to local Ollama server."""
-        url = (self.base_url or "http://localhost:11434") + "/api/generate"
+        host = (self.base_url or "http://localhost:11434").rstrip("/")
+        url = f"{host}/api/generate"
         payload = {
             "model": self.model_name,
             "prompt": prompt,
@@ -123,7 +131,13 @@ class UnifiedLLMClient:
         }
         data = json.dumps(payload).encode("utf-8")
         req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            res_json = json.loads(resp.read().decode("utf-8"))
-            return res_json["response"]
+        try:
+            with urllib.request.urlopen(req, timeout=180) as resp:
+                res_json = json.loads(resp.read().decode("utf-8"))
+                return res_json.get("response", "")
+        except urllib.error.URLError as e:
+            raise RuntimeError(
+                f"Failed to connect to Ollama at {host}: {e}. "
+                f"Make sure Ollama is installed and running (e.g. 'ollama run {self.model_name}' or 'ollama serve')."
+            ) from e
 

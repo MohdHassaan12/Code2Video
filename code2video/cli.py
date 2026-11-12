@@ -34,13 +34,28 @@ def main():
 @click.option("--narrate", "-n", is_flag=True, default=False, help="Synthesize neural narration audio with dynamic audio-visual pacing.")
 @click.option("--interactive", "-i", is_flag=True, default=False, help="Generate interactive active-recall HTML5 web companion.")
 @click.option("--audit-vision", is_flag=True, default=False, help="Run zero-token static computer vision WCAG contrast and clutter audit.")
+@click.option("--audit-grounding", is_flag=True, default=False, help="Run Spoken-to-Visual Grounding Matrix audit (Direction D9+).")
+@click.option("--motion-budget", is_flag=True, default=False, help="Enforce dead-hold motion budget & dynamic telestration.")
 @click.option("--language", "-l", default="en", help="Speech and subtitle language code (en, es, de, fr, hi, zh, ja).")
 @click.option("--output-dir", "-o", default="demo_outputs/code2video", help="Output directory.")
-def generate(topic: str, audience: str, render: bool, narrate: bool, interactive: bool, audit_vision: bool, language: str, output_dir: str):
+@click.option("--provider", "-p", default=None, help="LLM Provider (ollama, gemini, openai, anthropic, mock, auto).")
+@click.option("--model", "-m", default=None, help="LLM Model name (e.g. llama4, llama3.3, gpt-4o).")
+@click.option("--ollama-host", default=None, help="Ollama server host URL (default: http://localhost:11434).")
+def generate(topic: str, audience: str, render: bool, narrate: bool, interactive: bool, audit_vision: bool, audit_grounding: bool, motion_budget: bool, language: str, output_dir: str, provider: Optional[str] = None, model: Optional[str] = None, ollama_host: Optional[str] = None):
     """Execute the full 3-stage Code2Video agent pipeline (Planner -> Coder -> Critic)."""
-    console.print(Panel(f"[bold cyan]Code2Video Generation Pipeline[/bold cyan]\nTopic: {topic}\nAudience: {audience}\nNarrate: {narrate} | Language: {language} | Interactive: {interactive}", expand=False))
+    console.print(Panel(f"[bold cyan]Code2Video Generation Pipeline[/bold cyan]\nTopic: {topic}\nAudience: {audience}\nNarrate: {narrate} | Language: {language} | Interactive: {interactive}\nGrounding: {audit_grounding} | Motion Budget: {motion_budget}\nProvider: {provider or 'auto'} | Model: {model or 'default'}", expand=False))
 
-    pipeline = Code2VideoPipeline(output_dir=output_dir)
+    llm_client = None
+    if provider or model or os.environ.get("OLLAMA_MODEL") or os.environ.get("OLLAMA_HOST") or os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY"):
+        from adapt_manim.core.llm_client import UnifiedLLMClient
+        selected_provider = provider or ("ollama" if (os.environ.get("OLLAMA_MODEL") or os.environ.get("OLLAMA_HOST")) else "auto")
+        llm_client = UnifiedLLMClient(
+            provider=selected_provider,
+            model_name=model,
+            base_url=ollama_host
+        )
+
+    pipeline = Code2VideoPipeline(llm_client=llm_client, output_dir=output_dir)
     with console.status("[bold green]Executing Planner, Coder (ScopeRefine), and Critic..."):
         res = pipeline.run(
             topic=topic,
@@ -49,6 +64,8 @@ def generate(topic: str, audience: str, render: bool, narrate: bool, interactive
             narrate=narrate,
             interactive=interactive,
             audit_vision=audit_vision,
+            audit_grounding=audit_grounding,
+            enforce_motion_budget=motion_budget,
             language=language
         )
 
@@ -72,6 +89,33 @@ def generate(topic: str, audience: str, render: bool, narrate: bool, interactive
         v_table.add_row("Visual Clutter Index", f"{clutter.get('clutter_index', 0.0)} / 100", f"{clutter.get('status', 'N/A')}")
         v_table.add_row("Composite Accessibility Score", f"[bold green]{va.get('composite_accessibility_score', 0.0)} / 100[/bold green]", "Zero-Token CV Gate")
         console.print(v_table)
+
+    # Spoken-to-Visual Grounding Matrix Output (Direction D9+)
+    if res.get("grounding_audit"):
+        ga = res["grounding_audit"]
+        g_table = Table(title="Spoken-to-Visual Grounding Matrix (Direction D9+)")
+        g_table.add_column("Metric", style="cyan")
+        g_table.add_column("Value", style="magenta")
+        g_table.add_column("Status / Threshold", style="green")
+        g_table.add_row("Total Spoken Entities", str(ga.get("total_spoken_entities", 0)), "Variables, formulas, terms")
+        g_table.add_row("Grounded Visual Entities", str(ga.get("grounded_count", 0)), "Synchronized in animation")
+        g_table.add_row("Ungrounded Spoken Terms", str(ga.get("ungrounded_count", 0)), "Talking-head warnings" if ga.get("ungrounded_count", 0) > 0 else "0 ungrounded")
+        g_table.add_row("Grounding Ratio", f"{ga.get('grounding_ratio', 0.0) * 100:.1f}%", "[bold green]PASS (>= 70%)[/bold green]" if ga.get("passed") else "[bold red]FAIL (< 70%)[/bold red]")
+        g_table.add_row("Mayer Contiguity Score", f"{ga.get('mayer_contiguity_score', 0.0):.1f} / 100", "Temporal audio-visual alignment")
+        console.print(g_table)
+
+    # Dead-Hold Motion Budget Output
+    if res.get("motion_budget"):
+        mb = res["motion_budget"]
+        m_table = Table(title="Dead-Hold Motion Budget & Density (Direction D9+)")
+        m_table.add_column("Parameter", style="cyan")
+        m_table.add_column("Measurement", style="magenta")
+        m_table.add_column("Standard", style="green")
+        m_table.add_row("Total Duration", f"{mb.get('total_duration_sec', 0.0):.1f}s", "Rendered timeline")
+        m_table.add_row("Active Motion Density", f"{mb.get('active_density_ratio', 0.0) * 100:.1f}%", "[bold green]PASS (>= 70%)[/bold green]" if mb.get("passed") else "[bold yellow]BELOW TARGET (< 70%)[/bold yellow]")
+        m_table.add_row("Max Dead Hold Span", f"{mb.get('max_dead_hold_sec', 0.0):.1f}s", "<= 2.5s (Khan Academy target)")
+        m_table.add_row("Detected Dead Holds", str(mb.get("dead_holds_count", 0)), "0 static stalls" if mb.get("dead_holds_count", 0) == 0 else f"{mb.get('dead_holds_count')} stalls repaired")
+        console.print(m_table)
 
     # Aesthetic & TeachQuiz Table
     aes = res["aesthetics"]
@@ -266,6 +310,92 @@ def playground(concept: str, output: str):
     else:
         p = MathPlaygroundGenerator.generate_svm_playground(output)
     console.print(f"[bold green]✓ Interactive Parameter Sandbox Exported:[/bold green] [cyan]{p}[/cyan]")
+
+
+@main.command()
+@click.option("--script", "-s", required=True, help="Path to Manim Python script.")
+@click.option("--narration", "-n", default=None, help="Spoken narration text or transcript.")
+@click.option("--topic", "-t", default="Educational Topic", help="Instructional topic name.")
+def grounding(script: str, narration: Optional[str], topic: str):
+    """Audit Spoken-to-Visual Grounding Matrix and Mayer Contiguity (Direction D9+)."""
+    from code2video.grounding_matrix import SpokenVisualGroundingMatrix
+
+    if not os.path.exists(script):
+        console.print(f"[red]Error: script file '{script}' not found.[/red]")
+        return
+
+    with open(script, "r") as f:
+        code_content = f.read()
+
+    narr_text = narration or "We analyze the function f of x, taking derivative df over dx as limit approaches zero."
+
+    console.print(Panel(f"[bold cyan]Spoken-to-Visual Grounding Audit[/bold cyan]\nScript: {script}\nTopic: {topic}", expand=False))
+    rep = SpokenVisualGroundingMatrix.compute_grounding_matrix(
+        topic=topic,
+        narration_text=narr_text,
+        code=code_content
+    )
+
+    t = Table(title=f"Grounding Matrix Evaluation: {topic}")
+    t.add_column("Spoken Term", style="cyan")
+    t.add_column("Category", style="yellow")
+    t.add_column("Spoken Sec", justify="right")
+    t.add_column("Visual Target", style="magenta")
+    t.add_column("Visual Sec", justify="right")
+    t.add_column("Drift (s)", justify="right")
+    t.add_column("Status", style="green")
+
+    for m in rep.matches[:12]:
+        status_color = "green" if m.is_grounded else "red"
+        t.add_row(
+            m.spoken_entity.term,
+            m.spoken_entity.category,
+            f"{m.spoken_entity.start_sec:.1f}s",
+            m.visual_entity.obj_name if m.visual_entity else "NONE",
+            f"{m.visual_entity.animation_timestamp:.1f}s" if m.visual_entity else "N/A",
+            f"{m.time_delta_sec:.1f}s" if m.visual_entity else "N/A",
+            f"[{status_color}]{m.status}[/{status_color}]"
+        )
+    console.print(t)
+
+    console.print(f"Grounding Ratio: [bold]{rep.grounding_ratio * 100:.1f}%[/bold] | Mayer Contiguity: [bold]{rep.mayer_contiguity_score:.1f}/100[/bold] | Verdict: {'[bold green]PASSED[/bold green]' if rep.passed else '[bold red]FAILED[/bold red]'}")
+
+
+@main.command()
+@click.option("--script", "-s", required=True, help="Path to Manim Python script.")
+@click.option("--inject-fixes", "-i", is_flag=True, default=False, help="Automatically inject dynamic telestrations into dead holds.")
+@click.option("--output", "-o", default=None, help="Output path for modified script.")
+def motion(script: str, inject_fixes: bool, output: Optional[str]):
+    """Analyze and enforce Dead-Hold Motion Budget (Khan Academy standard >= 75%)."""
+    from code2video.motion_budget import MotionBudgetMonitor
+
+    if not os.path.exists(script):
+        console.print(f"[red]Error: script file '{script}' not found.[/red]")
+        return
+
+    with open(script, "r") as f:
+        code_content = f.read()
+
+    rep = MotionBudgetMonitor.analyze_code_motion(code_content)
+    console.print(Panel(f"[bold cyan]Dead-Hold Motion Budget Audit[/bold cyan]\nScript: {script}\nTotal Duration: {rep.total_duration_sec:.1f}s | Active Density: {rep.active_density_ratio * 100:.1f}%", expand=False))
+
+    if rep.dead_holds:
+        t = Table(title=f"Detected Dead Holds ({len(rep.dead_holds)} static spans > 2.5s)")
+        t.add_column("Span (sec)", style="cyan")
+        t.add_column("Duration", style="magenta")
+        t.add_column("Detail", style="yellow")
+        for dh in rep.dead_holds:
+            t.add_row(f"{dh.start_sec:.1f}s - {dh.end_sec:.1f}s", f"{dh.duration_sec:.1f}s", dh.context)
+        console.print(t)
+    else:
+        console.print("[bold green]✓ No dead holds detected. Visual animation density satisfies pedagogical standard.[/bold green]")
+
+    if inject_fixes and rep.dead_holds:
+        enhanced_code, mods = MotionBudgetMonitor.inject_dynamic_telestration(code_content, rep.dead_holds)
+        out_path = output or script
+        with open(out_path, "w") as f:
+            f.write(enhanced_code)
+        console.print(f"[bold green]✓ Injected {len(mods)} dynamic telestrations to eliminate dead holds.[/bold green] Saved to: [cyan]{out_path}[/cyan]")
 
 
 @main.command()
