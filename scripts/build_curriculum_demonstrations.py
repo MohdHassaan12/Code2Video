@@ -1184,6 +1184,24 @@ def generate_master_showcase_html(topics):
           </div>
         </div>
 
+        <!-- Video Player Preview -->
+        <div style="background: #000; border: 1px solid var(--card-border); border-radius: 8px; overflow: hidden;">
+          <div style="background: var(--card-bg); padding: 10px 16px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.9rem; font-weight: 600; color: var(--accent);">
+              ▶ Rendered Video Demonstration Artifact & Whisper Synchronized Narration
+            </span>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">
+              Resolution: 480p15 &bull; Code2Video + Lessonforge Hybrid Engine
+            </span>
+          </div>
+          <div style="padding: 14px; background: #000; display: flex; justify-content: center;">
+            <video id="showcase-player" controls style="width: 100%; max-width: 820px; max-height: 420px; border-radius: 6px; outline: none; background: #000;">
+              <source src="complete_lecture.mp4" type="video/mp4">
+              Your browser does not support HTML5 video playback.
+            </video>
+          </div>
+        </div>
+
         <!-- End-to-End Pipeline Steps -->
         <div class="pipeline-grid">
           <!-- Step 1 & 2: Brief & Timeline -->
