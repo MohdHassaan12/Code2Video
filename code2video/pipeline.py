@@ -46,6 +46,7 @@ class Code2VideoPipeline:
         audit_vision: bool = False,
         audit_grounding: bool = False,
         enforce_motion_budget: bool = False,
+        learner_in_the_loop: bool = False,
         language: str = "en"
     ) -> Dict[str, Any]:
         """Executes full Code2Video pipeline from query to educational video."""
@@ -126,6 +127,37 @@ class Code2VideoPipeline:
             )
             grounding_report = g_rep.to_dict()
 
+        # Stage 4: Closed-Loop Learner-in-the-Loop Diagnostic Repair (Direction D2)
+        learner_loop_report = None
+        if learner_in_the_loop:
+            from code2video.learner_loop import ClosedLoopLearnerRepair
+            from code2video.grounding_matrix import SpokenVisualGroundingMatrix
+            from code2video.motion_budget import MotionBudgetMonitor
+
+            # Compute telemetry for learner diagnosis
+            all_narr = " ".join([line for s in storyboard.sections for line in s.lecture_lines])
+            g_rep_obj = SpokenVisualGroundingMatrix.compute_grounding_matrix(
+                topic=topic,
+                narration_text=all_narr,
+                code=full_script
+            )
+            m_rep_obj = MotionBudgetMonitor.analyze_code_motion(full_script)
+
+            section_codes, learner_rep = ClosedLoopLearnerRepair.execute_closed_loop_repair(
+                topic=topic,
+                storyboard=storyboard,
+                section_codes=section_codes,
+                grounding_report=g_rep_obj,
+                motion_report=m_rep_obj
+            )
+            # Re-assemble script with surgically remediated sections
+            full_script = runner.combine_section_codes(section_codes, topic)
+            with open(script_path, "w") as f:
+                f.write(full_script)
+
+            tokens_consumed += (len(learner_rep.repaired_sections) * 450)
+            learner_loop_report = learner_rep.to_dict()
+
         # Rendering
         master_video_path = None
         if render:
@@ -187,6 +219,7 @@ class Code2VideoPipeline:
             "vision_audit": vision_audit_results,
             "grounding_audit": grounding_report,
             "motion_budget": motion_report,
+            "learner_loop": learner_loop_report,
             "critique_traces": section_critique_traces,
             "tokens_consumed": tokens_consumed,
             "wall_clock_time_sec": round(elapsed, 2),

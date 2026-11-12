@@ -36,14 +36,15 @@ def main():
 @click.option("--audit-vision", is_flag=True, default=False, help="Run zero-token static computer vision WCAG contrast and clutter audit.")
 @click.option("--audit-grounding", is_flag=True, default=False, help="Run Spoken-to-Visual Grounding Matrix audit (Direction D9+).")
 @click.option("--motion-budget", is_flag=True, default=False, help="Enforce dead-hold motion budget & dynamic telestration.")
+@click.option("--learner-loop", is_flag=True, default=False, help="Run closed-loop Learner-in-the-Loop diagnostic repair (Direction D2).")
 @click.option("--language", "-l", default="en", help="Speech and subtitle language code (en, es, de, fr, hi, zh, ja).")
 @click.option("--output-dir", "-o", default="demo_outputs/code2video", help="Output directory.")
 @click.option("--provider", "-p", default=None, help="LLM Provider (ollama, gemini, openai, anthropic, mock, auto).")
 @click.option("--model", "-m", default=None, help="LLM Model name (e.g. llama4, llama3.3, gpt-4o).")
 @click.option("--ollama-host", default=None, help="Ollama server host URL (default: http://localhost:11434).")
-def generate(topic: str, audience: str, render: bool, narrate: bool, interactive: bool, audit_vision: bool, audit_grounding: bool, motion_budget: bool, language: str, output_dir: str, provider: Optional[str] = None, model: Optional[str] = None, ollama_host: Optional[str] = None):
+def generate(topic: str, audience: str, render: bool, narrate: bool, interactive: bool, audit_vision: bool, audit_grounding: bool, motion_budget: bool, learner_loop: bool, language: str, output_dir: str, provider: Optional[str] = None, model: Optional[str] = None, ollama_host: Optional[str] = None):
     """Execute the full 3-stage Code2Video agent pipeline (Planner -> Coder -> Critic)."""
-    console.print(Panel(f"[bold cyan]Code2Video Generation Pipeline[/bold cyan]\nTopic: {topic}\nAudience: {audience}\nNarrate: {narrate} | Language: {language} | Interactive: {interactive}\nGrounding: {audit_grounding} | Motion Budget: {motion_budget}\nProvider: {provider or 'auto'} | Model: {model or 'default'}", expand=False))
+    console.print(Panel(f"[bold cyan]Code2Video Generation Pipeline[/bold cyan]\nTopic: {topic}\nAudience: {audience}\nNarrate: {narrate} | Language: {language} | Interactive: {interactive}\nGrounding: {audit_grounding} | Motion Budget: {motion_budget} | Learner Loop: {learner_loop}\nProvider: {provider or 'auto'} | Model: {model or 'default'}", expand=False))
 
     llm_client = None
     if provider or model or os.environ.get("OLLAMA_MODEL") or os.environ.get("OLLAMA_HOST") or os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY"):
@@ -66,6 +67,7 @@ def generate(topic: str, audience: str, render: bool, narrate: bool, interactive
             audit_vision=audit_vision,
             audit_grounding=audit_grounding,
             enforce_motion_budget=motion_budget,
+            learner_in_the_loop=learner_loop,
             language=language
         )
 
@@ -116,6 +118,20 @@ def generate(topic: str, audience: str, render: bool, narrate: bool, interactive
         m_table.add_row("Max Dead Hold Span", f"{mb.get('max_dead_hold_sec', 0.0):.1f}s", "<= 2.5s (Khan Academy target)")
         m_table.add_row("Detected Dead Holds", str(mb.get("dead_holds_count", 0)), "0 static stalls" if mb.get("dead_holds_count", 0) == 0 else f"{mb.get('dead_holds_count')} stalls repaired")
         console.print(m_table)
+
+    # Learner-in-the-Loop Diagnostic Repair Output (Direction D2)
+    if res.get("learner_loop"):
+        lr = res["learner_loop"]
+        l_table = Table(title="Learner-in-the-Loop Diagnostic Probing & Surgical Repair (Direction D2)")
+        l_table.add_column("Stage / Dimension", style="cyan")
+        l_table.add_column("Measurement", style="magenta")
+        l_table.add_column("Pedagogical Impact", style="green")
+        l_table.add_row("Initial Diagnostic Score", f"{lr.get('initial_score', 0.0):.1f}%", "Pre-repair misconception baseline")
+        l_table.add_row("Post-Repair Score", f"[bold green]{lr.get('post_repair_score', 0.0):.1f}%[/bold green]", f"+{lr.get('relative_gain', 0.0):.1f}% verified gain")
+        l_table.add_row("Surgically Repaired Sections", ", ".join(lr.get("repaired_sections", [])) or "None (Clean Pass)", "Failing beats patched")
+        l_table.add_row("Preserved Sections (Untouched)", ", ".join(lr.get("preserved_sections", [])) or "None", f"{lr.get('compute_saved_percent', 0.0):.1f}% render compute saved")
+        l_table.add_row("Learner Diagnostic Invariant", f"[bold green]{lr.get('status', 'complete').upper()}[/bold green]", "Never lose a verified artifact")
+        console.print(l_table)
 
     # Aesthetic & TeachQuiz Table
     aes = res["aesthetics"]
@@ -396,6 +412,74 @@ def motion(script: str, inject_fixes: bool, output: Optional[str]):
         with open(out_path, "w") as f:
             f.write(enhanced_code)
         console.print(f"[bold green]✓ Injected {len(mods)} dynamic telestrations to eliminate dead holds.[/bold green] Saved to: [cyan]{out_path}[/cyan]")
+
+
+@main.command()
+@click.option("--topic", "-t", required=True, help="Instructional topic to diagnose and repair.")
+@click.option("--output-dir", "-o", default="demo_outputs/learner_repair", help="Output directory.")
+def learner_repair(topic: str, output_dir: str):
+    """Execute closed-loop Learner-in-the-Loop diagnostic probing and surgical repair (Direction D2)."""
+    from code2video.planner import Code2VideoPlanner
+    from code2video.coder import Code2VideoCoder
+    from code2video.critic import Code2VideoCritic
+    from code2video.learner_loop import ClosedLoopLearnerRepair, DiagnosticProbeGenerator
+    from code2video.grounding_matrix import SpokenVisualGroundingMatrix
+    from code2video.motion_budget import MotionBudgetMonitor
+    from adapt_manim.coding.parallel_runner import ParallelRunner
+
+    os.makedirs(output_dir, exist_ok=True)
+    console.print(Panel(f"[bold cyan]Learner-in-the-Loop Diagnostic Repair (Direction D2)[/bold cyan]\nTopic: {topic}", expand=False))
+
+    planner = Code2VideoPlanner()
+    coder = Code2VideoCoder()
+    critic = Code2VideoCritic()
+
+    outline = planner.generate_outline(topic)
+    storyboard = planner.generate_storyboards(outline)
+
+    # Synthesize draft sections
+    section_codes = {}
+    with console.status("[bold green]Synthesizing initial draft sections..."):
+        for sec in storyboard.sections:
+            raw = coder.synthesize_section_code(sec)
+            refined, _, _ = critic.analyze_layout_and_refine(raw, sec)
+            section_codes[sec.id] = refined
+
+    runner = ParallelRunner(output_dir=output_dir)
+    full_script = runner.combine_section_codes(section_codes, topic)
+
+    # Diagnostic Probing & Surgical Repair
+    all_narr = " ".join([line for s in storyboard.sections for line in s.lecture_lines])
+    g_rep = SpokenVisualGroundingMatrix.compute_grounding_matrix(topic, all_narr, full_script)
+    m_rep = MotionBudgetMonitor.analyze_code_motion(full_script)
+
+    with console.status("[bold green]Executing Learner Diagnostic Probes & Surgical Chapter Remediation..."):
+        repaired_codes, report = ClosedLoopLearnerRepair.execute_closed_loop_repair(
+            topic=topic,
+            storyboard=storyboard,
+            section_codes=section_codes,
+            grounding_report=g_rep,
+            motion_report=m_rep
+        )
+
+    repaired_script = runner.combine_section_codes(repaired_codes, topic)
+    out_script_path = os.path.join(output_dir, "learner_repaired_lecture.py")
+    with open(out_script_path, "w") as f:
+        f.write(repaired_script)
+
+    table = Table(title=f"Learner-in-the-Loop Diagnostic Repair Report: {topic}")
+    table.add_column("Diagnostic Dimension", style="cyan")
+    table.add_column("Value", style="magenta")
+    table.add_column("Significance", style="green")
+
+    table.add_row("Pre-Repair Diagnostic Score", f"{report.initial_score:.1f}%", "Student misconception baseline")
+    table.add_row("Post-Repair Diagnostic Score", f"[bold green]{report.post_repair_score:.1f}%[/bold green]", f"+{report.relative_gain:.1f}% gain on held-out probes")
+    table.add_row("Repaired Sections", ", ".join(report.repaired_sections) or "None (Clean Pass)", "Surgically patched")
+    table.add_row("Preserved Sections", ", ".join(report.preserved_sections) or "None", f"{report.compute_saved_percent:.1f}% compile compute saved")
+    table.add_row("Status", f"[bold green]{report.status.upper()}[/bold green]", "Non-regression invariant satisfied")
+
+    console.print(table)
+    console.print(f"[bold green]✓ Repaired lecture script saved to:[/bold green] [cyan]{out_script_path}[/cyan]")
 
 
 @main.command()
