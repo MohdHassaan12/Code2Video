@@ -1,0 +1,481 @@
+{
+ "name": "reflection",
+ "from_lesson": "20261012-154827-79f310",
+ "brief": {
+  "topic": "Laws of reflection of light",
+  "grade": 8,
+  "audience": "Class 8 students",
+  "level": "standard",
+  "goal": "Draw the incident ray, the normal and the reflected ray for a plane mirror and use angle of incidence equals angle of reflection",
+  "style": "tutor",
+  "language": "en-IN",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "worked_examples"
+ },
+ "card": {
+  "big_idea": {
+   "text": "At the point where light meets a plane mirror, it leaves on the other side of the normal at the same angle, and all three lines stay on one flat plane.",
+   "cites": [
+    "S1#5",
+    "S1#6",
+    "S1#13"
+   ]
+  },
+  "why_it_matters": {
+   "text": "This lets you predict exactly which direction a beam will travel after it bounces from a mirror.",
+   "cites": [
+    "S1#3",
+    "S1#6",
+    "S2#4"
+   ]
+  },
+  "the_why": {
+   "text": "When the incoming beam is moved to a new angle, the outgoing beam moves with it so that the two angles, measured from the perpendicular normal, match. Repeated measurements show this matching each time, while bending the paper out of the beam's flat plane makes the reflected beam no longer appear there.",
+   "cites": [
+    "S1#3",
+    "S1#5",
+    "S1#6"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Draw and label an incident ray, a normal, and a reflected ray at a plane mirror.",
+    "level": "apply",
+    "checked_by": "try_it"
+   },
+   {
+    "can": "Work out and draw the reflected ray when an angle of incidence is given from the normal.",
+    "level": "apply",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Explain why an angle measured from the mirror surface is not the angle of incidence.",
+    "level": "understand",
+    "checked_by": "q1"
+   },
+   {
+    "can": "State how the incident ray, normal, and reflected ray are arranged in one plane.",
+    "level": "understand",
+    "checked_by": "q3"
+   }
+  ],
+  "picture": {
+   "text": "Start with one horizontal plane-mirror line and a dot O on it. An incoming arrow slants down to O; then a dashed vertical normal grows through O, followed by an outgoing arrow on the opposite side. Two equal angle arcs grow between each ray and the normal; finally, a tilted out-of-page candidate ray is crossed out to show that the real three lines lie on the page together.",
+   "cites": [
+    "S1#4",
+    "S1#5",
+    "S1#6",
+    "S2#3",
+    "S2#5"
+   ],
+   "standard": "Plane-mirror ray diagram: mirror surface as a straight line, point of incidence "
+  },
+  "diagram_ask": "Standard plane-mirror ray diagram on a white page: a horizontal mirror line with point O, a dashed vertical normal through O at a right angle, one arrowed incident ray approaching O from upper left, and one arrowed reflected ray leaving O toward upper right; label mirror, O, normal, incident ray, an",
+  "needs_first": [
+   {
+    "text": "Recognise a right angle and use a ruler to draw straight lines.",
+    "cites": [
+     "S1#4",
+     "S1#14"
+    ]
+   },
+   {
+    "text": "Know that light can be represented by a straight arrow called a ray.",
+    "cites": [
+     "S1#4",
+     "S2#2"
+    ]
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "I should measure the angle between the ray and the mirror surface.",
+    "why_it_fails": "The angles in the law are defined from the normal, which is perpendicular to the mirror, not from the mirror line.",
+    "cites": [
+     "S1#5",
+     "S3#2",
+     "S4#2"
+    ]
+   },
+   {
+    "mistake": "The reflected ray can bounce away in any direction.",
+    "why_it_fails": "Its direction is fixed by making its angle from the normal equal to the incoming angle from the normal.",
+    "cites": [
+     "S2#3",
+     "S2#4"
+    ]
+   },
+   {
+    "mistake": "If a ray travels along the normal, its angle of incidence is 90 degrees.",
+    "why_it_fails": "A ray along the normal makes no turn away from the normal, so both angles are zero degrees.",
+    "cites": [
+     "S1#5",
+     "S1#14"
+    ]
+   },
+   {
+    "mistake": "The reflected ray may leave the flat sheet of the incident ray and normal.",
+    "why_it_fails": "The three lines must lie in the same plane; the bent-paper observation shows the beam is not found on the newly tilted plane.",
+    "cites": [
+     "S1#6",
+     "S2#5"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "A light ray reaches a plane mirror at 30 degrees from a line perpendicular to the mirror. Where do you predict the ray leaves: 30 degrees on the other side, 60 degrees on the other side, or any direction?",
+   "guesses": [
+    "It leaves at 30 degrees on the other side.",
+    "It leaves at 60 degrees because that is the angle from the mirror.",
+    "It could leave in any direction."
+   ],
+   "answer": "It leaves at 30 degrees on the other side of the normal, in the same flat plane.",
+   "cites": [
+    "S1#5",
+    "S1#6",
+    "S2#3",
+    "S2#4"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the mirror line, point O, a dashed perpendicular, and an incoming ray marked 30 degrees from that perpendicular. Ask where the ray will leave: 30 degrees, 60 degrees, or anywhere.",
+    "cites": [
+     "S1#5",
+     "S2#3"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Hold the three possible outgoing arrows on screen and ask the learner to choose one before seeing the result.",
+    "cites": [
+     "S2#3",
+     "S2#4"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Draw a thin beam arriving at a plane mirror, then shift the incoming beam to a second angle and show that its reflected beam shifts too.",
+    "cites": [
+     "S1#3",
+     "S1#4"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Place a protractor first from the mirror surface and then from the perpendicular line. Ask which reference gives the two matching arcs, then show that the matching measurements are from the perpendicular.",
+    "cites": [
+     "S1#5",
+     "S1#6",
+     "S3#2"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Build the diagram one line at a time: the arrow arriving is the incident ray; the perpendicular through O is the normal; the arrow leaving is the reflected ray; label the two normal-based angles i and r.",
+    "cites": [
+     "S1#4",
+     "S1#5"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "With an incident angle of 40 degrees from the normal, draw the reflected ray by copying a 40-degree arc onto the opposite side. State the rule only after the equal arcs are visible: angle of incidence equals angle of reflection.",
+    "cites": [
+     "S1#5",
+     "S1#6",
+     "S4#1"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Place two diagrams side by side: one measures 40 degrees from the normal and works; the other measures 40 degrees from the mirror surface and produces the wrong ray. Briefly show a crossed-out ray leaving the page, then restore the reflected ray on the page to name the second law.",
+    "cites": [
+     "S1#6",
+     "S2#5",
+     "S3#2",
+     "S4#2"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Show an incident ray at 25 degrees from the normal and ask the learner to decide the reflected angle and select the correct outgoing arrow.",
+    "cites": [
+     "S1#6",
+     "S1#14"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "Ask the learner to use paper, ruler, and a printed 35-degree guide from the lesson to construct one reflected ray from a given incident ray, then explain why their two marked angles match.",
+    "cites": [
+     "S1#5",
+     "S1#14"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Leave the finished ray diagram visible and ask the learner to say: 'I measure from the normal, and the two angles are equal; the incident ray, normal, and reflected ray are in one plane.'",
+    "cites": [
+     "S1#13"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "A ray makes 40 degrees with the normal. Which label belongs on the reflected angle?",
+    "options": [
+     "40 degrees",
+     "50 degrees",
+     "90 degrees"
+    ],
+    "answer_index": 0,
+    "explain": "The reflected ray must make the same angle with the normal as the incident ray does.",
+    "cites": [
+     "S1#5",
+     "S1#6"
+    ]
+   },
+   {
+    "question": "A ray is 40 degrees from the mirror surface. What is its angle of incidence?",
+    "options": [
+     "50 degrees",
+     "40 degrees",
+     "130 degrees"
+    ],
+    "answer_index": 0,
+    "explain": "The normal is 90 degrees to the mirror, so the angle from the normal is 90 minus 40, which is 50 degrees.",
+    "cites": [
+     "S1#5",
+     "S1#14",
+     "S4#2"
+    ]
+   },
+   {
+    "question": "Which reflected ray obeys the second law when the incident ray and normal are drawn on a flat sheet of paper?",
+    "options": [
+     "The ray drawn on that same sheet, on the other side of the normal",
+     "A ray that rises out of the sheet",
+     "A ray drawn anywhere as long as it looks symmetrical"
+    ],
+    "answer_index": 0,
+    "explain": "The incident ray, normal, and reflected ray must all lie in the same plane.",
+    "cites": [
+     "S1#6",
+     "S2#5"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Draw the matching bounce",
+   "kind": "paper",
+   "materials": [
+    "plain paper",
+    "pencil",
+    "ruler",
+    "a printed or copied 35-degree angle guide from the lesson"
+   ],
+   "stands_for": "The horizontal line is the mirror, the upright line is the normal at the hit point, and each arrowed line is the path of one light ray.",
+   "predict": "Before drawing the reflected ray, predict: if the incident ray is 35 degrees from the normal, what angle from the normal will the reflected ray make?",
+   "steps": [
+    "Draw a horizontal mirror line and mark a point O on it.",
+    "Use a ruler to draw a normal through O at 90 degrees to the mirror.",
+    "Copy the given 35-degree incident-ray guide so its arrow ends at O.",
+    "Copy the same 35-degree guide on the other side of the normal and add an outgoing arrow.",
+    "Label the two normal-based angles i and r."
+   ],
+   "observe": "Both marked angles should be 35 degrees, with the two rays on opposite sides of the normal and all three lines on the paper.",
+   "question": "Why did you copy the angle from the normal rather than from the mirror line?",
+   "expected": "Because the normal is the agreed perpendicular reference line for reflection, and the law compares the angle of incidence and angle of reflection from that line; here i equals r, both 35 degrees.",
+   "write": "Write or say: 'My incident angle is 35 degrees and my reflected angle is 35 degrees.' Then write or say: 'They are equal because both are measured from the normal.'",
+   "in_class": "Pairs share one sheet and the teacher gives each pair a small 35-degree angle guide. Put on the board: 'Mirror line; normal at O; incident angle = 35 degrees; draw r.' After four minutes ask, 'What must be equal, and what line do we measure from?' If many pairs answer 55 degrees, they are measuring from the mirror surface instead of the normal; if their outgoing rays leave the page drawing, revisit the same-plane law.",
+   "cites": [
+    "S1#5",
+    "S1#6",
+    "S1#14"
+   ]
+  },
+  "leave_out": [
+   "Reflection from concave and convex mirrors, although the same laws still apply there.",
+   "Images formed by mirrors and practical uses of curved mirrors.",
+   "Diffuse reflection from rough surfaces.",
+   "Multi-mirror geometry problems and triangle-angle calculations."
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "The stepwise construction from incoming ray to normal to equal-angle outgoing ray, plus the explicit same-plane contrast.",
+    "left": "The broad review of luminous and non-luminous objects, because this short lesson needs its time for drawing and using the mirror rule."
+   },
+   {
+    "source": "S3",
+    "took": "The useful contrast between angles from the mirror and angles from the normal, using a single evolving ray picture.",
+    "left": "The explanation of smooth versus rough surfaces, because it is a separate application beyond the stated drawing goal."
+   },
+   {
+    "source": "S4",
+    "took": "A simple numerical angle case and the complementary-angle check for a ray angle given from the mirror surface.",
+    "left": "The two-mirror triangle problem, because its geometry load is too high for a first three-minute Class 8 lesson."
+   }
+  ],
+  "uncited": [
+   "The printed or copied 35-degree angle guide used in the paper task."
+  ],
+  "teacher_talk": [
+   "starts by connecting the current lesson directly to the previous one",
+   "asks rhetorical questions to transition between topics",
+   "uses conversational checks for understanding like ok so and I hope both the laws are clear now",
+   "walks through diagrammatic adjustments step by step",
+   "opens with an imaginative scenario of looking at a mirror from a sideways angle",
+   "uses conversational questions to bridge concepts"
+  ],
+  "source_flows": {
+   "S1": [
+    "activation",
+    "integration",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration",
+    "demonstration",
+    "assessment"
+   ],
+   "S2": [
+    "activation",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ],
+   "S4": [
+    "motivation",
+    "demonstration",
+    "integration",
+    "application"
+   ]
+  },
+  "topic": "Laws of reflection of light",
+  "asked": "Laws of reflection of light",
+  "klass": 8,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Curiosity, Class 8, chapter 10: chapter 10",
+    "url": "https://ncert.nic.in/textbook/pdf/hecu110.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Sri Chaitanya Academy NEET: What are the Laws of Reflection of Light? | Physics | Don't Memorise",
+    "url": "https://www.youtube.com/watch?v=OrobTDEYs2M",
+    "note": "English lecture, 4 min, automatic captions"
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "Science Sauce: Law of Reflection",
+    "url": "https://www.youtube.com/watch?v=V0Z_nk5JS_E",
+    "note": "English lecture, 3 min, automatic captions"
+   },
+   {
+    "id": "S4",
+    "kind": "lecture",
+    "title": "The Organic Chemistry Tutor: Law of Reflection - Geometric Optics - Physics",
+    "url": "https://www.youtube.com/watch?v=yscrBkfPRyc",
+    "note": "English lecture, 3 min, automatic captions"
+   }
+  ],
+  "problems": [
+   "the task uses 'a printed or copied 35-degree angle guide from the lesson', which is not on the list of things found at home or in a school bag"
+  ],
+  "skill_version": "e9709f116b",
+  "pack_digest": "5853ec8aa6eebce9",
+  "diagram": {
+   "ask": "A standard diagram of a plane mirror ray diagram showing a horizontal mirror line, an incident ray, a reflected ray, a dashed normal line, and two equal angle arcs.",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-eafce7732e/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-eafce7732e/whole.png",
+   "points": {
+    "normal": {
+     "name": "Normal",
+     "box": [
+      0.4447,
+      0.0115,
+      0.5376,
+      0.0606
+     ]
+    },
+    "incident_ray": {
+     "name": "Incident ray",
+     "box": [
+      0.0108,
+      0.1234,
+      0.1669,
+      0.1859
+     ]
+    },
+    "reflected": {
+     "name": "Reflected",
+     "box": [
+      0.8175,
+      0.1227,
+      0.9367,
+      0.1723
+     ]
+    },
+    "ray": {
+     "name": "ray",
+     "box": [
+      0.9528,
+      0.1396,
+      0.9905,
+      0.1859
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   },
+   "shows": "",
+   "visual_kind": "standard diagram",
+   "holds": {
+    "things": [
+     "a dark blue line with an arrow, top left to center",
+     "a dark blue line with an arrow, center to top right",
+     "a horizontal black line at the bottom",
+     "a series of short diagonal lines below the horizontal line",
+     "a dashed vertical line from top center to the horizontal line",
+     "a black dot at the center of the horizontal line",
+     "an orange arc between the left blue line and the dashed line",
+     "an orange arc between the right blue line and the dashed line"
+    ],
+    "print": [
+     "Normal",
+     "Incident ray",
+     "Reflected ray",
+     "i",
+     "r",
+     "Point of incidence",
+     "Plane mirror"
+    ]
+   }
+  }
+ }
+}

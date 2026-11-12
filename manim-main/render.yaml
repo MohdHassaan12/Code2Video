@@ -1,0 +1,39 @@
+# Render Blueprint for lessonforge: one Docker web service with a persistent disk.
+# How to use it: lessonforge/docs/DEPLOY_RENDER.md
+services:
+  - type: web
+    name: lessonforge
+    runtime: docker
+    dockerContext: ./lessonforge
+    dockerfilePath: ./lessonforge/Dockerfile
+    # Manim, LaTeX and headless Chromium together need about 2 GB; the 512 MB plans run out of memory.
+    plan: standard
+    region: singapore
+    autoDeploy: false          # a deploy restarts the server and stops any lesson being made
+    disk:
+      name: lessonforge-data
+      mountPath: /data          # lessons, caches, the spend ledger (LESSONFORGE_HOME=/data/workspace)
+      sizeGB: 10
+    envVars:
+      - key: LESSONFORGE_ACCESS_TOKEN
+        generateValue: true     # Render makes a random token; open the app once with ?token=<it>
+      - key: LESSONFORGE_REVIEW_TOKEN
+        generateValue: true
+      - key: OPENROUTER_API_KEY
+        sync: false             # asked for when the Blueprint is created
+      - key: OPENROUTER_BUDGET_USD
+        value: "10"
+      - key: HARNESS_WORKERS
+        value: "1"              # one lesson at a time fits the 2 GB plan
+      - key: LESSONFORGE_RENDER_JOBS
+        value: "2"              # chapters filmed at once; all seven together ran out of 2 GB (2026-11-02)
+      - key: DIAGRAM_API_URL
+        sync: false
+      - key: DIAGRAM_API_KEY
+        sync: false
+      - key: INDIC_TTS_URL
+        sync: false
+      - key: INDIC_TTS_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false

@@ -1,0 +1,215 @@
+{
+ "id": "inertia",
+ "names": [
+  "inertia",
+  "law of inertia",
+  "newton's first law",
+  "newtons first law of motion",
+  "first law of motion",
+  "coin and card experiment",
+  "why do we fall forward when a bus stops"
+ ],
+ "subject": "science",
+ "classes": [
+  8,
+  9
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "drawing",
+  "figure": null,
+  "asks": [
+   "A drawing of a coin resting on a card on top of a glass, and beside it the same glass after the card is flicked away sideways, the coin fallen into the glass.",
+   "A drawing of a toy cart carrying a wooden block, and beside it the same cart stopped suddenly against a book, with the block tipped forward and an arrow showing the cart's motion."
+  ],
+  "why": "The coin dropping straight into the glass shows an object staying where it was while the thing under it is pulled away."
+ },
+ "card": {
+  "big_idea": {
+   "text": "An object keeps doing what it is doing, staying still or moving straight at the same speed, until a force makes it change.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Predict what a resting or moving object does when the thing under it is suddenly moved",
+    "level": "apply",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Explain why standing passengers fall backwards when a bus starts suddenly",
+    "level": "understand",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Explain why the coin drops into the glass",
+    "level": "understand",
+    "checked_by": "try_it"
+   }
+  ],
+  "why_it_matters": {
+   "text": "It explains why you lurch when a bus starts or stops, and why seat belts and helmets save lives.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "Changing how something moves needs a push or a pull on it; a fast flick pulls the card away before it can drag the coin along, so the coin stays where it was and, with nothing under it, gravity pulls it straight down.",
+   "cites": []
+  },
+  "picture": {
+   "text": "A coin resting on a card on top of a glass. A finger flicks the card hard sideways: the card shoots away, and the coin stays in the same place for an instant, then drops straight down into the glass. A slow push is shown beside it: the card drags the coin off with it.",
+   "standard": "coin on a card on a glass (card flicked away)",
+   "cites": []
+  },
+  "diagram_ask": "A drawing of a coin resting on a card on top of a glass, and beside it the same glass after the card is flicked away sideways, the coin fallen into the glass.",
+  "needs_first": [
+   {
+    "text": "A force is a push or a pull.",
+    "cites": []
+   },
+   {
+    "text": "Friction is the force between two surfaces that rub.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Moving things stop on their own because their push runs out.",
+    "why_it_fails": "A rolling ball stops because friction and air push against it; on a smoother floor it rolls much further.",
+    "cites": []
+   },
+   {
+    "mistake": "An object moves along with whatever it is resting on.",
+    "why_it_fails": "It moves only if a force acts on it; a fast flick gives the card almost no time to push the coin, so the coin stays.",
+    "cites": []
+   },
+   {
+    "mistake": "A force is needed to keep a thing moving at the same speed.",
+    "why_it_fails": "A force is needed only to change motion; with no friction a moving thing would go on for ever without one.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "A coin rests on a card on top of a glass. If you flick the card away very fast, where will the coin go?",
+   "guesses": [
+    "Off with the card",
+    "It will jump up",
+    "Straight down into the glass"
+   ],
+   "answer": "Straight down into the glass: it stays where it was while the card is pulled away.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the coin on the card on the glass and ask where the coin will go when the card is flicked fast. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Flick the card: the card flies off and the coin drops straight into the glass.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Push the card slowly instead: the coin rides off with the card. Ask: what is different?",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "A slow push lets friction drag the coin along; a fast flick gives no time for that, so no force moves the coin sideways and it stays.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name it inertia: a thing keeps doing what it is doing until a force changes it.",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "A bus starts suddenly: your feet move with the floor, but your body stays where it was, so you fall backwards.",
+    "cites": []
+   },
+   {
+    "move": "your_turn",
+    "what": "A bus brakes suddenly: the learner predicts which way the passengers lean, and why, before it is shown.",
+    "cites": []
+   },
+   {
+    "move": "try_it",
+    "what": "Set the task: coin, card and glass at home.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says why the coin falls into the glass.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "You flick the card from under the coin very fast. Where does the coin go?",
+    "options": [
+     "Straight down into the glass",
+     "Off sideways with the card",
+     "It stops and floats where it was"
+    ],
+    "answer_index": 0,
+    "explain": "No sideways force reaches the coin in that instant, so it stays put, and with the card gone gravity pulls it down.",
+    "cites": []
+   },
+   {
+    "question": "A bus starts suddenly. Which way do standing passengers lean?",
+    "options": [
+     "Backwards, because their bodies stay where they were while their feet move forward",
+     "Forwards, pushed by the bus",
+     "They do not move at all"
+    ],
+    "answer_index": 0,
+    "explain": "The floor pulls the feet forward, but no force acts on the upper body at first, so it stays behind.",
+    "cites": []
+   },
+   {
+    "question": "A ball rolled on a floor slows down and stops. Why?",
+    "options": [
+     "Friction from the floor and air pushes against it",
+     "Its push runs out",
+     "Moving things always stop by themselves"
+    ],
+    "answer_index": 0,
+    "explain": "A force is needed to change motion; friction is that force, and on a smoother floor the ball goes further.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "Coin, card and glass",
+   "kind": "hands",
+   "materials": [
+    "glass",
+    "postcard-size card",
+    "coin"
+   ],
+   "stands_for": "The coin is the resting object; the card is what moves under it; the flick is a sudden pull.",
+   "predict": "When you flick the card away fast, will the coin go with the card or fall into the glass?",
+   "steps": [
+    "Put the card flat on top of the glass.",
+    "Place the coin in the middle of the card, over the mouth of the glass.",
+    "Flick the edge of the card hard and fast with your finger, sideways.",
+    "Set it up again and this time push the card slowly."
+   ],
+   "observe": "With the fast flick the coin drops straight into the glass; with the slow push the coin moves off with the card.",
+   "question": "Why does the coin fall into the glass when the card is flicked fast, but move with it when pushed slowly?",
+   "expected": "Because a fast flick gives friction no time to pull the coin sideways, so the coin stays where it was and falls straight down, while a slow push lets friction drag it along.",
+   "write": "A resting thing stays at rest until a force moves it. The fast flick gave no force to the coin, so it stayed and fell.",
+   "in_class": "Pairs, one glass, card and coin each. The teacher draws the coin on the card on the glass on the board and asks for predictions before anyone flicks. Ask: why did the slow push take the coin along? A pair whose coin flew off flicked upward or too slowly.",
+   "cites": []
+  },
+  "leave_out": [
+   "mass as the measure of inertia in numbers",
+   "Newton's second and third laws",
+   "momentum"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

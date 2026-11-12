@@ -449,3 +449,4 @@ class InteractivePlayerGenerator:
             f.write(html_template)
 
         return output_path
+

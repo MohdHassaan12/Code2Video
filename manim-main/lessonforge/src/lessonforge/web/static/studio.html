@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio — STEM Animation Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/studio.css?v=3">
+  <!-- KaTeX for math rendering in the blueprint preview -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+        integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+          integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- ═══════════════════ HOME / LIBRARY ═══════════════════ -->
+<section id="view-home">
+  <header class="home-header">
+    <div class="brand"><span class="brand-mark">◆</span> <b>Studio</b> <span>STEM Animation Lab</span></div>
+    <nav class="top-nav">
+      <a href="/">Classic UI</a>
+      <a href="/timeline">Timeline</a>
+      <a href="/bulk">Bulk</a>
+    </nav>
+  </header>
+
+  <div class="home-body">
+    <div class="brief-card">
+      <div class="brief-head">
+        <span class="t-eyebrow">New video</span>
+        <h1>Start with a brief.</h1>
+        <p>You'll get a storyboard to review scene by scene — edit the visuals,
+           motion and narration before anything renders.</p>
+      </div>
+
+      <div class="field">
+        <label for="brief-topic">Topic or concept</label>
+        <input type="text" id="brief-topic" placeholder="e.g. Pythagorean Theorem, Refraction, Dalton's Law" autocomplete="off">
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="brief-style">Visual style</label>
+          <select id="brief-style">
+            <option value="3blue1brown/minimalist/neon">3Blue1Brown Neon</option>
+            <option value="chalkboard/chalk/pastel">Chalkboard Pastel</option>
+            <option value="cyberpunk/retrowave/orange">Cyberpunk Retrowave</option>
+            <option value="minimalist/dark/mono">Minimalist Mono</option>
+            <option value="powerpoint/clean">PowerPoint Clean</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="brief-persona">Language persona</label>
+          <select id="brief-persona">
+            <option value="hybrid">Hinglish voice, English screen</option>
+            <option value="native">Native — voice &amp; screen</option>
+            <option value="en">English only</option>
+          </select>
+        </div>
+      </div>
+
+      <details class="fold">
+        <summary>Voice &amp; render options</summary>
+
+        <div class="row-3">
+          <div class="field">
+            <label for="brief-language">Language</label>
+            <select id="brief-language"></select>
+          </div>
+          <div class="field">
+            <label for="brief-provider">Provider</label>
+            <select id="brief-provider">
+              <option value="sarvam">Sarvam AI</option>
+              <option value="gemini">Gemini TTS</option>
+              <option value="edge">Edge TTS (Free)</option>
+              <option value="local">Local (Kokoro)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="brief-speaker">Voice <button id="brief-audition" type="button" class="btn tiny" style="margin-left: 6px; padding: 1px 6px; font-size: 11px;" title="Sample this voice">▶ Listen</button></label>
+            <select id="brief-speaker"></select>
+          </div>
+        </div>
+        <div id="tts-note" class="note hidden"></div>
+
+        <div class="field">
+          <label for="brief-tech">Technical terms in narration</label>
+          <select id="brief-tech">
+            <option value="english">English only — never re-said natively</option>
+            <option value="bilingual">Bilingual — native equivalent once</option>
+            <option value="native">Native — translated throughout</option>
+          </select>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label for="brief-quality">Render quality</label>
+            <select id="brief-quality">
+              <option value="l">Low — fast (480p)</option>
+              <option value="m">Medium (720p)</option>
+              <option value="h">High — slow (1080p)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="brief-aspect">Aspect ratio</label>
+            <select id="brief-aspect">
+              <option value="widescreen">16:9 widescreen</option>
+              <option value="vertical">9:16 vertical</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="brief-yt">Reference YouTube URL <span class="opt">— grounds the storyboard in its transcript</span></label>
+          <input type="text" id="brief-yt" placeholder="https://www.youtube.com/watch?v=…" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="brief-sources">Source material <span class="opt">— one per line: YouTube links, article URLs, or pasted notes. Facts are drawn from these.</span></label>
+          <textarea id="brief-sources" rows="4" placeholder="https://youtu.be/…&#10;https://en.wikipedia.org/wiki/Projectile_motion&#10;Or paste notes directly — anything that is not a URL is treated as text."></textarea>
+          <button id="brief-check-sources" type="button" class="btn small" style="margin-top:8px">Check sources</button>
+          <div id="brief-sources-out" class="opt" style="margin-top:8px"></div>
+        </div>
+      </details>
+
+      <details class="fold">
+        <summary>AI Model &amp; Intelligence <span class="opt">— Anthropic, OpenRouter, Gemini</span></summary>
+        <div class="row-2" style="margin-top: 10px;">
+          <div class="field">
+            <label for="brief-llm-provider">LLM Provider</label>
+            <select id="brief-llm-provider">
+              <option value="auto">Auto (Default priority)</option>
+              <option value="anthropic">Anthropic API</option>
+              <option value="openrouter">OpenRouter</option>
+              <option value="gemini">Google Gemini</option>
+              <option value="groq">Groq</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="brief-llm-model">Model Selection</label>
+            <select id="brief-llm-model">
+              <option value="auto">Auto (Task-routed)</option>
+            </select>
+          </div>
+        </div>
+        <div id="brief-llm-note" class="note hidden" style="margin-top: 6px;"></div>
+        <div id="model-panel" style="margin-top: 12px;"></div>
+      </details>
+
+      <button id="brief-generate" class="btn primary big">Create storyboard</button>
+      <div id="brief-prog" class="prog hidden" style="margin-top:15px">
+        <div class="prog-bar"><i></i></div>
+        <div class="prog-body">
+          <div class="prog-head">
+            <span class="prog-phase" id="brief-phase">Working</span>
+            <span class="prog-elapsed" id="brief-elapsed">0:00</span>
+          </div>
+          <div class="prog-text" id="brief-text"></div>
+          <div class="prog-log hidden" id="brief-log"></div>
+          <div class="prog-err hidden" id="brief-err"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-lists">
+      <div class="list-head">
+        <h2 class="t-h2">Projects</h2>
+        <span class="list-sub">editable storyboards, saved in this browser</span>
+        <span class="list-count" id="proj-count"></span>
+      </div>
+      <div id="proj-list" class="proj-grid"></div>
+
+      <div class="list-head">
+        <h2 class="t-h2">Rendered videos</h2>
+        <span class="list-sub">from the server — <a href="/timeline">full timeline</a></span>
+        <span class="list-count" id="hist-count"></span>
+      </div>
+      <div id="history-list" class="hist-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ STUDIO ═══════════════════ -->
+<section id="view-studio" class="hidden">
+  <header class="studio-top">
+    <button id="btn-back" class="btn ghost" title="Back to library">← Library</button>
+    <div class="top-divider"></div>
+    <div class="proj-title" id="studio-title"></div>
+    <div id="studio-chips" class="chip-row"></div>
+    <div class="spacer"></div>
+    <button id="btn-advanced" class="btn">Advanced</button>
+    <button id="btn-render" class="btn primary"><span id="render-label">Render video</span></button>
+  </header>
+
+  <div class="studio-main">
+    <div class="stage">
+      <div class="canvas-head">
+        <div class="seg">
+          <button id="cv-tab-bp" class="on">Blueprint</button>
+          <button id="cv-tab-vid" disabled title="Available after the first render">Video</button>
+        </div>
+        <span id="scene-caption" class="scene-caption"></span>
+      </div>
+
+      <div id="canvas-blueprint" class="canvas-box"></div>
+      <div id="canvas-video" class="canvas-box hidden">
+        <video id="studio-video" controls playsinline></video>
+        <div class="video-audio-bar">
+          <div class="video-audio-meta">
+            <span class="t-eyebrow">Audio / Voice</span>
+            <span id="video-voice-label" class="chip">Default</span>
+          </div>
+          <div class="video-audio-actions">
+            <select id="video-voice-select" class="voice-sel" title="Choose narration audio voice"></select>
+            <button id="btn-video-voice-audition" type="button" class="btn tiny" title="Audition this voice">▶ Audition</button>
+            <button id="btn-video-revoice" type="button" class="btn tiny primary" title="Render video with selected audio voice">Apply Voice &amp; Render</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cue-strip-row">
+        <span class="t-eyebrow">Cues</span>
+        <div id="cue-strip" class="cue-strip"></div>
+        <span class="cue-count" id="cue-count"></span>
+      </div>
+
+      <div id="prog-panel" class="prog hidden">
+        <div class="prog-bar"><i></i></div>
+        <div class="prog-body">
+          <div class="prog-head">
+            <span class="prog-phase" id="prog-phase"></span>
+            <span class="prog-elapsed" id="prog-elapsed">0:00</span>
+          </div>
+          <div class="prog-text" id="prog-text"></div>
+          <div class="prog-log hidden" id="prog-log"></div>
+          <div class="prog-err hidden" id="prog-error"></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="inspector">
+      <div class="insp-tabs">
+        <button data-tab="content" class="on">Content</button>
+        <button data-tab="motion">Motion</button>
+        <button data-tab="audio">Audio</button>
+        <button data-tab="style">Style</button>
+      </div>
+      <div id="insp-body" class="insp-body"></div>
+    </aside>
+  </div>
+
+  <footer class="rail-wrap">
+    <div class="rail-label">
+      <span class="t-eyebrow">Scenes</span>
+      <span class="hint">drag to reorder · ⋮ to duplicate or delete</span>
+    </div>
+    <div id="scene-rail" class="rail"></div>
+  </footer>
+</section>
+
+<!-- ═══════════════════ ADVANCED DRAWER ═══════════════════ -->
+<div id="drawer" class="drawer hidden">
+  <div class="drawer-scrim" id="drawer-scrim"></div>
+  <div class="drawer-panel">
+    <div class="drawer-head">
+      <div class="seg">
+        <button data-dtab="report" class="on">Report</button>
+        <button data-dtab="json">Storyboard</button>
+        <button data-dtab="code">Code</button>
+        <button data-dtab="logs">Logs</button>
+      </div>
+      <div class="spacer"></div>
+      <button id="drawer-copy" class="btn tiny">Copy</button>
+      <button id="drawer-close" class="btn ghost">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div id="adv-report" class="pane on"></div>
+      <pre id="adv-json" class="pane"></pre>
+      <pre id="adv-code" class="pane"></pre>
+      <pre id="adv-logs" class="pane"></pre>
+    </div>
+  </div>
+</div>
+
+<div id="toasts" class="toasts"></div>
+<audio id="preview-audio"></audio>
+
+<script src="/static/model-panel.js?v=1"></script>
+<script src="/static/studio.js?v=3"></script>
+<script>mountModelPanel(document.getElementById('model-panel'));</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "lessonforge-browser-tests",
+  "private": true,
+  "description": "Real-browser checks of the web client through the public link. See README.md.",
+  "dependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}

@@ -1,0 +1,310 @@
+You are a premium mathematical animation engineer. Deliver executable Python code ONLY (no fences) for Manim Community0.19.0, importing from lesson_runtime import * and optionally math or numpy. Generate the specified chapter classes C01..C05 (or C06..C10). Each subclass LessonScene defines construct(), begins self.chapter(n), calls self.begin("beatid") then self.cue("exact phrase", animations...,run_time=...) for timed animation, self.finish() for EVERY beat, and self.done() after fourbeats. No audio code (external exact1200sec narration will be muxed). The runtime and lesson JSON are below.
+
+QUALITY: This must be a moving teacher's board with substantial mathematical geometry, not static slides, not narration paragraphs on screen. Every beat needs2–4 visual events spread across actual spoken cues, including precise shape construction or transformation, guided highlights, or progressive equation derivation. Keep the board/geometry persistent across four beats, change only relevant objects. Maintain enough visual context to reason. No startup2second animation followedby30seconds staticboard; spreadchanges throughoutspeech. Thinkcarefully aboutmath, coordinates, layout, and continuity. Diagrams must explain the spoken script exactly. Questionsmuststayunanswereduntilnarration answers; do notshowanswersinquestionpauses.
+
+RUNTIME: self.chapter adds fixed header. Safe visual body x[-6.6,6.6],y[-2.55,2.3]. Reserve below-2.7forcaptions. Usually large diagram LEFT x[-6.5,0.8], equationsRIGHT x[1.15,6.5]. txt(str,size=28,color=INK),eq(latex,size=42,color=INK), fit(m,width,height,center) onlyscalesdown andcenters. self.panel_to(*mobjects) returnsAnimationGroup removingoldpanelandreplacingnew tofitright. Panelitems smalllist (<=4), no fullsentences longerthan35characters. Use explicit linebreaks in longlabels. Do notoverlappanelwithdiagram. NoTextbelow22pt exceptnonteaching smalllabels. Outwardsquaresgroup MUSTfitintodiagramregion; scaleentiregroup uniformly,includingtriangle tokeepmathgeometrycorrect. All standalone labelspositionsrelative toactualtransformedshapes, not guessedunscaledcoordinates. Diagramlabelsinconflict withsquarefills shouldmoveoutwithleaderlines.
+
+TIMING: Cue string is a verbatim contiguous substring from that beat's narration, ideally beginningofsentence. Runtime locates measured sentence theninterpolates wordpositionwithin. Use orderedcuesfirst/middle/late ineachbeat. Everycue mustexist. self.finish() waits to measured beatend andthrows ifoverrun. Avoidcueverylastword requiringanimationbeyondbeat. Never self.wait exceptbriefthinkinganimation ifessential; narrationtimingalreadyincludespauses. Questions haveexplicit thinkingpauses atbeatend. No globalscene audio ormusic. No timebasedupdaterspersistinginto wait intervals. Motionusesfiniteplay transforms. No loops basedonrenderertime. ForrotationsuseRotate onwholegeometryincludingmarks; labelsremaincorrect andreadable (canrotateshapeandrelabellater). Anytriangledeformationmustpreservefixedleglengths in nonrightcase. Numericaldiagonalnotlabeled5exceptknownrighttriangle. No bogus tilemorph claimingarea conservation whilechangingpolygonshape.
+
+MATH & IMPLEMENTATION: deterministicvectorgeometry, equalunits axes. Build Triangle using Polygonexplicitpoints. mathsymbolsMathTex not Unicode approximateformulas. Color a TEAL,b GOLD,c PINK; meaningsstable. NoManimdeprecatedget_graph; use plot forfunctions. No broadtry/except. Do notremovegroups thatwerenotaddedasgroups: ifyouplay Create(eachindividual) rememberexplicitlyremoveeach. Transform keeps sourceidentity; animateexistingobject orReplacementTransform thenassignnew. No nestedVGroup insideFadeOut thatleaves originalstalesceneobjects. No unsupported MathTex commands. No externalfiles exceptruntime. No filesystem/network/subprocess code. AvoidSVGMobjectandimages. Mustcompleteall20beats inrequestedhalf. Definehelpersyouneed. Don'tmerelydisplayboard_text; geometryandprogressivemotionarethepoint. Sceneswillbeinspectedatmultipleframesandfixesmade.
+
+
+GENERATE C01,C02,C03,C04,C05
+RUNTIME SOURCE:
+"""Measured narration timing and shared visual style for generated Manim scenes."""
+from manim import *
+from pathlib import Path
+import json, math, re
+
+ROOT=Path(__file__).resolve().parent
+BG='#0B1220'; INK='#F3F5F7'; MUTED='#A9B6CA'; TEAL='#57D6BF'; GOLD='#FFD17C'; PINK='#F08CA9'; GRID='#29394F'
+config.background_color=BG
+
+def txt(s,size=28,color=INK):
+    return Text(s,font='Lato',font_size=size,color=color)
+
+def eq(s,size=42,color=INK):
+    return MathTex(s,font_size=size,color=color)
+
+def fit(m,width=6.5,height=4.7,center=(-2.8,-.1,0)):
+    factor=min(1,width/max(m.width,.001),height/max(m.height,.001))
+    m.scale(factor).move_to(center)
+    return m
+
+class LessonScene(Scene):
+    def chapter(self,n):
+        self.chapter_number=n
+        self.timeline={t['id']:t for t in json.loads((ROOT/'timeline.json').read_text())}
+        self.lesson=json.loads((ROOT/'lesson.json').read_text())
+        ch=self.lesson['chapters'][n-1]
+        self.chapter_start=self.timeline[ch['beats'][0]['id']]['start']
+        self.records=[];self.cue_records=[]
+        title=txt(ch['title'],34)
+        if title.width>11.7:title.scale_to_fit_width(11.7)
+        title.move_to([-6.45,2.94,0],aligned_edge=LEFT)
+        eyebrow=txt('THE GEOMETRY OF A SHORTCUT',16,TEAL).move_to([-6.45,3.53,0],aligned_edge=LEFT)
+        number=txt(f'{n:02} / 10',18,MUTED).move_to([6.12,3.5,0])
+        self.chrome=VGroup(title,eyebrow,number,Line([-6.45,2.45,0],[6.45,2.45,0],color=GRID),Line([-6.45,-2.7,0],[6.45,-2.7,0],color=GRID))
+        self.add(self.chrome)
+        self.panel=VGroup()
+    def begin(self,beat_id):
+        self.current=self.timeline[str(beat_id).zfill(2)]
+        self.beat_start=self.current['start']-self.chapter_start
+        self.until(self.beat_start)
+    def until(self,t):
+        delta=t-self.renderer.time
+        if delta>1/config.frame_rate:
+            self.wait(round(delta*config.frame_rate)/config.frame_rate)
+    def cue(self,phrase,*animations,run_time=1.2):
+        norm=lambda s:re.sub(r'[^a-z0-9 ]','',s.lower())
+        needle=norm(phrase);offset=None
+        for sentence in self.current['sentences']:
+            hay=norm(sentence['text'])
+            if needle in hay:
+                pos=hay.index(needle)
+                offset=sentence['start']+sentence['duration']*len(hay[:pos].split())/max(1,len(hay.split()))
+                break
+        if offset is None: raise ValueError(f'Cue not found in beat {self.current["id"]}: {phrase}')
+        target=self.beat_start+offset
+        self.cue_records.append({'beat':self.current['id'],'phrase':phrase,'target':target,'actual_before_wait':self.renderer.time})
+        self.until(target)
+        if animations:self.play(*animations,run_time=run_time)
+    def panel_to(self,*items):
+        new=VGroup(*items).arrange(DOWN,buff=.4,aligned_edge=LEFT)
+        fit(new,5.15,4.3,(3.7,-.05,0))
+        old=self.panel;self.panel=new
+        return AnimationGroup(FadeOut(old),FadeIn(new),lag_ratio=0)
+    def finish(self):
+        target=self.beat_start+self.current['duration']
+        if self.renderer.time>target+.05:raise ValueError(f'Beat overrun {self.current["id"]}: {self.renderer.time-target}')
+        self.until(target)
+        violations=[]
+        for m in self.mobjects:
+            if m is self.chrome:continue
+            if m.width<.001 and m.height<.001:continue
+            box=[float(m.get_left()[0]),float(m.get_right()[0]),float(m.get_bottom()[1]),float(m.get_top()[1])]
+            if box[0]<-6.8 or box[1]>6.8 or box[2]<-2.65 or box[3]>2.4:
+                violations.append({'type':type(m).__name__,'bbox':box})
+        self.records.append({'beat':self.current['id'],'time':self.renderer.time,'bounds_violations':violations})
+    def done(self):
+        (ROOT/'output'/f'chapter_{self.chapter_number:02}_audit.json').write_text(json.dumps({'bounds':self.records,'cues':self.cue_records},indent=2))
+
+
+CHAPTERS WITH FULL NARRATION AND VISUAL SCRIPT:
+[
+  {
+    "id": 1,
+    "title": "THE SHORTCUT",
+    "learning_goal": "Identify the right triangle formed by a two-leg route and its diagonal, estimate the diagonal sensibly, and articulate why squaring will matter.",
+    "beats": [
+      {
+        "id": "01",
+        "narration": "Picture a rectangular warehouse floor. A robot starts at the bottom-left corner and needs to reach the top-right corner. It could travel four metres east, then three metres north. That route covers seven metres. But the robot can also drive straight across the diagonal. How long is that shortcut? By the end, you will be able to calculate it and explain why the calculation works.",
+        "visual": "Flat top-down view of a rectangle appears. A teal arrow animates east along the bottom edge, labelled '4 m'. A gold arrow then animates north along the right edge, labelled '3 m'. A dashed pink line appears across the diagonal from start to finish corner. A small question mark sits on the pink line.",
+        "board_text": "Route = 4 + 3 = 7 m",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer sees two distinct paths: the seven-metre route along two edges versus the unknown diagonal."
+      },
+      {
+        "id": "02",
+        "narration": "Look at those three line segments: the four-metre bottom, the three-metre side, and the diagonal. Together they form a triangle. Where the two legs meet, the corner is a right angle, because the floor is rectangular. The little corner mark tells us it is exactly ninety degrees. Keep watching that mark. It is the condition that makes the relationship we are about to discover possible.",
+        "visual": "The rectangle fades, leaving only the three sides of the triangle. A small square right-angle marker appears at the bottom-right corner where the teal and gold segments meet. The teal segment glows briefly, then the gold segment glows, then the pink diagonal glows, each in sequence.",
+        "board_text": "Right angle at corner",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer identifies the right angle as the corner between the two known legs, not at either end of the diagonal."
+      },
+      {
+        "id": "03",
+        "narration": "Before calculating, estimate. The diagonal is longer than either leg, so it is more than four metres. But the straight path is shorter than the bent, seven-metre route between the same endpoints. Our answer must lie between four and seven. We do not know it yet, but we already know something useful. An estimate gives us a way to challenge an answer instead of trusting every number a calculation produces.",
+        "visual": "A number line appears below the triangle, spanning from 0 to 8. A bracket highlights the region between 4 and 7 with the label 'diagonal lives here'. The pink diagonal line pulses gently. The teal '4 m' and gold '3 m' labels remain visible on the triangle.",
+        "board_text": "4 < diagonal < 7",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can state a reasonable range for the diagonal before any formula is applied."
+      },
+      {
+        "id": "04",
+        "narration": "Why would anyone think to square the side lengths? Adding four and three gives seven, the route along the walls. Multiplying gives twelve, but that is not the length of the diagonal either. Squaring has a geometric meaning: it turns a side length into the area of a square. So here is our real question. How could comparing areas help us discover a length? Let us build those areas and see.",
+        "visual": "Three arithmetic attempts appear side by side as crossed-out options: '4 + 3 = 7' with a red cross, '4 \u00d7 3 = 12' with a red cross, and '4\u00b2 + 3\u00b2 = ?' with a gold question mark. An arrow points from the question mark toward a small preview square drawn on each side of the triangle.",
+        "board_text": "Why squares?",
+        "equation": "4^2 + 3^2 = ?",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer understands that squaring is not obvious and that the lesson will justify it through area reasoning."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "LENGTH BECOMES AREA",
+    "learning_goal": "Construct the three outward squares accurately, compute their areas numerically, and distinguish between a side length and an area.",
+    "beats": [
+      {
+        "id": "05",
+        "narration": "Let us build a square on each side of our triangle. On the four-metre teal leg, we grow a square outward. Its area is four times four, which is sixteen square metres. On the three-metre gold leg, we grow another square outward. Its area is three times three, which is nine square metres. These are real geometric squares with real area \u2014 not just numbers floating in space. Each little unit cell inside those squares represents one square metre of actual floor.",
+        "visual": "Starting from the right triangle, a teal square of side 4 grows outward from the bottom leg, subdivided into a 4-by-4 grid of unit cells. Each row of cells fills in sequentially. A gold square of side 3 grows outward from the vertical leg, subdivided into a 3-by-3 grid. Area labels '16 sq m' and '9 sq m' appear inside each square.",
+        "board_text": "a\u00b2 = 16,  b\u00b2 = 9",
+        "equation": "a^2 = 4^2 = 16 \\quad b^2 = 3^2 = 9",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer sees that squaring a length produces an area measured in square units, not a longer length."
+      },
+      {
+        "id": "06",
+        "narration": "Now add those two areas together. Sixteen plus nine equals twenty-five square metres. The claim of the Pythagorean theorem is that the square built on the diagonal \u2014 the pink side \u2014 also has an area of exactly twenty-five square metres. If that is true, then the diagonal's length must be the number whose square is twenty-five. The square root of twenty-five is five. So the diagonal is five metres. Notice: the area is twenty-five square metres, but the length is five metres. Those are different things with different units.",
+        "visual": "The two grids slide together visually to suggest combination, and a combined count of 25 unit cells is shown. A pink square grows outward from the diagonal side, also subdivided into a 5-by-5 grid of 25 unit cells. The label '25 sq m' appears inside it. An arrow points from '25 sq m' to '\u221a25 = 5 m' beside the pink square.",
+        "board_text": "16 + 9 = 25,  c = 5 m",
+        "equation": "c^2 = a^2 + b^2 = 16 + 9 = 25 \\quad c = \\sqrt{25} = 5",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can distinguish the area of the square (25 square metres) from the side length of the square (5 metres)."
+      },
+      {
+        "id": "07",
+        "narration": "Five lies between four and seven, so the answer passes our estimate. Now call the teal leg a, the gold leg b, and the pink diagonal c. The relationship is c squared equals a squared plus b squared. Here, twenty-five equals sixteen plus nine. But checking one example is evidence, not a proof. We still need to explain why this must work for every right triangle, including triangles with entirely different lengths.",
+        "visual": "The three squares remain on screen. Generic labels 'a', 'b', 'c' replace the numeric labels on the triangle sides. The formula c\u00b2 = a\u00b2 + b\u00b2 appears in large text. Below it, the specific substitution 5\u00b2 = 4\u00b2 + 3\u00b2 animates in, with each term colour-coded: pink for c, teal for a, gold for b.",
+        "board_text": "c\u00b2 = a\u00b2 + b\u00b2",
+        "equation": "c^2 = a^2 + b^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can state the formula and recognise that a single numerical example is not a general proof."
+      },
+      {
+        "id": "08",
+        "narration": "A proof must work for any positive lengths a and b. The claim is that the square on the hypotenuse has exactly the same area as both leg squares together. That is stronger than checking a few examples with a ruler or calculator. We will build an argument that does not depend on our chosen numbers. First, though, let us make sure we can identify the sides even when the triangle changes position.",
+        "visual": "The three coloured squares fade slightly. A new blank right triangle appears beside them, with sides labelled with generic variables: teal 'a', gold 'b', pink 'c'. A thought-bubble graphic appears above the triangle with the text 'Works for ANY a and b?'",
+        "board_text": "Proof needed for all a, b",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer understands the distinction between a specific numerical check and a general algebraic proof."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "IDENTIFY THE RIGHT SIDE",
+    "learning_goal": "Reliably identify the hypotenuse as the side opposite the right angle regardless of triangle orientation, and understand why the right angle is essential.",
+    "beats": [
+      {
+        "id": "09",
+        "narration": "Find the right-angle mark. The side opposite that corner is the hypotenuse: neither of its endpoints is the right-angle corner. In a right triangle it is also the longest side. We colour it pink. The two legs that meet at the right angle are teal and gold. These names describe relationships inside the triangle. They do not mean bottom side, vertical side, or whichever side happens to have an unknown label.",
+        "visual": "A right triangle appears with the right-angle square marker at the bottom-right corner. The two legs glow in teal and gold. The hypotenuse glows pink. A label 'opposite the right angle' with an arrow points to the pink side. The right-angle marker pulses twice to draw attention.",
+        "board_text": "c is opposite the right angle",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can point to the hypotenuse in any orientation by locating the right-angle mark first."
+      },
+      {
+        "id": "10",
+        "narration": "Watch the whole triangle rotate until the pink hypotenuse is at the bottom. The right-angle mark has moved to the top, but the triangle has not changed size or shape. Pink is still opposite the right angle, so it is still the hypotenuse. The formula remains c squared equals a squared plus b squared. Turning the page cannot change which side belongs on its own in that equation.",
+        "visual": "The triangle smoothly rotates 135 degrees so the pink hypotenuse lies along the bottom. The right-angle marker moves with the triangle to its new position at the top vertex. The teal and gold labels remain on their respective sides. The formula c\u00b2 = a\u00b2 + b\u00b2 stays visible in the corner throughout the rotation.",
+        "board_text": "Rotation changes nothing",
+        "equation": "c^2 = a^2 + b^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer confirms that the hypotenuse identity is preserved under rotation and is not determined by position on the page."
+      },
+      {
+        "id": "11",
+        "narration": "Now keep the three-metre and four-metre legs fixed, but change the angle between them. Open the angle beyond ninety degrees: the opposite side becomes longer than five. Close it below ninety: that side becomes shorter than five. The same two lengths can produce different third sides. Three and four give five only when they meet at a right angle. That is why we check the angle before using the theorem.",
+        "visual": "A triangle with teal side 3 and gold side 4 is shown with a variable angle between them. The angle marker animates from 60 degrees through 90 degrees to 120 degrees. The pink opposite side visibly stretches and shrinks accordingly. At exactly 90 degrees, a right-angle square marker snaps into place and the label 'c = 5' appears. At other angles, a red warning label 'c \u2260 5' appears.",
+        "board_text": "Right angle required",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer understands that the formula c\u00b2 = a\u00b2 + b\u00b2 applies only when the angle between legs a and b is exactly 90 degrees."
+      },
+      {
+        "id": "12",
+        "narration": "Return the corner to ninety degrees. We have teal leg a, gold leg b, and pink hypotenuse c again. Notice that a plus b does not equal c. The sum three plus four measures the bent route, which is seven. The straight diagonal is five. The theorem combines the squares of the legs, then takes a square root. It is a different operation because we are measuring a different path.",
+        "visual": "The right triangle reappears with the right-angle marker firmly in place. A crossed-out equation 'a + b = c' appears with a red X. Below it, the correct formula 'c\u00b2 = a\u00b2 + b\u00b2' appears in green. The teal, gold, and pink colour coding is reinforced with small colour swatches next to each label.",
+        "board_text": "a + b \u2260 c",
+        "equation": "a + b \\neq c \\quad \\text{but} \\quad c^2 = a^2 + b^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can explain why adding the legs gives the route length, not the diagonal length."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "BUILD A PROOF",
+    "learning_goal": "Construct the outer-square diagram with four congruent right triangles and justify that the central quadrilateral is a square with side c.",
+    "beats": [
+      {
+        "id": "13",
+        "narration": "Let us build the proof. Take a right triangle with legs a and b and hypotenuse c. Make four identical copies. Place one in each corner of an outer square, with its right angle at that corner. Around each outer edge, a leg of length a meets a leg of length b. So the outer side is a plus b. The four hypotenuses enclose a shape in the centre.",
+        "visual": "Build four congruent right triangles at the four corners of an outer square, each right angle exactly at an outer corner. Side lengths around each outer edge sum to a+b. The four hypotenuses enclose the central square.",
+        "board_text": "Outer square side = a + b",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer sees that four congruent right triangles fit inside the outer square with their hypotenuses forming the boundary of a central region."
+      },
+      {
+        "id": "14",
+        "narration": "Is that central shape really a square? Looking like a square is not enough. Each of its four sides is the hypotenuse of an identical triangle, so all four sides have length c. But equal sides alone could make a slanted rhombus. We also need right angles. Focus on one central corner. Two acute triangle angles sit beside it along a straight outer edge. Call those acute angles alpha and beta.",
+        "visual": "The central quadrilateral is highlighted with a pink fill. Its four sides are each labelled 'c'. One corner of the central quadrilateral is zoomed in. The two acute angles of the adjacent triangles meeting at that corner are labelled with arc markers: '\u03b1' in teal and '\u03b2' in gold.",
+        "board_text": "All sides = c; check corners",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer understands that equal side lengths make a rhombus, but a square requires right angles at the corners."
+      },
+      {
+        "id": "15",
+        "narration": "The angles inside a triangle total one hundred and eighty degrees. Our triangle already has a ninety-degree angle, so alpha and beta together total ninety degrees. At the central corner, alpha, the central angle, and beta lie along a straight line. The central angle is therefore one hundred and eighty minus alpha minus beta: ninety degrees. The same reasoning works at all four corners. Equal sides and right angles make the central shape a square.",
+        "visual": "Show alpha+beta=90 degrees in one right triangle, then highlight the three adjacent angles on the straight outer edge at a central vertex: alpha, theta, beta. Show theta=180-alpha-beta=90 degrees. Highlight all four right angles of central square.",
+        "board_text": "\u03b1 + \u03b2 = 90\u00b0  \u2192  corners are right angles",
+        "equation": "\\theta=180^\\circ-(\\alpha+\\beta)=90^\\circ",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can justify that the central quadrilateral is a square by using the angle-sum property of the right triangle."
+      },
+      {
+        "id": "16",
+        "narration": "Check our three-four-five example. The outer side is seven, so its area is forty-nine. Each triangle has area one half times three times four, which is six. Four triangles occupy twenty-four square units. The space remaining is forty-nine minus twenty-four, or twenty-five. That is the central square's area, and its side is five. Now we will repeat this calculation with letters, so the argument covers every right triangle.",
+        "visual": "The diagram with specific values a = 3, b = 4 is shown. The outer square is labelled '7 \u00d7 7 = 49'. Each triangle is labelled '\u00bd \u00d7 4 \u00d7 3 = 6'. A running subtraction animates: '49 \u2212 4 \u00d7 6 = 49 \u2212 24 = 25'. The central square lights up with the label 'area = 25 = 5\u00b2'.",
+        "board_text": "49 \u2212 24 = 25 = 5\u00b2",
+        "equation": "(a+b)^2 - 4 \\cdot \\tfrac{1}{2}ab = c^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can verify the numerical case and see how the subtraction structure will generalise."
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "COUNT THE SAME AREA TWICE",
+    "learning_goal": "Complete the algebraic proof by expanding the outer square, equating two expressions for the same area, and cancelling triangle areas to obtain a\u00b2 + b\u00b2 = c\u00b2.",
+    "beats": [
+      {
+        "id": "17",
+        "narration": "Keep the same picture, but replace the numbers with a and b. The outer square has side a plus b, so its area is the quantity a plus b, all squared. Multiplying a plus b by itself gives a squared, plus ab, plus another ab, plus b squared. Together those middle terms are two ab. This expression counts the whole outer square. We will now count that same area using its pieces.",
+        "visual": "The outer square with side 'a + b' is shown. The expansion (a + b)\u00b2 = a\u00b2 + 2ab + b\u00b2 animates term by term, with each term highlighted as it appears. A geometric interpretation shows the outer square split into four rectangles: one a\u00d7a, two a\u00d7b, and one b\u00d7b, each colour-coded to match the algebraic terms.",
+        "board_text": "(a + b)\u00b2 = a\u00b2 + 2ab + b\u00b2",
+        "equation": "(a+b)^2 = a^2 + 2ab + b^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can expand the binomial square and connect each term to a rectangular region in the diagram."
+      },
+      {
+        "id": "18",
+        "narration": "Each corner triangle has area one half times a times b. There are four identical triangles, so together their area is two ab. The central square has side c and area c squared. Add the pieces: two ab plus c squared. This is the very same outer square we counted a moment ago. Its area cannot depend on which counting method we choose, so the two expressions must be equal.",
+        "visual": "The four triangles inside the outer square are shaded and labelled '4 \u00d7 \u00bdab = 2ab'. The central square is labelled 'c\u00b2'. An equals sign connects the two expressions: 'a\u00b2 + 2ab + b\u00b2' on the left and '2ab + c\u00b2' on the right, both representing the outer square area.",
+        "board_text": "Same area: a\u00b2 + 2ab + b\u00b2 = 2ab + c\u00b2",
+        "equation": "a^2 + 2ab + b^2 = 2ab + c^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer sees that both expressions describe the total outer square area and must therefore be equal."
+      },
+      {
+        "id": "19",
+        "narration": "Set those expressions equal. A squared plus two ab plus b squared equals two ab plus c squared. Subtract two ab from both sides. Visually, that removes the same total triangle area from each count. What remains is a squared plus b squared equals c squared. That is the theorem. We used arbitrary positive lengths a and b, so this conclusion applies to every right triangle, not just our numerical example.",
+        "visual": "The equation a\u00b2 + 2ab + b\u00b2 = 2ab + c\u00b2 is shown. The two '2ab' terms on each side are highlighted in matching orange and then simultaneously crossed out. The remaining equation a\u00b2 + b\u00b2 = c\u00b2 is written in large text with a box around it. A checkmark appears beside it.",
+        "board_text": "Cancel 2ab \u2192 a\u00b2 + b\u00b2 = c\u00b2",
+        "equation": "a^2 + b^2 = c^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can describe the cancellation step and explain why the result holds for arbitrary positive values of a and b."
+      },
+      {
+        "id": "20",
+        "narration": "Notice what the proof depended on. Four congruent triangles, a square outside, and a square in the centre. We justified the central square using the right angle in the original triangle. Then we counted the same region twice. No measurement or lucky choice of numbers made the equation true. The algebra records an area comparison. When you remember the formula, try to remember this picture and the reason the triangle areas cancel.",
+        "visual": "The full diagram with generic labels a, b, c is shown. A summary panel lists three key facts used: '1. Four congruent triangles', '2. Central shape is a square (\u03b1 + \u03b2 = 90\u00b0)', '3. Same outer area counted two ways'. Each fact is ticked off in sequence. The final equation a\u00b2 + b\u00b2 = c\u00b2 remains prominently displayed.",
+        "board_text": "Area conserved \u2192 proof complete",
+        "equation": "a^2 + b^2 = c^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can articulate the three logical steps that make the proof valid for all right triangles."
+      }
+    ]
+  }
+]

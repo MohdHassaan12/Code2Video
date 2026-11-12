@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P03 · Trustworthy machine perception — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">03</div>
+  <div>
+    <h1>Trustworthy machine perception</h1>
+    <div class="sub">Vision QA — the system looking at its own pixels — is built, wired, and tested. It stays default-off
+    because its judgment cannot yet be trusted with the keys: making a vision model a reliable gate is an open problem.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>03</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-v">V · probes own truth — but only geometric truth</span>
+  <span class="chip t3">T3 open / frontier</span>
+  <span class="chip mat">Maturity: ◐ implemented, partially verified · default-off (L1 in production)</span>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today</div>
+  <ul>
+    <li><code>VisionQAStage.critique</code> (<code>app/pipeline/vision_qa.py</code>): ffmpeg extracts <code>VISION_QA_FRAMES=6</code>
+      frames, one vision-LLM call critiques them, and findings are <b>whitelist- and shape-gated</b> before they’re allowed to
+      exist — emitted as <code>LAYOUT_VIOLATION: vision-*</code> lines that the geometric matcher is explicitly forbidden to count.</li>
+    <li><code>_run_vision_qa</code> (<code>app/render.py:726</code>) runs report-only on the parallel render path
+      (<code>render.py:1152</code>) and with accept-if-better repair on the sequential path (<code>render.py:1247</code>), under the
+      same non-regression guard as overlap repair: the incumbent video is never lost.</li>
+    <li>Gated <code>VISION_QA=0</code> by default (<code>vision_qa.py:131</code>); 35/35 harness checks green
+      (<code>test_vision_qa.py</code>, measured 2026-07-27) — the <i>plumbing</i> is verified, the <i>judgment</i> is not.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why this is research-grade</div>
+  <p>Two live runs showed the two canonical failure modes of machine perception as a gate:</p>
+  <ul>
+    <li><b>It sees things that aren’t there.</b> On the refraction board, all 6 sampled frames were flagged “dead frame” —
+      but the sampler was landing on scene <i>starts</i>, when elements haven’t entered yet: “substantially a sampler
+      artifact, not a composition defect” <span class="src">pipeline-roadmap.md:352-363</span>.</li>
+    <li><b>Acting on what it sees can buy nothing.</b> One vision round “spent 4 LLM rewrites + 4 scene re-renders + 1
+      re-critique and bought nothing on this board” <span class="src">pipeline-roadmap.md:566-568</span>.</li>
+  </ul>
+  <p>The deep issue: unlike the geometric probe — whose measurements are exact by construction — a vision critique has no
+  ground truth, no calibration, and no cost model. The repo’s response (whitelists, shape gates, non-regression guards) is
+  correct defensive engineering, but it caps the stage at “advisor.” Turning perception into a <b>gate that can veto a
+  publish</b> — with a false-positive rate near zero, per the house rule that a signal that always fires is no signal —
+  is the open problem, and nobody in the field has a reliable recipe for it yet.</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>Named prerequisites before default-on: the serial-repair fix and the frame-sampling fix
+      <span class="src">pipeline-roadmap.md:567-568</span>.</li>
+    <li>Measured on disk: <code>vision_findings</code> present in 3 of 17 sidecars (values 3, 4, 6); the refraction sidecar
+      records <code>repair_rounds: 4, violations_remaining: 3, vision_findings: 6</code>.</li>
+    <li>Render-failure classification (<code>infra</code>/<code>latex</code>/<code>code</code>) exists because an earlier “repair”
+      once rewrote healthy code in response to a TTS outage <span class="src">CLAUDE.md:141-146</span> — the same
+      trust-the-signal discipline this stage still lacks for pixels.</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art <span class="tag">citation-check before external use</span></div>
+  <p>VLM-based UI/screenshot critique is an active research area (design-to-code and web-agent evaluation work); known VLM
+  weaknesses on dense text, small glyphs and precise spatial relations are well documented. Keyframe selection is a classic
+  video-summarization problem — sampling at scene midpoints is the trivial fix, content-aware sampling the mature one.
+  Ensembling and self-consistency reduce single-call variance at multiplied cost. Calibrated abstention (“know when you
+  don’t know”) for VLM judges remains open — which is exactly the capability a publish-veto needs.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — cheap → deep</div>
+  <ol>
+    <li><span class="badge solid-green">$0</span> Sample at scene midpoints (the roadmap’s own named fix); derive timestamps
+      from the per-scene clip boundaries the parallel renderer already knows.</li>
+    <li><span class="badge solid-green">$0</span> Build a labeled golden-frame set from the 25 mp4s already on disk (good /
+      dead / cluttered), so perception finally has a ground truth to be scored against.</li>
+    <li><span class="badge solid-amber">metered</span> Ensemble: N independent vision calls vote per finding; measure
+      precision/recall against the golden set; publish the stage’s own report card in the sidecar.</li>
+    <li><span class="badge solid-purple">research</span> Calibrated veto: a confidence-thresholded gate whose false-positive
+      rate on known-clean videos is measured ≈0 before it is ever allowed to block a publish — the standard the
+      <code>voice_degraded</code> incident set for every new health signal.</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p>Precision/recall on the golden-frame set; zero findings on known-clean videos; and repair yield — of the re-renders a
+  vision round triggers, what fraction reduce human-judged defects? The harness seam already exists
+  (<code>test_vision_qa.py</code> stubs the vision LLM; the golden set gives the stub real answers).</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p01-quality-score.html">P01 quality score</a> — perception is its visual dimension ·
+  <a href="p04-repair-convergence.html">P04 repair convergence</a> — vision findings feed the same repair machinery ·
+  <a href="p10-camera-and-verifier.html">P10 verifier ceiling</a> — pixel-level perception is one route to
+  capability-independent verification.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p02-state-and-cost.html">← prev: P02 state &amp; cost</a>
+  <a href="p04-repair-convergence.html">next: P04 repair convergence →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

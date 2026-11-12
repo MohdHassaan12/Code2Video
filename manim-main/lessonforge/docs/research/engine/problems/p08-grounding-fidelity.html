@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P08 · Grounding without a fidelity gate — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">08</div>
+  <div>
+    <h1>Grounding without a fidelity gate</h1>
+    <div class="sub">Source material flows into the storyboard prompt — and nothing checks what flows out against it.
+    In a system whose product is teaching facts to students, an invented number is indistinguishable from a sourced one.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>08</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-c">C · models own content — and content is ungated</span>
+  <span class="chip t2">T2 applied research</span>
+  <span class="chip mat">Maturity: L1 for fidelity (stage A graded L2 overall)</span>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today</div>
+  <ul>
+    <li>Grounding resolution: <code>ce/storyboard_context.resolve_context</code> walks YouTube transcript → content_store →
+      none, and the chosen text rides into the storyboard prompt as context.</li>
+    <li>The storyboard’s admission gates are strong but orthogonal: truncation, scene shape, on-screen language
+      (<code>storyboard_shape_problems</code>, <code>normalize_onscreen_language</code> in <code>app/storyboard.py</code>) —
+      none compares output claims to input source.</li>
+    <li>The roadmap’s own words: “no citation of which chunk grounded which claim; nothing prevents the storyboard from
+      inventing numbers/examples not in the source” <span class="src">pipeline-roadmap.md:63-64</span>. The planned fix —
+      a “Rule 0” prompt rule plus a fidelity spot-check with a ≥95% pilot bar — is specified and unbuilt
+      <span class="src">pipeline-roadmap.md:66-69</span>.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why this is research-grade</div>
+  <p>The engineering half (thread chunk ids through the IR, spot-check claims) is squarely T2. The open half is a tension
+  the field hasn’t resolved and this domain sharpens: <b>good teaching invents</b>. A worked example not in the textbook, a
+  simplified number, an analogy — pedagogically excellent, factually “unsourced.” A naive faithfulness gate would reject
+  exactly the storyboards a good teacher writes; no gate at all ships hallucinated physics to schoolchildren. The research
+  question is a <i>typed</i> fidelity contract: which claim classes must be sourced (definitions, laws, constants, formulas),
+  which may be invented (examples, analogies), and how a gate tells them apart reliably in Hinglish narration.</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>Stage A graded L2 with the fidelity gap named as its first weakness <span class="src">pipeline-roadmap.md:60-69</span>.</li>
+    <li>The IR has no field for provenance: <code>StoryboardScene</code> (<code>app/schemas.py:89</code>) carries narration,
+      elements, events, composition — no <code>source_chunks</code>. (Adding one is a schema export + <code>--regen</code>,
+      drift-gated by <code>test_ir_contracts.py</code> — the mechanism exists.)</li>
+    <li>Upstream precedent for the failure class: the truncation incident shipped a video that “never states the law”
+      <span class="src">pipeline-roadmap.md:708</span> — content defects pass silently today unless they break <i>shape</i>.</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art <span class="tag">citation-check before external use</span></div>
+  <p>Attributed generation and citation-faithfulness evaluation are active LLM research areas (attribution benchmarks,
+  NLI-based faithfulness scoring, post-hoc revision pipelines in the RARR style); results are strong on extractive QA and
+  weaker on free-form generation — and educational rewriting is maximally free-form. The claim-typing angle (must-source
+  vs. may-invent) appears in journalism/fact-checking tooling but has no standard treatment for pedagogy.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — cheap → deep</div>
+  <ol>
+    <li><span class="badge solid-green">$0</span> Provenance plumbing: chunk ids on the grounding text, a
+      <code>source_chunks</code> field per scene in the Storyboard IR (+ <code>--regen</code>), and a gate that rejects a board
+      citing chunks that don’t exist. Deterministic, no model in the loop.</li>
+    <li><span class="badge solid-green">$0</span> Claim-class lint: regex/parse-level detection of numbers, named laws and
+      formulas in narration; any hit in a scene with no cited chunk flags the board for review — crude, zero-cost, catches
+      the worst class (invented constants).</li>
+    <li><span class="badge solid-amber">metered</span> The roadmap’s fidelity spot-check: sample N claims per board, verify
+      each against its cited chunk with an NLI/LLM verifier; enforce the ≥95% pilot bar before cache-accept.</li>
+    <li><span class="badge solid-purple">research</span> The typed contract: a claim taxonomy for teaching content, a gate
+      that distinguishes sourced-required from invention-allowed, and measurement of the pedagogy cost of enforcement
+      (does fidelity gating make videos worse teachers? — ties to <a href="p09-pedagogy-gate.html">P09</a>).</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p>Fidelity rate (verified claims / sampled claims) per board, trending on the bulk suite — the roadmap already names
+  the ≥95% bar; false-rejection rate on boards a subject expert rates pedagogically sound (the gate must not flunk good
+  teaching); and zero invented constants/formulas as a hard floor.</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p09-pedagogy-gate.html">P09 pedagogy gate</a> — the invention-vs-hallucination boundary is shared ·
+  <a href="p01-quality-score.html">P01 quality score</a> — fidelity is one rubric dimension ·
+  <a href="p02-state-and-cost.html">P02 cost</a> — spot-check spend needs metering.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p07-repair-memory.html">← prev: P07 repair memory</a>
+  <a href="p09-pedagogy-gate.html">next: P09 pedagogy gate →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

@@ -1,0 +1,197 @@
+{
+ "practice_channels": {
+  "jump_rate": {
+   "p10": 0.077,
+   "p50": 0.146,
+   "p90": 0.237
+  },
+  "tie_rate": {
+   "p10": 0.425,
+   "p50": 0.645,
+   "p90": 0.809
+  },
+  "adjacent_similarity": {
+   "p10": 0.277,
+   "p50": 0.358,
+   "p90": 0.456
+  },
+  "weak_seam_rate": {
+   "p10": 0.021,
+   "p50": 0.071,
+   "p90": 0.145
+  },
+  "neighbour_gain": {
+   "p10": 0.065,
+   "p50": 0.117,
+   "p90": 0.16
+  },
+  "new_terms_per_100w": {
+   "p10": 13.0,
+   "p50": 19.4,
+   "p90": 30.9
+  },
+  "max_new_terms_3_sentences": {
+   "p10": 19,
+   "p50": 30,
+   "p90": 44
+  },
+  "spine_cover": {
+   "p10": 0.9,
+   "p50": 1.0,
+   "p90": 1.0
+  },
+  "questions_per_100w": {
+   "p10": 0.0,
+   "p50": 0.26,
+   "p90": 0.87
+  },
+  "mean_sentence_words": {
+   "p10": 13.8,
+   "p50": 19.4,
+   "p90": 26.7
+  },
+  "short_sentence_share": {
+   "p10": 0.0,
+   "p50": 0.016,
+   "p90": 0.079
+  },
+  "cause_per_100w": {
+   "p10": 0.46,
+   "p50": 1.04,
+   "p90": 2.19
+  },
+  "contrast_per_100w": {
+   "p10": 0.48,
+   "p50": 0.77,
+   "p90": 1.2
+  },
+  "sequence_per_100w": {
+   "p10": 0.3,
+   "p50": 0.79,
+   "p90": 1.88
+  },
+  "example_per_100w": {
+   "p10": 0.0,
+   "p50": 0.16,
+   "p90": 0.49
+  },
+  "recap_per_100w": {
+   "p10": 0.0,
+   "p50": 0.14,
+   "p90": 0.41
+  },
+  "numbers_per_100w": {
+   "p10": 0.45,
+   "p50": 1.71,
+   "p90": 5.37
+  },
+  "you_we_per_100w": {
+   "p10": 1.13,
+   "p50": 3.11,
+   "p90": 5.68
+  },
+  "wpm": {
+   "p10": 126.6,
+   "p50": 159.2,
+   "p90": 184.2
+  }
+ },
+ "khan_middle_school": {
+  "jump_rate": {
+   "p10": 0.082,
+   "p50": 0.135,
+   "p90": 0.185
+  },
+  "tie_rate": {
+   "p10": 0.431,
+   "p50": 0.565,
+   "p90": 0.66
+  },
+  "adjacent_similarity": {
+   "p10": 0.316,
+   "p50": 0.352,
+   "p90": 0.399
+  },
+  "weak_seam_rate": {
+   "p10": 0.062,
+   "p50": 0.096,
+   "p90": 0.141
+  },
+  "neighbour_gain": {
+   "p10": 0.078,
+   "p50": 0.111,
+   "p90": 0.156
+  },
+  "new_terms_per_100w": {
+   "p10": 9.1,
+   "p50": 11.3,
+   "p90": 14.1
+  },
+  "max_new_terms_3_sentences": {
+   "p10": 12,
+   "p50": 17,
+   "p90": 24
+  },
+  "spine_cover": {
+   "p10": 1.0,
+   "p50": 1.0,
+   "p90": 1.0
+  },
+  "questions_per_100w": {
+   "p10": 0.92,
+   "p50": 1.42,
+   "p90": 2.09
+  },
+  "mean_sentence_words": {
+   "p10": 10.5,
+   "p50": 13.5,
+   "p90": 16.4
+  },
+  "short_sentence_share": {
+   "p10": 0.014,
+   "p50": 0.052,
+   "p90": 0.102
+  },
+  "cause_per_100w": {
+   "p10": 1.77,
+   "p50": 2.35,
+   "p90": 3.35
+  },
+  "contrast_per_100w": {
+   "p10": 0.53,
+   "p50": 0.94,
+   "p90": 1.36
+  },
+  "sequence_per_100w": {
+   "p10": 0.71,
+   "p50": 1.36,
+   "p90": 2.41
+  },
+  "example_per_100w": {
+   "p10": 0.16,
+   "p50": 0.45,
+   "p90": 0.86
+  },
+  "recap_per_100w": {
+   "p10": 0.08,
+   "p50": 0.23,
+   "p90": 0.46
+  },
+  "numbers_per_100w": {
+   "p10": 0.07,
+   "p50": 0.77,
+   "p90": 3.89
+  },
+  "you_we_per_100w": {
+   "p10": 3.78,
+   "p50": 4.88,
+   "p90": 6.59
+  },
+  "wpm": {
+   "p10": 170.2,
+   "p50": 183.8,
+   "p90": 197.6
+  }
+ },
+ "_about": "Where good YouTube explainers fall on each story measure (evals/explainers, 2026-11-03): practice_channels = 130 videos from channels NOT held out; khan_middle_school = 68 Khan Academy transcripts. Whole-video measures and their scramble-test accuracy are in evals/explainers/README.md."
+}

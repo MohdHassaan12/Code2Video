@@ -1,0 +1,153 @@
+<link rel="stylesheet" href="style.css">
+<title>stem_animation_lab — FastAPI Server Internals</title>
+
+<div class="hdr">
+  <div class="logo">⚙️</div>
+  <div>
+    <h1>stem_animation_lab — FastAPI Server Internals</h1>
+    <div class="sub">The Manim video factory on localhost:5000 (<code style="font-size:13px">app/</code> stage-aligned package, modular split 2026-07-21): storyboard generation with schema-validated LLM output, deterministic codegen, parallel scene rendering with cached TTS, layout-repair job pipeline, and agent stages (Visual Director + Vision QA).</div>
+  </div>
+  <div class="crumb">Diagram <b>02 — Lab server</b> · transpiler detail: 04 · repair detail: 03 · agent stages: Visual Director (before codegen) + Vision QA (after render)</div>
+</div>
+
+<div class="cols">
+  <div class="col grow" style="flex: 2.6;">
+
+    <!-- api surface -->
+    <div class="panel slate">
+      <div class="ptitle"><span class="ico">🔗</span> API surface</div>
+      <div class="cards c4">
+        <div class="card"><h3>POST /api/generate_storyboard</h3><p>topic → StoryboardResponse JSON (cached)</p></div>
+        <div class="card"><h3>POST /api/generate_code</h3><p>storyboard → Manim code + <code>scene_scripts</code></p></div>
+        <div class="card"><h3>POST /api/compile_video</h3><p>enqueue render job → <code>{job_id}</code></p></div>
+        <div class="card"><h3>GET /api/render_status · WS /ws/render_status</h3><p>poll or push job status (1s cadence)</p></div>
+        <div class="card"><h3>GET /timeline · /api/video_history</h3><p>render history UI from sidecars</p></div>
+        <div class="card"><h3>/bulk · /api/bulk/*</h3><p>start / runs / status / retry (bulk_runner router)</p></div>
+        <div class="card"><h3>POST /api/batch_render_and_merge</h3><p>multi-node render → one master video</p></div>
+        <div class="card"><h3>POST /api/preflight_assets · asset_issues</h3><p>pre-check SVG/molecule assets; flag undrawable elements</p></div>
+      </div>
+    </div>
+
+    <div class="vflow center"><div class="va"><span class="arr">↓</span> the three-stage contract the clients drive</div></div>
+
+    <!-- pipeline stages -->
+    <div class="panel blue">
+      <div class="ptitle"><span class="ico">📝</span> Stage 1 — Storyboard generation</div>
+      <div class="strip">
+        <div class="card"><div class="ci">🤖</div><h3>call_llm_with_fallback</h3><p>Provider chain <b>gemini → openrouter → groq</b>; schema-forced output (<code>response_schema=StoryboardResponse</code>), <code>json_repair</code>-lenient parse</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🗄️</div><h3>Storyboard cache</h3><p><code>.storyboard_cache/</code> — content-hash key = ∞ TTL, topic key = 48h TTL. Cache-key changes are billing changes</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">📐</div><h3>StoryboardResponse</h3><p>topic, key_theorems/terms, style_profile, aspect_ratio, <code>visual_storyboard[]</code>: scenes with elements + narration_cues + layout_template + <b>composition</b> (scene-level layout gestalt descriptor)</p></div>
+      </div>
+    </div>
+
+    <div class="panel purple">
+      <div class="ptitle"><span class="ico">🏗️</span> Stage 2 — Codegen (Visual Director + transpiler + critic) <span class="tag">diagrams 04</span></div>
+      <div class="strip">
+        <div class="card"><div class="ci">🎬</div><h3>Visual Director <span class="badge">flag-gated</span></h3><p><code>pipeline/director.py</code> (<code>VISUAL_DIRECTOR=1</code>): LLM ranks element importance → code applies scale tiers, safety-gated hide events, capped highlights. <b>LLM never emits geometry.</b> Stands aside on failure. 24-check harness.</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">⚡</div><h3>transpiler.py</h3><p><code>parse_schema_to_base_scene</code> (one master script) + <code>parse_schema_to_scene_scripts</code> (one per scene, for parallel render). <b>No LLM in this stage</b></p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🧼</div><h3>sanitize + Layout QA Critic</h3><p>Strips hallucinated imports, normalizes <code>viz_helpers</code> star import, enforces language policy + <code>config.font</code>. Then Layout QA Critic (LLM pass) reviews the generated code.</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">📦</div><h3>Output</h3><p>Manim code + <code>scene_class</code> + <code>scene_scripts[]</code> back to the caller for compile</p></div>
+      </div>
+    </div>
+
+    <div class="panel green">
+      <div class="ptitle"><span class="ico">🎞️</span> Stage 3 — Render job (_run_render_job)</div>
+      <div class="strip">
+        <div class="card"><div class="ci">🚦</div><h3>Path choice</h3><p><code>scene_scripts &gt; 1</code> and <code>PARALLEL_RENDER≠0</code> → parallel fast-path; else sequential single-script</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🧵</div><h3>_render_scenes_parallel</h3><p>ThreadPool (<code>PARALLEL_RENDER_WORKERS</code>=4) renders every scene script concurrently</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🛡️</div><h3>_repair_scenes_parallel</h3><p>Scene-scoped overlap repair — only flagged scenes re-render (diagram 03)</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🔗</div><h3>_concat_scene_clips</h3><p>ffmpeg concat → one mp4 + <code>.mp4.json</code> sidecar via <code>_write_video_sidecar</code></p></div>
+      </div>
+      <div class="spacer" style="height:10px;"></div>
+      <div class="note"><b>Sequential fallback:</b> <code>compile_manim_code</code> → self-heal loop on compile errors (<code>repair_code_with_gemini</code>, max 2 rounds) → <code>_repair_overlaps</code> whole-video repair. Same accept-if-better contract; every loser deleted via <code>_discard_video</code>.</div>
+    </div>
+
+    <div class="panel orange">
+      <div class="ptitle"><span class="ico">👁️</span> Stage 4 — Vision QA (frame audit) <span class="badge">flag-gated</span></div>
+      <div class="strip">
+        <div class="card"><div class="ci">🎞️</div><h3>_run_vision_qa</h3><p><code>VISION_QA=1</code>: ffmpeg extracts <code>VISION_QA_FRAMES</code> (6) evenly-spaced 640px frames from the rendered mp4</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🤖</div><h3>Multimodal LLM</h3><p><code>app.llm.call_vision_llm</code> (gemini-2.5-flash chain) against a 7-class whitelist: clipped/colliding/unreadable text, crowding, dead-frame, low-contrast, broken-hierarchy</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">📐</div><h3>Whitelist gate</h3><p>Findings lenient-parsed, shape+whitelist gated; timestamps snapped to frames. Emitted as <code>LAYOUT_VIOLATION: vision-&lt;class&gt;</code> — never counted by geometric <code>_overlap_violations</code></p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">⚖️</div><h3>Repair (sequential only)</h3><p>Sequential path: full accept-if-better vision-repair round (geometric non-regression guard). Parallel path: measurement-only — findings in <code>vision_findings</code> sidecar field. 19-check harness.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- right column -->
+  <div class="col" style="flex: 1;">
+    <div class="panel slate">
+      <div class="ptitle"><span class="ico">🤖</span> LLM fallback chains</div>
+      <div class="rows">
+        <div class="row"><span class="dot slate"></span><p><b>Gemini native</b> (<code>google.genai</code>, <code>GEMINI_API_KEY</code>): <code>gemini-2.5-flash → 2.5-pro → 2.0-flash</code></p></div>
+        <div class="row"><span class="dot slate"></span><p><b>OpenRouter</b>: storyboard <code>gemini-2.5-flash → deepseek-v4-pro → llama-3.3-70b:free</code> · code <code>deepseek-v4-pro</code> · vision QA <code>gemini-2.5-flash</code></p></div>
+        <div class="row"><span class="dot slate"></span><p><b>Groq</b> last resort: <code>llama-3.3-70b-versatile</code></p></div>
+        <div class="row"><span class="dot slate"></span><p>Chains overridable: <code>GEMINI_MODELS</code>, <code>OPENROUTER_STORYBOARD_MODELS</code>, <code>OPENROUTER_CODE_MODELS</code>, <code>VISION_QA_MODELS</code></p></div>
+      </div>
+    </div>
+
+    <div class="panel teal">
+      <div class="ptitle"><span class="ico">🗣️</span> TTS — narration with shared cache</div>
+      <div class="rows">
+        <div class="row"><span class="dot teal"></span><p><b>UniversalTTSService</b> (viz_helpers) wired into every generated scene; provider default <code>sarvam</code>, Gemini TTS fallback (no SARVAM key on this box)</p></div>
+        <div class="row"><span class="dot teal"></span><p><b>Cross-render cache</b> <code>.tts_cache/</code>: key = sha256(text+lang+speaker+provider); audio written first, json last (atomic)</p></div>
+        <div class="row"><span class="dot teal"></span><p><b>Contract:</b> a repair re-render bills ZERO TTS calls; cache failures are non-fatal</p></div>
+      </div>
+      <div class="spacer" style="height:9px;"></div>
+      <div class="badges"><span class="badge">TTS_SHARED_CACHE</span><span class="badge">TTS_SHARED_CACHE_DISABLE</span></div>
+    </div>
+
+    <div class="panel orange">
+      <div class="ptitle"><span class="ico">📦</span> Bulk pipeline — bulk_runner.py</div>
+      <div class="rows">
+        <div class="row"><span class="dot orange"></span><p><b>Stages per topic:</b> storyboard → codegen → render, each cached in <code>bulk_runs/&lt;run_id&gt;/&lt;topic&gt;/</code> — a dead run resumes with <b>zero re-billed LLM calls</b></p></div>
+        <div class="row"><span class="dot orange"></span><p><b>CLI:</b> <code>python3 bulk_runner.py plan.json [--parallel N] [--resume ID] [--dry-run]</code></p></div>
+        <div class="row"><span class="dot orange"></span><p><b>Web:</b> /bulk UI with per-topic stage status + retry</p></div>
+      </div>
+    </div>
+
+    <div class="panel red">
+      <div class="ptitle"><span class="ico">🗃️</span> Storage &amp; hygiene</div>
+      <div class="rows">
+        <div class="row"><span class="dot red"></span><p><code>static/videos/</code> (VIDEO_DIR) — served clips + sidecars</p></div>
+        <div class="row"><span class="dot red"></span><p><code>../temp_renders/</code> (RENDER_DIR) — Manim scratch + script staging</p></div>
+        <div class="row"><span class="dot red"></span><p><code>../generated_videos/</code> — merged finals, mounted at <code>/generated_videos</code></p></div>
+        <div class="row"><span class="dot red"></span><p><code>sweep_old_artifacts</code> on startup — <code>SWEEP_MAX_AGE_HOURS</code> (24)</p></div>
+        <div class="row"><span class="dot red"></span><p>Per-request <code>env_overrides</code> — allowlisted repair knobs only; process-global, last-writer-wins</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="howit">
+  <div class="lbl">10-stage pipeline (per reference architecture)</div>
+  <div class="step"><span class="ico">📥</span><div><h4>1. Planner</h4><p>PARTS pedagogy: scene count, narration pace, topic split</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🎬</span><div><h4>2. Visual Director</h4><p>Importance ranking, lifetimes, highlights (flag-gated, default off)</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🗺️</span><div><h4>3. Layout</h4><p>Zone assignment, axes-aware placement, split-screen management</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🏗️</span><div><h4>4. Animation</h4><p>Entrance vocabulary per type, topo-sorted build, z-index</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🧱</span><div><h4>5. Components</h4><p>SVG fetch/sanitize, molecule rendering, asset preflight</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🎞️</span><div><h4>6. Compile</h4><p>Manim render (parallel or sequential) + TTS w/ shared cache</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🛡️</span><div><h4>7. Static validate</h4><p>Dry-run probe: overlap, clipped, text-over-shape violations</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">👁️</span><div><h4>8. Vision QA</h4><p>Multimodal frame audit (flag-gated, default off)</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🔧</span><div><h4>9. Repair</h4><p>Scene-scoped accept-if-better loop (geometric + vision findings)</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">📤</span><div><h4>10. Concat + sidecar</h4><p>ffmpeg join, .mp4.json metadata, /timeline badge</p></div></div>
+</div>

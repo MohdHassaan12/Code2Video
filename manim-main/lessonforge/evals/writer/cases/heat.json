@@ -1,0 +1,477 @@
+{
+ "name": "heat",
+ "from_lesson": "20261012-152306-902cc9",
+ "brief": {
+  "topic": "Heat transfer: conduction, convection and radiation",
+  "grade": 7,
+  "audience": "Class 7 students",
+  "level": "foundation",
+  "goal": "Tell the three ways heat travels apart and name which one is at work in an everyday case",
+  "style": "tutor",
+  "language": "hinglish",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "concrete_first"
+ },
+ "card": {
+  "big_idea": {
+   "text": "Heat travels in three different ways: through touching particles in a solid, by moving liquid or gas, or directly across space.",
+   "cites": [
+    "S1#7",
+    "S1#13"
+   ]
+  },
+  "why_it_matters": {
+   "text": "You can use these three clues to work out why a pan heats water, why warm air rises, and why you feel warmth from the Sun or a fire.",
+   "cites": [
+    "S1#5",
+    "S1#6",
+    "S1#7"
+   ]
+  },
+  "the_why": {
+   "text": "In a solid, closely placed particles pass heat to neighbours while staying in their places. In a liquid or gas, warmer material rises and cooler material moves in; but heat can also reach across empty space by radiation, where no material is needed.",
+   "cites": [
+    "S1#3",
+    "S1#5",
+    "S1#7",
+    "S4#4"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Name the three ways heat can travel from a simple picture.",
+    "level": "remember",
+    "checked_by": "q3"
+   },
+   {
+    "can": "Explain how the movement, or lack of movement, of particles makes conduction, convection, and radiation different.",
+    "level": "understand",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Decide which way heat is travelling in an everyday case and justify the choice from what is moving.",
+    "level": "apply",
+    "checked_by": "try_it"
+   }
+  ],
+  "picture": {
+   "text": "Start with one fire in the middle of the board. Add a metal rod reaching into the fire on the left, blue-and-red looping arrows in the air above it, and a hand held to the side at a distance. The heat path grows one arrow at a time: along the rod, around the rising-air loop, and straight from the fire to the hand.",
+   "cites": [
+    "S3#8",
+    "S1#4",
+    "S1#6"
+   ],
+   "standard": "Classic fire demonstration showing a metal rod in a flame, rising warm air above"
+  },
+  "diagram_ask": "A labelled still diagram of a small fire in the centre: a metal rod reaches into the fire from the left, a hand is held above the fire, and a second hand is held at the side without touching it. Label fire, metal rod, air, and hands; show one arrow along the rod, looping arrows above the flame, and ",
+  "needs_first": [
+   {
+    "text": "Heat moves from something hotter toward something cooler.",
+    "cites": [
+     "S3#4",
+     "S1#2"
+    ]
+   },
+   {
+    "text": "Solids keep their overall shape, while liquids and gases can flow.",
+    "cites": [
+     "S1#3",
+     "S1#5",
+     "S3#6"
+    ]
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Heat always needs a material such as air, water, or metal to travel.",
+    "why_it_fails": "The Sun warms Earth through space, and a fire can warm your hand at a distance, so radiation needs no material medium.",
+    "cites": [
+     "S1#6",
+     "S1#7",
+     "S3#7"
+    ]
+   },
+   {
+    "mistake": "During conduction, heated particles travel all the way along the metal.",
+    "why_it_fails": "The particles stay in their positions overall and pass heat onward to neighbouring particles.",
+    "cites": [
+     "S1#3",
+     "S2#3"
+    ]
+   },
+   {
+    "mistake": "Convection is just heat spreading through water or air without the water or air moving.",
+    "why_it_fails": "Convection transfers heat because warmer liquid or gas rises and cooler liquid or gas moves to replace it.",
+    "cites": [
+     "S1#5",
+     "S2#6",
+     "S4#3"
+    ]
+   },
+   {
+    "mistake": "All three ways happen only in separate situations.",
+    "why_it_fails": "Around a flame and a pan, heat can travel through the metal, move with water or air, and radiate outward at the same time.",
+    "cites": [
+     "S1#7",
+     "S2#10",
+     "S3#8"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "A metal rod touches a fire, warm air rises above it, and your hand feels warm at the side without touching it: do you think heat is travelling in one way or in more than one way?",
+   "guesses": [
+    "One way: heat just spreads out from the fire.",
+    "Two ways: through the metal and through the air.",
+    "Three ways: the rod, the rising air, and the side hand are heated differently."
+   ],
+   "answer": "Three ways: heat travels along the rod by conduction, with rising air by convection, and to the side hand by radiation.",
+   "cites": [
+    "S3#8",
+    "S1#7"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the fire, rod, rising air, and side hand. Ask whether all three are warmed in the same way or in different ways.",
+    "cites": [
+     "S3#8"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Pause for the learner to choose one, two, or three ways, then circle the three heat paths without naming them yet.",
+    "cites": [
+     "S3#8",
+     "S1#7"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Animate dots in the metal rod jiggling and passing a glow from the hot end toward the cool end; the dots do not travel down the rod.",
+    "cites": [
+     "S1#3",
+     "S4#1"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Ask, “Why does the far end warm even though the metal does not flow there?” After a wait, answer: because neighbouring particles pass heat on while remaining in place.",
+    "cites": [
+     "S1#3",
+     "S2#3"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Write “conduction” beside the rod and link the word to heat passed through a solid without the material moving as a whole.",
+    "cites": [
+     "S1#2",
+     "S1#3"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Beside the fixed dots in the rod, animate red air above the fire rising and blue cooler air sinking toward the fire. Ask which picture shows particles actually changing place.",
+    "cites": [
+     "S1#4",
+     "S1#5",
+     "S3#8"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Write “convection” beside the circulating air, then reveal straight heat arrows from the fire to the side hand and name this “radiation.” Ask why this last arrow can cross empty space; answer: because radiation needs no material medium.",
+    "cites": [
+     "S1#5",
+     "S1#6",
+     "S1#7"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Keep the same fire picture and ask the learner to classify heat reaching the rod, the air above the flame, and the hand at the side before revealing each answer.",
+    "cites": [
+     "S3#8",
+     "S1#7"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "The learner marks and names the three heat paths on a paper version of the same fire picture, then says what moves in each case.",
+    "cites": [
+     "S1#7",
+     "S3#8"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Show the three arrows together and prompt: “Conduction is heat passed through fixed particles; convection is heat carried by moving liquid or gas; radiation travels without a medium.”",
+    "cites": [
+     "S1#3",
+     "S1#5",
+     "S1#7"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "The far end of a metal spoon warms after its bowl sits in hot tea. Which description fits best?",
+    "options": [
+     "Particles pass heat to neighbouring particles while staying in place.",
+     "The metal particles flow from the tea to the handle.",
+     "Heat crosses the gap by radiation only."
+    ],
+    "answer_index": 0,
+    "explain": "This is conduction because heat passes along the solid through neighbouring particles, while the particles do not move away from their positions.",
+    "cites": [
+     "S1#3",
+     "S3#5"
+    ]
+   },
+   {
+    "question": "Why does the warm air above a fire rise while cooler air moves in below?",
+    "options": [
+     "Warmer air becomes lighter and rises, so cooler air moves in to replace it.",
+     "Air stays still and passes heat along like a metal rod.",
+     "The fire pulls all air upward without moving it around."
+    ],
+    "answer_index": 0,
+    "explain": "This circulation is convection: warmer air rises and cooler air takes its place.",
+    "cites": [
+     "S1#5",
+     "S2#6",
+     "S4#3"
+    ]
+   },
+   {
+    "question": "You feel warmth from the Sun across space. Which method is at work?",
+    "options": [
+     "Radiation, because heat can travel without air or another material.",
+     "Conduction, because particles in space touch each other.",
+     "Convection, because space air rises from the Sun."
+    ],
+    "answer_index": 0,
+    "explain": "Radiation can cross the space between the Sun and Earth, unlike conduction and convection, which need a medium.",
+    "cites": [
+     "S1#6",
+     "S1#7",
+     "S3#7"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Trace the Three Heat Paths",
+   "kind": "paper",
+   "materials": [
+    "paper",
+    "pencil or pen",
+    "three coloured pencils if available"
+   ],
+   "stands_for": "Your drawing has one fire: the line touching it is a solid metal rod, the loop above it is moving air, and the straight line to a side hand is heat travelling through space.",
+   "predict": "Before drawing arrows, predict which path is conduction, which is convection, and which is radiation.",
+   "steps": [
+    "Draw a small fire, a metal rod touching it, a loop above it, and a hand to one side.",
+    "Draw an arrow along the rod from the fire outward.",
+    "Draw arrows rising above the fire and returning down at the sides.",
+    "Draw straight arrows from the fire to the side hand.",
+    "Write conduction, convection, or radiation beside each path."
+   ],
+   "observe": "The rod path is conduction, the circulating air path is convection, and the straight path to the side hand is radiation.",
+   "question": "Why is the loop above the fire convection rather than conduction?",
+   "expected": "It is convection because warm air actually rises and cooler air moves down to replace it; in conduction, particles do not move from place to place overall.",
+   "write": "Say or write: “Conduction happens along the rod because particles pass heat on without travelling away.” “Convection happens above the fire because warm air moves upward, while radiation warms the side hand without touching it.”",
+   "in_class": "Pairs draw the same three-path fire diagram. The teacher writes on the board: rod / air above fire / side hand. Ask, “Which path has moving material, and what proves it?” A class answer of “the rod” shows that students are confusing conduction with convection.",
+   "cites": [
+    "S1#3",
+    "S1#5",
+    "S1#6",
+    "S3#8"
+   ]
+  },
+  "leave_out": [
+   "{'text': 'Good conductors and insulators, including why metal pans and clay cups are chosen for different jobs.', 'cites': ['S1#3', 'S2#4']}",
+   "{'text': 'Convection currents in sea breezes and land breezes.', 'cites': ['S1#6', 'S2#7', 'S2#8']}",
+   "{'text': 'Infrared waves, colour absorption, and the fact that all objects emit radiation.', 'cites': ['S1#7', 'S4#4']}",
+   "{'text': 'The water cycle, seepage, groundwater, and calculations of heat-transfer rates.', 'cites': ['S1#9', 'S1#10']}"
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "Its Class 7 sequence from conduction through convection to radiation, and its contrast between fixed particles in a solid and moving particles in water or air.",
+    "left": "Its long extensions into breezes, the water cycle, seepage, and conservation, because this short lesson checks only the three heat-transfer methods."
+   },
+   {
+    "source": "S3",
+    "took": "Its single fire scene, which visibly puts a heated metal rod, rising air, and warmth felt at a distance into one connected picture.",
+    "left": "Its opening investigation about judging temperature by touch, because it would take time away from distinguishing the three routes of heat travel."
+   },
+   {
+    "source": "S4",
+    "took": "Its clear particle-level reason for conduction and its rise-and-sink cycle for convection.",
+    "left": "Its more advanced vocabulary about kinetic energy, density, infrared waves, and thermal conductivity, because the Class 7 objective is to distinguish and identify the three methods."
+   }
+  ],
+  "uncited": [],
+  "teacher_talk": [
+   "opens with an atmospheric scene and characters asking questions, transitions smoothly using logical follow-up questions from the characters, addresses the audience directly as friends, and concludes …",
+   "begins topics by referencing common daily scenarios, poses rhetorical questions to engage the learner, uses a step-by-step explanatory tone, and concludes by summarizing the concepts demonstrated",
+   "The teacher speaks in a structured, direct-instruction style, introducing topics sequentially with clear categorical transitions, using imaginative visualization prompts for microscopic processes …"
+  ],
+  "source_flows": {
+   "S1": [
+    "demonstration",
+    "application",
+    "demonstration",
+    "demonstration",
+    "integration",
+    "integration",
+    "assessment"
+   ],
+   "S2": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "assessment"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration"
+   ],
+   "S4": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ]
+  },
+  "topic": "Heat Transfer: Conduction, Convection and Radiation",
+  "asked": "Heat transfer: conduction, convection and radiation",
+  "klass": 7,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Curiosity, Class 7, chapter 7: chapter 7",
+    "url": "https://ncert.nic.in/textbook/pdf/gecu107.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Matrix Motion: Heat Transfer in Nature | Class 7 Science | NCERT Full Animation | Exam 2026 |",
+    "url": "https://www.youtube.com/watch?v=-_223hoWR_w",
+    "note": "English lecture, 11 min, automatic captions"
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "Smartest Playtime: Heat /  Modes of heat transfer/ Conduction, Convection and Radiation/ Class 7 Science",
+    "url": "https://www.youtube.com/watch?v=iGr4EOVOOZE",
+    "note": "English lecture, 8 min, automatic captions"
+   },
+   {
+    "id": "S4",
+    "kind": "lecture",
+    "title": "Cognito: GCSE Physics - Conduction, Convection & Radiation | How Heat Energy is Transferred (2027/28 exams)",
+    "url": "https://www.youtube.com/watch?v=rUnABMRPzvg",
+    "note": "English lecture, 4 min, automatic captions"
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "1a5b8dc9618159ed",
+  "diagram": {
+   "ask": "A labelled still diagram of a small fire in the centre: a metal rod reaches into the fire from the left, a hand is held above the fire, and a second hand is held at the side without touching it. Label fire, metal rod, air, and hands; show one arrow along the rod, looping arrows above the flame, and ",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_labelled_still_diagram-8f79613ec9/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_labelled_still_diagram-8f79613ec9/whole.png",
+   "points": {
+    "air_convection": {
+     "name": "air Convection",
+     "box": [
+      0.223,
+      0.3442,
+      0.4027,
+      0.4023
+     ]
+    },
+    "conduction": {
+     "name": "Conduction",
+     "box": [
+      0.2139,
+      0.5947,
+      0.3563,
+      0.6358
+     ]
+    },
+    "radiation": {
+     "name": "Radiation",
+     "box": [
+      0.6453,
+      0.7759,
+      0.763,
+      0.8163
+     ]
+    },
+    "metal_rod": {
+     "name": "metal rod",
+     "box": [
+      0.1777,
+      0.7939,
+      0.2977,
+      0.8345
+     ]
+    },
+    "fire": {
+     "name": "fire",
+     "box": [
+      0.456,
+      0.8922,
+      0.4952,
+      0.9332
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   },
+   "holds": {
+    "things": [
+     "a hand above the fire",
+     "a hand to the right of the fire",
+     "a fire with orange and yellow flames",
+     "two brown logs under the fire",
+     "a gray metal rod extending from the fire to the left",
+     "a brown arrow above the metal rod pointing left",
+     "two blue curved arrows above the fire pointing up and down",
+     "three dashed red arrows pointing right from the fire"
+    ],
+    "print": [
+     "hand",
+     "air Convection",
+     "Conduction",
+     "metal rod",
+     "Radiation",
+     "fire",
+     "hand"
+    ]
+   }
+  }
+ }
+}

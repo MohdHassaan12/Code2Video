@@ -1,0 +1,52 @@
+# our lesson topics first
+the determinant
+binomial distribution
+implicit differentiation
+refraction of light
+algebraic identities (a+b)^2
+why ice floats on water
+floating and sinking buoyancy
+balancing chemical equations
+monty hall problem
+why we always see the same side of the moon
+why heavy and light objects fall at the same speed
+0.999 repeating equals 1
+quadrilaterals and parallelograms
+midpoint theorem
+centroid of a triangle
+# classic concept explainers
+pythagorean theorem proof
+derivative intuition
+what is an integral
+chain rule
+eigenvectors and eigenvalues
+fourier transform
+bayes theorem
+central limit theorem
+normal distribution
+prime numbers
+complex numbers
+logarithms
+exponential growth
+newton's laws of motion
+conservation of energy
+momentum
+gravity and orbits
+electric current and voltage
+magnetism
+electromagnetic induction
+waves and sound
+why the sky is blue
+photosynthesis
+cell division mitosis
+dna replication
+natural selection evolution
+how vaccines work
+atoms and the periodic table
+chemical bonding
+acids and bases ph
+moles chemistry
+entropy
+special relativity
+quantum superposition
+the doppler effect

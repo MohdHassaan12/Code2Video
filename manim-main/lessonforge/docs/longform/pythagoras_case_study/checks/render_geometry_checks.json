@@ -1,0 +1,21 @@
+{
+  "actual_rendered_proof_geometry": {
+    "outer_area": 15.920099999999998,
+    "triangle_areas": [
+      1.949399999999999,
+      1.9493999999999994,
+      1.9493999999999998,
+      1.949399999999999
+    ],
+    "central_area": 8.122499999999999,
+    "equal_central_sides": true,
+    "right_central_corners": true,
+    "complete_area_partition": true
+  },
+  "actual_outward_square_areas": [
+    2.5599999999999987,
+    1.4400000000000004,
+    4.0
+  ],
+  "outward_shapes_are_squares": true
+}

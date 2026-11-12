@@ -1,0 +1,371 @@
+# Understanding slope and intercept
+
+Draft for teacher review. Generated through the live pilot and edited for the issues listed in the accompanying production notes. Audio has not been produced; duration is unmeasured.
+
+### A Spoken Lesson for Learners Aged 14–16
+
+---
+
+> **Production note:** All visuals share one evolving coordinate board. Symbol colors are consistent throughout: **m is always shown in orange**, **b is always shown in green**, the **line itself is blue**, and **plotted points are red**. Pause timers are marked explicitly. Word count targets spoken narration only.
+
+---
+
+## Section 1 — Hook: What Does a Line Actually Tell You?
+
+[VISUAL: Blank coordinate grid, axes labeled x and y, origin marked. No line yet.]
+
+Okay, so imagine you're tracking something over time — maybe the temperature outside as the morning goes on, or the amount of money in your savings account as you add to it each week. If the output changes by the same amount for each equal increase in the input, the graph is a straight line. And here's the thing: every nonvertical straight line in this coordinate plane can be described by two numbers. Just two. And once you know those two numbers, you know *everything* about that line. Where it crosses the y-axis, which direction it goes, and how steeply it climbs or falls on these fixed axes. Everything.
+
+Today we're going to pull those two numbers apart, understand what each one actually *does*, and by the end you'll be able to look at an equation like y equals three x plus two and immediately picture the line in your head — or look at a line on a graph and write down its equation. That's a genuinely useful skill, and it's not as mysterious as it might look right now.
+
+The equation we're working with is written like this:
+
+**y = mx + b**
+
+[VISUAL: Write "y = mx + b" in the top-right corner of the board. Label m in orange, b in green.]
+
+Two letters doing the heavy lifting: **m** in orange, and **b** in green. Let's meet them one at a time.
+
+---
+
+## Section 2 — Introducing b: Where Does the Line Cross the Y Axis?
+
+[VISUAL: Plot the point (0, 3) in red on the grid. Label it "(0, 3)".]
+
+Let's start with **b** because it's the simpler of the two. Look at the equation: y equals m times x plus b. Ask yourself — what happens when x is zero? Well, m times zero is just zero, so the whole equation collapses down to y equals b. That's it. When x is zero, y equals b.
+
+And x equals zero is a special place on the graph — it's the y-axis, the vertical line right down the middle. So **b tells you exactly where the line crosses the y-axis**. We call this the **y-intercept**. The word "intercept" just means "where it cuts across," like intercepting a pass in football — you're cutting across the path.
+
+[VISUAL: Draw a short horizontal tick on the y-axis at y = 3. Label it "b = 3" in green.]
+
+So if b equals three, the line will cross the y-axis at the point (0, 3). That's guaranteed, no matter what m is. The line *must* pass through that point.
+
+Now here's something important to hold onto: **b is a location, not a direction**. It tells you where the line crosses the y-axis. The mathematical line continues in both directions; this point is not its beginning. It says nothing about which way the line tilts. That's m's job, and we'll get there in a moment.
+
+A common mix-up is thinking that a bigger b means a steeper line. It doesn't. A bigger b just means the line sits higher up on the graph. Think of it like lifting a plank off the ground — you can raise it without changing its angle at all.
+
+[VISUAL: Draw a faint dashed horizontal line at y = 3 to suggest "height" without tilt.]
+
+---
+
+## Section 3 — Introducing m: The Slope
+
+[VISUAL: Keep the point (0, 3) in red. Now draw a blue line through it with a visible upward tilt. Don't label m yet.]
+
+Now let's talk about **m**, the slope. This is the number that controls the *direction* and the *steepness* of the line.
+
+Here's the definition, and I want you to actually understand it rather than just memorize it. Slope is defined as:
+
+**m = Δy ÷ Δx**
+
+[VISUAL: Write "m = Δy / Δx" in orange beside the line.]
+
+The triangle symbol — that's the Greek letter delta — just means "change in." So Δy means "how much y changes," and Δx means "how much x changes." Slope is asking: for every step you take to the right along the x-axis, how many steps do you move up or down on the y-axis?
+
+Let's make that concrete. Say you're standing at one point on the line, and you move two units to the right. If the line carries you up by four units at the same time, then the slope is four divided by two, which equals two. For every one step right, you go two steps up. That's a slope of two.
+
+[VISUAL: On the blue line, draw a right-triangle "staircase" — horizontal leg labeled "Δx = 2" in orange, vertical leg labeled "Δy = 4" in orange. Show m = 4/2 = 2.]
+
+Notice that Δx has to be *nonzero* for this to make sense. If you never move horizontally, you can't divide by zero — and that situation, a perfectly vertical line, actually falls outside this equation entirely. We'll come back to that at the end.
+
+---
+
+## Section 4 — Prediction Pause 1
+
+[VISUAL: Freeze the current graph — blue line through (0, 3) with slope 2 visible from the staircase.]
+
+**⏸ THINKING PAUSE — 30 seconds**
+
+> *Look at the line on the board. It passes through (0, 3) and has slope 2. I want you to predict: what are the coordinates of the point on this line where x = 1? And where x = 2? Work it out in your head or on paper before we continue.*
+
+[VISUAL: Timer graphic for 30 seconds.]
+
+---
+
+Welcome back. Let's check. The equation is y = 2x + 3.
+
+When x = 1: y = 2(1) + 3 = 5. So the point is (1, 5).
+When x = 2: y = 2(2) + 3 = 7. So the point is (2, 7).
+
+[VISUAL: Plot red points at (1, 5) and (2, 7). Confirm they sit on the blue line.]
+
+Did you get those? If you did, you already understand the core mechanics of this equation. If not, no worries — we're going to keep building.
+
+---
+
+## Section 5 — What Changing b Does: Vertical Translation
+
+[VISUAL: Keep the blue line y = 2x + 3. Now prepare to draw a second line.]
+
+Here's where things get visually interesting. Let's keep m fixed at two — we're not touching the slope — and we're going to change b. Watch what happens.
+
+First, our current line: y = 2x + **3**. It crosses the y-axis at 3.
+
+[VISUAL: Label current blue line "b = 3" in green at its y-intercept.]
+
+Now let's change b to negative one. So the new equation is y = 2x + (−1), which we'd write as y = 2x − 1.
+
+[VISUAL: Draw a second blue line — same tilt as the first, but crossing y-axis at −1. Label "b = −1" in green at its y-intercept. Use a slightly lighter blue or dashed style to distinguish.]
+
+Look at those two lines. They are *perfectly parallel*. Same slope, same tilt, same steepness — but one sits higher than the other. The line shifted straight down. We call this a **vertical translation** — the whole line slid vertically without rotating at all.
+
+For each fixed x, changing b from 3 to -1 subtracts 4 from y. Every point therefore moves down by the same amount. On these unchanged axes, m controls the tilt. We didn't change m, so the angle didn't change. We only changed where the line anchors to the y-axis, so the whole thing lifted or dropped like an elevator.
+
+[VISUAL: Draw a small vertical arrow between the two lines labeled "translated down" in green.]
+
+Now let's go the other way. Change b to five. New equation: y = 2x + 5.
+
+[VISUAL: Draw a third parallel blue line crossing y-axis at 5. Label "b = 5" in green.]
+
+There it is — three parallel lines, all with slope two, sitting at different heights. Changing b with m fixed **translates the line vertically**. That's the rule, and now you know *why* it's true.
+
+[VISUAL: Clear the extra lines, leaving only the original y = 2x + 3 in blue.]
+
+---
+
+## Section 6 — What Changing m Does: Pivoting About (0, b)
+
+[VISUAL: Blue line y = 2x + 3 remains. Red dot at (0, 3) is prominent.]
+
+Now let's do the opposite. Keep b fixed at three — the line must stay anchored at (0, 3) — and change m.
+
+Currently m = 2. Let's change it to m = one half.
+
+[VISUAL: Draw a new blue line through (0, 3) with a shallower slope. Label "m = ½" in orange.]
+
+The line still passes through (0, 3) — it has to, because b hasn't changed. But it's much shallower now. For every two steps right, it only goes one step up.
+
+Now let's try m = four.
+
+[VISUAL: Draw another blue line through (0, 3), steeper. Label "m = 4" in orange.]
+
+Again, anchored at (0, 3), but now much steeper. For every one step right, it goes four steps up.
+
+See what's happening? The point (0, 3) is like a pin stuck in the graph. When you change m, the line **pivots around that pin**. It rotates. The anchor point is always (0, b), and that point stays fixed while the rest of the line swings.
+
+[VISUAL: Draw a small curved arrow around (0, 3) suggesting rotation. Label "(0, b) — pivot point" in green.]
+
+This is why slope and intercept are completely separate ideas. The intercept pins the line to the y-axis. The slope decides the angle of rotation around that pin.
+
+[VISUAL: Clear extra lines, return to y = 2x + 3 only.]
+
+---
+
+## Section 7 — Negative Slopes, Zero Slope, and a Warning
+
+[VISUAL: Blue line y = 2x + 3 still on board.]
+
+So far our slope has been positive. Let's explore what happens with other values.
+
+**Negative slope:** Let's try y = −2x + 3. Same b, but m is now negative two.
+
+[VISUAL: Draw a new blue line through (0, 3) falling to the right. Label "m = −2" in orange.]
+
+Notice: this line *falls* as you move from left to right. A negative slope means that as x increases, y decreases. The line goes downhill. That makes sense from the formula — if Δx is positive (moving right) and m is negative, then Δy must be negative (moving down).
+
+**Zero slope:** Now try m = 0. Equation: y = 0x + 3, which simplifies to y = 3.
+
+[VISUAL: Draw a perfectly horizontal blue line at y = 3. Label "m = 0" in orange.]
+
+A slope of zero means no tilt at all — a perfectly horizontal line. Makes sense: zero change in y for every change in x. The line just sits flat.
+
+Now here's the warning I promised. You might think: "A slope of negative five is steeper than a slope of one, because five is bigger than one." **Be careful.** When we talk about steepness, we mean how far from horizontal the line is — and that depends on the *absolute value* of the slope, not the signed value. A slope of negative five and a slope of positive five are equally steep — one just falls and one rises. We are comparing them using the same axis scales. And a slope of negative one is *less* steep than a slope of negative five, even though negative one is a larger number on the number line.
+
+[VISUAL: Draw two lines through (0, 0) — one with m = −1, one with m = −5. Label them. Show that m = −5 is steeper despite being "smaller" as a signed number.]
+
+So when comparing steepness, look at the size of the number ignoring its sign. When comparing direction, the sign is everything.
+
+**Vertical lines:** One last thing. What about a perfectly vertical line, like x = 4? That line goes straight up and down. If you tried to calculate its slope, Δx would be zero — and you can't divide by zero. So vertical lines have *undefined* slope and cannot be written in the form y = mx + b. They live outside this equation. Just worth knowing.
+
+[VISUAL: Draw a faint vertical dashed line at x = 4. Label "x = 4 — undefined slope, not y = mx + b form" in grey.]
+
+[VISUAL: Clear extras. Return to y = 2x + 3.]
+
+---
+
+## Section 8 — Prediction Pause 2 and Two Worked Problems
+
+[VISUAL: Board shows y = 2x + 3 in blue. New equation written: "y = −x + 5".]
+
+**⏸ THINKING PAUSE — 60 seconds**
+
+> *Here's a new equation: y = −x + 5. Before I work through it, I want you to answer three questions on paper:*
+> *1. What is the slope? What does its sign tell you about direction?*
+> *2. What is the y-intercept? Where does the line cross the y-axis?*
+> *3. What is the y-value when x = 3?*
+> *Take your time — sixty seconds.*
+
+[VISUAL: Timer graphic for 60 seconds.]
+
+---
+
+Alright, let's go through it together.
+
+**Question 1:** The equation is y = −1·x + 5, so m = −1. The negative sign tells us the line falls from left to right.
+
+**Question 2:** b = 5, so the line crosses the y-axis at (0, 5).
+
+**Question 3:** Plug in x = 3: y = −1(3) + 5 = −3 + 5 = 2. The point is (3, 2).
+
+[VISUAL: Plot (0, 5) in red, (3, 2) in red. Draw the blue line through them. Label m = −1 in orange, b = 5 in green.]
+
+Good. Now let's do two fully worked problems — I'll walk through every step.
+
+---
+
+### Worked Problem 1: Find the equation from two points.
+
+**Problem:** A line passes through the points (1, 4) and (3, 10). Find its equation in the form y = mx + b.
+
+[VISUAL: Plot red points at (1, 4) and (3, 10). Label them.]
+
+**Step 1 — Find m.**
+
+m = Δy ÷ Δx = (10 − 4) ÷ (3 − 1) = 6 ÷ 2 = 3.
+
+[VISUAL: Write "m = (10−4)/(3−1) = 6/2 = 3" in orange.]
+
+**Step 2 — Find b.**
+
+We know m = 3, and the line passes through (1, 4). Substitute into y = mx + b:
+
+4 = 3(1) + b
+4 = 3 + b
+b = 1
+
+[VISUAL: Write the substitution steps in green for b.]
+
+**Step 3 — Write the equation.**
+
+y = 3x + 1.
+
+[VISUAL: Draw the blue line through both red points. Label "y = 3x + 1".]
+
+Let's verify with the second point: y = 3(3) + 1 = 9 + 1 = 10. ✓ It works.
+
+---
+
+### Worked Problem 2: Interpret a real-world line.
+
+**Problem:** A phone plan charges a flat monthly fee plus a cost per gigabyte used. After using 2 GB, the bill is £14. After using 5 GB, the bill is £23. Write the equation and identify what m and b mean in context.
+
+[VISUAL: Plot red points at (2, 14) and (5, 23). Label axes: x = "GB used", y = "cost in £".]
+
+**Step 1 — Find m.**
+
+m = (23 − 14) ÷ (5 − 2) = 9 ÷ 3 = 3.
+
+[VISUAL: Write "m = 9/3 = 3" in orange.]
+
+In context, m = 3 means the cost increases by £3 for every extra gigabyte used. That's the cost per GB.
+
+**Step 2 — Find b.**
+
+Use point (2, 14): 14 = 3(2) + b → 14 = 6 + b → b = 8.
+
+[VISUAL: Write b = 8 in green.]
+
+In context, b = 8 means the flat monthly fee is £8 — what you'd pay even if you used zero data.
+
+**Step 3 — Equation:** y = 3x + 8.
+
+[VISUAL: Draw blue line. Label "y = 3x + 8". Annotate: "m = 3: £3 per GB" in orange, "b = 8: £8 flat fee" in green.]
+
+Notice how m and b each carry real meaning here. They're not just abstract numbers — they describe something physical about the situation.
+
+---
+
+## Section 9 — Three Independent Problems
+
+[VISUAL: Clear the board to a fresh grid. Title: "Your Turn".]
+
+Now it's your turn. Here are three problems. Pause the lesson, work through each one, and then come back to check your answers. I'll give you the answers after a thinking pause.
+
+**Problem 1:** Write the equation of the line with slope −3 and y-intercept 7.
+
+**Problem 2:** A line passes through (0, −2) and (4, 6). Find its equation.
+
+**Problem 3:** Two lines are given: Line A is y = 5x − 1, and Line B is y = −5x + 4.
+(a) Which line has a greater y-intercept?
+(b) Are the lines equally steep? Explain your answer.
+
+**⏸ THINKING PAUSE — 60 seconds**
+
+> *Work through all three problems. Write your equations, show your working for Problem 2, and write a sentence for Problem 3(b).*
+
+[VISUAL: Timer graphic for 60 seconds. Problems listed on board.]
+
+---
+
+Welcome back. Let's check.
+
+**Problem 1:** Slope is −3, so m = −3. Y-intercept is 7, so b = 7. The equation is **y = −3x + 7**. That's it — you just slot the numbers straight into the template.
+
+[VISUAL: Write "y = −3x + 7" in blue. Label m = −3 in orange, b = 7 in green.]
+
+**Problem 2:** The line passes through (0, −2) and (4, 6).
+
+Step 1 — Slope: m = (6 − (−2)) ÷ (4 − 0) = 8 ÷ 4 = 2.
+
+Step 2 — Y-intercept: The point (0, −2) is already on the y-axis, so b = −2 directly. No substitution needed.
+
+Equation: **y = 2x − 2**.
+
+[VISUAL: Plot (0, −2) and (4, 6) in red. Draw blue line. Label "y = 2x − 2". Label m = 2 in orange, b = −2 in green.]
+
+**Problem 3:**
+(a) Line A has b = −1. Line B has b = 4. **Line B has the greater y-intercept** — it crosses the y-axis higher up.
+
+(b) Line A has m = 5. Line B has m = −5. The absolute values are both 5, so **yes, the lines are equally steep** — they make angles of the same magnitude with the horizontal when shown on the same axis scales. Line A rises left to right; Line B falls left to right. The sign tells you direction, not steepness.
+
+[VISUAL: Draw both lines on the grid through their respective y-intercepts, showing equal but opposite tilts. Label m = 5 in orange for Line A, m = −5 in orange for Line B.]
+
+---
+
+## Section 10 — Bringing It All Together
+
+[VISUAL: Final clean board. Draw one blue line — y = 2x + 1. Label m = 2 in orange, b = 1 in green. Red dot at (0, 1).]
+
+Let's zoom out and see the whole picture we've built today.
+
+Every straight line with a defined, finite slope can be written as y = mx + b. Two numbers. That's all it takes.
+
+**b**, in green, is the y-intercept — the height at which the line crosses the y-axis, at the point (0, b). Change b while keeping m the same, and the line slides straight up or down without rotating. It translates vertically. The lines stay parallel.
+
+**m**, in orange, is the slope — the ratio of vertical change to horizontal change, Δy over Δx. Change m while keeping b the same, and the line pivots around the fixed point (0, b). It rotates. A positive m means the line rises left to right. A negative m means it falls. An m of zero gives a flat horizontal line. And steepness is about the size of m — its absolute value — not its sign.
+
+[VISUAL: Annotate the board: "b → vertical position" in green with an up-down arrow. "m → rotation / direction" in orange with a curved arrow around (0, 1).]
+
+These two ideas — position and direction — are completely independent. You can have a steep line sitting low on the graph, or a shallow line sitting high. You can have a steeply falling line and a steeply rising line that are mirror images of each other. The equation y = mx + b gives you precise, separate control over both.
+
+And vertical lines — the ones that go straight up and down — they can't be written this way because their slope is undefined. They get their own equation: x equals some constant. They're a special case that lives just outside our formula.
+
+[VISUAL: Small note in grey corner: "Vertical lines: x = c, slope undefined."]
+
+Here's what I'd encourage you to do next time you see a linear equation: don't just read the numbers — *see* the line. Ask yourself, where does it cross the y-axis? Which way does it tilt? How steeply? You now have the tools to answer all three questions instantly, just from the equation.
+
+And if you're given a graph instead of an equation, work backwards: read off the y-intercept for b, pick two clear points and calculate Δy over Δx for m, then write y = mx + b. The equation and the picture are two languages saying exactly the same thing.
+
+[VISUAL: Final board state — y = 2x + 1 in blue, m = 2 labeled in orange, b = 1 labeled in green, red dot at (0, 1), small staircase triangle showing Δx = 1, Δy = 2.]
+
+The next step is to explain a new line in both languages: its equation and its graph.
+
+---
+
+## Answer Key
+
+| Problem | Answer |
+|---|---|
+| Prediction Pause 1 — x = 1 | y = 5, point (1, 5) |
+| Prediction Pause 1 — x = 2 | y = 7, point (2, 7) |
+| Prediction Pause 2 — slope of y = −x + 5 | m = −1, line falls left to right |
+| Prediction Pause 2 — y-intercept | b = 5, crosses at (0, 5) |
+| Prediction Pause 2 — y when x = 3 | y = 2, point (3, 2) |
+| Independent Problem 1 | y = −3x + 7 |
+| Independent Problem 2 | y = 2x − 2 |
+| Independent Problem 3(a) | Line B, b = 4 > b = −1 |
+| Independent Problem 3(b) | Yes, equally steep; the absolute value of m is 5 for both |
+
+---
+
+*This is an original candidate lesson. No claims are made regarding curriculum alignment, measured duration, or validated learner outcomes.*

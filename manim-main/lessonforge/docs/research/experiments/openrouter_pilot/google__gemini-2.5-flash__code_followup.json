@@ -1,0 +1,46 @@
+{
+  "id": "gen-1791306572-7RLghqm3Tppnf07IltJ9",
+  "object": "chat.completion",
+  "created": 1791306572,
+  "model": "google/gemini-2.5-flash",
+  "provider": "Google",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "STOP",
+      "message": {
+        "role": "assistant",
+        "content": "from manim import *\nimport math\nimport numpy as np\n\nclass SlopeInterceptDemo(Scene):\n    def construct(self):\n        # Configuration\n        AXES_X_RANGE = [-3, 3, 1]\n        AXES_Y_RANGE = [-3, 5, 1]\n        AXES_X_LENGTH = 6\n        AXES_Y_LENGTH = 8\n        GRAPH_ORIGIN = LEFT * 4\n        TEXT_RIGHT_X = 2.5\n        TEXT_RIGHT_Y_TOP = 3.5\n        TEXT_RIGHT_Y_SPACING = 0.8\n        TEXT_WIDTH = 5.5\n\n        # --- Beat 1: Varying y-intercept (b) ---\n        # Setup axes\n        axes = Axes(\n            x_range=AXES_X_RANGE,\n            y_range=AXES_Y_RANGE,\n            x_length=AXES_X_LENGTH,\n            y_length=AXES_Y_LENGTH,\n            axis_config={\"include_numbers\": True, \"font_size\": 24},\n            tips=False\n        ).shift(GRAPH_ORIGIN)\n\n        x_label = axes.get_x_axis_label(Tex(\"$x$\"), edge=RIGHT, direction=RIGHT, buff=0.2)\n        y_label = axes.get_y_axis_label(Tex(\"$y$\"), edge=UP, direction=UP, buff=0.2)\n        graph_labels = VGroup(x_label, y_label)\n\n        self.play(Create(axes), Create(graph_labels))\n        self.wait(1)\n\n        # Initial line y = x + 1\n        m_val = ValueTracker(1)\n        b_val = ValueTracker(1)\n\n        def get_line(m, b):\n            return axes.get_graph(lambda x: m * x + b, x_range=[AXES_X_RANGE[0], AXES_X_RANGE[1]], color=BLUE)\n\n        line1 = always_redraw(lambda: get_line(m_val.get_value(), b_val.get_value()))\n        self.play(Create(line1))\n        self.wait(0.5)\n\n        # Equation display\n        equation_text = MathTex(\"y = mx + b\").shift(RIGHT * TEXT_RIGHT_X + UP * TEXT_RIGHT_Y_TOP)\n        self.play(Write(equation_text))\n        self.wait(0.5)\n\n        current_equation = always_redraw(\n            lambda: MathTex(f\"y = {m_val.get_value():.0f}x + {b_val.get_value():.0f}\")\n            .next_to(equation_text, DOWN, buff=0.5)\n            .align_to(equation_text, LEFT)\n        )\n        self.play(Create(current_equation))\n        self.wait(1)\n\n        # Identify y-intercept (0,1)\n        y_intercept_point = always_redraw(lambda: Dot(axes.c2p(0, b_val.get_value()), color=RED))\n        y_intercept_label = always_redraw(\n            lambda: MathTex(f\"(0, {b_val.get_value():.0f})\")\n            .next_to(y_intercept_point, UP + RIGHT, buff=0.1)\n            .set_color(RED)\n        )\n        self.play(Create(y_intercept_point), Write(y_intercept_label))\n        self.wait(1)\n\n        # Explanation for b\n        b_explanation = Text(\"b is the y-intercept\", font_size=28).next_to(current_equation, DOWN, buff=TEXT_RIGHT_Y_SPACING).align_to(current_equation, LEFT)\n        self.play(Write(b_explanation))\n        self.wait(1)\n\n        # Vary b from 1 to 2\n        self.play(b_val.animate.set_value(2), run_time=3)\n        self.wait(1)\n\n        # Show delta y / delta x for m=1\n        delta_x_line = Line(axes.c2p(0, 1), axes.c2p(1, 1), color=YELLOW)\n        delta_y_line = Line(axes.c2p(1, 1), axes.c2p(1, 2), color=GREEN)\n        delta_x_label = MathTex(\"\\\\Delta x = 1\", font_size=28).next_to(delta_x_line, DOWN, buff=0.1).set_color(YELLOW)\n        delta_y_label = MathTex(\"\\\\Delta y = 1\", font_size=28).next_to(delta_y_line, RIGHT, buff=0.1).set_color(GREEN)\n\n        self.play(\n            Create(delta_x_line),\n            Create(delta_y_line),\n            Write(delta_x_label),\n            Write(delta_y_label)\n        )\n        self.wait(2)\n\n        slope_ratio_text = MathTex(\"\\\\frac{\\\\Delta y}{\\\\Delta x} = \\\\frac{1}{1} = 1\", font_size=32).next_to(b_explanation, DOWN, buff=TEXT_RIGHT_Y_SPACING).align_to(b_explanation, LEFT)\n        m_explanation = Text(\"m is the slope\", font_size=28).next_to(slope_ratio_text, DOWN, buff=TEXT_RIGHT_Y_SPACING).align_to(slope_ratio_text, LEFT)\n        self.play(Write(slope_ratio_text))\n        self.play(Write(m_explanation))\n        self.wait(2)\n\n        # Cleanup for next beat\n        self.play(\n            FadeOut(delta_x_line), FadeOut(delta_y_line),\n            FadeOut(delta_x_label), FadeOut(delta_y_label),\n            FadeOut(b_explanation), FadeOut(slope_ratio_text),\n            FadeOut(m_explanation)\n        )\n        self.wait(1)\n\n        # --- Beat 2: Varying slope (m) ---\n        # Reset b to 1, keep m=1 initially\n        self.play(b_val.animate.set_value(1), run_time=1.5)\n        self.wait(0.5)\n\n        # Pivot point (0,1) remains\n        pivot_point = Dot(axes.c2p(0, 1), color=RED)\n        pivot_label = MathTex(\"(0,1)\").next_to(pivot_point, UP + RIGHT, buff=0.1).set_color(RED)\n        self.play(\n            Transform(y_intercept_point, pivot_point),\n            Transform(y_intercept_label, pivot_label)\n        )\n        self.wait(1)\n\n        # Vary m from 1 to -1\n        m_val.set_value(1) # Ensure m starts at 1\n        self.play(m_val.animate.set_value(-1), run_time=5)\n        self.wait(1)\n\n        # Show rise/run triangle for final line (y = -x + 1)\n        # From (0,1) to (1,0)\n        rise_line = always_redraw(\n            lambda: Line(axes.c2p(0, b_val.get_value()), axes.c2p(1, b_val.get_value()), color=YELLOW)\n        )\n        run_line = always_redraw(\n            lambda: Line(axes.c2p(1, b_val.get_value()), axes.c2p(1, b_val.get_value() + m_val.get_value()), color=GREEN)\n        )\n\n        rise_label = always_redraw(\n            lambda: MathTex(f\"\\\\Delta x = 1\", font_size=28)\n            .next_to(rise_line, DOWN, buff=0.1)\n            .set_color(YELLOW)\n        )\n        run_label = always_redraw(\n            lambda: MathTex(f\"\\\\Delta y = {m_val.get_value():.0f}\", font_size=28)\n            .next_to(run_line, RIGHT, buff=0.1)\n            .set_color(GREEN)\n        )\n\n        self.play(\n            Create(rise_line),\n            Create(run_line),\n            Write(rise_label),\n            Write(run_label)\n        )\n        self.wait(2)\n\n        final_slope_ratio = always_redraw(\n            lambda: MathTex(f\"\\\\frac{{\\\\Delta y}}{{\\\\Delta x}} = \\\\frac{{{m_val.get_value():.0f}}}{{1}} = {m_val.get_value():.0f}\", font_size=32)\n            .next_to(current_equation, DOWN, buff=TEXT_RIGHT_Y_SPACING)\n            .align_to(current_equation, LEFT)\n        )\n        self.play(Create(final_slope_ratio))\n        self.wait(2)\n\n        # Final cleanup of updaters\n        self.remove(line1, current_equation, y_intercept_point, y_intercept_label, rise_line, run_line, rise_label, run_label, final_slope_ratio)\n        self.wait(1)\n\n        # Final state for 60s mark\n        final_line = get_line(m_val.get_value(), b_val.get_value())\n        final_equation = MathTex(f\"y = {m_val.get_value():.0f}x + {b_val.get_value():.0f}\").next_to(equation_text, DOWN, buff=0.5).align_to(equation_text, LEFT)\n        final_y_intercept_point = Dot(axes.c2p(0, b_val.get_value()), color=RED)\n        final_y_intercept_label = MathTex(f\"(0, {b_val.get_value():.0f})\").next_to(final_y_intercept_point, UP + RIGHT, buff=0.1).set_color(RED)\n        final_rise_line = Line(axes.c2p(0, b_val.get_value()), axes.c2p(1, b_val.get_value()), color=YELLOW)\n        final_run_line = Line(axes.c2p(1, b_val.get_value()), axes.c2p(1, b_val.get_value() + m_val.get_value()), color=GREEN)\n        final_rise_label = MathTex(f\"\\\\Delta x = 1\", font_size=28).next_to(final_rise_line, DOWN, buff=0.1).set_color(YELLOW)\n        final_run_label = MathTex(f\"\\\\Delta y = {m_val.get_value():.0f}\", font_size=28).next_to(final_run_line, RIGHT, buff=0.1).set_color(GREEN)\n        final_slope_ratio_static = MathTex(f\"\\\\frac{{\\\\Delta y}}{{\\\\Delta x}} = \\\\frac{{{m_val.get_value():.0f}}}{{1}} = {m_val.get_value():.0f}\", font_size=32).next_to(final_equation, DOWN, buff=TEXT_RIGHT_Y_SPACING).align_to(final_equation, LEFT)\n\n        self.add(final_line, final_equation, final_y_intercept_point, final_y_intercept_label, final_rise_line, final_run_line, final_rise_label, final_run_label, final_slope_ratio_static)\n        self.wait(1) # Final pause to reach 60 seconds",
+        "refusal": null,
+        "reasoning": null
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 326,
+    "completion_tokens": 2815,
+    "total_tokens": 3141,
+    "cost": 0.0071353,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0071353,
+      "upstream_inference_prompt_cost": 9.78e-05,
+      "upstream_inference_completions_cost": 0.0070375
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}

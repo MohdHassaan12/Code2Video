@@ -1,0 +1,55 @@
+{
+  "title": "Figure inventory demo",
+  "thesis": "Code-drawn figures that move with the words.",
+  "language": "en-US",
+  "eyebrow": "Figure inventory",
+  "brief": {"grade": 8, "language": "en-IN"},
+  "chapters": [
+    {
+      "id": 1, "title": "THE LADDER AND ITS SQUARES", "role": "hook",
+      "learning_goal": "A triangle is drawn, its parts react, the formula grows, a question is asked.",
+      "beats": [
+        {"id": "01",
+         "narration": "The wall is three metres high and the foot of the ladder is four metres out. How long is the ladder?",
+         "thinking_pause_seconds": 5,
+         "quiz": {"question": "How long is the ladder?", "options": ["7 metres", "5 metres", "12 metres"], "answer_index": 1, "explain": "Three squared plus four squared is twenty-five."},
+         "figure": {"kind": "right_triangle", "a": 4, "b": 3, "labels": {"a": "4 m", "b": "3 m", "c": "?"}, "unknown": "c"},
+         "steps": [
+           {"say": "three metres high", "show": "b = 3\\text{ m}", "kind": "math", "focus": "b"},
+           {"say": "four metres out", "show": "a = 4\\text{ m}", "kind": "math", "focus": "a"},
+           {"say": "How long is the ladder", "show": "Find the slanted side", "kind": "key", "highlight": true, "focus": "c"}]},
+        {"id": "02",
+         "narration": "It is five metres. Build a square on each side. Nine plus sixteen is twenty-five, so the ladder is five metres.",
+         "figure": {"kind": "right_triangle", "a": 4, "b": 3, "labels": {"a": "4", "b": "3", "c": "5"}, "squares": true, "result": "c"},
+         "steps": [
+           {"say": "square on each side", "show": "a^2 + b^2 = c^2", "kind": "math", "focus": "square_c"},
+           {"say": "Nine plus sixteen", "show": "9 + 16 = 25", "kind": "math", "highlight": true, "focus": "square_a"},
+           {"say": "five metres", "show": "c = 5\\text{ m}", "kind": "math", "focus": "square_c"}]}
+      ]
+    },
+    {
+      "id": 2, "title": "A CIRCLE BECOMES A RECTANGLE", "role": "idea",
+      "learning_goal": "Circle, sectors, rearranged sectors, rectangle, bars.",
+      "beats": [
+        {"id": "03",
+         "narration": "Here is a round roti with radius seven centimetres. Its edge is the circumference.",
+         "figure": {"kind": "circle", "r": 7, "labels": {"radius": "7 cm", "circumference": "circumference"}, "unknown": "area"},
+         "steps": [
+           {"say": "radius seven", "show": "r = 7\\text{ cm}", "kind": "math", "focus": "radius"},
+           {"say": "circumference", "show": "C = 2\\pi r", "kind": "math", "focus": "circumference"}]},
+        {"id": "04",
+         "narration": "Cut it into sixteen equal slices and lay them side by side. The shape is nearly a rectangle.",
+         "figure": {"kind": "circle", "sectors": 16, "rearranged": true, "labels": {"base": "about pi r", "height": "r"}},
+         "steps": [
+           {"say": "sixteen equal slices", "show": "16 equal sectors", "kind": "point", "focus": "sectors"},
+           {"say": "nearly a rectangle", "show": "\\text{Area} \\approx \\pi r \\times r", "kind": "math", "highlight": true}]},
+        {"id": "05",
+         "narration": "A floor six metres long and four metres wide holds twenty-four unit squares. And one half plus one third needs equal pieces.",
+         "figure": {"kind": "rectangle", "w": 6, "h": 4, "labels": {"w": "6 m", "h": "4 m", "area": "24"}, "grid": true, "result": "area"},
+         "steps": [
+           {"say": "six metres long", "show": "6 \\times 4 = 24", "kind": "math", "focus": "length"},
+           {"say": "twenty-four unit squares", "show": "Area = 24 square metres", "kind": "key", "focus": "area"}]}
+      ]
+    }
+  ]
+}

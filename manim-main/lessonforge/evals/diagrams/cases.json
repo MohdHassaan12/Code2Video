@@ -1,0 +1,298 @@
+[
+ {
+  "id": "mirror_35",
+  "class": 9,
+  "subject": "physics",
+  "prompt": "Ray diagram for a plane mirror: incident ray hits the mirror at 35 degrees to the normal, reflected ray leaves at 35 degrees; label the normal, angle of incidence i = 35°, angle of reflection r = 35°.",
+  "must_say": [
+   "normal",
+   "incident",
+   "reflected",
+   "mirror"
+  ],
+  "numbers": [
+   "35"
+  ],
+  "look_for": "drawn angle must match 35°"
+ },
+ {
+  "id": "convex_lens_f_2f",
+  "class": 10,
+  "subject": "physics",
+  "prompt": "Ray diagram of a convex lens with focal length F marked on both sides; object arrow placed between F and 2F; show the real, inverted, enlarged image beyond 2F.",
+  "must_say": [
+   "object",
+   "image",
+   "2F"
+  ],
+  "numbers": [],
+  "look_for": "object between F and 2F, image enlarged beyond 2F"
+ },
+ {
+  "id": "series_circuit",
+  "class": 10,
+  "subject": "physics",
+  "prompt": "Series circuit: a 6 V battery, a switch (closed), and two resistors of 2 ohm and 4 ohm, with an ammeter reading 1 A and a voltmeter across the 4 ohm resistor reading 4 V.",
+  "must_say": [
+   "battery",
+   "switch",
+   "ammeter",
+   "voltmeter"
+  ],
+  "numbers": [
+   "6",
+   "2",
+   "4",
+   "1"
+  ],
+  "look_for": "voltmeter symbol V, readings 1 A and 4 V shown"
+ },
+ {
+  "id": "right_triangle_345",
+  "class": 8,
+  "subject": "maths",
+  "prompt": "Right triangle ABC with the right angle at C, AC = 3 cm, BC = 4 cm, AB = 5 cm; label every side length and mark the right angle.",
+  "must_say": [
+   "A",
+   "B",
+   "C"
+  ],
+  "numbers": [
+   "3",
+   "4",
+   "5"
+  ],
+  "look_for": "sides in ratio 3:4:5, right angle at C"
+ },
+ {
+  "id": "number_line_jump",
+  "class": 7,
+  "subject": "maths",
+  "prompt": "Number line from -5 to 5 with a dot at -3 and an arrow jump of +7 ending at 4, labelled -3 + 7 = 4.",
+  "must_say": [],
+  "numbers": [
+   "-3",
+   "7",
+   "4"
+  ],
+  "look_for": "jump starts at -3 and ends at 4"
+ },
+ {
+  "id": "fraction_bars",
+  "class": 6,
+  "subject": "maths",
+  "prompt": "Fraction bars: one bar split into 4 equal parts with 3 shaded, labelled 3/4, and below it a bar of the same length split into 8 parts with 6 shaded, labelled 6/8.",
+  "must_say": [],
+  "numbers": [
+   "3",
+   "4",
+   "6",
+   "8"
+  ],
+  "look_for": "3 of 4 and 6 of 8 shaded, same length"
+ },
+ {
+  "id": "methane_combustion",
+  "class": 10,
+  "subject": "chemistry",
+  "prompt": "Balanced equation CH4 + 2O2 -> CO2 + 2H2O drawn as ball-and-stick molecules, with atom counts C 1 = 1, H 4 = 4, O 4 = 4 under each side.",
+  "must_say": [
+   "CH",
+   "CO"
+  ],
+  "numbers": [
+   "1",
+   "4"
+  ],
+  "look_for": "atom counts equal on both sides"
+ },
+ {
+  "id": "sodium_bohr",
+  "class": 9,
+  "subject": "chemistry",
+  "prompt": "Bohr model of a sodium atom: nucleus labelled 11 protons and 12 neutrons, electron shells holding 2, 8 and 1 electrons.",
+  "must_say": [
+   "protons",
+   "neutrons"
+  ],
+  "numbers": [
+   "11",
+   "12"
+  ],
+  "look_for": "2, 8, 1 electrons drawn"
+ },
+ {
+  "id": "heart_chambers",
+  "class": 10,
+  "subject": "biology",
+  "prompt": "Labelled diagram of the human heart with the four chambers: right atrium, right ventricle, left atrium, left ventricle, and the aorta and pulmonary artery.",
+  "must_say": [
+   "right atrium",
+   "right ventricle",
+   "left atrium",
+   "left ventricle",
+   "aorta",
+   "pulmonary artery"
+  ],
+  "numbers": [],
+  "look_for": "pointers land on the right chambers"
+ },
+ {
+  "id": "plant_cell",
+  "class": 7,
+  "subject": "biology",
+  "prompt": "Labelled diagram of a plant cell showing cell wall, cell membrane, nucleus, chloroplasts, a large central vacuole and cytoplasm.",
+  "must_say": [
+   "cell wall",
+   "membrane",
+   "nucleus",
+   "chloroplast",
+   "vacuole",
+   "cytoplasm"
+  ],
+  "numbers": [],
+  "look_for": "labels inside the frame"
+ },
+ {
+  "id": "free_body_box",
+  "class": 9,
+  "subject": "physics",
+  "prompt": "Free-body diagram of a 2 kg box resting on a horizontal table: weight 20 N pointing down, normal force 20 N pointing up, equal arrow lengths.",
+  "must_say": [
+   "weight",
+   "normal"
+  ],
+  "numbers": [
+   "20"
+  ],
+  "look_for": "only two forces, equal lengths, 20 N on both"
+ },
+ {
+  "id": "moon_phases",
+  "class": 8,
+  "subject": "geography",
+  "prompt": "Phases of the Moon: Earth in the centre, Sun's light coming from the right, Moon at 8 positions around Earth with labels new moon, first quarter, full moon, last quarter.",
+  "must_say": [
+   "new moon",
+   "first quarter",
+   "full moon",
+   "last quarter"
+  ],
+  "numbers": [],
+  "look_for": "lit half faces the Sun, orbit arrow anticlockwise"
+ },
+ {
+  "id": "balancing_h2o",
+  "class": 9,
+  "subject": "chemistry",
+  "prompt": "A labelled diagram of 2H2 + O2 -> 2H2O as ball models, with H and O atom counts written under each side",
+  "must_say": [
+   "H",
+   "O"
+  ],
+  "numbers": [
+   "4",
+   "2"
+  ],
+  "look_for": "4 H and 2 O on both sides"
+ },
+ {
+  "id": "moon_same_face",
+  "class": 9,
+  "subject": "science",
+  "prompt": "A labelled diagram of the Moon's orbit around Earth, showing the same side of the Moon always facing Earth",
+  "must_say": [
+   "moon",
+   "earth",
+   "near side"
+  ],
+  "numbers": [],
+  "look_for": "spin and orbit in the SAME direction"
+ },
+ {
+  "id": "monty_hall",
+  "class": 9,
+  "subject": "maths",
+  "prompt": "Monty Hall problem: three doors labelled 1, 2, 3; host opens door 3 showing a goat; player picked door 1",
+  "must_say": [
+   "door",
+   "goat"
+  ],
+  "numbers": [
+   "1",
+   "2",
+   "3"
+  ],
+  "look_for": "labels readable, door 3 open with goat"
+ },
+ {
+  "id": "ice_lattice",
+  "class": 9,
+  "subject": "chemistry",
+  "prompt": "A labelled diagram of water molecules in ice (open hexagonal lattice) beside liquid water (closely packed)",
+  "must_say": [
+   "ice",
+   "liquid water",
+   "hydrogen bond"
+  ],
+  "numbers": [],
+  "look_for": "two separate panels, labels not overlapping"
+ },
+ {
+  "id": "water_cycle",
+  "class": 7,
+  "subject": "science",
+  "prompt": "Water cycle showing evaporation, condensation, precipitation, and collection. Use a simple landscape, labeled arrows, and a clear visual hierarchy.",
+  "must_say": [
+   "evaporation",
+   "condensation",
+   "precipitation",
+   "collection"
+  ],
+  "numbers": [],
+  "look_for": "arrows point the right way"
+ },
+ {
+  "id": "self_attention",
+  "class": 12,
+  "subject": "computer science",
+  "prompt": "Draw scaled dot-product self-attention as a left-to-right block diagram. Show Q, K, V projections; QK^T; division by sqrt(d_k); softmax; multiplication by V; and the output. Label tensor dimensions where appropriate.",
+  "must_say": [
+   "softmax",
+   "Q",
+   "K",
+   "V"
+  ],
+  "numbers": [],
+  "look_for": "order QK^T, scale, softmax, times V"
+ },
+ {
+  "id": "electric_motor",
+  "class": 10,
+  "subject": "physics",
+  "prompt": "Create a labeled educational diagram of an electric motor. Distinguish the stator, rotor, magnetic field, electrical input, mechanical output, and losses. Use separate visual conventions for physical components and energy flows.",
+  "must_say": [
+   "rotor",
+   "magnetic field",
+   "input",
+   "output"
+  ],
+  "numbers": [],
+  "look_for": "labels readable, parts distinct from energy flows"
+ },
+ {
+  "id": "photosynthesis",
+  "class": 7,
+  "subject": "biology",
+  "prompt": "Explain photosynthesis to a middle-school student using a simple SVG. Show sunlight, water, carbon dioxide, glucose, and oxygen. Clearly distinguish inputs from outputs and avoid unnecessary detail.",
+  "must_say": [
+   "sunlight",
+   "water",
+   "carbon dioxide",
+   "glucose",
+   "oxygen"
+  ],
+  "numbers": [],
+  "look_for": "inputs and outputs correct"
+ }
+]

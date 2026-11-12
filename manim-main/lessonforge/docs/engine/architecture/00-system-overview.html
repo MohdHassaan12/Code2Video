@@ -1,0 +1,155 @@
+<link rel="stylesheet" href="style.css">
+<title>GyanSetu Concept Explorer — System Overview</title>
+
+<div class="hdr">
+  <div class="logo">G</div>
+  <div>
+    <h1>Concept Explorer — System Architecture</h1>
+    <div class="sub">GyanSetu lesson pipeline that turns a concept into an educational video: AI-planned lessons, AI-storyboarded Manim animations, deterministic codegen, layout-verified rendering.</div>
+  </div>
+  <div class="crumb">Diagram <b>00 — Full system</b> · see 01–05 for sub-architectures</div>
+</div>
+
+<div class="cols">
+  <!-- ============ LEFT: main flow ============ -->
+  <div class="col grow" style="flex: 2.6;">
+
+    <!-- input strip -->
+    <div class="strip">
+      <div class="card dark" style="flex: 0 0 190px;">
+        <h3>🎯 User Input</h3>
+        <p>Concept / topic to teach (lesson node or bulk manifest)</p>
+      </div>
+      <div class="sep">→</div>
+      <div class="card"><div class="ci">📚</div><h3>Lesson graph node</h3><p>per-node <code>videoSpec</code> (language, persona, speaker, style)</p></div>
+      <div class="sep">→</div>
+      <div class="card"><div class="ci">🌐</div><h3>Language resolution</h3><p><code>videoSpec</code> → <code>VIDEO_*</code> env → default <code>hi-IN</code>/<code>hybrid</code> (Hinglish)</p></div>
+      <div class="sep">→</div>
+      <div class="card"><div class="ci">🎛️</div><h3>Entry points</h3><p><code>ce/</code> pipeline · <code>/bulk</code> UI &amp; CLI · debug sandbox</p></div>
+    </div>
+
+    <div class="vflow center"><div class="va"><span class="arr">↓</span> topic + videoSpec</div></div>
+
+    <!-- ce pipeline -->
+    <div class="panel purple">
+      <div class="ptitle"><span class="ico">🧠</span> ce/ — Lesson &amp; Video Pipeline (client) <span class="tag">diagram 01</span></div>
+      <div class="strip">
+        <div class="card"><div class="ci">🗂️</div><h3>videos_build.py</h3><p>Walks lesson nodes; <code>video_planner</code> decides which need a video (and type)</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🎬</div><h3>video_generation.py</h3><p>Clip plan (1 clip/node) → generate clips → merge</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">📡</div><h3>stem_animation.py</h3><p>HTTP client → lab server: storyboard → code → compile → WS status → download</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🧵</div><h3>video_merger.py</h3><p>ffmpeg-concats clips → <code>generated_videos/</code></p></div>
+      </div>
+    </div>
+
+    <div class="vflow">
+      <div class="va"><span class="arr">↓</span> POST /api/generate_storyboard · /api/generate_code · /api/compile_video</div>
+      <div class="va">rendered mp4 URLs + .mp4.json sidecars <span class="arr">↑</span></div>
+    </div>
+
+    <!-- lab server -->
+    <div class="panel blue">
+      <div class="ptitle"><span class="ico">⚙️</span> stem_animation_lab — FastAPI server (app/ package, modular split 2026-07-21) <span class="tag">diagrams 02–04</span></div>
+      <div class="strip">
+        <div class="card"><div class="ci">📝</div><h3>Storyboard generation</h3><p>LLM plans scenes → beats → elements/events as JSON (<code>json_repair</code>-lenient parse). Pre-cache language gate + on-screen-language healing.</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🎬</div><h3>Visual Director <span class="badge">flag-gated</span></h3><p><code>VISUAL_DIRECTOR=1</code>: LLM ranks importance, schedules lifetimes, picks highlights — code applies deterministically. LLM never emits geometry.</p></div>
+        <div class="sep">→</div>
+        <div class="card hero" style="border-color: var(--blue-line);"><div class="ci">🏗️</div><h3>Deterministic transpiler</h3><p><code>transpiler.py</code> — sole full-scene codegen path. Zones, entrance animations, split-screen. <b>Code owns structure; models own content.</b></p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🎞️</div><h3>Render engine</h3><p>Manim per-scene parallel renders + ffmpeg concat (<code>PARALLEL_RENDER</code>) · TTS narration w/ shared cache</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🛡️</div><h3>Layout enforcement v5</h3><p>Dry-run overlap probe + optional Vision QA frame audit → LLM repair loop. Fix accepted only if it renders AND reduces violations</p></div>
+      </div>
+      <div class="spacer" style="height:10px;"></div>
+      <div class="cards c3">
+        <div class="card"><h3>🖥️ /timeline</h3><p>Render history UI — Clean / Repaired ×N / ⚠ overlaps / Raw badges via <code>/api/video_history</code></p></div>
+        <div class="card"><h3>📦 /bulk + bulk_runner.py</h3><p>Manifest-driven bulk generation — resumable, per-topic stage caches in <code>bulk_runs/</code></p></div>
+        <div class="card"><h3>🧾 Verification sidecars</h3><p><code>&lt;video&gt;.mp4.json</code> — job id, repair rounds, violations remaining, beats, vision_findings</p></div>
+      </div>
+    </div>
+
+    <div class="vflow center"><div class="va"><span class="arr">↓</span> verified mp4 clips</div></div>
+
+    <!-- outputs -->
+    <div class="panel green">
+      <div class="ptitle"><span class="ico">🎥</span> Outputs</div>
+      <div class="cards c3">
+        <div class="card"><h3>stem_animation_lab/static/videos/</h3><p>Per-job rendered clips served by the lab server (+ sidecars); losers deleted via <code>_discard_video</code></p></div>
+        <div class="card"><h3>generated_videos/ (repo root)</h3><p>Final merged lesson videos from <code>video_merger.py</code></p></div>
+        <div class="card"><h3>Retention</h3><p>Startup sweep — <code>SWEEP_MAX_AGE_HOURS</code> (default 24h)</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ RIGHT: side panels ============ -->
+  <div class="col" style="flex: 1;">
+    <div class="panel slate">
+      <div class="ptitle"><span class="ico">🤖</span> LLM / Model Providers</div>
+      <div class="rows">
+        <div class="row"><span class="dot slate"></span><p><b>Gemini native</b> (<code>google.genai</code>) — lab primary for storyboard &amp; codegen (<code>GEMINI_API_KEY</code>)</p></div>
+        <div class="row"><span class="dot slate"></span><p><b>OpenRouter</b> — lab fallback chain + ALL ce/ agents + Gemini-TTS fallback (<code>OPENROUTER_API_KEY</code>)</p></div>
+        <div class="row"><span class="dot slate"></span><p><b>Groq</b> — last-resort fallback (<code>GROQ_API_KEY</code>)</p></div>
+      </div>
+      <div class="spacer" style="height:9px;"></div>
+      <div class="note"><b>Metered edges:</b> every LLM call routed by task tier — premium models only where output quality depends on it; cache-key changes are billing changes. Keys in <code>stem_animation_lab/.env</code>.</div>
+    </div>
+
+    <div class="panel red">
+      <div class="ptitle"><span class="ico">🛡️</span> Quality Invariants</div>
+      <div class="rows">
+        <div class="row"><span class="dot red"></span><p><b>Never lose a verified artifact</b> — the original video survives every repair attempt</p></div>
+        <div class="row"><span class="dot red"></span><p><b>Accept only improvement</b> — a fix must render AND reduce violation count</p></div>
+        <div class="row"><span class="dot red"></span><p><b>Every loser is deleted</b> — rejected candidates &amp; superseded originals never pile up</p></div>
+        <div class="row"><span class="dot red"></span><p><b>Deterministic structure</b> — no per-block LLM decoration of generated code</p></div>
+        <div class="row"><span class="dot red"></span><p><b>Progress or it's a hang</b> — long runs log per-beat / per-scene lines</p></div>
+      </div>
+    </div>
+
+    <div class="panel orange">
+      <div class="ptitle"><span class="ico">🧰</span> Tooling &amp; Debugging <span class="tag">diagram 05</span></div>
+      <div class="rows">
+        <div class="row"><span class="dot orange"></span><p><b>debug_sandbox/</b> — Streamlit debugger (port 8502), compiles through the server's real repair path</p></div>
+        <div class="row"><span class="dot orange"></span><p><b>Test harnesses</b> — probe/repair (32 checks), zones, TTS cache, event sanitize, split-screen, entrances — all LLM-stubbed</p></div>
+        <div class="row"><span class="dot orange"></span><p><b>Evidence trail</b> — attribute failures upstream-first: storyboard → code → render → repair via sidecars</p></div>
+      </div>
+    </div>
+
+    <div class="panel teal">
+      <div class="ptitle"><span class="ico">🎚️</span> Key Env Knobs</div>
+      <div class="badges">
+        <span class="badge">OVERLAP_REPAIR=1</span>
+        <span class="badge">OVERLAP_REPAIR_ROUNDS=2</span>
+        <span class="badge">LAYOUT_STRICT=0</span>
+        <span class="badge">PARALLEL_RENDER=1</span>
+        <span class="badge">VISUAL_DIRECTOR=0</span>
+        <span class="badge">VISION_QA=0</span>
+        <span class="badge">VISION_QA_FRAMES=6</span>
+        <span class="badge">VIDEO_LANGUAGE / VIDEO_PERSONA</span>
+        <span class="badge">VIDEO_SPEAKER / VIDEO_STYLE</span>
+        <span class="badge">TTS_SHARED_CACHE</span>
+        <span class="badge">SWEEP_MAX_AGE_HOURS=24</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- bottom strip -->
+<div class="howit">
+  <div class="lbl">How It Works</div>
+  <div class="step"><span class="ico">🎯</span><div><h4>1. Pick a concept</h4><p>Lesson node or bulk manifest defines topic + videoSpec</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">📝</span><div><h4>2. Storyboard</h4><p>LLM plans scenes, beats, elements &amp; narration as JSON; language gate validates</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🎬</span><div><h4>3. Visual Director</h4><p>Flag-gated: LLM ranks elements, schedules hides, picks highlights</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🏗️</span><div><h4>4. Transpile</h4><p>Deterministic codegen emits Manim scripts — no LLM in the loop</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🎞️</span><div><h4>5. Render + TTS</h4><p>Scenes render in parallel with cached narration, ffmpeg concat</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🛡️</span><div><h4>6. Probe &amp; repair</h4><p>Geometric probe + optional Vision QA find layout violations; LLM repairs flagged scenes</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🎥</span><div><h4>7. Ship</h4><p>Verified clips concat into the final lesson video + sidecar metadata</p></div></div>
+</div>

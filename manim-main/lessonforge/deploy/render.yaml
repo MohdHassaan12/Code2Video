@@ -1,0 +1,38 @@
+# Render Blueprint: the lessonforge viewer site (guide: lessonforge/docs/DEPLOY_RENDER_VIEWER.md).
+# Not at the repository root: when creating the Blueprint, enter `lessonforge/deploy/render.yaml` in Render's
+# "Blueprint Path" field. The root render.yaml is the other way: the whole studio on Render (DEPLOY_RENDER.md).
+# Paths below are relative to the repository root, wherever this file is.
+# Lessons are MADE on the GPU machine and published to Cloudflare R2 (`lessonforge publish`); this service only
+# shows the finished ones (lessonforge/viewer.py) and keeps what viewers write in Cloudflare D1.
+# Render's disk holds nothing that must survive a deploy.
+services:
+  - type: web
+    name: lessonforge-viewer
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: ./lessonforge/deploy/Dockerfile
+    # free: the service sleeps after about 15 minutes without a visit and the next visit waits while it wakes
+    # (up to a minute). starter (paid) stays awake: change the plan here or in the dashboard.
+    plan: free
+    # Nearest Render region to India; the videos themselves stream from R2, not from here.
+    region: singapore
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit         # deploy on every push to the branch (autoDeploy is deprecated)
+    envVars:
+      # Every secret is entered in Render's dashboard when the Blueprint is created; none is in this file.
+      - key: LESSONFORGE_ACCESS_TOKEN        # required on every request (the app's link carries ?token=…)
+        sync: false
+      - key: LESSONFORGE_REVIEW_TOKEN        # optional: students' review-only links
+        sync: false
+      - key: CLOUDFLARE_ACCOUNT_ID
+        sync: false
+      - key: CLOUDFLARE_R2_BUCKET
+        sync: false
+      - key: CLOUDFLARE_R2_ACCESS_KEY_ID
+        sync: false
+      - key: CLOUDFLARE_R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: CLOUDFLARE_D1_DATABASE_ID
+        sync: false
+      - key: CLOUDFLARE_API_TOKEN            # D1 edit permission (or CLOUDFLARE_EMAIL + CLOUDFLARE_API_KEY, added by hand)
+        sync: false

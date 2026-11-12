@@ -1,0 +1,262 @@
+```json
+{
+  "title": "Seeing the Line: Understanding y = mx + b Through a Living Graph",
+  "prerequisites": [
+    "Plotting points using (x, y) coordinates on a Cartesian plane",
+    "Basic arithmetic with negative numbers",
+    "Solving simple one-variable equations like 2x + 3 = 7"
+  ],
+  "notation": {
+    "m": { "color": "#E63946", "meaning": "slope — the rate at which y changes per unit step in x", "symbol": "m" },
+    "b": { "color": "#457B9D", "meaning": "y-intercept — the y-value where the line crosses the x=0 axis", "symbol": "b" },
+    "delta_y": { "color": "#E63946", "meaning": "vertical change between two points", "symbol": "Δy" },
+    "delta_x": { "color": "#E63946", "meaning": "horizontal change between two points", "symbol": "Δx" },
+    "line": { "color": "#2D6A4F", "meaning": "the graph of y = mx + b", "style": "solid green line" },
+    "highlighted_points": { "color": "#F4A261", "meaning": "specific points used in calculations", "style": "orange filled circles" }
+  },
+  "opening_narration": "Alright, let's start with something you already know how to do — plot a point. You've got a grid, you've got coordinates, and you can put a dot exactly where I tell you. Easy. But here's the thing: a single point doesn't tell you much of a story. What if I told you that every point on a particular line follows the exact same rule — that no matter which point you pick, the relationship between its x and its y is always the same? That's actually a remarkable idea, and it's what a linear equation is all about.\n\nNow, you've probably seen the equation y equals m x plus b written on a board somewhere, maybe with a teacher circling the letters and saying 'this is slope, this is intercept.' And maybe that felt a bit like being handed a map with no landmarks — technically correct, but not very useful yet. What we're going to do today is build that equation from scratch, right in front of you, by watching what happens to a line on a graph as we change things one piece at a time.\n\nHere's how I want you to think about it. Imagine you're walking along a hill. The steepness of that hill — how much you climb or descend for every step you take forward — that's what slope is capturing. And where you started, whether you began at sea level or already halfway up — that's the intercept. Those two pieces of information completely describe your path, as long as you keep walking at a constant steepness. That's the whole equation.\n\nBut here's where I want to be careful with you, because there's a trap a lot of people fall into. When we talk about slope, we're not just talking about steepness in the everyday sense — we're talking about a signed number, meaning it carries a direction. A slope of negative three and a slope of positive three are equally steep, but one goes uphill left to right and one goes downhill. We'll come back to that, and I'll show you exactly what I mean on the graph.\n\nFor now, I want you to keep one question in the back of your mind as we go through this: if I change just one part of the equation — just m, or just b — what exactly moves on the graph, and why? Not just what, but why. Because once you understand the why, you won't need to memorize rules. The rules will just make sense.\n\nLet's get into it.",
+  "sections": [
+    {
+      "id": "S1",
+      "duration_seconds": 90,
+      "purpose": "Anchor the lesson in a concrete table of values before any formula appears",
+      "new_inference": "A consistent additive pattern in a table of (x, y) pairs signals a linear relationship",
+      "prior_dependency": "Reading coordinate pairs",
+      "visual_start_state": "Blank Cartesian grid, axes labeled x and y, range x: -5 to 5, y: -8 to 8. A small table appears to the left of the grid with headers x and y, currently empty.",
+      "visual_actions": [
+        "Fill table row by row: (0,3), (1,5), (2,7), (3,9) — each row appears with a 1-second pause",
+        "Highlight the y-column differences in red: +2, +2, +2 appear as annotations between rows",
+        "Plot the four orange points on the grid one at a time",
+        "Draw a faint dashed line connecting the four points"
+      ],
+      "visual_end_state": "Grid with four orange points plotted and connected by a dashed green line. Table visible with red +2 annotations. No equation shown yet.",
+      "transition_words": "So before we write a single equation, let's just look at some numbers and ask: is there a pattern here?"
+    },
+    {
+      "id": "S2",
+      "duration_seconds": 120,
+      "purpose": "Define slope formally as Δy/Δx using the table, then verify with two pairs of points on the graph",
+      "new_inference": "Slope is the ratio of vertical change to horizontal change between any two points on the line, and it is constant for a linear relationship",
+      "prior_dependency": "S1 table and plotted points",
+      "visual_start_state": "Grid with four orange points and dashed green line from S1. Table still visible.",
+      "visual_actions": [
+        "Select points (1,5) and (3,9) — highlight both in orange with labels",
+        "Draw a red vertical arrow from (3,5) to (3,9), label it Δy = 4 in red",
+        "Draw a red horizontal arrow from (1,5) to (3,5), label it Δx = 2 in red",
+        "Show calculation: m = Δy/Δx = 4/2 = 2 in red text box",
+        "Repeat with points (0,3) and (2,7): show Δy=4, Δx=2, m=2 — same result",
+        "Animate a small label 'm = 2' in red pinned near the line"
+      ],
+      "visual_end_state": "Grid with line, two sets of red Δy/Δx arrows shown, m=2 label in red near the line. Table still visible.",
+      "transition_words": "Now let's give that pattern a name and a formula, and check that it works no matter which two points we pick."
+    },
+    {
+      "id": "S3",
+      "duration_seconds": 100,
+      "purpose": "Define b as the y-intercept and read it directly from the graph and table",
+      "new_inference": "b is the y-value of the point where x = 0; it is a separate piece of information from slope",
+      "prior_dependency": "S1 table, S2 slope definition",
+      "visual_start_state": "Grid with line and m=2 label. Table visible showing (0,3) row.",
+      "visual_actions": [
+        "Zoom a blue circle around the point (0,3) on the graph",
+        "Draw a blue dashed vertical line from (0,3) down to the x-axis to emphasize x=0",
+        "Label the point (0,3) with 'b = 3' in blue",
+        "Show the full equation y = 2x + 3 appearing in a box, with m=2 in red and b=3 in blue",
+        "Animate a prediction pause: display text 'What would y equal if x = 5? Pause and think.'"
+      ],
+      "visual_end_state": "Grid with green line, orange points, m=2 in red, b=3 in blue at (0,3), equation y=2x+3 in a color-coded box. Prediction pause text visible.",
+      "transition_words": "Good — we have the slope. But the slope alone doesn't pin down which line we're on. We need one more piece of information."
+    },
+    {
+      "id": "S4",
+      "duration_seconds": 130,
+      "purpose": "Show what changing b does — vertical translation — while keeping m fixed",
+      "new_inference": "Increasing or decreasing b shifts the entire line up or down without rotating it; the lines remain parallel because the slope is unchanged",
+      "prior_dependency": "S3 equation y=2x+3",
+      "visual_start_state": "Grid with y=2x+3 in green. Equation box showing y=2x+3 with m=2 red, b=3 blue.",
+      "visual_actions": [
+        "Show a slider labeled 'b' in blue, currently at 3",
+        "Move slider to b=6: line translates upward, new y-intercept (0,6) highlighted in blue, equation updates to y=2x+6",
+        "Move slider to b=0: line passes through origin, equation updates to y=2x",
+        "Move slider to b=-2: line translates below origin, equation updates to y=2x-2",
+        "Show all three ghost lines (b=6, b=0, b=-2) simultaneously in faded green, original b=3 line bold",
+        "Add label 'parallel lines — same slope, different b' in blue annotation",
+        "Animate prediction pause: 'If b changes but m stays the same, do the lines ever cross? Think about it.'"
+      ],
+      "visual_end_state": "Grid showing four parallel green lines at b=-2,0,3,6. Bold line is y=2x+3. Blue b-slider visible. Prediction pause text shown.",
+      "transition_words": "So b is like an elevator for the whole line. Let's ride it up and down and see what stays the same."
+    },
+    {
+      "id": "S5",
+      "duration_seconds": 130,
+      "purpose": "Show what changing m does — pivoting about (0,b) — while keeping b fixed",
+      "new_inference": "Changing m rotates the line around the fixed point (0,b); the sign of m determines direction of tilt, not just steepness",
+      "prior_dependency": "S3 b definition, S4 translation concept",
+      "visual_start_state": "Grid reset to single line y=2x+3. m=2 red label, b=3 blue label at (0,3).",
+      "visual_actions": [
+        "Show a slider labeled 'm' in red, currently at 2",
+        "Move slider to m=4: line pivots steeper upward around (0,3), equation updates to y=4x+3",
+        "Move slider to m=1: line pivots shallower, equation updates to y=1x+3",
+        "Move slider to m=0: line becomes horizontal, equation updates to y=3, label 'horizontal line' appears",
+        "Move slider to m=-1: line tilts downward left-to-right, equation updates to y=-x+3",
+        "Move slider to m=-3: line tilts more steeply downward, equation updates to y=-3x+3",
+        "Highlight that (0,3) stays fixed throughout all pivots with a persistent blue dot",
+        "Show ghost lines for m=4,1,0,-1,-3 simultaneously, all passing through (0,3)"
+      ],
+      "visual_end_state": "Grid showing five ghost lines all passing through (0,3). Blue dot at (0,3) persistent. Red m-slider visible. Equation box updating.",
+      "transition_words": "Now let's hold b still and ask: what happens when we twist the slope?"
+    },
+    {
+      "id": "S6",
+      "duration_seconds": 100,
+      "purpose": "Address the misconception that a larger signed m always means a steeper line; clarify using absolute value of m",
+      "new_inference": "Steepness is determined by |m|, the absolute value of slope; the sign of m indicates direction (rising or falling), not magnitude of steepness",
+      "prior_dependency": "S5 slope pivoting",
+      "visual_start_state": "Grid showing y=-3x+3 (from end of S5) and y=2x+3 simultaneously.",
+      "visual_actions": [
+        "Label y=-3x+3 with 'm = -3' in red and y=2x+3 with 'm = 2' in red",
+        "Display a misconception flag: red warning icon with text 'Common mistake: is m=2 steeper than m=-3 because 2 > -3?'",
+        "Show |m| calculation: |-3| = 3 and |2| = 2, so y=-3x+3 is actually steeper",
+        "Animate a visual comparison: draw identical Δx=1 steps on both lines, show Δy=3 on the falling line vs Δy=2 on the rising line",
+        "Resolve: 'Steepness = |m|. Sign = direction. These are two different things.'"
+      ],
+      "visual_end_state": "Grid with y=-3x+3 and y=2x+3. Δy step arrows on both lines. |m| comparison shown. Misconception flag resolved.",
+      "transition_words": "Before we go further, there's a trap here that catches almost everyone the first time."
+    },
+    {
+      "id": "S7",
+      "duration_seconds": 110,
+      "purpose": "Worked Problem 1 — find m and b from two given points and write the equation",
+      "new_inference": "Given two points, compute m = Δy/Δx, then substitute one point to find b",
+      "prior_dependency": "S2 slope formula, S3 b definition",
+      "visual_start_state": "Grid cleared. Two orange points plotted: A=(1,4) and B=(4,10). Problem statement in a box: 'Find the equation of the line through (1,4) and (4,10).'",
+      "visual_actions": [
+        "Step 1: Draw red Δy arrow from (4,4) to (4,10), label Δy=6",
+        "Draw red Δx arrow from (1,4) to (4,4), label Δx=3",
+        "Show m = 6/3 = 2 in red",
+        "Step 2: Substitute point (1,4) into y=mx+b: 4 = 2(1)+b, so b=2 in blue",
+        "Write final equation y=2x+2 in color-coded box",
+        "Plot the full green line through both points to confirm visually"
+      ],
+      "visual_end_state": "Grid with green line y=2x+2, orange points A and B, red Δy/Δx arrows, equation y=2x+2 in box with m=2 red, b=2 blue.",
+      "transition_words": "Let's put everything together and actually solve one."
+    },
+    {
+      "id": "S8",
+      "duration_seconds": 110,
+      "purpose": "Worked Problem 2 — interpret a negative slope from a real-world context and graph it",
+      "new_inference": "A negative slope models a quantity that decreases as x increases; the line falls from left to right",
+      "prior_dependency": "S5 negative slope, S7 equation-writing process",
+      "visual_start_state": "Grid cleared. Problem statement: 'A phone battery is at 80% at time x=0 and loses 5% per hour. Write the equation and sketch the line.'",
+      "visual_actions": [
+        "Identify b=80 in blue: 'at x=0, y=80'",
+        "Identify m=-5 in red: 'loses 5 per hour means Δy=-5 for Δx=1'",
+        "Write equation y=-5x+80 in color-coded box",
+        "Plot point (0,80) in orange, then (4,60), then (16,0)",
+        "Draw green line through these points, falling left to right",
+        "Label x-intercept (16,0) with annotation 'battery dead at x=16 hours'",
+        "Show prediction pause: 'What does y=-5x+80 give when x=10? Pause and calculate.'"
+      ],
+      "visual_end_state": "Grid with falling green line y=-5x+80, orange points at (0,80),(4,60),(16,0). Equation box. x-intercept labeled. Prediction pause text.",
+      "transition_words": "Now let's see the equation do real work — with a line that falls."
+    },
+    {
+      "id": "S9",
+      "duration_seconds": 80,
+      "purpose": "Address the boundary case of vertical lines and explain why they fall outside y=mx+b",
+      "new_inference": "A vertical line x=c has undefined slope because Δx=0 makes Δy/Δx undefined; it cannot be written as y=mx+b for any finite m",
+      "prior_dependency": "S2 slope formula (division by Δx)",
+      "visual_start_state": "Grid with a vertical dashed line at x=3. Label 'x=3' on the line.",
+      "visual_actions": [
+        "Pick two points on the vertical line: (3,1) and (3,5)",
+        "Show attempted slope: m = (5-1)/(3-3) = 4/0",
+        "Display a red 'undefined' label over the division by zero",
+        "Show misconception flag: 'Can we write this as y = mx + 3? No — there is no value of m that works.'",
+        "Fade the vertical line to gray and label it 'x = c form only'",
+        "Restore the grid to a clean state for the next section"
+      ],
+      "visual_end_state": "Grid with faded gray vertical line x=3, red 'undefined slope' annotation, clean axes ready for next section.",
+      "transition_words": "There's one type of line that our equation simply can't describe — let's see why, and why that's actually a logical consequence of the formula."
+    },
+    {
+      "id": "S10",
+      "duration_seconds": 90,
+      "purpose": "Consolidate both parameters together with a summary visual showing the full effect of m and b simultaneously",
+      "new_inference": "m and b are independent controls: b sets the anchor point on the y-axis, m sets the tilt from that anchor; together they uniquely determine a non-vertical line",
+      "prior_dependency": "All previous sections",
+      "visual_start_state": "Grid cleared. Two sliders visible: m-slider (red) and b-slider (blue). Equation box y=mx+b with placeholder letters.",
+      "visual_actions": [
+        "Set m=1, b=0: draw line y=x through origin",
+        "Move b to 4: line shifts up, equation becomes y=x+4",
+        "Move m to -2 while b stays at 4: line pivots to y=-2x+4, falling steeply",
+        "Move b to -3 while m stays at -2: line shifts down to y=-2x-3",
+        "Show final summary annotation: 'b = where you start on the y-axis; m = how you tilt from there'",
+        "Display color-coded equation y = mx + b with m in red, b in blue, line in green"
+      ],
+      "visual_end_state": "Grid with y=-2x-3 in green. Both sliders visible. Summary annotation. Color-coded equation box prominent.",
+      "transition_words": "Let's pull both controls together and watch the line respond to both at once."
+    },
+    {
+      "id": "S11",
+      "duration_seconds": 90,
+      "purpose": "Introduce the three independent problems and give students time to attempt them",
+      "new_inference": "Students apply slope calculation, intercept identification, and equation writing independently",
+      "prior_dependency": "All previous sections",
+      "visual_start_state": "Grid cleared. Three problem cards appear side by side, numbered 1, 2, 3.",
+      "visual_actions": [
+        "Display Problem 1 card: 'A line passes through (0,-2) and (3,4). What is its equation?'",
+        "Display Problem 2 card: 'Line y=3x+1 and line y=-3x+1 — which is steeper and how do you know?'",
+        "Display Problem 3 card: 'A line has slope -2 and passes through (2,1). Find b and write the equation.'",
+        "Show a 45-second countdown timer animation",
+        "After timer: display 'Check your answers in the independent_problems section of this lesson'"
+      ],
+      "visual_end_state": "Three problem cards visible with answers covered. Timer expired. Prompt to check answers shown.",
+      "transition_words": "Your turn. Three problems — try each one before you look at the answers."
+    },
+    {
+      "id": "S12",
+      "duration_seconds": 50,
+      "purpose": "Close the lesson by connecting the equation back to the opening intuition and previewing next steps",
+      "new_inference": "The equation y=mx+b is a complete description of any non-vertical straight line; every change in the line corresponds to a change in exactly one of two numbers",
+      "prior_dependency": "All sections",
+      "visual_start_state": "Grid showing a clean line y=2x+3 — the original line from S1. Table from S1 reappears briefly.",
+      "visual_actions": [
+        "Fade in the original table from S1 alongside the line",
+        "Highlight m=2 in red and b=3 in blue on the equation",
+        "Show a split annotation: left side 'b: where the line lives on the y-axis', right side 'm: how the line tilts'",
+        "Fade to a final clean view of the equation y=mx+b with both color labels"
+      ],
+      "visual_end_state": "Clean grid with y=2x+3 in green, m=2 red label, b=3 blue label, final equation box centered.",
+      "transition_words": "We started with a table of numbers and a question about patterns. Let's see where we've arrived."
+    }
+  ],
+  "worked_problems": [
+    {
+      "id": "WP1",
+      "problem": "Find the equation of the line passing through the points (1, 4) and (4, 10).",
+      "solution": {
+        "step1": {
+          "action": "Calculate slope using m = Δy/Δx",
+          "work": "m = (10 - 4) / (4 - 1) = 6 / 3 = 2",
+          "note": "Always subtract in the same order: (y₂ - y₁) / (x₂ - x₁)"
+        },
+        "step2": {
+          "action": "Substitute one point into y = mx + b to find b",
+          "work": "Using point (1, 4): 4 = 2(1) + b → 4 = 2 + b → b = 2",
+          "note": "Either point works; try (4,10) to verify: 10 = 2(4) + 2 = 10 ✓"
+        },
+        "step3": {
+          "action": "Write the final equation",
+          "work": "y = 2x + 2",
+          "note": "m = 2 (red) means the line rises 2 units for every 1 unit right; b = 2 (blue) means it crosses the y-axis at (0, 2)"
+        }
+      }
+    },
+    {
+      "id": "WP2",
+      "problem": "A phone battery starts at 80% charge at time x = 0 hours and drains at a constant rate of 5% per hour. Write the equation for battery percentage y at time x, then find when the battery reaches 30%.",
+      "solution": {
+        "step1": {
+          "action": "Identify b from the starting condition",
+          "work": "At x = 0, y = 80, so b = 80",
+          "note": "b is always

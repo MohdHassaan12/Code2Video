@@ -1,0 +1,230 @@
+{
+ "id": "pythagoras-theorem",
+ "names": [
+  "pythagoras theorem",
+  "pythagorean theorem",
+  "pythagoras",
+  "pythagoras theorem right triangle",
+  "sides of a right triangle",
+  "hypotenuse",
+  "pythagorean triplets",
+  "a2 + b2 = c2"
+ ],
+ "subject": "maths",
+ "classes": [
+  7,
+  10
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "figure",
+  "figure": {
+   "kind": "right_triangle",
+   "a": 3,
+   "b": 4,
+   "squares": true,
+   "unknown": "c"
+  },
+  "asks": [
+   "A labelled diagram of a right-angled triangle with sides of 3, 4 and 5 units, showing a square drawn outward on each side, each square divided into unit squares, and the right-angle mark.",
+   "A drawing of a large square with four equal right-angled triangles placed inside it, showing the tilted square left empty in the middle and the four triangles labelled with their two shorter sides.",
+   "A standard diagram of a right-angled triangle ABC with the right angle at B, showing the side AB, the side BC, the longest side AC and the right-angle mark."
+  ],
+  "why": "The squares on the three sides turn a rule about lengths into areas a learner can count: 9 small squares and 16 small squares fill the square of 25."
+ },
+ "card": {
+  "big_idea": {
+   "text": "In a right-angled triangle, the square drawn on the longest side has exactly the same area as the squares on the two shorter sides put together.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Work out the longest side of a right triangle from its two shorter sides",
+    "level": "apply",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Explain why the squares on the two shorter sides fill the square on the longest side",
+    "level": "understand",
+    "checked_by": "try_it"
+   },
+   {
+    "can": "Decide whether the rule can be used for a given triangle",
+    "level": "evaluate",
+    "checked_by": "q2"
+   }
+  ],
+  "why_it_matters": {
+   "text": "With it you can find a length you cannot measure, like how long a ladder must be to reach a window, from two lengths you can.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "Four copies of the triangle fit inside one big square in two ways: once leaving the square on the longest side empty, once leaving the two smaller squares empty, so those empty spaces must have the same area.",
+   "cites": []
+  },
+  "picture": {
+   "text": "A right triangle with short sides 3 and 4 units and the right-angle mark; a square grows outward on each side, cut into unit squares (9, 16 and 25). Then the 16 tiles and the 9 tiles slide into the square on the longest side and fill it with none left over. Last, four copies of the triangle are arranged in a big square two ways to show why it always works.",
+   "standard": "squares drawn on the three sides of a right triangle",
+   "cites": []
+  },
+  "diagram_ask": "A labelled diagram of a right-angled triangle with sides of 3, 4 and 5 units, showing a square drawn outward on each side, each square divided into unit squares, and the right-angle mark.",
+  "needs_first": [
+   {
+    "text": "The area of a square is its side times its side.",
+    "cites": []
+   },
+   {
+    "text": "What a right angle is and how it is marked.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Adding the two shorter sides to get the longest one: 3 + 4 = 7.",
+    "why_it_fails": "Going straight across is shorter than going along two sides; it is the areas of the squares that add, not the lengths.",
+    "cites": []
+   },
+   {
+    "mistake": "Using a² + b² = c² for any triangle.",
+    "why_it_fails": "It is true only when the angle between the two shorter sides is a right angle; in a triangle with sides 4, 5 and 6, 16 + 25 = 41 is not 36.",
+    "cites": []
+   },
+   {
+    "mistake": "Stopping at 25 (or 100) and giving that as the side.",
+    "why_it_fails": "25 is the area of the square on the longest side; the side is the number that multiplied by itself gives 25, which is 5.",
+    "cites": []
+   },
+   {
+    "mistake": "Calling any side c, the side opposite the right angle.",
+    "why_it_fails": "Only the longest side, the one opposite the right angle, has the square equal to the other two together.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "A right-angled triangle has its two shorter sides 3 cm and 4 cm long. Without measuring, how long is the third side?",
+   "guesses": [
+    "7 cm",
+    "6 cm",
+    "5 cm"
+   ],
+   "answer": "5 cm, because 3 × 3 + 4 × 4 = 9 + 16 = 25, and 5 × 5 = 25.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the right triangle with sides 3 cm and 4 cm and ask how long the longest side is. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Measure the longest side with a ruler on the screen: it is 5 cm, not 7 cm. So adding the sides does not work.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Grow a square on each side and count the unit squares: 9, 16 and 25. Ask: what do you notice about 9, 16 and 25?",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Slide the 16 tiles and the 9 tiles into the big square: they fill it exactly. Then place four copies of the triangle in one big square two ways, so the empty spaces must be equal.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name the longest side the hypotenuse, opposite the right angle, and write the rule as side × side for each square: a² + b² = c².",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Open the right angle wider so it is no longer 90°: the longest side grows and the two small squares no longer fill the big one. The rule needs the right angle.",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "Work out the longest side when the short sides are 6 cm and 8 cm: 36 + 64 = 100, and 10 × 10 = 100, so it is 10 cm.",
+    "cites": []
+   },
+   {
+    "move": "your_turn",
+    "what": "Short sides 5 cm and 12 cm: the learner finds the longest side (13 cm) before it is shown.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says why the two small squares fill the big one, in their own words.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "A right triangle has shorter sides 6 cm and 8 cm. How long is the longest side?",
+    "options": [
+     "10 cm",
+     "14 cm",
+     "100 cm"
+    ],
+    "answer_index": 0,
+    "explain": "36 + 64 = 100 is the area of the square on the longest side, and the side whose square is 100 is 10 cm.",
+    "cites": []
+   },
+   {
+    "question": "A triangle with sides 4 cm, 5 cm and 6 cm has no right angle. Does 4 × 4 + 5 × 5 equal 6 × 6?",
+    "options": [
+     "No: 16 + 25 = 41, not 36, because there is no right angle",
+     "Yes, it works for every triangle",
+     "Yes, because 4 + 5 is more than 6"
+    ],
+    "answer_index": 0,
+    "explain": "The squares on the shorter sides fill the square on the longest side only when the angle between them is a right angle.",
+    "cites": []
+   },
+   {
+    "question": "A right triangle has sides 5, 12 and 13 cm. Which side is opposite the right angle?",
+    "options": [
+     "13 cm, the longest side",
+     "5 cm, the shortest side",
+     "12 cm, any side can be the one"
+    ],
+    "answer_index": 0,
+    "explain": "The side opposite the right angle is always the longest, so it is 13 cm, and 25 + 144 = 169.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "Fill the big square",
+   "kind": "paper",
+   "materials": [
+    "squared paper",
+    "pencil",
+    "ruler",
+    "scissors"
+   ],
+   "stands_for": "Each small square of the paper is one square centimetre of area; the squares you cut stand for the squares on the triangle's sides.",
+   "predict": "Will the 9 small squares and the 16 small squares together cover the square on the longest side exactly, with none left over?",
+   "steps": [
+    "Draw a right triangle with shorter sides 3 cm and 4 cm on squared paper and measure its longest side with the ruler.",
+    "Cut out a 3 by 3 square and a 4 by 4 square from the squared paper.",
+    "Cut out a square whose side is the longest side you measured.",
+    "Lay the 4 by 4 square in one corner of the big square.",
+    "Cut the 3 by 3 square into its small squares and use them to fill the gap."
+   ],
+   "observe": "The longest side measures 5 cm, and the 16 and 9 small squares cover the 5 by 5 square exactly, with no gap and nothing left over.",
+   "question": "Why do the two smaller squares fill the big one exactly, when 3 + 4 is not 5?",
+   "expected": "Because what adds up is the area of the squares, not the length of the sides: 9 + 16 = 25 = 5 × 5, and this happens because the triangle has a right angle.",
+   "write": "In a right triangle the square on the longest side equals the squares on the other two sides together. 3 × 3 + 4 × 4 = 5 × 5.",
+   "in_class": "Pairs: one draws and measures, one cuts. The teacher draws the 3-4-5 triangle with its three squares on the board and writes 9 + 16 = ?. Ask: did your small squares cover the big one, and why not 7? A pair whose squares do not fit has usually not drawn a true right angle.",
+   "cites": []
+  },
+  "leave_out": [
+   "the proof with similar triangles",
+   "the converse of the theorem",
+   "formulas that generate Pythagorean triplets"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

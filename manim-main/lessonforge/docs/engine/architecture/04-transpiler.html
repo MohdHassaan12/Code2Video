@@ -1,0 +1,109 @@
+<link rel="stylesheet" href="style.css">
+<title>transpiler.py — Deterministic Storyboard→Manim Codegen</title>
+
+<div class="hdr">
+  <div class="logo">🏗️</div>
+  <div>
+    <h1>Deterministic Transpiler — Storyboard → Manim Code</h1>
+    <div class="sub"><code style="font-size:13px">stem_animation_lab/transpiler.py</code> — the sole full-scene codegen path. Fully deterministic: zones, entrances, collision handling and voiceover sync are all built in. <b>Code owns structure; models own content</b> — there is no per-block LLM decoration pass.</div>
+  </div>
+  <div class="crumb">Diagram <b>04 — Transpiler</b> · consumed by the render job in diagram 02</div>
+</div>
+
+<div class="cols">
+  <div class="col grow" style="flex: 2.6;">
+
+    <!-- input -->
+    <div class="panel slate">
+      <div class="ptitle"><span class="ico">📐</span> Input — StoryboardResponse (Pydantic-validated LLM output)</div>
+      <div class="cards c3">
+        <div class="card"><div class="ci">🎬</div><h3>visual_storyboard[] — scenes</h3><p><code>scene_index, description, elements[], narration_cues[], wait_time, layout_template, <b>composition</b></code> (TitleStageCaption · SplitScreen · FullCanvas). <code>composition</code> is a scene-level layout gestalt descriptor consumed by the transpiler for zone assignment.</p></div>
+        <div class="card"><div class="ci">🧱</div><h3>VisualElement</h3><p><code>id, type, content, color, scale, entrance/exit_animation, relative_positioning, safe_zone_alignment</code>. Types: text · math · shape · svg_icon · chemical_molecule · coordinate_system · graph · math_evolution</p></div>
+        <div class="card"><div class="ci">🗣️</div><h3>NarrationCue</h3><p><code>cue</code> (spoken text) + typed <code>animation_events[]</code> (show/hide/transform/highlight/move_to → target id) + legacy free-text <code>event</code> strings</p></div>
+      </div>
+    </div>
+
+    <div class="vflow center"><div class="va"><span class="arr">↓</span> two emitters, same subsystems</div></div>
+
+    <!-- emitters -->
+    <div class="panel purple">
+      <div class="ptitle"><span class="ico">⚙️</span> Emitters — the only two public entry points</div>
+      <div class="cards c2">
+        <div class="card hero" style="border-color: var(--purple-line);">
+          <div class="ci">📜</div><h3>parse_schema_to_base_scene</h3>
+          <p>ONE complete <code>VoiceoverScene</code> master script (sequential path). Per-scene canvas clear (FadeOut all), shared <code>construct()</code> namespace — cross-scene events are legitimate here. Voiceover sync: content-aware <code>_TIMING</code> map (axes ≥1.5s, math ≥1.0s, capped at beat duration) replaces the old flat 0.6× heuristic. AnimationGroup <code>lag_ratio=0.15</code></p>
+        </div>
+        <div class="card hero" style="border-color: var(--purple-line);">
+          <div class="ci">🧵</div><h3>parse_schema_to_scene_scripts</h3>
+          <p>ONE standalone script <b>per scene</b> for the parallel render path (returns <code>[]</code> when ≤1 scene). Blank canvas each, no clear, only its OWN <code>id→var</code> map — <code>_drop_cross_scene_events</code> removes events targeting other scenes (they would NameError)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- subsystems -->
+    <div class="panel blue">
+      <div class="ptitle"><span class="ico">🧩</span> Deterministic subsystems</div>
+      <div class="cards c3">
+        <div class="card"><div class="ci">🗺️</div><h3>Zone system</h3><p><code>_SAFE_ZONE_MAP</code>: 8 zones → <code>to_edge/to_corner(buff=0.3)</code> · <code>_ZONE_FALLBACKS</code>: distance-ordered fallback when occupied · <code>_safe_zone_suffix</code> claims or stacks · <code>_apply_template_zones</code> per layout_template</p></div>
+        <div class="card"><div class="ci">📊</div><h3>Axes-aware placement</h3><p><code>_scene_axes_ctx</code> + <code>_axes_screen_bbox</code>: zone text routes around the axes' real bbox; labels flip away from tick strips; axis ranges parsed from content (<code>x:MIN-MAX, y:MIN-MAX</code>)</p></div>
+        <div class="card"><div class="ci">✨</div><h3>Entrance vocabulary</h3><p><code>_ENTRANCE_CONFIG</code> per element type + <code>_SHAPE_ENTRANCES</code> keyword mapping (same precedence as <code>_build_obj_expr</code>) · allowlists <code>_ENTRANCE_ANIMS/_EXIT_ANIMS</code> · schema overrides always win</p></div>
+        <div class="card"><div class="ci">🏭</div><h3>Object construction</h3><p><code>_build_obj_expr</code> emits Manim constructors per element · <code>_topo_sort_elements</code> orders by relative_positioning · <code>_Z_INDEX</code> layering · <code>_color_expr</code></p></div>
+        <div class="card"><div class="ci">🧼</div><h3>Event sanitizing</h3><p><code>_split_anim_calls</code> → <code>_sanitize_anim_calls</code> → <code>_is_valid_anim_expr</code> (AST validation): model-authored prose never reaches <code>self.play()</code>; bare ids dropped; <code>.animate</code> chains survive; emptied cues still get a body</p></div>
+        <div class="card"><div class="ci">🔤</div><h3>id → var mapping</h3><p><code>scene_id_to_var</code> per scene + global <code>all_id_to_var</code> · <code>_rewrite_ids</code> regex-swaps storyboard ids into Python vars inside animation strings</p></div>
+      </div>
+      <div class="spacer" style="height:10px;"></div>
+      <div class="cards c2">
+        <div class="card"><div class="ci">🖥️</div><h3>Screen management — _maybe_minimize_diagram</h3><p>A cue that piles free-standing text onto an on-screen diagram → diagram shrinks to the left half, text stacks in a right column. Trigger: any <code>math</code> or ≥2 text-ish elements; never on cue 0, never for diagram-anchored labels. <b>Widened from math-only 2026-07-20</b> after live job <code>bpipueek6</code> split ZERO scenes — real storyboards write derivations as <code>text</code>.</p></div>
+        <div class="card"><div class="ci">🎭</div><h3>Built-in animation feel</h3><p>Elastic <code>ease_out_elastic</code> entrances, staggered reveals, same-zone collision fallback, asset fallback (SVG/molecule → Text) — all deterministic, no LLM decoration</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- right column -->
+  <div class="col" style="flex: 1;">
+    <div class="panel red">
+      <div class="ptitle"><span class="ico">⚠️</span> Traps this design pins</div>
+      <div class="rows">
+        <div class="row"><span class="dot red"></span><p><b>Cross-scene NameError:</b> per-scene scripts know only their own vars; both emitters fall back to the raw storyboard id on a miss — dropped events, not broken renders (killed 3 of 4 scenes on the 2026-07-20 Dalton run before the fix)</p></div>
+        <div class="row"><span class="dot red"></span><p><b>Selective-import guard:</b> <code>from viz_helpers import X</code> silently satisfied the star-import check → NameErrors + skipped font injection. Guards must test the exact form they guarantee</p></div>
+        <div class="row"><span class="dot red"></span><p><b>repr() quote styles:</b> the Indic-strip guard matched only <code>Text("…")</code> while the transpiler emits <code>Text({repr(content)})</code> — single quotes — so the English-on-screen contract was dead on the whole transpiler path</p></div>
+      </div>
+    </div>
+
+    <div class="panel green">
+      <div class="ptitle"><span class="ico">🧪</span> Pinned by harnesses <span class="tag">no manim · no keys</span></div>
+      <div class="rows">
+        <div class="row"><span class="dot green"></span><p><b>test_axes_zones.py</b> — 14 checks: routing around axes, label flips, bottom-zone stacking shifts INTO frame</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_entrance_map.py</b> — 14 checks: ≥4 distinct entrance classes per mixed scene; keyword precedence; both codegen paths agree</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_event_sanitize.py</b> — 20 checks: legacy free-text event path</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_minimize_split.py</b> — 20 checks: split-screen trigger + import widening</p></div>
+      </div>
+    </div>
+
+    <div class="panel orange">
+      <div class="ptitle"><span class="ico">🧭</span> Design rules</div>
+      <div class="rows">
+        <div class="row"><span class="dot orange"></span><p><b>Sole full-scene codegen path</b> — don't add a second one</p></div>
+        <div class="row"><span class="dot orange"></span><p><b>Don't move structural decisions back into prompts</b> — the LLM writes content (storyboard JSON), the transpiler decides layout, order, animation</p></div>
+        <div class="row"><span class="dot orange"></span><p><b>Keep both emitter behaviours</b> when editing — master path shares a namespace; per-scene path is isolated</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="howit">
+  <div class="lbl">Per scene</div>
+  <div class="step"><span class="ico">📐</span><div><h4>0. Read composition</h4><p>Log the scene-level <code>composition</code> descriptor (layout gestalt from the LLM storyboard)</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🗺️</span><div><h4>1. Assign zones</h4><p>Template zones (TitleStageCaption/SplitScreen/FullCanvas), then safe-zone claims with fallback chain</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🏭</span><div><h4>2. Build objects</h4><p>Topo-sorted constructors, z-index, colors, axes context</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">✨</span><div><h4>3. Pick entrances</h4><p>Type + keyword map, schema override wins</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🗣️</span><div><h4>4. Emit cues</h4><p>Voiceover blocks with synced run_time, sanitized events</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🖥️</span><div><h4>5. Manage the screen</h4><p>Split-screen when text piles onto a diagram</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">📜</span><div><h4>6. Emit scripts</h4><p>Master script + per-scene scripts for parallel render</p></div></div>
+</div>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Render Timeline — STEM Animation Lab</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --border: #30363d;
+    --text: #e6edf3; --dim: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --amber: #d29922; --purple: #bc8cff;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, sans-serif; }
+  header {
+    position: sticky; top: 0; z-index: 5; background: rgba(13,17,23,.92);
+    backdrop-filter: blur(6px); border-bottom: 1px solid var(--border);
+    padding: 14px 22px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  header h1 { font-size: 18px; font-weight: 600; }
+  header .sub { color: var(--dim); font-size: 13px; }
+  .filters { margin-left: auto; display: flex; gap: 8px; }
+  .filters button {
+    background: var(--panel); color: var(--dim); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px 14px; font-size: 13px; cursor: pointer;
+  }
+  .filters button.on { color: var(--text); border-color: var(--accent); background: #1c2a3a; }
+  #jobs { padding: 0 22px; }
+  .job {
+    margin-top: 14px; background: #2d1e00; border: 1px solid var(--amber);
+    border-radius: 8px; padding: 10px 16px; font-size: 14px; color: var(--amber);
+    display: flex; gap: 10px; align-items: center;
+  }
+  .spinner {
+    width: 14px; height: 14px; border: 2px solid var(--amber); border-top-color: transparent;
+    border-radius: 50%; animation: spin 0.9s linear infinite; flex: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  main { max-width: 900px; margin: 0 auto; padding: 10px 22px 60px; }
+  .day { margin-top: 28px; }
+  .day > h2 {
+    font-size: 13px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--dim); padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+  .entry {
+    display: grid; grid-template-columns: 86px 14px 1fr; gap: 0 14px;
+    margin-top: 18px; position: relative;
+  }
+  .when { text-align: right; color: var(--dim); font-size: 13px; padding-top: 4px; }
+  .rail { position: relative; }
+  .rail::before {
+    content: ""; position: absolute; left: 6px; top: 26px; bottom: -18px;
+    width: 2px; background: var(--border);
+  }
+  .entry:last-child .rail::before { display: none; }
+  .dot {
+    width: 14px; height: 14px; border-radius: 50%; background: var(--accent);
+    border: 3px solid var(--bg); position: relative; top: 6px;
+  }
+  .entry.final .dot { background: var(--purple); }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 14px; overflow: hidden;
+  }
+  .entry.latest .card { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
+  .meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .meta .name { font-weight: 600; font-size: 14px; word-break: break-all; }
+  .badge {
+    font-size: 11px; padding: 1px 9px; border-radius: 10px; border: 1px solid;
+    text-transform: uppercase; letter-spacing: .05em; flex: none;
+  }
+  .badge.lab    { color: var(--accent); border-color: var(--accent); }
+  .badge.final  { color: var(--purple); border-color: var(--purple); }
+  .badge.new    { color: var(--green);  border-color: var(--green); }
+  .badge.clean  { color: var(--green);  border-color: var(--green); }
+  .badge.fixed  { color: var(--amber);  border-color: var(--amber); }
+  .badge.dirty  { color: #f85149; border-color: #f85149; }
+  .badge.raw    { color: var(--dim); border-color: var(--border); }
+  .meta .size { color: var(--dim); font-size: 12px; margin-left: auto; }
+  .meta .stamp { color: var(--dim); font-size: 12px; flex: none; }
+  video { width: 100%; border-radius: 6px; background: #000; display: block; }
+  .empty { margin-top: 60px; text-align: center; color: var(--dim); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Render Timeline</h1>
+  <span class="sub" id="count"></span>
+  <a href="/studio" style="color:var(--accent);text-decoration:none;font-size:13px;margin-left:6px">✦ Studio</a>
+  <div class="filters">
+    <button data-f="all" class="on">All</button>
+    <button data-f="lab_render">Lab renders</button>
+    <button data-f="merged_final">Merged finals</button>
+    <button id="sortBtn" title="Toggle sort order">Newest first</button>
+  </div>
+</header>
+<div id="jobs"></div>
+<main id="list"><div class="empty">Loading…</div></main>
+
+<script>
+let filter = "all";
+let lastKey = "";
+let newestFirst = true;
+
+document.querySelectorAll(".filters button[data-f]").forEach(b => b.onclick = () => {
+  filter = b.dataset.f;
+  document.querySelectorAll(".filters button[data-f]").forEach(x => x.classList.toggle("on", x === b));
+  lastKey = ""; refresh();
+});
+document.getElementById("sortBtn").onclick = () => {
+  newestFirst = !newestFirst;
+  document.getElementById("sortBtn").textContent = newestFirst ? "Newest first" : "Oldest first";
+  lastKey = ""; refresh();
+};
+
+function statusBadge(v) {
+  const m = v.render_meta;
+  if (!m) return '<span class="badge raw" title="Rendered directly (e.g. by the test suite) — not checked by the repair pipeline">Raw</span>';
+  if ((m.violations_remaining ?? 0) > 0)
+    return `<span class="badge dirty" title="Layout violations were measured and could not be repaired">&#9888; ${m.violations_remaining} overlap${m.violations_remaining > 1 ? "s" : ""}</span>`;
+  if ((m.repair_rounds ?? 0) > 0)
+    return `<span class="badge fixed" title="Overlaps were measured and auto-repaired">Repaired &times;${m.repair_rounds}</span>`;
+  return '<span class="badge clean" title="Measured clean — no layout violations">Clean &#10003;</span>';
+}
+
+function fmtTime(s) { return s.split(" ")[1].slice(0, 5); }
+function fmtDay(s) {
+  const d = new Date(s.replace(" ", "T"));
+  const today = new Date(); const yd = new Date(); yd.setDate(today.getDate() - 1);
+  const same = (a, b) => a.toDateString() === b.toDateString();
+  if (same(d, today)) return "Today — " + s.split(" ")[0];
+  if (same(d, yd)) return "Yesterday — " + s.split(" ")[0];
+  return s.split(" ")[0];
+}
+
+async function refresh() {
+  let data;
+  try {
+    const r = await fetch("/api/video_history");
+    data = await r.json();
+  } catch (e) {
+    document.getElementById("jobs").innerHTML =
+      '<div class="job">Cannot reach the lab server — is app.py running on this port?</div>';
+    return;
+  }
+
+  const jobsEl = document.getElementById("jobs");
+  jobsEl.innerHTML = (data.active_jobs || []).map(j =>
+    `<div class="job"><div class="spinner"></div>
+     Rendering now — job <b>&nbsp;${j.job_id}&nbsp;</b> ${j.progress ? "· " + j.progress : ""}</div>`
+  ).join("");
+
+  let vids = (data.videos || []).filter(v => filter === "all" || v.source === filter);
+  if (!newestFirst) vids = vids.slice().reverse();
+  document.getElementById("count").textContent =
+    vids.length + " video" + (vids.length === 1 ? "" : "s");
+  const latestUrl = (newestFirst ? vids[0] : vids[vids.length - 1])?.url;
+
+  // Skip DOM rebuild if nothing changed, so playing videos aren't interrupted.
+  const key = filter + "|" + newestFirst + "|" + vids.map(v => v.url + (v.render_meta ? "+m" : "")).join(",");
+  if (key === lastKey) return;
+  lastKey = key;
+
+  const list = document.getElementById("list");
+  if (!vids.length) {
+    list.innerHTML = '<div class="empty">No videos yet — render something and it will appear here.</div>';
+    return;
+  }
+
+  const days = {};
+  vids.forEach(v => { (days[v.modified.split(" ")[0]] ||= []).push(v); });
+
+  list.innerHTML = Object.values(days).map(group => `
+    <section class="day">
+      <h2>${fmtDay(group[0].modified)}</h2>
+      ${group.map(v => `
+        <div class="entry ${v.source === "merged_final" ? "final" : ""} ${v.url === latestUrl ? "latest" : ""}">
+          <div class="when">${fmtTime(v.modified)}</div>
+          <div class="rail"><div class="dot"></div></div>
+          <div class="card">
+            <div class="meta">
+              ${v.url === latestUrl ? '<span class="badge new">Latest</span>' : ""}
+              <span class="badge ${v.source === "merged_final" ? "final" : "lab"}">
+                ${v.source === "merged_final" ? "Merged final" : "Lab render"}</span>
+              ${statusBadge(v)}
+              <span class="name">${v.name}</span>
+              <span class="stamp">${v.modified}</span>
+              <span class="size">${v.size_mb} MB</span>
+            </div>
+            <video src="${v.url}" controls preload="metadata"></video>
+          </div>
+        </div>`).join("")}
+    </section>`).join("");
+}
+
+refresh();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>

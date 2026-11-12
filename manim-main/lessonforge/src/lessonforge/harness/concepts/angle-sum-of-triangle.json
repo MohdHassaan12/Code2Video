@@ -1,0 +1,216 @@
+{
+ "id": "angle-sum-of-triangle",
+ "names": [
+  "angle sum of triangle",
+  "angle sum property",
+  "angle sum property of triangle",
+  "sum of angles of a triangle",
+  "angles of a triangle add up to 180",
+  "triangle angles 180",
+  "interior angles of a triangle"
+ ],
+ "subject": "maths",
+ "classes": [
+  7,
+  9
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "drawing",
+  "figure": null,
+  "asks": [
+   "A drawing of a paper triangle with its three corners marked by coloured dots, and beside it the same three torn-off corners placed side by side along a straight ruler.",
+   "A standard diagram of a triangle ABC with a straight line through A drawn parallel to BC, showing the three angles of the triangle and the two angles at A beside them."
+  ],
+  "why": "The three torn corners lying side by side along a straight edge show the sum as a straight angle before any number is said."
+ },
+ "card": {
+  "big_idea": {
+   "text": "The three angles of every triangle, big or small, add up to 180 degrees, a straight angle.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Work out the third angle of a triangle from the other two",
+    "level": "apply",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Explain why the three corners of a triangle make a straight line",
+    "level": "understand",
+    "checked_by": "try_it"
+   },
+   {
+    "can": "Decide whether a triangle with given angles can exist",
+    "level": "evaluate",
+    "checked_by": "q3"
+   }
+  ],
+  "why_it_matters": {
+   "text": "It lets you find an angle you cannot measure, and tells you at once whether a drawing of a triangle can be right.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "A line through the top corner drawn parallel to the base makes two angles equal to the two bottom corners, so the three corners of the triangle sit side by side along that straight line, and a straight line is 180 degrees.",
+   "cites": []
+  },
+  "picture": {
+   "text": "A triangle with angles of 50°, 60° and 70°, each corner coloured. The corners are torn off and slide together at one point; their edges join into a straight line. Then a line through the top corner, parallel to the base, shows the same three angles sitting along it in the whole triangle.",
+   "standard": "triangle with a line through one vertex parallel to the opposite side",
+   "cites": []
+  },
+  "diagram_ask": "A drawing of a paper triangle with its three corners marked by coloured dots, and beside it the same three torn-off corners placed side by side along a straight ruler.",
+  "needs_first": [
+   {
+    "text": "A straight angle is 180 degrees.",
+    "cites": []
+   },
+   {
+    "text": "How to read an angle with a protractor.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Thinking a bigger triangle has a bigger angle sum.",
+    "why_it_fails": "Making a triangle bigger without changing its shape keeps every angle the same, so the sum stays 180 degrees.",
+    "cites": []
+   },
+   {
+    "mistake": "Thinking the angles of a triangle add up to 360 degrees.",
+    "why_it_fails": "360 degrees is a full turn, like the four corners of a rectangle; the three corners of a triangle fill only a straight line.",
+    "cites": []
+   },
+   {
+    "mistake": "Thinking a triangle can have two right angles.",
+    "why_it_fails": "Two right angles already make 180 degrees, leaving nothing for the third corner, so the sides would never meet.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "Draw any triangle at all, tall, flat or tiny. If you add up its three angles, will you always get the same number?",
+   "guesses": [
+    "No, a bigger triangle has more",
+    "Yes, always 360",
+    "Yes, always 180"
+   ],
+   "answer": "Yes: always 180 degrees, a straight angle.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show three very different triangles and ask whether their angles add up to the same number. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Colour the three corners of one triangle (50°, 60°, 70°), tear them off and put their points together: the edges make a straight line.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Do the same with a tall thin triangle and a flat one: again a straight line every time.",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Draw a line through the top corner parallel to the base. Ask: which angles at the top match the bottom corners? The two outer ones do, so the three angles lie along one straight line.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name it: the angle sum of a triangle is 180 degrees, a straight angle.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Try to draw a triangle with two right angles: the two sides go straight up side by side and never meet, so there is no triangle.",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "Two angles are 40° and 75°: the third is 180 − 115 = 65°.",
+    "cites": []
+   },
+   {
+    "move": "your_turn",
+    "what": "Angles of 90° and 35°: the learner finds the third (55°) before it is shown.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says why the corners of any triangle make a straight line.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "Two angles of a triangle are 50° and 60°. What is the third angle?",
+    "options": [
+     "70°",
+     "250°",
+     "It depends on how big the triangle is"
+    ],
+    "answer_index": 0,
+    "explain": "The three angles make 180°, so the third is 180 − 110 = 70°.",
+    "cites": []
+   },
+   {
+    "question": "You draw a triangle twice as big as another, with the same shape. What is the sum of its angles?",
+    "options": [
+     "Still 180°",
+     "360°, twice as much",
+     "More than 180°, because the sides are longer"
+    ],
+    "answer_index": 0,
+    "explain": "Making a triangle bigger does not open any corner wider, so the angles and their sum stay the same.",
+    "cites": []
+   },
+   {
+    "question": "Can a triangle have two right angles?",
+    "options": [
+     "No, because two right angles already make 180° and leave nothing for the third",
+     "Yes, if the triangle is big enough",
+     "Yes, if the third angle is 180°"
+    ],
+    "answer_index": 0,
+    "explain": "With two right angles the sides would run side by side and never meet.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "Tear the corners",
+   "kind": "hands",
+   "materials": [
+    "paper",
+    "pencil",
+    "ruler",
+    "colour pencils"
+   ],
+   "stands_for": "Each torn corner is one angle of the triangle; the ruler's edge is a straight angle.",
+   "predict": "When you put the three torn corners together, will they make a full circle, a straight line, or something else?",
+   "steps": [
+    "Draw any triangle on paper with the ruler and cut or tear it out.",
+    "Colour each corner a different colour.",
+    "Tear off the three corners.",
+    "Put the three points together, side by side, along the ruler's edge."
+   ],
+   "observe": "The three corners fit side by side with no gap and no overlap, and their outer edges make a straight line along the ruler.",
+   "question": "Why do the corners of any triangle, whatever its shape, make a straight line?",
+   "expected": "Because a line through one corner parallel to the opposite side makes two angles equal to the other two corners, so the three angles always fill a straight angle, which is 180 degrees.",
+   "write": "The three angles of any triangle add up to 180 degrees. Put together they make a straight line.",
+   "in_class": "Pairs, each drawing a differently shaped triangle (thin, flat, right-angled). The teacher draws a straight line on the board and asks pairs to hold up their corners. Ask: did anyone's corners not make a straight line? A gap usually means a corner was torn too small or two corners overlapped.",
+   "cites": []
+  },
+  "leave_out": [
+   "the exterior angle property",
+   "angle sum of polygons with more sides",
+   "proof using alternate angles in full formal steps"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

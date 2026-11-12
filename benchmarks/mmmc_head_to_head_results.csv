@@ -1,0 +1,69 @@
+topic,domain,paradigm,el,at,lf,vc,ad,aes_avg,teach_quiz_es,visual_uplift,tokens_k,time_minutes,pass_at_1,pass_at_repair,qcr_score
+Essence of Calculus: The Derivative,Calculus,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Essence of Calculus: The Derivative,Calculus,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Essence of Calculus: The Derivative,Calculus,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Essence of Calculus: The Derivative,Calculus,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Taylor Series and Higher-Order Approximations,Calculus,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Taylor Series and Higher-Order Approximations,Calculus,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Taylor Series and Higher-Order Approximations,Calculus,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Taylor Series and Higher-Order Approximations,Calculus,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+The Determinant and Area Scaling,Linear Algebra,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+The Determinant and Area Scaling,Linear Algebra,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+The Determinant and Area Scaling,Linear Algebra,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+The Determinant and Area Scaling,Linear Algebra,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Eigenvectors and Eigenvalues: Directions that Stay Still,Linear Algebra,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Eigenvectors and Eigenvalues: Directions that Stay Still,Linear Algebra,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Eigenvectors and Eigenvalues: Directions that Stay Still,Linear Algebra,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Eigenvectors and Eigenvalues: Directions that Stay Still,Linear Algebra,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Support Vector Machine and Maximum Margin Hyperplanes,Neural Networks,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Support Vector Machine and Maximum Margin Hyperplanes,Neural Networks,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Support Vector Machine and Maximum Margin Hyperplanes,Neural Networks,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Support Vector Machine and Maximum Margin Hyperplanes,Neural Networks,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Neural Network Learning and Backpropagation,Neural Networks,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Neural Network Learning and Backpropagation,Neural Networks,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Neural Network Learning and Backpropagation,Neural Networks,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Neural Network Learning and Backpropagation,Neural Networks,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Harmonic Oscillators and Phase Space Trajectories,Differential Equations,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Harmonic Oscillators and Phase Space Trajectories,Differential Equations,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Harmonic Oscillators and Phase Space Trajectories,Differential Equations,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Harmonic Oscillators and Phase Space Trajectories,Differential Equations,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+RSA Encryption and Modular Arithmetic,Cryptography & Number Theory,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+RSA Encryption and Modular Arithmetic,Cryptography & Number Theory,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+RSA Encryption and Modular Arithmetic,Cryptography & Number Theory,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+RSA Encryption and Modular Arithmetic,Cryptography & Number Theory,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Bayes' Theorem and Prior Probability Updating,Probability & Statistics,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Bayes' Theorem and Prior Probability Updating,Probability & Statistics,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Bayes' Theorem and Prior Probability Updating,Probability & Statistics,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Bayes' Theorem and Prior Probability Updating,Probability & Statistics,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Claude Shannon's Entropy: Measuring Surprise,Information Theory,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Claude Shannon's Entropy: Measuring Surprise,Information Theory,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Claude Shannon's Entropy: Measuring Surprise,Information Theory,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Claude Shannon's Entropy: Measuring Surprise,Information Theory,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Pythagorean Theorem: Visual Proof Without Words,Geometry,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Pythagorean Theorem: Visual Proof Without Words,Geometry,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Pythagorean Theorem: Visual Proof Without Words,Geometry,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Pythagorean Theorem: Visual Proof Without Words,Geometry,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Pure Fourier Series: Drawing with Rotating Epicycles,Physics & Mechanics,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Pure Fourier Series: Drawing with Rotating Epicycles,Physics & Mechanics,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Pure Fourier Series: Drawing with Rotating Epicycles,Physics & Mechanics,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Pure Fourier Series: Drawing with Rotating Epicycles,Physics & Mechanics,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Snell's Law and Fermat's Principle of Least Time,Physics & Mechanics,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Snell's Law and Fermat's Principle of Least Time,Physics & Mechanics,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Snell's Law and Fermat's Principle of Least Time,Physics & Mechanics,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Snell's Law and Fermat's Principle of Least Time,Physics & Mechanics,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Tower of Hanoi: Recursive Binary Pattern,Computer Graphics & Algorithms,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Tower of Hanoi: Recursive Binary Pattern,Computer Graphics & Algorithms,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Tower of Hanoi: Recursive Binary Pattern,Computer Graphics & Algorithms,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Tower of Hanoi: Recursive Binary Pattern,Computer Graphics & Algorithms,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Symmetries and the Dihedral Group D4,Group Theory & Abstract Algebra,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Symmetries and the Dihedral Group D4,Group Theory & Abstract Algebra,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Symmetries and the Dihedral Group D4,Group Theory & Abstract Algebra,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Symmetries and the Dihedral Group D4,Group Theory & Abstract Algebra,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Euler Characteristic and the Möbius Strip,Topology & Manifolds,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Euler Characteristic and the Möbius Strip,Topology & Manifolds,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Euler Characteristic and the Möbius Strip,Topology & Manifolds,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Euler Characteristic and the Möbius Strip,Topology & Manifolds,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11
+Euler's Formula: The Most Beautiful Equation,Complex Analysis & Fractals,Direct_CodeLLM,6.1,6.9,7.8,8.4,5.0,34.2,37.0,4.5,1.2,2.1,0.42,0.58,195.69
+Euler's Formula: The Most Beautiful Equation,Complex Analysis & Fractals,Code2Video,16.6,13.1,19.0,13.6,16.7,79.0,82.0,24.0,30.8,15.4,0.68,0.88,93.72
+Euler's Formula: The Most Beautiful Equation,Complex Analysis & Fractals,Lessonforge,15.2,14.8,16.5,14.0,14.0,74.5,71.5,18.5,14.2,7.5,0.84,0.92,171.05
+Euler's Formula: The Most Beautiful Equation,Complex Analysis & Fractals,Learner_in_the_Loop_Hybrid,17.5,15.5,19.2,15.8,15.5,83.5,88.5,28.5,16.5,8.8,0.88,0.98,199.11

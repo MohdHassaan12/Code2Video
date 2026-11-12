@@ -1,0 +1,205 @@
+{
+ "id": "simple-electric-circuit",
+ "names": [
+  "simple electric circuit",
+  "electric circuit",
+  "electric circuits",
+  "closed circuit and open circuit",
+  "how does a bulb glow",
+  "electricity and circuits",
+  "circuit with cell bulb and switch",
+  "complete circuit"
+ ],
+ "subject": "science",
+ "classes": [
+  6,
+  8
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "drawing",
+  "figure": null,
+  "asks": [
+   "A standard diagram of a simple electric circuit, showing a cell, a switch, a torch bulb and connecting wires joined in one closed loop.",
+   "A drawing of a cell, a bulb in a holder and two wires shown twice side by side, first with the loop closed and the bulb glowing, then with one wire loose.",
+   "A labelled diagram of a torch bulb, showing the glass cover, the filament, the two thick wires holding it and the two contacts at its base."
+  ],
+  "why": "The closed loop of cell, switch, bulb and wires is the circuit every learner draws, and the gap of an open switch can be pointed at in it."
+ },
+ "card": {
+  "big_idea": {
+   "text": "A bulb glows only when there is a complete, unbroken path from one end of the cell, through the bulb, and back to the other end.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Predict whether a bulb will glow in a given arrangement of cell, bulb and wires",
+    "level": "apply",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Explain how a switch turns a bulb on and off",
+    "level": "understand",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Explain why one small gap stops the bulb",
+    "level": "understand",
+    "checked_by": "try_it"
+   }
+  ],
+  "why_it_matters": {
+   "text": "Every switch in your home, from the fan to the torch, works by closing and opening a loop like this.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "Electric current can only flow round a closed loop from one end of the cell back to the other; a gap anywhere, an open switch or a loose wire, stops the flow in the whole loop at once, so no current reaches the bulb.",
+   "cites": []
+  },
+  "picture": {
+   "text": "A cell, a switch, a bulb and wires joined in one loop. With the switch open there is a gap and the bulb is dark. The switch closes, the loop is complete, small dots of current move all round it at once and the bulb glows. Then one wire is pulled loose elsewhere: the dots stop everywhere and the bulb goes dark.",
+   "standard": "circuit diagram with cell, switch and bulb",
+   "cites": []
+  },
+  "diagram_ask": "A standard diagram of a simple electric circuit, showing a cell, a switch, a torch bulb and connecting wires joined in one closed loop.",
+  "needs_first": [
+   {
+    "text": "A cell has two ends, marked + and −.",
+    "cites": []
+   },
+   {
+    "text": "Some materials let electricity through and some do not.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "One wire from the cell to the bulb is enough to light it.",
+    "why_it_fails": "With one wire there is no way back to the other end of the cell, so the path is not a closed loop and no current flows.",
+    "cites": []
+   },
+   {
+    "mistake": "The bulb uses up the current, so less comes back to the cell.",
+    "why_it_fails": "The same current flows all round the loop; the bulb uses the energy it carries, not the current itself.",
+    "cites": []
+   },
+   {
+    "mistake": "A switch adds electricity to the circuit when it is turned on.",
+    "why_it_fails": "A switch only closes or opens a gap in the loop; the cell is what pushes the current.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "You have one torch cell, one bulb and only one piece of wire. Can you make the bulb glow?",
+   "guesses": [
+    "No, you need two wires",
+    "Yes, just join the cell to the bulb with the wire",
+    "Yes, if the bulb touches the cell too"
+   ],
+   "answer": "Yes, if the bulb's tip touches one end of the cell and the wire joins the bulb's side to the other end: that closes the loop.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show one cell, one bulb and one wire and ask whether the bulb can be made to glow. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Join the wire from one end of the cell to the bulb only: it stays dark. Then let the bulb's tip touch the other end of the cell too: it glows.",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Ask: what changed? Now there is a complete path out of one end of the cell, through the bulb, and back to the other end.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name it a closed circuit; with a gap it is an open circuit.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Draw the standard circuit: cell, switch, bulb and wires in one loop. Open the switch: there is a gap and the bulb is dark.",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "Close the switch: the loop is complete, the current flows all round it at once and the bulb glows.",
+    "cites": []
+   },
+   {
+    "move": "your_turn",
+    "what": "The learner predicts what happens when a wire is loose on the far side from the switch, before it is shown.",
+    "cites": []
+   },
+   {
+    "move": "try_it",
+    "what": "Set the task: a slip of paper in a torch.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says why one small gap stops the bulb.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "Which arrangement lights the bulb?",
+    "options": [
+     "Wires from both ends of the cell to the bulb's two contacts",
+     "One wire from the + end of the cell to the bulb",
+     "Two wires, both from the same end of the cell"
+    ],
+    "answer_index": 0,
+    "explain": "Only the first makes a complete path from one end of the cell, through the bulb, back to the other end.",
+    "cites": []
+   },
+   {
+    "question": "When a switch is turned off, what does it do?",
+    "options": [
+     "It opens a gap, so current stops all round the loop",
+     "It takes the electricity out of the circuit",
+     "It stops current only after the switch; before it current still flows"
+    ],
+    "answer_index": 0,
+    "explain": "Current flows only round a closed loop, so one gap stops it everywhere at once.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "A slip in the torch",
+   "kind": "hands",
+   "materials": [
+    "torch with its cells",
+    "a small piece of paper"
+   ],
+   "stands_for": "The torch is a ready-made circuit: its cells, its switch and its bulb are joined in one loop; the paper is a gap in the loop.",
+   "predict": "If you put a thin slip of paper between two cells inside the torch, will the bulb glow when you switch it on?",
+   "steps": [
+    "Switch the torch on and check that it glows, then switch it off.",
+    "Open the torch and put the slip of paper between two of the cells.",
+    "Close the torch and switch it on.",
+    "Take the paper out, close the torch and switch it on again."
+   ],
+   "observe": "With the paper between the cells the bulb does not glow; with the paper removed it glows again.",
+   "question": "Why does one thin slip of paper stop the bulb from glowing?",
+   "expected": "Because paper does not let current through, so it makes a gap in the loop, and current can flow only round a complete, closed loop.",
+   "write": "A bulb glows only when the circuit is a complete loop. Any gap, like the paper or an open switch, stops the current.",
+   "in_class": "Pairs, one torch per pair. The teacher draws the torch as a circuit on the board: cells, switch, bulb, wires. Ask: where is the gap when the switch is off, and where was it with the paper? A pair that says the paper blocked the light has not seen that the paper is inside the loop.",
+   "cites": []
+  },
+  "leave_out": [
+   "series and parallel circuits",
+   "Ohm's law and resistance",
+   "the heating effect of current"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

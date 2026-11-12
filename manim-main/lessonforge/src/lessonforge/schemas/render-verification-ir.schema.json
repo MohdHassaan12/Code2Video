@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gyansetu:render-verification-ir",
+  "title": "Render Verification IR — per-video sidecar (<video>.mp4.json)",
+  "description": "The durable verification record written next to every rendered mp4 by app/jobs.py:_write_video_sidecar. Contract: reference-architecture.md §6.8 (invariants VI-1..VI-3). violations_remaining describes the SHIPPED file, post-repair. Ephemeral run state (state/success/logs/render_duration_seconds) belongs to the job store, never here.",
+  "type": "object",
+  "required": ["job_id", "repair_rounds", "violations_remaining"],
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The render job that produced this artifact."
+    },
+    "repair_rounds": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Accepted repair rounds actually applied to the shipped file. 0 with violations_remaining > 0 means the repair agent never ran; > 0 with violations means repair ran and could not do better."
+    },
+    "violations_remaining": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "LAYOUT_VIOLATION count measured on the shipped video (post-repair logs — VI-2)."
+    },
+    "animation_beats": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of self.play beats in the shipped program(s)."
+    },
+    "scenes_repaired": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Parallel path only: scenes whose repair candidate was accepted."
+    },
+    "vision_findings": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Vision-QA findings remaining on the shipped file (0 when VISION_QA is off or the frames are clean). Counted separately from violations_remaining: vision-* lines are never geometric violations."
+    },
+    "voice_degraded": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Count of TTS_DEGRADED markers in the render logs: cues that shipped on a FALLBACK voice (gemini-fallback / gtts-keyless / silence) because the primary provider failed. > 0 means the audio is not what the persona asked for; `silence` means the video has no narration at all."
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,114 @@
+<link rel="stylesheet" href="style.css">
+<title>Tooling, Debugging & Test Harnesses</title>
+
+<div class="hdr">
+  <div class="logo">🧰</div>
+  <div>
+    <h1>Tooling, Debugging &amp; Test Harnesses</h1>
+    <div class="sub">How the pipeline is observed, debugged, and pinned: the Streamlit sandbox, the render timeline UI, and the deterministic test harnesses that pin every real failure — LLM stubbed, no API keys needed.</div>
+  </div>
+  <div class="crumb">Diagram <b>05 — Tooling &amp; testing</b></div>
+</div>
+
+<div class="cols">
+  <div class="col grow" style="flex: 1.9;">
+
+    <!-- debug sandbox -->
+    <div class="panel orange">
+      <div class="ptitle"><span class="ico">🔬</span> debug_sandbox — Streamlit debugger (port 8502)</div>
+      <div class="cards c3">
+        <div class="card"><div class="ci">🖥️</div><h3>sandbox_app.py</h3><p>Interactive stage-by-stage debugging of a single video: storyboard, code, compile, inspect</p></div>
+        <div class="card"><div class="ci">📜</div><h3>trace_logger.py</h3><p><code>VideoGenTracer</code> — full storyboard→code→compile trace + LLM cost telemetry to <code>debug_traces/trace_{job_id}.json</code></p></div>
+        <div class="card"><div class="ci">🎛️</div><h3>env_overrides</h3><p>Repair knobs travel as allowlisted overrides — process-global, last-writer-wins. <b>Single-user affordance; don't build concurrency on it</b></p></div>
+      </div>
+      <div class="spacer" style="height:10px;"></div>
+      <div class="note"><b>Two compile paths:</b> default routes through the server's real <code>/api/compile_video</code> (repair loop + sidecars, same as production) · “In-Process (legacy trace)” bypasses overlap repair <b>by design</b> — for isolating raw render behavior.</div>
+    </div>
+
+    <!-- timeline -->
+    <div class="panel blue">
+      <div class="ptitle"><span class="ico">📅</span> Render timeline UI — localhost:5000/timeline</div>
+      <div class="cards c3">
+        <div class="card"><div class="ci">🗂️</div><h3>/api/video_history</h3><p>All rendered videos, newest first, from sidecar metadata</p></div>
+        <div class="card"><div class="ci">🏷️</div><h3>Status badges</h3><p><span class="badge solid-green">Clean</span> <span class="badge solid-blue">Repaired ×N</span> <span class="badge solid-amber">⚠ overlaps</span> <span class="badge">Raw = no sidecar</span></p></div>
+        <div class="card"><div class="ci">🧹</div><h3>Retention sweep</h3><p>Startup sweep deletes old renders — <code>SWEEP_MAX_AGE_HOURS</code> (default 24)</p></div>
+      </div>
+    </div>
+
+    <!-- debugging discipline -->
+    <div class="panel red">
+      <div class="ptitle"><span class="ico">🧭</span> Debugging discipline (before tuning anything)</div>
+      <div class="strip">
+        <div class="card"><div class="ci">⬆️</div><h3>Attribute upstream-first</h3><p>Walk storyboard → code → render → repair; the <code>.mp4.json</code> sidecars are the evidence trail</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">1️⃣</div><h3>One lever per experiment</h3><p>Change a single variable, re-render, compare violations</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">📌</div><h3>Pin every real failure</h3><p>New failure mode ⇒ new check in a harness (<code>test_overlap_probe.py</code> style)</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🎬</div><h3>Verify by rendering</h3><p>Layout changes are proven by seeding a broken scene through <code>app._run_render_job</code>, not just unit tests</p></div>
+      </div>
+    </div>
+
+    <!-- environment -->
+    <div class="panel slate">
+      <div class="ptitle"><span class="ico">🐧</span> Environment gotchas (Linux dev box)</div>
+      <div class="rows">
+        <div class="row"><span class="dot slate"></span><p><b>No committed venv on Linux</b> — <code>.venv</code> expectation is Windows (<code>run_app.ps1</code>); create with <code>python3 -m venv .venv</code>. <code>python</code> is not on PATH</p></div>
+        <div class="row"><span class="dot slate"></span><p><b>Keys</b> in <code>stem_animation_lab/.env</code>; no SARVAM key → TTS falls back to Gemini TTS via OpenRouter. <code>ce/agents.py</code> reads <code>OPENROUTER_API_KEY</code> at <b>import time</b> — load .env first</p></div>
+        <div class="row"><span class="dot slate"></span><p><b>Missing <code>json_repair</code></b> degrades to plain <code>json.loads</code> — symptom is a storyboard 500 on trailing commas, not an ImportError</p></div>
+        <div class="row"><span class="dot slate"></span><p><b>Restart uvicorn after editing app.py</b> — a running server keeps old code</p></div>
+        <div class="row"><span class="dot slate"></span><p><b>.gitignore doesn't retroactively untrack</b> — after merging origin, check <code>git ls-files -i -c --exclude-standard</code> and <code>git rm --cached</code> on purpose</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- right: test harnesses -->
+  <div class="col" style="flex: 1.35;">
+    <div class="panel green">
+      <div class="ptitle"><span class="ico">🧪</span> Test harnesses <span class="tag">real renders · LLM stubbed · no keys</span></div>
+      <div class="rows">
+        <div class="row"><span class="dot green"></span><p><b>test_overlap_probe.py</b> — 32 checks: probe detection, whole-video repair state machine, scene-scoped parallel repair. Asserts the <b>no-leak contract</b>: a rejected round leaves ZERO net new mp4s</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_layout_safety.py</b> — deterministic viz_helpers layer (<code>--unit</code> for the fast part)</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_axes_zones.py</b> — 14 checks: zone-placed text routes around the axes' real bbox; labels flip away from tick strips; bottom-zone stacking shifts INTO the frame</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_tts_shared_cache.py</b> — 10 checks: a repair re-render bills ZERO TTS calls; different text/voice synthesizes fresh; cache failures are non-fatal</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_event_sanitize.py</b> — 20 checks: model-authored prose never reaches <code>self.play(...)</code>; bare element ids are dropped; valid calls and <code>.animate</code> chains survive</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_minimize_split.py</b> — 20 checks: text pile-up on a diagram splits the screen; lone captions / anchored labels / cue 0 do NOT; selective viz_helpers import widens to star import</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_entrance_map.py</b> — 14 checks: mixed-type scene emits ≥4 distinct entrance classes; shape keywords map with the same precedence as <code>_build_obj_expr</code>; schema overrides win</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_storyboard_gate.py</b> — 26 checks: pre-cache storyboard shape/language gate + on-screen-language healing; hybrid contract enforcement (Devanagari rejection, all-English rejection); heal accepted only if it removed Indic script</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_director.py</b> — 24 checks: Visual Director IR application (scale tiers, safety-gated hides, capped highlights, strip-invariance); LLM stubbed, input board never mutated</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_vision_qa.py</b> — 19 checks: Vision QA with real ffmpeg on synthetic clip; whitelist/shape-gated findings; accept-if-better round with geometric non-regression guard; losers discarded</p></div>
+        <div class="row"><span class="dot green"></span><p><b>test_ir_contracts.py</b> — 17 checks: drift gate (schema JSON = Pydantic export), golden-storyboard round-trip, degenerate-board rejection, sidecar schema contract</p></div>
+        <div class="row"><span class="dot slate"></span><p><i>Plus:</i> <b>test_generate_code.py</b> (integration — needs the lab running) · <b>test_smart_plane.py</b> (manim scene exercising viz_helpers' SmartCoordinatePlane/SceneManager)</p></div>
+      </div>
+      <div class="spacer" style="height:10px;"></div>
+      <div class="note"><b>House pattern:</b> every harness stubs the LLM and needs no API keys, so failures are deterministic and free to reproduce. New real-world failure ⇒ new pinned check, in the same pass as the fix.</div>
+    </div>
+
+    <div class="panel purple">
+      <div class="ptitle"><span class="ico">📖</span> Living docs</div>
+      <div class="rows">
+        <div class="row"><span class="dot purple"></span><p><b>CLAUDE.md</b> — the map + hard-won rules (recorded WITH what taught them)</p></div>
+        <div class="row"><span class="dot purple"></span><p><b>DOCS.md</b> — one row per doc: live / stale / frozen</p></div>
+        <div class="row"><span class="dot purple"></span><p><b>docs/pipeline-roadmap.md</b> — per-stage grades from evidence, priority order, symptom routing</p></div>
+        <div class="row"><span class="dot purple"></span><p><b>docs/architecture/reference-architecture.md</b> — IR ladder, layer contracts, agent specs, formal properties, renderer backend contract</p></div>
+        <div class="row"><span class="dot purple"></span><p><b>stem_animation_lab/app/README.md</b> — the app/ package module map + Visual Director / Vision QA gate docs</p></div>
+        <div class="row"><span class="dot purple"></span><p><b>docs/USAGE.md</b> — user-facing how-to for the lab server</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="howit">
+  <div class="lbl">Debug flow</div>
+  <div class="step"><span class="ico">⚠️</span><div><h4>1. Symptom</h4><p>Bad video, failed render, layout violation</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🧾</span><div><h4>2. Read the sidecar</h4><p>.mp4.json: repair rounds, violations remaining</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">📅</span><div><h4>3. Check /timeline</h4><p>Badge history shows where quality regressed</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🔬</span><div><h4>4. Reproduce in sandbox</h4><p>Stage-by-stage on port 8502 with env_overrides</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🔧</span><div><h4>5. Fix upstream-most stage</h4><p>One lever per experiment</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">📌</span><div><h4>6. Pin it</h4><p>Add a check to the matching harness</p></div></div>
+</div>

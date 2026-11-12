@@ -1,0 +1,66 @@
+[
+ {
+  "id": "density",
+  "split": "dev",
+  "topic": "Density",
+  "audience": "Class 7 students",
+  "goal": "explain what density is (mass packed in a volume), why it does not depend on how much material you have, and use it to say whether something floats in water",
+  "reference": "d7VPJ4DYwQQ"
+ },
+ {
+  "id": "physical_changes",
+  "split": "dev",
+  "topic": "Physical changes",
+  "audience": "Class 7 students",
+  "goal": "tell a physical change from a chemical one by asking whether the substance's identity changes, including melting, boiling and dissolving",
+  "reference": "jn-skkO5NNI"
+ },
+ {
+  "id": "acceleration",
+  "split": "dev",
+  "topic": "Acceleration",
+  "audience": "Class 8 students",
+  "goal": "explain acceleration as the rate of change of velocity, including slowing down and turning, and compute it from a change in speed over time",
+  "reference": "gWaI-mzn69c"
+ },
+ {
+  "id": "mixtures",
+  "split": "dev",
+  "topic": "Homogeneous and heterogeneous mixtures",
+  "audience": "Class 7 students",
+  "goal": "tell homogeneous from heterogeneous mixtures and explain why a mixture is not a compound",
+  "reference": "rDWfLHn8PDM"
+ },
+ {
+  "id": "newtons_first_law",
+  "split": "test",
+  "topic": "Newton's first law",
+  "audience": "Class 8 students",
+  "goal": "explain why a moving object keeps moving unless a force acts, and why everyday objects seem to stop on their own",
+  "reference": "Q0T2zjmvvA0"
+ },
+ {
+  "id": "kinetic_energy",
+  "split": "test",
+  "topic": "Kinetic energy",
+  "audience": "Class 8 students",
+  "goal": "explain how kinetic energy depends on mass and speed, and why doubling the speed quadruples it",
+  "reference": "FtymZWAOeC0"
+ },
+ {
+  "id": "sound_waves",
+  "split": "test",
+  "topic": "Sound waves",
+  "audience": "Class 8 students",
+  "goal": "explain sound as a vibration passed through a medium, why it needs a medium, and what pitch and loudness correspond to",
+  "reference": "9u1PjsBfrmg"
+ },
+ {
+  "id": "temperature",
+  "split": "test",
+  "topic": "Temperature and how a thermometer works",
+  "audience": "Class 7 students",
+  "goal": "explain temperature as the average kinetic energy of particles and how a liquid thermometer and the Celsius scale work",
+  "reference": "K0nXYm9DiEo"
+ }
+]

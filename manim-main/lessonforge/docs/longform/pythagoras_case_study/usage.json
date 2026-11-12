@@ -1,0 +1,190 @@
+{
+  "cap_usd": 5.0,
+  "prior_pilot_usd": 0.48565189,
+  "new_cost_usd": 1.298211,
+  "records": [
+    {
+      "task": "narrative",
+      "model": "anthropic/claude-opus-5.5",
+      "usage": {
+        "prompt_tokens": 4280,
+        "completion_tokens": 20000,
+        "total_tokens": 24280,
+        "cost": 0.41712,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.41712,
+          "upstream_inference_prompt_cost": 0.01712,
+          "upstream_inference_completions_cost": 0.4
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 20000,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "length",
+      "elapsed_seconds": 174.41,
+      "characters": 0
+    },
+    {
+      "task": "narrative_v2",
+      "model": "anthropic/claude-sonnet-4.6",
+      "usage": {
+        "prompt_tokens": 2985,
+        "completion_tokens": 14282,
+        "total_tokens": 17267,
+        "cost": 0.223185,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.223185,
+          "upstream_inference_prompt_cost": 0.008955,
+          "upstream_inference_completions_cost": 0.21423
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "elapsed_seconds": 256.16,
+      "characters": 53304
+    },
+    {
+      "task": "part1",
+      "model": "anthropic/claude-sonnet-4.6",
+      "usage": {
+        "prompt_tokens": 8813,
+        "completion_tokens": 19000,
+        "total_tokens": 27813,
+        "cost": 0.311439,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.311439,
+          "upstream_inference_prompt_cost": 0.026439,
+          "upstream_inference_completions_cost": 0.285
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "length",
+      "elapsed_seconds": 255.78,
+      "characters": 51274
+    },
+    {
+      "task": "chapter5",
+      "status": "returned",
+      "model": "anthropic/claude-sonnet-4.6",
+      "usage": {
+        "prompt_tokens": 4119,
+        "completion_tokens": 3881,
+        "total_tokens": 8000,
+        "cost": 0.070572,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.070572,
+          "upstream_inference_prompt_cost": 0.012357,
+          "upstream_inference_completions_cost": 0.058215
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "characters": 9989,
+      "elapsed_seconds": 53.71
+    },
+    {
+      "task": "chapters678",
+      "status": "returned",
+      "model": "anthropic/claude-sonnet-4.6",
+      "usage": {
+        "prompt_tokens": 6725,
+        "completion_tokens": 8764,
+        "total_tokens": 15489,
+        "cost": 0.151635,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.151635,
+          "upstream_inference_prompt_cost": 0.020175,
+          "upstream_inference_completions_cost": 0.13146
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "characters": 20253,
+      "elapsed_seconds": 118.87
+    },
+    {
+      "task": "chapters910",
+      "status": "returned",
+      "model": "anthropic/claude-sonnet-4.6",
+      "usage": {
+        "prompt_tokens": 5295,
+        "completion_tokens": 7225,
+        "total_tokens": 12520,
+        "cost": 0.12426,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.12426,
+          "upstream_inference_prompt_cost": 0.015885,
+          "upstream_inference_completions_cost": 0.108375
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "characters": 17911,
+      "elapsed_seconds": 98.29
+    }
+  ]
+}

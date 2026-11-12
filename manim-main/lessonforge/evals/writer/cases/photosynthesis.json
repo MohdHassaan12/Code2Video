@@ -1,0 +1,404 @@
+{
+ "name": "photosynthesis",
+ "from_lesson": "20261010-084003-f6f6c0",
+ "brief": {
+  "topic": "Photosynthesis",
+  "grade": 7,
+  "audience": "Class 7 students",
+  "level": "foundation",
+  "goal": "Understand how a green leaf makes its own food from sunlight, water and carbon dioxide",
+  "style": "storyteller",
+  "language": "hinglish",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "concrete_first"
+ },
+ "card": {
+  "big_idea": {
+   "text": "A green leaf uses sunlight, water, and carbon dioxide to make glucose food and release oxygen; this food-making process is photosynthesis.",
+   "cites": [
+    "S1#8",
+    "S1#10"
+   ]
+  },
+  "why_it_matters": {
+   "text": "The glucose plants make feeds their own growth and supports food chains, while photosynthesis also adds oxygen to the air.",
+   "cites": [
+    "S1#10",
+    "S2#3",
+    "S2#4"
+   ]
+  },
+  "the_why": {
+   "text": "A leaf can build glucose only when all its needed inputs arrive: water comes up from the roots, carbon dioxide enters from the air, and chlorophyll captures sunlight. If carbon dioxide is removed, the leaf cannot make starch food, even in sunlight.",
+   "cites": [
+    "S1#7",
+    "S1#8",
+    "S1#10",
+    "S2#5",
+    "S2#6"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Name the materials a green leaf needs and the products it makes during photosynthesis.",
+    "level": "remember",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Explain why a green leaf without carbon dioxide cannot make its food even when it has sunlight and water.",
+    "level": "understand",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Predict whether a leaf will make food when one required condition is missing.",
+    "level": "apply",
+    "checked_by": "try_it"
+   },
+   {
+    "can": "Use the word equation to describe how a leaf makes food.",
+    "level": "understand",
+    "checked_by": "q3"
+   }
+  ],
+  "picture": {
+   "text": "Start with one broad green leaf attached to a plant. Draw a blue arrow carrying water from the roots up the stem, a grey arrow carrying carbon dioxide from air through tiny leaf pores, and yellow sunlight arrows into the green leaf; then transform the arrows inside the leaf into a glucose-food box and an oxygen arrow leaving the leaf. Finally, write the word equation beneath the same leaf.",
+   "cites": [
+    "S1#10",
+    "S1#11",
+    "S1#12",
+    "S2#5",
+    "S2#6"
+   ],
+   "standard": "Photosynthesis input-output diagram: carbon dioxide and water enter a green leaf"
+  },
+  "diagram_ask": "Labelled photosynthesis input-output diagram of one green leaf on a plant: yellow sunlight arrows into the leaf, blue water arrow travelling from roots up the stem, grey carbon-dioxide arrow entering through a labelled stoma, a glucose-food box inside the leaf, and an oxygen arrow leaving the leaf. ",
+  "needs_first": [
+   {
+    "text": "Recognise that plants have roots, stems, and green leaves.",
+    "cites": []
+   },
+   {
+    "text": "Know that sunlight is light from the Sun and that water and air are around plants.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "“Sunlight and water are enough for a green leaf to make food.”",
+    "why_it_fails": "A leaf also needs carbon dioxide from the air; the part kept without carbon dioxide did not show starch after the test.",
+    "cites": [
+     "S1#6",
+     "S1#7",
+     "S1#8"
+    ]
+   },
+   {
+    "mistake": "“Every part of a leaf makes food equally well.”",
+    "why_it_fails": "In a leaf with green and non-green patches, starch was detected in the green patches exposed to light, showing that chlorophyll is needed.",
+    "cites": [
+     "S1#4",
+     "S1#5"
+    ]
+   },
+   {
+    "mistake": "“Plants only take in gases; they do not release oxygen.”",
+    "why_it_fails": "Photosynthesis releases oxygen, and leaf pores exchange carbon dioxide and oxygen.",
+    "cites": [
+     "S1#9",
+     "S1#10",
+     "S1#12"
+    ]
+   },
+   {
+    "mistake": "“Food made by a plant stays only in its leaves.”",
+    "why_it_fails": "Food made mainly in leaves can be carried to other parts of the plant and stored there.",
+    "cites": [
+     "S1#13"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "A green leaf has sunlight and water, but no carbon dioxide from the air. Do you think it can still make its food?",
+   "guesses": [
+    "Yes, because sunlight gives the plant its food.",
+    "Yes, because water and sunlight are enough.",
+    "No, because the leaf needs something from the air too."
+   ],
+   "answer": "No. It cannot make food without carbon dioxide, even if sunlight, water, and a green leaf are present.",
+   "cites": [
+    "S1#6",
+    "S1#7",
+    "S1#8"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show one green leaf with a sun and a blue water arrow, but block the grey air arrow. Ask whether this leaf can still make food.",
+    "cites": [
+     "S1#6",
+     "S1#8"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Pause for the learner to choose: sunlight and water are enough, or the leaf also needs a gas from air.",
+    "cites": [
+     "S1#8"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Uncover the grey carbon-dioxide arrow entering a tiny pore on the leaf, and trace the blue water arrow from roots up to the leaf.",
+    "cites": [
+     "S1#11",
+     "S1#12",
+     "S2#6"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Place two halves of the same leaf side by side: one half has carbon dioxide and one does not. Ask which half can make starch, then reveal food only on the carbon-dioxide side because that gas is an essential ingredient.",
+    "cites": [
+     "S1#7",
+     "S1#8"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Circle sunlight, water, carbon dioxide, and chlorophyll on the same leaf picture; name the process photosynthesis and add glucose food plus oxygen as outputs.",
+    "cites": [
+     "S1#8",
+     "S1#10"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Build the word equation beneath the leaf, moving carbon dioxide and water across an arrow labelled sunlight and chlorophyll to glucose and oxygen.",
+    "cites": [
+     "S1#10"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Show green and non-green patches of one sunlit leaf side by side. Ask which patch makes detectable starch, then show that the green patch has chlorophyll to capture sunlight.",
+    "cites": [
+     "S1#4",
+     "S1#5"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Present a leaf with water, chlorophyll, and sunlight but no carbon dioxide. Ask the learner to decide whether glucose and oxygen will be made and explain why.",
+    "cites": [
+     "S1#8",
+     "S1#10"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "The learner completes a short paper challenge by testing four leaf-condition cards against the required inputs.",
+    "cites": [
+     "S1#17"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says the word equation in ordinary words: a green leaf uses sunlight to turn water and carbon dioxide into glucose food and oxygen.",
+    "cites": [
+     "S1#10"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "One half of a green leaf is in sunlight and has water, but carbon dioxide is removed from the air around it. What will happen in that half?",
+    "options": [
+     "It will not make starch food.",
+     "It will make starch because sunlight and water are enough.",
+     "It will make extra starch because no air can get in."
+    ],
+    "answer_index": 0,
+    "explain": "It cannot make food because carbon dioxide is one of the required materials for photosynthesis.",
+    "cites": [
+     "S1#7",
+     "S1#8"
+    ]
+   },
+   {
+    "question": "Which set shows everything a green leaf needs to make food?",
+    "options": [
+     "Sunlight, water, carbon dioxide, and chlorophyll.",
+     "Sunlight, soil, and oxygen only.",
+     "Water and chlorophyll only."
+    ],
+    "answer_index": 0,
+    "explain": "Chlorophyll captures sunlight, while water and carbon dioxide are changed into glucose; oxygen is released rather than used as a photosynthesis input.",
+    "cites": [
+     "S1#8",
+     "S1#10",
+     "S2#5",
+     "S2#7"
+    ]
+   },
+   {
+    "question": "Which word equation matches the arrows in the leaf picture?",
+    "options": [
+     "Carbon dioxide + water —with sunlight and chlorophyll→ glucose + oxygen.",
+     "Oxygen + water —with sunlight→ carbon dioxide + glucose.",
+     "Glucose + carbon dioxide —with sunlight→ water + oxygen."
+    ],
+    "answer_index": 0,
+    "explain": "The leaf takes in carbon dioxide and water, then uses captured sunlight to make glucose and release oxygen.",
+    "cites": [
+     "S1#10"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Leaf ingredient check",
+   "kind": "paper",
+   "materials": [
+    "paper",
+    "pencil"
+   ],
+   "stands_for": "Each drawn leaf is a food factory; each tick means that required ingredient reaches that leaf.",
+   "predict": "Before you tick anything, predict: can a leaf with sunlight, water, and chlorophyll but without carbon dioxide make food?",
+   "steps": [
+    "Draw four small green leaves and label them A, B, C, and D.",
+    "Write these ingredients beside each: A has all four; B has no sunlight; C has no carbon dioxide; D has no chlorophyll.",
+    "Circle every leaf that you predict can make glucose food.",
+    "Write “no food” beside each leaf missing an ingredient.",
+    "Check your choices using the word equation."
+   ],
+   "observe": "Only leaf A, the leaf with sunlight, water, carbon dioxide, and chlorophyll, can make food.",
+   "question": "Why do leaves B, C, and D fail to make food?",
+   "expected": "Each fails because photosynthesis needs all four conditions: sunlight, water, carbon dioxide, and chlorophyll. Removing even one means the leaf cannot make glucose.",
+   "write": "“A green leaf makes food when it has ______, ______, ______, and ______.”\n“Leaf ___ cannot make food because it lacks ______.”",
+   "in_class": "Pairs complete the four-leaf grid for three minutes. The teacher writes “sunlight + water + carbon dioxide + chlorophyll → glucose + oxygen” and the four leaf conditions on the board. Ask, “Which leaves make food, and what missing ingredient stops each other leaf?” If many pairs select a leaf without carbon dioxide, they are treating sunlight and water as sufficient.",
+   "cites": [
+    "S1#8",
+    "S1#10",
+    "S1#17"
+   ]
+  },
+  "leave_out": [
+   "The detailed light-dependent reactions, Calvin cycle, ATP, NADPH, thylakoids, and stroma.",
+   "C3, C4, and CAM pathways and desert-plant adaptations.",
+   "The balanced chemical-symbol equation and its numerical coefficients.",
+   "Plant respiration, xylem and phloem transport, except for the simple water-to-leaf arrow needed in this picture."
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "The clear whole-plant route: roots supply water, stomata admit carbon dioxide, chlorophyll captures light, and glucose plus oxygen result.",
+    "left": "The two reaction stages, C3/C4/CAM categories, and rate factors, because they exceed the foundation goal for this short lesson."
+   },
+   {
+    "source": "S3",
+    "took": "The emphasis that photosynthesis makes glucose and releases oxygen, plus the useful correction that plants also respire.",
+    "left": "Chloroplast compartments, reaction stages, and CAM adaptation, because the learner first needs the visible input-output model."
+   },
+   {
+    "source": "S4",
+    "took": "The useful tracing of water from roots and gases through stomata before naming the overall process.",
+    "left": "Electron transport, photosystems, proton gradients, and Calvin-cycle chemistry, because these mechanisms are not needed to explain the Class 7 word equation."
+   }
+  ],
+  "uncited": [
+   "Recognise that plants have roots, stems, and green leaves.",
+   "Know that sunlight is light from the Sun and that water and air are around plants.",
+   "The paper-grid task format, its classroom timing, and its diagnostic interpretation are instructional design choices."
+  ],
+  "teacher_talk": [
+   "opens with a conversational hook addressing the viewer directly",
+   "uses rhetorical questions to transition between topics",
+   "employs an enthusiastic, urging tone emphasizing ecological responsibility",
+   "concludes with a direct call to action to subscribe and share the video",
+   "uses an informal, enthusiastic conversational tone with frequent rhetorical questions",
+   "bridges biological concepts to everyday relatable ideas like daydreaming or playing with a prism"
+  ],
+  "source_flows": {
+   "S1": [
+    "activation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "assessment"
+   ],
+   "S2": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ],
+   "S4": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration"
+   ]
+  },
+  "topic": "Photosynthesis",
+  "asked": "Photosynthesis",
+  "klass": 7,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Curiosity, Class 7, chapter 10: chapter 10",
+    "url": "https://ncert.nic.in/textbook/pdf/gecu110.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Quick Support: What is Photosynthesis? - [Hindi] - Quick Support",
+    "url": "https://www.youtube.com/watch?v=N1ZJe_-i0dg",
+    "note": "Hindi lecture, 11 min, automatic captions"
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "a040cc211e0d2709",
+  "diagram": {
+   "ask": "Labelled photosynthesis input-output diagram of one green leaf on a plant: yellow sunlight arrows into the leaf, blue water arrow travelling from roots up the stem, grey carbon-dioxide arrow entering through a labelled stoma, a glucose-food box inside the leaf, and an oxygen arrow leaving the leaf. ",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/labelled_photosynthesis_-bc5e899a80/manifest.json",
+   "parts": [
+    "sunlight",
+    "carbon_dioxide_co",
+    "oxygen_o",
+    "water_ho",
+    "leaves_make_food_glucose"
+   ],
+   "names": {
+    "sunlight": "Sunlight",
+    "carbon_dioxide_co": "Carbon dioxide (CO₂)",
+    "oxygen_o": "Oxygen (O₂)",
+    "water_ho": "Water (H₂O)",
+    "leaves_make_food_glucose": "Leaves make food (glucose)"
+   },
+   "credit": "",
+   "style": "boxes",
+   "shown": "parts",
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   }
+  }
+ }
+}

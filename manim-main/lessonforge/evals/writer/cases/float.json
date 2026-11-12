@@ -1,0 +1,539 @@
+{
+ "name": "float",
+ "from_lesson": "20261012-152335-2d27db",
+ "brief": {
+  "topic": "Archimedes' principle: why things float or sink",
+  "grade": 9,
+  "audience": "Class 9 students",
+  "level": "standard",
+  "goal": "Explain the upward push of water on an object and predict whether the object floats or sinks",
+  "style": "questioner",
+  "language": "hinglish",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "worked_examples"
+ },
+ "card": {
+  "big_idea": {
+   "text": "Water pushes upward on every partly or fully submerged object; an object floats when this buoyant push can balance its weight, and sinks when it cannot.",
+   "cites": [
+    "S1#2",
+    "S3#5",
+    "S4#9",
+    "S5#3"
+   ]
+  },
+  "why_it_matters": {
+   "text": "This lets you explain the surprising fact that a small coin can sink while a much larger ship can float.",
+   "cites": [
+    "S4#1",
+    "S5#2",
+    "S5#3"
+   ]
+  },
+  "the_why": {
+   "text": "Water pushes on all sides of a submerged object, but the water lower down pushes harder than the water above, so the total water force is upward. This buoyant force is equal to the weight of the water the submerged part has moved aside.",
+   "cites": [
+    "S3#5",
+    "S4#8"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Explain why a submerged object seems lighter by comparing its downward weight with water's upward push.",
+    "level": "understand",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Predict whether an object will float or sink by deciding whether the buoyant force can balance its weight.",
+    "level": "apply",
+    "checked_by": "q3"
+   },
+   {
+    "can": "State that the buoyant force equals the weight of the fluid displaced by the submerged part of an object.",
+    "level": "remember",
+    "checked_by": "try_it"
+   }
+  ],
+  "picture": {
+   "text": "Begin with one weighted ball hanging from a spring balance above a brim-full inner beaker placed inside a larger catch beaker. Lower the ball step by step: the balance reading falls while displaced water overflows into the outer beaker; then show the collected water and the reading change as equal-sized marked amounts. The same frame splits at the end: a light hollow ball rests partly submerged with equal up and down arrows, while a dense coin is fully submerged with a longer downward arrow and sinks.",
+   "cites": [
+    "S3#2",
+    "S3#3",
+    "S3#4",
+    "S3#5",
+    "S4#5",
+    "S4#8",
+    "S5#3"
+   ],
+   "standard": "Archimedes' principle overflow-can and spring-balance demonstration: an object h"
+  },
+  "diagram_ask": "Classic buoyancy demonstration shown before and after side by side: a spring balance suspends a stone first in air and then fully immersed in a brim-full inner beaker sitting inside a larger catch beaker, with overflow water collected below. Label spring balance, stone, water, inner brim-full beaker",
+  "needs_first": [
+   {
+    "text": "Recognise that an object's weight is a downward gravitational force and that forces on the same object can balance.",
+    "cites": [
+     "S1#2",
+     "S1#3",
+     "S1#6"
+    ]
+   },
+   {
+    "text": "Read a simple spring-balance comparison: a smaller reading means less supporting force is needed from the balance.",
+    "cites": [
+     "S1#2",
+     "S3#3",
+     "S4#5"
+    ]
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Only floating objects get an upward push from water.",
+    "why_it_fails": "A sinking stone also has an upward buoyant force; its weight is simply greater than that upward force.",
+    "cites": [
+     "S3#3",
+     "S3#4",
+     "S4#5",
+     "S5#3"
+    ]
+   },
+   {
+    "mistake": "An object loses its real weight in water.",
+    "why_it_fails": "Its gravitational weight is still downward; the water's upward force makes the spring balance show a smaller apparent weight.",
+    "cites": [
+     "S4#5",
+     "S4#6",
+     "S4#7"
+    ]
+   },
+   {
+    "mistake": "A larger or heavier-looking object must sink.",
+    "why_it_fails": "Floating depends on whether displaced water can provide enough upward force to balance the object's weight, not on size alone.",
+    "cites": [
+     "S4#1",
+     "S5#2",
+     "S5#3"
+    ]
+   },
+   {
+    "mistake": "The buoyant force depends on the object's own material alone.",
+    "why_it_fails": "The principle compares the upward force with the weight of the fluid displaced by the submerged part.",
+    "cites": [
+     "S3#2",
+     "S4#8",
+     "S4#11"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "A stone hangs from a spring balance. When you lower it into water without letting it touch the bottom, will the balance reading stay the same, become smaller, or become larger?",
+   "guesses": [
+    "It stays the same because the stone itself has not changed.",
+    "It becomes smaller because water helps hold the stone up.",
+    "It becomes larger because the water adds weight."
+   ],
+   "answer": "The reading becomes smaller because water exerts an upward buoyant force on the stone.",
+   "cites": [
+    "S3#3",
+    "S3#4",
+    "S4#5",
+    "S4#6"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the stone hanging in air beside the brim-full water vessel. Ask the opening question and pause for the learner to commit to one of the three possible balance readings.",
+    "cites": [
+     "S3#3",
+     "S4#5"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Lower the stone in small steps while its spring-balance reading drops; point to the water force arrow growing upward, not to a change in the stone's real weight.",
+    "cites": [
+     "S3#9",
+     "S4#5",
+     "S4#6",
+     "S4#7"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Ask, \"Why can water push upward rather than only sideways?\" Show short pressure arrows on the top and longer arrows on the lower surface of the stone; answer that the lower water pushes harder, so the combined push is upward.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Draw a label on the single upward arrow: \"buoyant force, or upthrust.\" Then label the smaller scale reading as apparent weight, while retaining the same downward weight arrow.",
+    "cites": [
+     "S1#2",
+     "S4#4",
+     "S4#6",
+     "S4#7"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Let the displaced water overflow into the catch beaker. Compare the stone's loss in apparent weight with the weight of collected water, using matching visual blocks, and name Archimedes' principle: the buoyant force equals the weight of displaced fluid.",
+    "cites": [
+     "S3#4",
+     "S3#5",
+     "S4#7",
+     "S4#8"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Keep the same water picture and place a hollow ball partly in the water beside a coin fully in the water. For the ball, make the up and down arrows equal; for the coin, leave the downward arrow longer. Ask why one remains at the surface and the other goes down.",
+    "cites": [
+     "S1#2",
+     "S4#1",
+     "S4#9",
+     "S5#2",
+     "S5#3"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Ask the learner to decide whether water pushes upward on the sinking coin, then to choose which force comparison explains sinking: equal arrows or a longer downward weight arrow.",
+    "cites": [
+     "S3#3",
+     "S4#5",
+     "S5#3"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "Set a bottle cap and a coin beside a glass of water. Have the learner predict which floats and which sinks before testing, then explain each result using upward push and weight.",
+    "cites": [
+     "S4#4",
+     "S5#2",
+     "S5#3"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Reveal one sentence frame for the learner to complete aloud: \"Water pushes ___; it floats when ___, and it sinks when ___.\"",
+    "cites": [
+     "S1#2",
+     "S3#2",
+     "S5#3"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "A stone's spring-balance reading falls from 5 units in air to 3 units in water. What explains the missing 2 units?",
+    "options": [
+     "Water pushes upward with a force of 2 units.",
+     "The stone's real weight has disappeared by 2 units.",
+     "Water pulls the stone downward with 2 extra units."
+    ],
+    "answer_index": 0,
+    "explain": "The stone keeps its gravitational weight, but water adds an upward buoyant force, so the balance needs to support less.",
+    "cites": [
+     "S3#3",
+     "S3#4",
+     "S3#5",
+     "S4#5",
+     "S4#7"
+    ]
+   },
+   {
+    "question": "A coin is sinking while fully underwater. Does water still push upward on it?",
+    "options": [
+     "Yes; the upward push is smaller than the coin's weight.",
+     "No; only objects that float receive buoyant force.",
+     "No; water removes the coin's weight completely."
+    ],
+    "answer_index": 0,
+    "explain": "A submerged object receives buoyant force whether it rises, floats, or sinks; the coin sinks because its downward weight is larger.",
+    "cites": [
+     "S3#2",
+     "S4#5",
+     "S5#3"
+    ]
+   },
+   {
+    "question": "Which object will float at rest in water?",
+    "options": [
+     "An object for which the water's upward force can equal its weight.",
+     "Any object that is larger than a coin.",
+     "An object with no weight after entering water."
+    ],
+    "answer_index": 0,
+    "explain": "At rest, the upward buoyant force and downward weight must balance; if weight remains larger, the object sinks.",
+    "cites": [
+     "S1#2",
+     "S1#3",
+     "S4#9",
+     "S5#3"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Cap and coin force test",
+   "kind": "hands",
+   "materials": [
+    "a clear glass or bowl of water",
+    "a plastic bottle cap",
+    "a coin",
+    "a pencil and paper"
+   ],
+   "stands_for": "The cap and coin are submerged objects; the water is the fluid that can push upward, and each object's weight pulls downward.",
+   "predict": "Before touching the water, write: \"The cap will float / sink, and the coin will float / sink.\"",
+   "steps": [
+    "Fill the glass or bowl with water.",
+    "Place the bottle cap gently on the water.",
+    "Drop the coin into the water.",
+    "Watch where each object finally comes to rest.",
+    "Write the two force comparisons."
+   ],
+   "observe": "The plastic cap stays at the surface, while the coin reaches the bottom. Both are pushed upward by water, but only for the cap can the upward buoyant force balance its weight before it is fully submerged.",
+   "question": "Why does the coin sink even though water pushes upward on it?",
+   "expected": "The coin sinks because, even when fully submerged and displacing as much water as it can, its downward weight is greater than the upward buoyant force. The cap floats when it displaces enough water for the upward force to equal its weight.",
+   "write": "Write or say: \"Water pushes upward on both objects.\" Then write or say: \"The cap floats because upthrust balances its weight; the coin sinks because its weight is greater than upthrust.\"",
+   "in_class": "Students work in pairs with one water bowl, cap, and coin per pair. The teacher writes on the board: \"Predict: cap—float or sink? coin—float or sink? Explain using upthrust and weight.\" At the end ask, \"Does the sinking coin get an upward push?\" A class answer of \"no\" shows that students are treating buoyancy as something that happens only to floating objects.",
+   "cites": [
+    "S4#4",
+    "S4#9",
+    "S5#2",
+    "S5#3"
+   ]
+  },
+  "leave_out": [
+   "The formula buoyant force = density of displaced fluid × displaced volume × gravitational field strength.",
+   "Calculations involving density, specific gravity, irregular-object volume, hydrometers, lactometers, ships, and submarines.",
+   "A formal derivation of fluid pressure changing with depth."
+  ],
+  "from_lectures": [
+   {
+    "source": "S3",
+    "took": "The overflow-water and spring-balance comparison, because it visibly connects apparent loss in weight to the weight of displaced water.",
+    "left": "The extended person-in-water example and the list of instruments, because the short lesson needs time to contrast floating with sinking."
+   },
+   {
+    "source": "S4",
+    "took": "The sequence of feeling the upward push, measuring the smaller apparent weight, and then collecting displaced water.",
+    "left": "The mnemonic and formula derivation, because they risk turning a three-minute conceptual lesson into rule memorisation."
+   },
+   {
+    "source": "S5",
+    "took": "The coin-versus-ship contrast to break the mistaken belief that size alone decides floating, while keeping the force comparison central.",
+    "left": "The broader introduction to fluids and the historical material, because neither is needed to explain the upward push and make one float-or-sink prediction."
+   }
+  ],
+  "uncited": [
+   "the_why: water pressure is greater at a lower depth, so pressure forces on a submerged object's lower surface exceed those on its upper surface",
+   "route why move: the unequal pressure-arrow explanation",
+   "leave_out: formal derivation of fluid pressure changing with depth"
+  ],
+  "teacher_talk": [
+   "opens by clearly outlining the agenda of the video in a structured sequence",
+   "asks rhetorical questions and directs the viewer's attention to the illustrations and experimental steps",
+   "transitions smoothly from theory to a detailed experiment, then to a conceptual example, and concludes with practical applications",
+   "encourages viewer engagement at the end by asking for likes, shares, and subscriptions",
+   "opens with a personal storytelling anecdote relating the topic to everyday life",
+   "asks rhetorical and guiding questions throughout the explanation"
+  ],
+  "source_flows": {
+   "S1": [
+    "motivation",
+    "demonstration",
+    "application",
+    "demonstration",
+    "demonstration",
+    "application",
+    "demonstration",
+    "assessment"
+   ],
+   "S2": [
+    "motivation",
+    "demonstration",
+    "integration",
+    "demonstration",
+    "application",
+    "integration"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "application",
+    "integration"
+   ],
+   "S4": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration",
+    "integration",
+    "demonstration"
+   ],
+   "S5": [
+    "motivation",
+    "motivation",
+    "demonstration",
+    "integration"
+   ]
+  },
+  "topic": "Archimedes' Principle",
+  "asked": "Archimedes' principle: why things float or sink",
+  "klass": 9,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Science, Class 9, chapter 6: chapter 6",
+    "url": "https://ncert.nic.in/textbook/pdf/iesc106.pdf",
+    "note": ""
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "Study with Surendra: आर्कमिडीज का सिद्धांत | archimedes ka siddhant | Archimedes Principle in Hindi | Archimedes ka niyam",
+    "url": "https://www.youtube.com/watch?v=lqXQPRTVjdQ",
+    "note": "Hindi lecture, 9 min, automatic captions"
+   },
+   {
+    "id": "S4",
+    "kind": "lecture",
+    "title": "Manocha Academy: Archimedes Principle",
+    "url": "https://www.youtube.com/watch?v=_p-hwElkrlk",
+    "note": "English lecture, 12 min, automatic captions"
+   },
+   {
+    "id": "S5",
+    "kind": "lecture",
+    "title": "Professor Dave Explains: Fluids, Buoyancy, and Archimedes' Principle",
+    "url": "https://www.youtube.com/watch?v=16HDJNoXQII",
+    "note": "English lecture, 4 min"
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "5eb4df8ab4b88b96",
+  "diagram": {
+   "ask": "Classic buoyancy demonstration shown before and after side by side: a spring balance suspends a stone first in air and then fully immersed in a brim-full inner beaker sitting inside a larger catch beaker, with overflow water collected below. Label spring balance, stone, water, inner brim-full beaker",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/classic_buoyancy_demonst-83c839bb0d/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/classic_buoyancy_demonst-83c839bb0d/whole.png",
+   "points": {
+    "0": {
+     "name": "0",
+     "box": [
+      0.3168,
+      0.0185,
+      0.3232,
+      0.0322
+     ]
+    },
+    "spring_balance": {
+     "name": "spring balance",
+     "box": [
+      0.3732,
+      0.0433,
+      0.5066,
+      0.0758
+     ]
+    },
+    "stone": {
+     "name": "stone",
+     "box": [
+      0.3639,
+      0.4484,
+      0.4128,
+      0.4693
+     ]
+    },
+    "water": {
+     "name": "water",
+     "box": [
+      0.8098,
+      0.6994,
+      0.8611,
+      0.7203
+     ]
+    },
+    "inner_brim_full_beaker": {
+     "name": "inner brim-full beaker",
+     "box": [
+      0.0041,
+      0.7769,
+      0.2055,
+      0.8026
+     ]
+    },
+    "displaced_water": {
+     "name": "displaced water",
+     "box": [
+      0.8509,
+      0.8572,
+      0.9952,
+      0.8893
+     ]
+    },
+    "a_stone_in_air": {
+     "name": "(a) Stone in air",
+     "box": [
+      0.2211,
+      0.9494,
+      0.3758,
+      0.9856
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   },
+   "holds": {
+    "things": [
+     "spring balance with scale on top left",
+     "red indicator at 8 on left spring balance",
+     "stone hanging from left spring balance",
+     "beaker with water on bottom left",
+     "spring balance with scale on top right",
+     "red indicator at 6 on right spring balance",
+     "stone immersed in water in right beaker",
+     "water overflowing from right beaker",
+     "two blue arrows showing water flow",
+     "water collected in outer container on right"
+    ],
+    "print": [
+     "spring balance",
+     "stone",
+     "inner brim-full beaker",
+     "0",
+     "2",
+     "4",
+     "6",
+     "8",
+     "10",
+     "0",
+     "2",
+     "4",
+     "6",
+     "8",
+     "10",
+     "water",
+     "displaced water",
+     "(a) Stone in air",
+     "(b) Stone immersed in water"
+    ]
+   }
+  }
+ }
+}

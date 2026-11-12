@@ -1,0 +1,476 @@
+{
+  "$defs": {
+    "AnimationEvent": {
+      "properties": {
+        "action": {
+          "description": "'show': entrance animation for target (element must be in this scene's elements list). 'hide': FadeOut the target — use to clean up finished elements. 'transform': morph target into `to` element (TransformMatchingTex for math, else ReplacementTransform). 'highlight': Indicate the target with a color flash for emphasis. 'move_to': animate target to sit next to the `to` element. 'focus': semantic spotlight — dim every other on-screen element while the narration is about the target, then restore. Use at most once per scene, for the beat that carries the scene's key idea; prefer 'highlight' for a quick flash.",
+          "enum": [
+            "show",
+            "hide",
+            "transform",
+            "highlight",
+            "move_to",
+            "focus"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "color": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For 'highlight': hex color (e.g. '#FFFF00') or Manim color name (e.g. 'YELLOW').",
+          "title": "Color"
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For 'move_to': Manim direction constant, e.g. 'RIGHT', 'DOWN', 'UP+RIGHT'. Defaults to RIGHT.",
+          "title": "Direction"
+        },
+        "target": {
+          "description": "element_id of the primary element to animate.",
+          "title": "Target",
+          "type": "string"
+        },
+        "to": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For 'transform': destination element_id. For 'move_to': reference element_id to position next to.",
+          "title": "To"
+        }
+      },
+      "required": [
+        "action",
+        "target"
+      ],
+      "title": "AnimationEvent",
+      "type": "object"
+    },
+    "NarrationCue": {
+      "properties": {
+        "animation_events": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/AnimationEvent"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Structured animation events for this cue. Preferred over the free-text 'event' field. Use 'show' for element entrances (target must be in scene elements list), 'hide' to FadeOut elements that are no longer needed, 'transform' to morph one element into another (great for equation evolution), 'highlight' to flash-emphasise an element with Indicate, 'move_to' to reposition an element next to another. FadeOuts are batched into one play(); each other action fires in sequence.",
+          "title": "Animation Events"
+        },
+        "cue": {
+          "description": "The spoken narration text.",
+          "title": "Cue",
+          "type": "string"
+        },
+        "event": {
+          "default": "",
+          "description": "Legacy: comma-separated Manim animation strings (e.g. 'FadeOut(title_id)'). Ignored when animation_events is provided — prefer animation_events for new storyboards.",
+          "title": "Event",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cue"
+      ],
+      "title": "NarrationCue",
+      "type": "object"
+    },
+    "Narrative": {
+      "description": "The spine that makes a set of scenes one video instead of several.\n\nAdded 2026-08-14 after a user watched a projectile-motion render and reported\n\"there is no story in the video being narrated, all the scenes are\ndisconnected\". The board that produced it was a correct syllabus — intro,\ncomponents, independence, equations, quiz, summary — where every scene opened by\nre-declaring the topic and the ball introduced in scene 1 never came back.",
+      "properties": {
+        "anchor": {
+          "description": "ONE concrete running example that appears in EVERY scene and carries the abstraction, e.g. 'a basketball thrown toward a hoop'. Not a topic name — a specific thing the viewer can picture. Scene 1 introduces it, later scenes return to it as it gains detail, the last scene finishes its story.",
+          "title": "Anchor",
+          "type": "string"
+        },
+        "through_line": {
+          "description": "One sentence naming the question the whole video answers, phrased so a student would want the answer, e.g. 'Why does a thrown ball land where it does, and can we predict the spot before it lands?' Every scene must move this question forward.",
+          "title": "Through Line",
+          "type": "string"
+        }
+      },
+      "required": [
+        "through_line",
+        "anchor"
+      ],
+      "title": "Narrative",
+      "type": "object"
+    },
+    "RelativePosition": {
+      "properties": {
+        "buffer": {
+          "default": 0.5,
+          "description": "The distance or padding from the target object. Usually 0.2 to 0.5.",
+          "title": "Buffer",
+          "type": "number"
+        },
+        "direction": {
+          "description": "The direction relative to the target object (e.g., UP_RIGHT).",
+          "enum": [
+            "UP",
+            "DOWN",
+            "LEFT",
+            "RIGHT",
+            "UP_RIGHT",
+            "UP_LEFT",
+            "DOWN_RIGHT",
+            "DOWN_LEFT"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "relation": {
+          "default": "next_to",
+          "description": "How this object sits relative to the target. 'next_to' (default) places it beside the target in `direction`. 'inside' places it WITHIN the target's box — use it for contents of a container (candies in a tray, a number in a node, particles in a box). Several elements marked 'inside' the same target are automatically distributed in a grid within it and shrunk to fit, so declare each content item as its OWN element rather than describing them in the container's text. With 'inside', `direction` is ignored.",
+          "enum": [
+            "next_to",
+            "inside"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "relative_to": {
+          "description": "The exact 'id' of the target visual element this object is anchored to.",
+          "title": "Relative To",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relative_to",
+        "direction"
+      ],
+      "title": "RelativePosition",
+      "type": "object"
+    },
+    "StoryboardScene": {
+      "properties": {
+        "composition": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Concise description of the overall visual composition and spatial arrangement of this scene. Describes how elements are positioned relative to each other on the canvas, e.g. 'Title banner at top, large coordinate grid filling centre, axis labels directly on axes, derivation steps stacked in right column.' This is a scene-level composition intent descriptor that complements per-element positioning fields. The transpiler uses it to understand the intended layout gestalt.",
+          "title": "Composition"
+        },
+        "description": {
+          "description": "Description of the educational action or concept being shown in this scene",
+          "title": "Description",
+          "type": "string"
+        },
+        "elements": {
+          "description": "List of visual elements present or animated in this scene",
+          "items": {
+            "$ref": "#/$defs/VisualElement"
+          },
+          "title": "Elements",
+          "type": "array"
+        },
+        "layout_template": {
+          "anyOf": [
+            {
+              "enum": [
+                "TitleStageCaption",
+                "SplitScreen",
+                "FullCanvas",
+                "ProcessFlow",
+                "BeforeAfter"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional layout template for this scene. Pick the one matching the scene's pedagogical shape. 'TitleStageCaption': first element anchors at TOP_CENTER (title), last at BOTTOM_CENTER (caption), middle elements fill the center stage. 'SplitScreen': elements without explicit positioning alternate LEFT_CENTER / RIGHT_CENTER — ideal for compare-contrast or equation-vs-diagram splits. 'ProcessFlow': a mechanism or process read left-to-right — the first unpositioned element starts at LEFT_CENTER, the last lands at RIGHT_CENTER, intermediate stages fill the centre stage. 'BeforeAfter': the first half of unpositioned elements form the BEFORE state on the left, the second half the AFTER state on the right. 'FullCanvas': no template constraints; positioning is fully manual via safe_zone_alignment / relative_positioning / absolute_position. Vary templates across scenes — the same template on 3+ consecutive scenes reads monotonous and is reset by the transpiler.",
+          "title": "Layout Template"
+        },
+        "narration_cues": {
+          "description": "List of spoken cues and corresponding visual events (Temporal Contiguity)",
+          "items": {
+            "$ref": "#/$defs/NarrationCue"
+          },
+          "title": "Narration Cues",
+          "type": "array"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "enum": [
+                "hook",
+                "build",
+                "turn",
+                "payoff",
+                "recap"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "This scene's job in the story arc. 'hook': open a concrete question or situation the viewer wants resolved. 'build': develop it one step further, continuing from the previous scene. 'turn': the insight, twist, or misconception correction that changes how the viewer sees it. 'payoff': resolve the hook's question explicitly. 'recap': close the loop and name what changed. A lesson is scenes in an ARC, not a list of sections.",
+          "title": "Role"
+        },
+        "scene_index": {
+          "description": "Scene sequence index starting at 1",
+          "title": "Scene Index",
+          "type": "integer"
+        },
+        "wait_time": {
+          "description": "Number of seconds to wait/pause before ending the scene",
+          "title": "Wait Time",
+          "type": "number"
+        }
+      },
+      "required": [
+        "scene_index",
+        "description",
+        "elements",
+        "narration_cues",
+        "wait_time"
+      ],
+      "title": "StoryboardScene",
+      "type": "object"
+    },
+    "VisualElement": {
+      "properties": {
+        "absolute_position": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "[x, y] coordinates. ONLY use this for shapes or coordinate systems. NEVER use this for text labels.",
+          "title": "Absolute Position"
+        },
+        "color": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Hex color (e.g. '#00FFCC') or standard Manim color name (e.g. 'BLUE')",
+          "title": "Color"
+        },
+        "connects": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Exactly TWO element ids, e.g. ['node_84', 'node_12']. Marks this element as an EDGE joining them: the renderer draws it from one shape's boundary to the other's and keeps it attached, so never give a connector a position of its own. Use it for every link in a diagram — factor-tree branches, flowchart arrows, bonds, force vectors between bodies. Both ids must be elements of THIS scene. If the shape's content mentions 'arrow', the edge is drawn with an arrowhead.",
+          "title": "Connects"
+        },
+        "content": {
+          "description": "Visual content. For math, provide LaTeX (no surrounding $). For text, standard string. For svg_icon, a clean singular English search keyword. For chemical_molecule, a valid SMILES string. For shape, a description. For coordinate_system or graph, include axis ranges in the format 'x:MIN-MAX, y:MIN-MAX' (e.g. 'pH scale x:0-14, y:0-7' or 'time vs velocity x:0-10 to 100, y:-50 to 50') — the renderer parses these to set correct Axes bounds. For math_evolution, use 'FROM_LATEX → TO_LATEX' with a literal → separator. For image, a concise English Wikimedia Commons search query of 2-5 words (e.g. 'Storming of the Bastille painting', 'Mahatma Gandhi Salt March 1930'). For simulation, ONE precise English sentence naming the system, what moves, and the quantities that must be visible (e.g. 'a ball launched at 45 degrees tracing a parabolic arc above a ground line, with its velocity arrow shrinking near the top').",
+          "title": "Content",
+          "type": "string"
+        },
+        "entrance_animation": {
+          "description": "Manim entrance animation, e.g., 'FadeIn', 'Write', 'Create'",
+          "title": "Entrance Animation",
+          "type": "string"
+        },
+        "exit_animation": {
+          "description": "Manim exit animation, e.g., 'FadeOut', 'Uncreate'",
+          "title": "Exit Animation",
+          "type": "string"
+        },
+        "id": {
+          "description": "Unique identifier for the element, e.g., 'x_axis_label'",
+          "title": "Id",
+          "type": "string"
+        },
+        "relative_positioning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RelativePosition"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "MUST be used for text labels that describe a specific shape or point on the canvas."
+        },
+        "safe_zone_alignment": {
+          "anyOf": [
+            {
+              "enum": [
+                "TOP_CENTER",
+                "BOTTOM_CENTER",
+                "TOP_LEFT",
+                "TOP_RIGHT",
+                "LEFT_CENTER",
+                "RIGHT_CENTER"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "MUST be used for standalone text (titles, questions). NEVER use 'ORIGIN' for standalone text.",
+          "title": "Safe Zone Alignment"
+        },
+        "scale": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 0.7,
+          "description": "Scale factor to ensure safe zone bounding box compliance (recommend 0.7 or 0.8 for text/math)",
+          "title": "Scale"
+        },
+        "type": {
+          "description": "Type of visual element. Use 'math_evolution' when an equation transforms into another (e.g. F=ma → a=F/m); the renderer uses TransformMatchingTex between the 'from' and 'to' LaTeX strings separated by '→' in content. Use 'image' for real photographs/paintings/maps sourced from Wikimedia Commons (historical events, people, places, artifacts). Use 'simulation' for a system EVOLVING OVER TIME that a static diagram cannot express — a projectile tracing its arc, a wave propagating, particles diffusing, a pendulum swinging, an orbit; the server generates and verifies the animation code.",
+          "enum": [
+            "text",
+            "math",
+            "shape",
+            "svg_icon",
+            "chemical_molecule",
+            "coordinate_system",
+            "graph",
+            "math_evolution",
+            "image",
+            "simulation"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "content",
+        "entrance_animation",
+        "exit_animation"
+      ],
+      "title": "VisualElement",
+      "type": "object"
+    }
+  },
+  "$id": "gyansetu:storyboard-ir",
+  "properties": {
+    "aspect_ratio": {
+      "default": "widescreen",
+      "description": "The planned aspect ratio of the animation: 'widescreen' or 'vertical'",
+      "title": "Aspect Ratio",
+      "type": "string"
+    },
+    "key_terms": {
+      "description": "List of core scientific, technical, and mathematical terms in English (e.g. ['Angle of Depression', 'Horizontal Line', 'Line of Sight'])",
+      "items": {
+        "type": "string"
+      },
+      "title": "Key Terms",
+      "type": "array"
+    },
+    "key_theorems": {
+      "description": "Core formulas, rules, or theorems relevant to this topic",
+      "items": {
+        "type": "string"
+      },
+      "title": "Key Theorems",
+      "type": "array"
+    },
+    "narrative": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Narrative"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "The story spine tying the scenes together (through_line + anchor)"
+    },
+    "style_profile": {
+      "description": "Visual styling configuration (e.g. '3blue1brown/minimalist/neon' or 'chalkboard/pastel')",
+      "title": "Style Profile",
+      "type": "string"
+    },
+    "topic": {
+      "description": "The STEM topic/concept",
+      "title": "Topic",
+      "type": "string"
+    },
+    "visual_storyboard": {
+      "description": "Chronological list of scenes making up the full animation plan",
+      "items": {
+        "$ref": "#/$defs/StoryboardScene"
+      },
+      "title": "Visual Storyboard",
+      "type": "array"
+    }
+  },
+  "required": [
+    "topic",
+    "key_theorems",
+    "key_terms",
+    "style_profile",
+    "visual_storyboard"
+  ],
+  "title": "Storyboard IR — the canonical Scene DSL",
+  "type": "object"
+}

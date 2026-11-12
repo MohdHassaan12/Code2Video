@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P04 · Repair-loop convergence — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">04</div>
+  <div>
+    <h1>Repair-loop convergence</h1>
+    <div class="sub">The repair loop is the pipeline’s crown jewel — accept-if-better, never lose the original, losers
+    deleted. It is also, measurably, a loop that often stops before reaching zero. Nobody knows when it converges, or why it stalls.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>04</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-s">S · code owns structure — but structure isn’t meaning</span>
+  <span class="chip t2">T2 applied research</span>
+  <span class="chip mat">Maturity: F graded L3 as engineering; convergence itself L2 at best</span>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today</div>
+  <ul>
+    <li>The probe prints parseable <code>LAYOUT_VIOLATION:</code> lines; <code>_overlap_error_report</code> compiles them into a
+      brief; an LLM repair agent rewrites the scene; the candidate is accepted only if it renders AND reduces the violation
+      count. Two implementations, same contract: <code>_repair_scenes_parallel</code> (<code>app/render.py:886</code>, per-scene)
+      and <code>_repair_overlaps</code> (<code>app/render.py:647</code>, whole-video).</li>
+    <li>Rounds are capped (<code>OVERLAP_REPAIR_ROUNDS=2</code> default); every loser is deleted via <code>_discard_video</code>;
+      the sidecar records <code>repair_rounds</code> and <code>violations_remaining</code>.</li>
+    <li>33 harness checks pin the state machine (<code>test_overlap_probe.py</code> Parts B/C, real renders, LLM stubbed) —
+      including the zero-leaked-artifacts contract.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why this is research-grade</div>
+  <p><b>Measured on disk (2026-07-27): 7 of 17 sidecars ship with <code>violations_remaining &gt; 0</code></b> — values up to 14;
+  one video still has 6 violations after 3 rounds, another 3 after 4 rounds. Accept-if-better is greedy hill descent where
+  the move generator is an LLM sampling patches: no theory says when it reaches zero, each round costs a metered call plus a
+  re-render, and the round cap is a guess.</p>
+  <p>The sharper observation: <b>the repair agent is the one place in the whole pipeline where an LLM edits geometry</b> —
+  the exact thing the house thesis forbids (“the LLM never emits geometry”
+  <span class="src">chapter-4-architecture.md:113-116</span>). Layout was computed by a deterministic solver; when it fails,
+  the system asks a language model to nudge coordinates in Python. Meanwhile the solver-side fix for the same defect class
+  measured <b>4 → 0</b> violations in one A/B <span class="src">pipeline-roadmap.md:240-241</span>. The research question:
+  should violations be compiled <i>back into constraints</i> and re-solved at the Layout IR level, with the LLM confined to
+  choices code can’t make (what to shrink, what to drop)?</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>Sidecar census (measured): <code>2f638ed2</code>=11 · <code>5beacb49</code>=14 · <code>be839e74</code>=9 ·
+      <code>4de99484</code>=6 after 3 rounds · <code>concat_b9fc91fa</code>=3 after 4 rounds · <code>dff1c38f</code>=4 ·
+      <code>95d83c66</code>=4 remaining.</li>
+    <li>Git tells the same story as a fix-of-fix chain: <code>65685a53</code> “solving overlapping issue” →
+      <code>3410d560</code> “fix collisons” → <code>2219d319</code> text-over-shape detection → <code>190d75d2</code> event
+      sanitizing → <code>f73bea64</code> split-screen on pile-up — five commits attacking the same defect family from
+      different layers.</li>
+    <li>The solver-side wins are the counterfactual: axes-aware zones took the fixture from 11 violations to zero
+      <span class="src">pipeline-roadmap.md:239-240</span>.</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art <span class="tag">citation-check before external use</span></div>
+  <p>Generate-and-validate automated program repair (GenProg lineage) documents exactly this plateau behavior: patches that
+  pass the checker while the defect class persists. Constraint-based layout (Cassowary-family solvers) shows the
+  alternative: encode the violation as a constraint and re-solve — deterministic, terminating, explainable. Greedy local
+  search vs. restart strategies (when to stop patching and re-plan the scene) is classic optimization; the novelty here is
+  the hybrid: a solver that owns geometry, an LLM that owns semantic concessions, and a probe as the objective function.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — cheap → deep</div>
+  <ol>
+    <li><span class="badge solid-green">$0</span> Taxonomy first: parse the residual violations out of the 17 sidecars’ job
+      logs and classify by type (text-on-text / clipped / text-over-shape) and by scene shape — attribute upstream-first,
+      the roadmap’s own discipline.</li>
+    <li><span class="badge solid-green">$0</span> Deterministic pre-repair: before any LLM round, retry the transpiler with
+      escalating structural moves it already owns — <code>_maybe_minimize_diagram</code>, zone reassignment, font-size step-down.
+      Only what survives goes to the LLM.</li>
+    <li><span class="badge solid-amber">metered</span> Violation→constraint compiler: turn each probe line into a constraint
+      on the Layout IR and re-transpile (re-solve), keeping accept-if-better as the outer guard. Measure rounds-to-zero
+      against the current loop on the same boards.</li>
+    <li><span class="badge solid-purple">research</span> A convergence policy: when to stop repairing and re-storyboard —
+      i.e., admit the scene is over-packed (ties to <a href="p05-semantic-composition.html">P05</a>) — with the give-up
+      signal learned from the taxonomy, not guessed.</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p>The metric already exists and is already durable: <code>violations_remaining</code> in every sidecar. Target: the 7/17
+  residual rate → 0/N on a bulk suite, at equal or lower repair spend (needs <a href="p02-state-and-cost.html">P02</a>’s
+  ledger). Pin new operators in <code>test_overlap_probe.py</code> style — real renders, stubbed LLM.</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p05-semantic-composition.html">P05 semantic composition</a> — better first layout means fewer repairs ·
+  <a href="p07-repair-memory.html">P07 repair memory</a> — remembered fixes could cut rounds ·
+  <a href="p03-vision-qa.html">P03 perception</a> — vision findings enter this same loop.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p03-vision-qa.html">← prev: P03 machine perception</a>
+  <a href="p05-semantic-composition.html">next: P05 semantic composition →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

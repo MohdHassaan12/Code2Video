@@ -1,0 +1,46 @@
+{
+  "Direct_CodeLLM": {
+    "num_topics": 17,
+    "aes_avg": 34.2,
+    "teach_quiz_es": 37.0,
+    "visual_uplift": 4.5,
+    "tokens_k": 1.2,
+    "time_minutes": 2.1,
+    "pass_at_1": 0.42,
+    "pass_at_repair": 0.58,
+    "qcr_score": 195.69
+  },
+  "Code2Video": {
+    "num_topics": 17,
+    "aes_avg": 79.0,
+    "teach_quiz_es": 82.0,
+    "visual_uplift": 24.0,
+    "tokens_k": 30.8,
+    "time_minutes": 15.4,
+    "pass_at_1": 0.68,
+    "pass_at_repair": 0.88,
+    "qcr_score": 93.72
+  },
+  "Lessonforge": {
+    "num_topics": 17,
+    "aes_avg": 74.5,
+    "teach_quiz_es": 71.5,
+    "visual_uplift": 18.5,
+    "tokens_k": 14.2,
+    "time_minutes": 7.5,
+    "pass_at_1": 0.84,
+    "pass_at_repair": 0.92,
+    "qcr_score": 171.05
+  },
+  "Learner_in_the_Loop_Hybrid": {
+    "num_topics": 17,
+    "aes_avg": 83.5,
+    "teach_quiz_es": 88.5,
+    "visual_uplift": 28.5,
+    "tokens_k": 16.5,
+    "time_minutes": 8.8,
+    "pass_at_1": 0.88,
+    "pass_at_repair": 0.98,
+    "qcr_score": 199.11
+  }
+}

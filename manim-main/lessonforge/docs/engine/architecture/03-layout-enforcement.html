@@ -1,0 +1,155 @@
+<link rel="stylesheet" href="style.css">
+<title>Layout Enforcement v5 — Probe & Repair</title>
+
+<div class="hdr">
+  <div class="logo">🛡️</div>
+  <div>
+    <h1>Layout Enforcement v5 — Overlap Probe &amp; Repair Loop</h1>
+    <div class="sub">Every render is dry-run probed for text overlaps, edge clipping, and text-over-shape collisions + optional multimodal Vision QA frame audit; an LLM repair agent fixes flagged scenes — but a fix is only accepted if it renders AND reduces violations. The original video is never lost.</div>
+  </div>
+  <div class="crumb">Diagram <b>03 — Layout enforcement</b> · lives in <b>stem_animation_lab/app/render.py</b> · full design: docs/layout_framework.md · Vision QA in <b>app/pipeline/vision_qa.py</b></div>
+</div>
+
+<div class="cols">
+  <div class="col grow" style="flex: 2.7;">
+
+    <!-- detection -->
+    <div class="panel blue">
+      <div class="ptitle"><span class="ico">🔍</span> 1 · Detection — two independent probes</div>
+      <div class="cards c2">
+        <div class="card">
+          <div class="ci">💉</div><h3>Geometric probe (always on)</h3>
+          <p><code>_OVERLAP_PROBE_SNIPPET</code> injected into the scene script; patches <code>Scene.play</code> to measure after <b>every beat</b>. <b>Three classes:</b> text-on-text overlap · text clipped at frame edge · text-over-shape (stroke path crossing a text bbox).</p>
+        </div>
+        <div class="card">
+          <div class="ci">👁️</div><h3>Vision QA <span class="badge">flag-gated</span></h3>
+          <p><code>VISION_QA=1</code>: ffmpeg extracts 6 evenly-spaced 640px frames → one multimodal LLM call. <b>Seven classes:</b> clipped / colliding / unreadable text, crowding, dead-frame, low-contrast, broken-hierarchy. Findings as <code>LAYOUT_VIOLATION: vision-&lt;class&gt;</code> — never counted by the geometric probe.</p>
+        </div>
+      </div>
+      <div class="spacer" style="height:10px;"></div>
+      <div class="strip">
+        <div class="card"><div class="ci">🧾</div><h3>Parseable output</h3><p>Both probes emit <code>LAYOUT_VIOLATION:</code> lines on the render log — the machine-readable contract</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">📋</div><h3>Error brief</h3><p><code>_overlap_error_report</code> condenses geometric lines; vision findings go to <code>vision_findings</code> in the sidecar</p></div>
+      </div>
+      <div class="spacer" style="height:5px;"></div>
+      <div class="note"><b>Probe traps (hard-won):</b> <code>MathTex.get_fill_opacity()</code> is 0.0 at top level — use family-aware <code>_ovl_visible</code> · containers like <code>NumberLine</code>/<code>Arrow</code> carry their own points AND submobjects — check both · <code>NumberPlane</code>/<code>ComplexPlane</code> are backdrops, never violations.</div>
+    </div>
+
+    <div class="vflow center"><div class="va"><span class="arr">↓</span> LAYOUT_VIOLATION lines found → enter repair</div></div>
+
+    <!-- repair -->
+    <div class="panel purple">
+      <div class="ptitle"><span class="ico">🔧</span> 2 · Repair — three paths, one contract</div>
+      <div class="cards c3">
+        <div class="card hero" style="border-color: var(--purple-line);">
+          <div class="ci">⚡</div><h3>_repair_scenes_parallel <span class="badge solid-purple">default</span></h3>
+          <p>Multi-scene path — repairs <b>per scene</b>, so only flagged scenes re-render. Cheapest wall-clock; used by the parallel render pipeline.</p>
+        </div>
+        <div class="card">
+          <div class="ci">🎞️</div><h3>_repair_overlaps</h3>
+          <p>Whole-video loop — used by the sequential fallback and the batch path. Same accept/reject contract, coarser re-render unit.</p>
+        </div>
+        <div class="card">
+          <div class="ci">👁️</div><h3>_run_vision_qa <span class="badge">flag-gated</span></h3>
+          <p>Vision QA repair round (<code>VISION_QA_REPAIR=1</code>). Sequential only in v1: accept-if-better with geometric non-regression guard. Parallel path: measurement-only.</p>
+        </div>
+      </div>
+      <div class="spacer" style="height:10px;"></div>
+      <div class="strip">
+        <div class="card"><div class="ci">🤖</div><h3>LLM repair agent</h3><p>Receives code + violation brief, returns a candidate fix</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🎬</div><h3>Re-render candidate</h3><p>Candidate compiles through the same probe-instrumented render</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">⚖️</div><h3>Gate</h3><p>Accept <b>only if</b> it renders AND violation count decreases — otherwise reject. Vision QA adds geometric non-regression guard.</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🔁</div><h3>Loop</h3><p>Up to <code>OVERLAP_REPAIR_ROUNDS</code> (2) rounds for geometry; up to <code>VISION_QA_REPAIR_ROUNDS</code> (1) for vision; ship best-so-far</p></div>
+      </div>
+    </div>
+
+    <div class="vflow center"><div class="va"><span class="arr">↓</span> winner kept, metadata written</div></div>
+
+    <div class="cols">
+      <!-- outcome -->
+        <div class="panel green grow">
+        <div class="ptitle"><span class="ico">✅</span> 3 · Outcome</div>
+        <div class="rows">
+          <div class="row"><span class="dot green"></span><p><b>Winner ships</b> — repaired video if a round improved, otherwise the untouched original</p></div>
+          <div class="row"><span class="dot green"></span><p><b>Sidecar written</b> — <code>&lt;video&gt;.mp4.json</code>: job id, repair_rounds, violations_remaining, beats, <code>vision_findings[]</code> (when VISION_QA enabled)</p></div>
+          <div class="row"><span class="dot green"></span><p><b>/timeline badge</b> — Clean · Repaired ×N · ⚠ overlaps · Raw (no sidecar)</p></div>
+        </div>
+      </div>
+      <!-- discard -->
+      <div class="panel red grow">
+        <div class="ptitle"><span class="ico">🗑️</span> Loser hygiene — _discard_video</div>
+        <div class="rows">
+          <div class="row"><span class="dot red"></span><p><b>Every loser is deleted:</b> rejected candidates, superseded originals, orphaned clips</p></div>
+          <div class="row"><span class="dot red"></span><p>Until 2026-07-20 losers piled up in <code>static/videos/</code> as fake “Raw” rows on /timeline</p></div>
+          <div class="row"><span class="dot red"></span><p><b>Rule:</b> any new <code>compile_manim_code</code> caller owns discarding its own losers</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- right column -->
+  <div class="col" style="flex: 1;">
+    <div class="panel teal">
+      <div class="ptitle"><span class="ico">🎚️</span> Env Knobs</div>
+      <div class="rows">
+        <div class="row"><span class="k"><code>OVERLAP_REPAIR</code></span><p>master switch for geometric repair (1)</p></div>
+        <div class="row"><span class="k"><code>OVERLAP_REPAIR_ROUNDS</code></span><p>max repair rounds (2)</p></div>
+        <div class="row"><span class="k"><code>LAYOUT_STRICT</code></span><p>fail instead of ship-with-warnings (0)</p></div>
+        <div class="row"><span class="k"><code>PARALLEL_RENDER</code></span><p>per-scene concurrent renders (1)</p></div>
+        <div class="row"><span class="k"><code>VISUAL_DIRECTOR</code></span><p>Visual Director stage (0)</p></div>
+        <div class="row"><span class="k"><code>VISION_QA</code></span><p>multimodal frame audit (0)</p></div>
+        <div class="row"><span class="k"><code>VISION_QA_FRAMES</code></span><p>frames sampled for audit (6)</p></div>
+        <div class="row"><span class="k"><code>VISION_QA_REPAIR</code></span><p>vision findings trigger repair (1)</p></div>
+      </div>
+    </div>
+
+    <div class="panel orange">
+      <div class="ptitle"><span class="ico">🖥️</span> Screen management — split-screen</div>
+      <div class="rows">
+        <div class="row"><span class="dot orange"></span><p><b>_maybe_minimize_diagram:</b> when a cue piles free-standing text onto an on-screen diagram → diagram shrinks to left half, text stacks in a right column</p></div>
+        <div class="row"><span class="dot orange"></span><p><b>Trigger:</b> any <code>math</code>, or ≥2 text-ish elements</p></div>
+        <div class="row"><span class="dot orange"></span><p><b>Never on:</b> cue 0 (diagram still arriving) · diagram-anchored labels (they ride the shrink)</p></div>
+        <div class="row"><span class="dot orange"></span><p>Widened from math-only after job <code>bpipueek6</code> split ZERO scenes — real storyboards write derivations as <code>text</code></p></div>
+      </div>
+    </div>
+
+    <div class="panel slate">
+      <div class="ptitle"><span class="ico">⚠️</span> Per-scene isolation trap</div>
+      <div class="rows">
+        <div class="row"><span class="dot slate"></span><p>Each per-scene script starts from a blank canvas with only its OWN <code>id→var</code> map; emitters fall back to the raw storyboard id on a miss</p></div>
+        <div class="row"><span class="dot slate"></span><p>A cross-scene event used to emit <code>FadeOut(container)</code> → NameError (killed 3 of 4 scenes, 2026-07-20 Dalton run)</p></div>
+        <div class="row"><span class="dot slate"></span><p><b>Fix:</b> <code>_drop_cross_scene_events</code> / <code>_drop_foreign_id_calls</code> — per-scene path ONLY; the master single-script path legitimately shares one namespace</p></div>
+      </div>
+    </div>
+
+    <div class="panel green">
+      <div class="ptitle"><span class="ico">🧪</span> Pinned by tests</div>
+      <div class="badges">
+        <span class="badge solid-green">test_overlap_probe.py · 32 checks</span>
+        <span class="badge solid-green">test_vision_qa.py · 19 checks</span>
+        <span class="badge solid-green">no-leak contract: rejected round = 0 net new mp4s</span>
+        <span class="badge solid-green">test_minimize_split.py · split-screen</span>
+        <span class="badge">real renders, LLM stubbed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="howit">
+  <div class="lbl">Repair round</div>
+  <div class="step"><span class="ico">🎬</span><div><h4>1. Render</h4><p>Scene renders with probe injected</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🔍</span><div><h4>2. Measure</h4><p>Probe emits LAYOUT_VIOLATION lines after every beat</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🤖</span><div><h4>3. Propose</h4><p>Repair agent gets code + violation brief, returns a fix</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">⚖️</span><div><h4>4. Judge</h4><p>Accept only if it renders AND violations decrease</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🗑️</span><div><h4>5. Clean up</h4><p>Loser (candidate or superseded original) is deleted</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🧾</span><div><h4>6. Record</h4><p>Sidecar metadata → /timeline badge</p></div></div>
+</div>

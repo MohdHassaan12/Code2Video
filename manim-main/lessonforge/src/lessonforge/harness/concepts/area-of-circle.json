@@ -1,0 +1,216 @@
+{
+ "id": "area-of-circle",
+ "names": [
+  "area of circle",
+  "area of a circle",
+  "circle area",
+  "pi r squared",
+  "area of circle formula",
+  "why area of circle is pi r square",
+  "circle area derivation"
+ ],
+ "subject": "maths",
+ "classes": [
+  7,
+  10
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "figure",
+  "figure": {
+   "kind": "circle",
+   "r": 7,
+   "sectors": 16,
+   "rearranged": true,
+   "labels": {
+    "base": "half the circumference",
+    "height": "radius r"
+   }
+  },
+  "asks": [
+   "A labelled diagram of a circle cut into sixteen equal slices, and beside it the same slices laid in a row, alternately pointing up and down, showing the radius and the long side.",
+   "A drawing of a paper circle folded into eight equal sectors, and beside it the cut sectors arranged alternately up and down into a shape like a rectangle."
+  ],
+  "why": "Slices laid alternately up and down turn a round shape into an almost-rectangle whose sides are the radius and half the circumference."
+ },
+ "card": {
+  "big_idea": {
+   "text": "The area of a circle is π × r × r, because it can be rearranged into a rectangle that is half the circumference long and one radius tall.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Work out the area of a circle from its radius",
+    "level": "apply",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Explain why the area is half the circumference times the radius",
+    "level": "understand",
+    "checked_by": "try_it"
+   },
+   {
+    "can": "Predict how the area changes when the radius is doubled",
+    "level": "analyze",
+    "checked_by": "q2"
+   }
+  ],
+  "why_it_matters": {
+   "text": "It tells you how much space a round thing covers, a chapati, a round field or a well's lid, from one length you can measure.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "Cut a circle into many thin slices and lay them alternately up and down: they make a shape very close to a rectangle whose height is the radius and whose length is half the round edge, π × r, so its area is π × r × r.",
+   "cites": []
+  },
+  "picture": {
+   "text": "A circle of radius 7 cm cut into 16 equal slices in two colours. The slices slide into a row, alternately pointing up and down: the shape is nearly a rectangle with wavy top and bottom. Its height is marked as the radius and its length as half the circumference. With more, thinner slices the waves flatten.",
+   "standard": "circle cut into sectors and rearranged into a rectangle",
+   "cites": []
+  },
+  "diagram_ask": "A labelled diagram of a circle cut into sixteen equal slices, and beside it the same slices laid in a row, alternately pointing up and down, showing the radius and the long side.",
+  "needs_first": [
+   {
+    "text": "The circumference of a circle is 2 × π × r.",
+    "cites": []
+   },
+   {
+    "text": "The area of a rectangle is length times breadth.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Using the diameter in place of the radius: π × 14 × 14 for a circle of radius 7.",
+    "why_it_fails": "The height of the rearranged rectangle is the radius, not the diameter, so using the diameter gives four times the area.",
+    "cites": []
+   },
+   {
+    "mistake": "Giving the circumference, 2 × π × r, as the area.",
+    "why_it_fails": "The circumference is a length around the edge; the area is the space inside, which needs the radius twice.",
+    "cites": []
+   },
+   {
+    "mistake": "Thinking that doubling the radius doubles the area.",
+    "why_it_fails": "Doubling the radius makes the rectangle twice as long and twice as tall, so the area becomes four times as much.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "A round chapati has a radius of 7 cm. How many 1 cm squares would it take to cover it?",
+   "guesses": [
+    "44",
+    "196",
+    "about 150"
+   ],
+   "answer": "About 154: π × 7 × 7 = 22/7 × 49 = 154 square cm.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the circle of radius 7 cm and ask how many 1 cm squares cover it. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Square tiles do not fit a round edge. Cut the circle into 16 equal slices instead.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Lay the slices in a row, alternately up and down. Ask: what shape does this look like? Nearly a rectangle.",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Mark the sides: the height is a radius, and the length is half the round edge, half of 2 × π × r, which is π × r. Cut thinner slices: the waves flatten.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Area = length × height = π × r × r, written πr².",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "Radius 7 cm: half the circumference is 22 cm, and 22 × 7 = 154 square cm.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Using the diameter 14 gives 616, four times too much, because the rectangle's height is the radius.",
+    "cites": []
+   },
+   {
+    "move": "your_turn",
+    "what": "Radius 14 cm: the learner finds 616 square cm, four times 154, before it is shown.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says where π × r and r come from in the rectangle.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "A circle has radius 7 cm. What is its area? (take π = 22/7)",
+    "options": [
+     "154 square cm",
+     "44 square cm",
+     "616 square cm"
+    ],
+    "answer_index": 0,
+    "explain": "Half the circumference is 22 cm and the height is 7 cm, so 22 × 7 = 154; 44 is the circumference and 616 uses the diameter.",
+    "cites": []
+   },
+   {
+    "question": "A circle's radius is doubled from 7 cm to 14 cm. What happens to its area?",
+    "options": [
+     "It becomes four times as much",
+     "It becomes twice as much",
+     "It grows by 44 square cm, one more circumference"
+    ],
+    "answer_index": 0,
+    "explain": "The rectangle becomes twice as long and twice as tall, so its area is 2 × 2 = 4 times as much.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "Circle into rectangle",
+   "kind": "hands",
+   "materials": [
+    "paper",
+    "a round lid or steel plate to trace",
+    "pencil",
+    "scissors",
+    "ruler"
+   ],
+   "stands_for": "The paper circle is the circle; each folded slice is a sector; the ruler measures the rectangle's sides.",
+   "predict": "When you lay the slices alternately up and down, will the height of the shape be the radius or the diameter?",
+   "steps": [
+    "Trace a round lid on paper and cut out the circle.",
+    "Fold it in half three times and open it to see eight equal slices.",
+    "Cut along the folds.",
+    "Lay the slices in a row, alternately pointing up and down.",
+    "Measure the height of the shape and the radius of the circle with the ruler."
+   ],
+   "observe": "The slices make a shape close to a rectangle with wavy edges; its height is the same as the radius, and its length is about half the way round the circle.",
+   "question": "Why is the area of this rectangle the same as the area of the circle?",
+   "expected": "Because it is made of exactly the same pieces moved around, and its height is the radius and its length is half the circumference, π × r, so the area is π × r × r.",
+   "write": "A circle cut into slices makes a rectangle π × r long and r tall. So the area of a circle is π × r × r.",
+   "in_class": "Pairs, each tracing a lid. The teacher draws the rearranged slices on the board and labels one side r and the other side ?. Ask: what is the long side, and why? A pair that says 2πr has not seen that half the slices point up and half point down.",
+   "cites": []
+  },
+  "leave_out": [
+   "the area of a ring or sector",
+   "where the value of π comes from",
+   "the proof by limits"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

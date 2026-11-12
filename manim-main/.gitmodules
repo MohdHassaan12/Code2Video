@@ -1,0 +1,11 @@
+[submodule "concept_explorer"]
+	path = concept_explorer
+	url = https://github.com/ManideepDonkena/concept_explorer.git
+	branch = Final-Vid-Gen
+[submodule "Stem_Animation_Manim"]
+	path = Stem_Animation_Manim
+	url = https://github.com/ManideepDonkena/Stem_Animation_Manim.git
+	branch = main
+[submodule "education_content_review"]
+	path = education_content_review
+	url = https://github.com/ManideepDonkena/education_content_review-.git

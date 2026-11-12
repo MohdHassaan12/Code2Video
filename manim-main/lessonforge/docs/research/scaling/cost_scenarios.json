@@ -1,0 +1,233 @@
+{
+  "status": "illustrative_workload_estimates_not_measured_video_costs",
+  "price_source": "https://openrouter.ai/api/v1/models",
+  "price_retrieved_at": "2026-10-06T16:55:13.963116+00:00",
+  "rates_usd_per_million": {
+    "anthropic/claude-sonnet-4.6": {
+      "input": 3.0,
+      "output": 15.0
+    },
+    "google/gemini-2.5-flash": {
+      "input": 0.3,
+      "output": 2.5
+    },
+    "qwen/qwen3-coder-30b-a3b-instruct": {
+      "input": 0.07,
+      "output": 0.28
+    }
+  },
+  "lesson_minutes": 20,
+  "scenarios": [
+    {
+      "name": "premium",
+      "stages": [
+        {
+          "stage": "planning",
+          "calls": 4,
+          "input_tokens_each": 8000,
+          "output_tokens_each": 2000,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.216
+        },
+        {
+          "stage": "script",
+          "calls": 10,
+          "input_tokens_each": 6000,
+          "output_tokens_each": 900,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.315
+        },
+        {
+          "stage": "code",
+          "calls": 20,
+          "input_tokens_each": 6000,
+          "output_tokens_each": 1800,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.9
+        },
+        {
+          "stage": "visual_review",
+          "calls": 20,
+          "input_tokens_each": 4000,
+          "output_tokens_each": 400,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.36
+        },
+        {
+          "stage": "repair",
+          "calls": 6,
+          "input_tokens_each": 5000,
+          "output_tokens_each": 1600,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.234
+        },
+        {
+          "stage": "continuity",
+          "calls": 2,
+          "input_tokens_each": 12000,
+          "output_tokens_each": 1200,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.108
+        }
+      ],
+      "llm_usd": 2.133,
+      "tts_usd": 0.36,
+      "render_usd": 1.0,
+      "review_usd": 30.0,
+      "storage_usd": 0.1,
+      "attempt_total_usd": 33.593
+    },
+    {
+      "name": "hybrid",
+      "stages": [
+        {
+          "stage": "planning",
+          "calls": 4,
+          "input_tokens_each": 8000,
+          "output_tokens_each": 2000,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.216
+        },
+        {
+          "stage": "script",
+          "calls": 10,
+          "input_tokens_each": 6000,
+          "output_tokens_each": 900,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.315
+        },
+        {
+          "stage": "code",
+          "calls": 20,
+          "input_tokens_each": 6000,
+          "output_tokens_each": 1800,
+          "model": "qwen/qwen3-coder-30b-a3b-instruct",
+          "cost_usd": 0.018480000000000003
+        },
+        {
+          "stage": "visual_review",
+          "calls": 20,
+          "input_tokens_each": 4000,
+          "output_tokens_each": 400,
+          "model": "google/gemini-2.5-flash",
+          "cost_usd": 0.044
+        },
+        {
+          "stage": "repair",
+          "calls": 6,
+          "input_tokens_each": 5000,
+          "output_tokens_each": 1600,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.234
+        },
+        {
+          "stage": "continuity",
+          "calls": 2,
+          "input_tokens_each": 12000,
+          "output_tokens_each": 1200,
+          "model": "anthropic/claude-sonnet-4.6",
+          "cost_usd": 0.108
+        }
+      ],
+      "llm_usd": 0.9354800000000001,
+      "tts_usd": 0.36,
+      "render_usd": 1.0,
+      "review_usd": 30.0,
+      "storage_usd": 0.1,
+      "attempt_total_usd": 32.39548
+    },
+    {
+      "name": "economy_experiment",
+      "stages": [
+        {
+          "stage": "planning",
+          "calls": 4,
+          "input_tokens_each": 8000,
+          "output_tokens_each": 2000,
+          "model": "qwen/qwen3-coder-30b-a3b-instruct",
+          "cost_usd": 0.00448
+        },
+        {
+          "stage": "script",
+          "calls": 10,
+          "input_tokens_each": 6000,
+          "output_tokens_each": 900,
+          "model": "qwen/qwen3-coder-30b-a3b-instruct",
+          "cost_usd": 0.006720000000000001
+        },
+        {
+          "stage": "code",
+          "calls": 20,
+          "input_tokens_each": 6000,
+          "output_tokens_each": 1800,
+          "model": "qwen/qwen3-coder-30b-a3b-instruct",
+          "cost_usd": 0.018480000000000003
+        },
+        {
+          "stage": "visual_review",
+          "calls": 20,
+          "input_tokens_each": 4000,
+          "output_tokens_each": 400,
+          "model": "google/gemini-2.5-flash",
+          "cost_usd": 0.044
+        },
+        {
+          "stage": "repair",
+          "calls": 6,
+          "input_tokens_each": 5000,
+          "output_tokens_each": 1600,
+          "model": "qwen/qwen3-coder-30b-a3b-instruct",
+          "cost_usd": 0.004788000000000001
+        },
+        {
+          "stage": "continuity",
+          "calls": 2,
+          "input_tokens_each": 12000,
+          "output_tokens_each": 1200,
+          "model": "qwen/qwen3-coder-30b-a3b-instruct",
+          "cost_usd": 0.0023520000000000004
+        }
+      ],
+      "llm_usd": 0.08082,
+      "tts_usd": 0.36,
+      "render_usd": 1.0,
+      "review_usd": 30.0,
+      "storage_usd": 0.1,
+      "attempt_total_usd": 31.54082
+    }
+  ],
+  "assumptions": {
+    "visual_review_input_tokens": "4000 includes assumed image/video token budget; meter actual provider usage",
+    "cache_discount": 0,
+    "reasoning": "must be included in completion totals if enabled; no separate allowance here",
+    "tts": "24000 characters at assumed $15/M characters",
+    "render": "2 CPU worker-hours at assumed $0.50/hour",
+    "review": "1.5 human hours at assumed $20/hour",
+    "storage": "$0.10 allowance; excludes delivery bandwidth",
+    "training": "illustrative only; no GPU throughput/memory profiling performed"
+  },
+  "training_setup": {
+    "teacher_examples": 5000,
+    "teacher_input_tokens_each": 1000,
+    "teacher_output_tokens_each": 800,
+    "review_minutes_each": 1,
+    "review_usd_hour": 20,
+    "engineering_hours": 40,
+    "engineering_usd_hour": 30,
+    "gpu_count": 6,
+    "training_hours": 8,
+    "assumed_gpu_usd_hour": 3
+  },
+  "training_setup_cost_usd": 3085.6666666666665,
+  "break_even_lessons_by_net_saving": {
+    "0.25": 12342.666666666666,
+    "1": 3085.6666666666665,
+    "5": 617.1333333333333,
+    "10": 308.56666666666666
+  },
+  "sensitivity": {
+    "extra_five_review_minutes_usd": 1.6666666666666665,
+    "repair_20_chunks_prob_0_3_expected_calls": 6.0,
+    "whole_lesson_all_pass_40_chunks_p98": 0.44570040395095073
+  }
+}

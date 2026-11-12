@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P01 · No end-to-end quality score — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">01</div>
+  <div>
+    <h1>No end-to-end quality score</h1>
+    <div class="sub">The system can prove a video is geometrically clean. It cannot say whether it is any good.
+    Until quality can be scored, every other lever on this site is tuned on eyeballs — which is why this problem ranks first.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>01</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-v">V · probes own truth — but only geometric truth</span>
+  <span class="chip t2">T2 applied</span><span class="chip t3">→ T3 at the pedagogy end</span>
+  <span class="chip mat">Maturity: L0–L1 (stage G graded L2.5, but only for geometry)</span>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today — what IS measured</div>
+  <p>Verification is real and layered, but every layer measures <b>geometry or plumbing</b>:</p>
+  <ul>
+    <li>The dry-run probe (<code>_OVERLAP_PROBE_SNIPPET</code>, <code>app/render.py</code>) patches <code>Scene.play</code> and counts,
+      after every beat: text-on-text overlap, clipped text at the frame edge, text-over-shape.</li>
+    <li>Admission gates on the storyboard check truncation, shape, and on-screen language
+      (<code>storyboard_shape_problems</code>, <code>app/storyboard.py:32</code>) — never content quality.</li>
+    <li>Every video ships a sidecar (<code>_write_video_sidecar</code>, <code>app/jobs.py:67</code>) with
+      <code>repair_rounds</code>, <code>violations_remaining</code>, <code>animation_beats</code>, <code>voice_degraded</code> — all structural counters.</li>
+    <li>Per-stage grades are earned from runs (<span class="src">reference-architecture.md:850-851</span>), and the harness battery
+      (253/253 checks green, measured 2026-07-27) pins every layer’s <i>contract</i>. Nothing pins its <i>quality</i>.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why this is research-grade</div>
+  <p>The roadmap says it outright: “no narration QA at all; no fidelity-to-source QA”
+  <span class="src">pipeline-roadmap.md:510-511</span>. A video with zero violations can still mumble, pace wrongly, explain
+  badly, or teach nothing — and the pipeline will stamp it Clean on <code>/timeline</code>.</p>
+  <p>The consequence is systemic: storyboard prompt changes, Visual Director directives, entrance vocabulary, pacing, the
+  <code>tech_terms</code> spoken-language policy — all are currently judged by watching videos. The repo’s own discipline
+  (“grades earned from evidence, never guessed”) stops exactly at the point where the evidence would need to be a
+  <b>quality score</b>. What makes it hard: “good educational video” has no agreed computable definition; LLM-judge scores
+  are cheap but drift, and the true metric — did a student learn — is unobservable at build time.</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>Stage G graded <b>L2.5</b> — the grade text covers only the geometric probe family <span class="src">pipeline-roadmap.md:506</span>.</li>
+    <li>Director live runs were assessed by reading its logs (“40 rescaled, 0 hides, 14 highlights, 3 rejected”) and watching
+      the output — no score existed to compare against <span class="src">pipeline-roadmap.md:327-328</span>.</li>
+    <li>The end-to-end benchmark is three topics chosen for historical breakage, evaluated by eye <span class="src">reference-architecture.md:1409-1411</span>.</li>
+    <li>The bulk runner — the natural eval harness — is fully built (454 lines, <code>bulk_runner.py</code>) and has never produced
+      a run: <code>bulk_runs/</code> does not exist on disk (measured 2026-07-27).</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art <span class="tag">citation-check before external use</span></div>
+  <p>Rubric-based LLM-as-judge evaluation is standard practice for generated text (MT-Bench / AlpacaEval style), with known
+  failure modes — position bias, verbosity bias, self-preference — that calibration against human ratings partially controls.
+  Multimedia-learning research (Mayer’s principles: coherence, signaling, segmenting, modality) offers a defensible rubric
+  <i>source</i> for instructional video. Generic video metrics (FVD-style distributional scores) measure realism, not
+  pedagogy, and are a poor fit here. No widely accepted automated metric for “teaching quality of a generated explainer
+  video” exists — that end of this problem is genuinely open.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — cheap → deep</div>
+  <ol>
+    <li><span class="badge solid-green">$0</span> Write the rubric as a doc (dimensions: correctness, coherence, pacing,
+      visual-narration match, language contract) and add scored fields to the sidecar schema
+      (<code>schemas/render-verification-ir.schema.json</code> + <code>--regen</code>, drift-gated by <code>test_ir_contracts.py</code>).</li>
+    <li><span class="badge solid-amber">metered</span> An LLM-judge pass over storyboard + narration transcript per rubric
+      dimension; calibrate once against human ratings of ~20 existing videos (25 mp4s already sit in
+      <code>static/videos/</code>). Follow the house metric rule: check any new score reads sane on a known-good run first —
+      the <code>voice_degraded</code> false-positive incident is the cautionary tale <span class="src">CLAUDE.md:159-164</span>.</li>
+    <li><span class="badge solid-amber">metered</span> Stand up the built-but-never-run bulk runner as the eval loop: a fixed
+      topic suite, scored sidecars, per-stage score trends across commits — turning “grades earned from evidence” into a
+      continuously earned number.</li>
+    <li><span class="badge solid-purple">research</span> Validate: do rubric scores predict human preference? Do they predict
+      comprehension (even a small quiz-based study)? This is the T3 tail — a proxy metric that tracks learning.</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p>Agreement with blinded human ranking on held-out videos; score stability across reruns of the same board; and a
+  regression sensitivity test in the house style — inject a known-bad change (the probe suite already uses a
+  <code>forced_bug</code> fixture) and require the score to drop. A quality score that never moves, or always moves, fails the
+  repo’s own “a signal that always fires is no signal” rule.</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p03-vision-qa.html">P03 machine perception</a> supplies the visual dimension of any score ·
+  <a href="p09-pedagogy-gate.html">P09 pedagogy gate</a> is this problem’s hardest sub-dimension ·
+  <a href="p08-grounding-fidelity.html">P08 grounding fidelity</a> is its factual sub-dimension ·
+  <a href="p02-state-and-cost.html">P02 state &amp; cost</a> makes eval runs comparable and affordable.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p02-state-and-cost.html">next: P02 state, cost &amp; run ledger →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

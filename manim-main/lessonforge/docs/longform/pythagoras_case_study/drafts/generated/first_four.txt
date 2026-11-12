@@ -1,0 +1,1030 @@
+from lesson_runtime import *
+import math
+import numpy as np
+
+# ── helpers ──────────────────────────────────────────────────────────────────
+
+def right_triangle_points(a, b, origin=np.array([0.0, 0.0, 0.0])):
+    """Return (A, B, C) where right angle is at B.
+    A = origin, B = origin+(a,0,0), C = origin+(a,b,0)"""
+    A = np.array([origin[0],        origin[1],        0.0])
+    B = np.array([origin[0] + a,    origin[1],        0.0])
+    C = np.array([origin[0] + a,    origin[1] + b,    0.0])
+    return A, B, C
+
+def make_right_angle_mark(corner, v1, v2, size=0.18, color=INK):
+    """Small square marker at corner, legs toward v1 and v2."""
+    d1 = (v1 - corner) / np.linalg.norm(v1 - corner) * size
+    d2 = (v2 - corner) / np.linalg.norm(v2 - corner) * size
+    p1 = corner + d1
+    p2 = corner + d1 + d2
+    p3 = corner + d2
+    return Polygon(corner, p1, p2, p3,
+                   stroke_color=color, stroke_width=1.5, fill_opacity=0)
+
+def make_grid_square(origin, side_vec, perp_vec, n, color, fill_color, fill_opacity=0.35):
+    """Build an n×n grid square. origin is one corner, side_vec and perp_vec
+    are the two edge vectors (length = side length)."""
+    lines = VGroup()
+    for i in range(n + 1):
+        t = i / n
+        p0 = origin + t * side_vec
+        p1 = p0 + perp_vec
+        lines.add(Line(p0, p1, stroke_color=color, stroke_width=0.8))
+        p0b = origin + t * perp_vec
+        p1b = p0b + side_vec
+        lines.add(Line(p0b, p1b, stroke_color=color, stroke_width=0.8))
+    corners = [origin, origin + side_vec,
+               origin + side_vec + perp_vec, origin + perp_vec]
+    sq = Polygon(*corners, stroke_color=color, stroke_width=2,
+                 fill_color=fill_color, fill_opacity=fill_opacity)
+    return VGroup(sq, lines)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# C01 – THE SHORTCUT
+# ═══════════════════════════════════════════════════════════════════════════
+class C01(LessonScene):
+    def construct(self):
+        self.chapter(1)
+
+        # ── shared geometry ──────────────────────────────────────────────
+        # Triangle lives in left region, scaled to fit nicely
+        # A=bottom-left, B=bottom-right, C=top-right
+        # raw coords: A=(0,0), B=(4,0), C=(4,3)  → scale by 0.55, shift
+        SCALE = 0.55
+        OX, OY = -4.8, -1.6
+        A = np.array([OX,            OY,           0.0])
+        B = np.array([OX + 4*SCALE,  OY,           0.0])
+        C = np.array([OX + 4*SCALE,  OY + 3*SCALE, 0.0])
+
+        # ── BEAT 01 ──────────────────────────────────────────────────────
+        self.begin("01")
+
+        # Rectangle floor
+        rect = Rectangle(width=4*SCALE, height=3*SCALE,
+                         stroke_color=MUTED, stroke_width=1.5,
+                         fill_color=GRID, fill_opacity=0.25)
+        rect.move_to([(A[0]+B[0])/2 + 2*SCALE/2,
+                      (A[1]+C[1])/2, 0])
+        # easier: place by corners
+        rect = Polygon(A, B, C + np.array([0, 0, 0]),
+                       np.array([A[0], C[1], 0]),
+                       stroke_color=MUTED, stroke_width=1.5,
+                       fill_color=GRID, fill_opacity=0.25)
+
+        self.cue("Picture a rectangular warehouse floor",
+                 FadeIn(rect), run_time=1.0)
+
+        # Teal arrow east along bottom
+        teal_arrow = Arrow(A, B, color=TEAL, buff=0,
+                           stroke_width=4, max_tip_length_to_length_ratio=0.12)
+        lbl_4 = txt("4 m", 24, TEAL).next_to(teal_arrow, DOWN, buff=0.12)
+
+        self.cue("It could travel four metres east",
+                 GrowArrow(teal_arrow), run_time=0.9)
+        self.cue("then three metres north",
+                 FadeIn(lbl_4), run_time=0.5)
+
+        # Gold arrow north along right edge
+        gold_arrow = Arrow(B, C, color=GOLD, buff=0,
+                           stroke_width=4, max_tip_length_to_length_ratio=0.12)
+        lbl_3 = txt("3 m", 24, GOLD).next_to(gold_arrow, RIGHT, buff=0.12)
+
+        self.cue("then three metres north",
+                 GrowArrow(gold_arrow), run_time=0.9)
+        self.play(FadeIn(lbl_3), run_time=0.4)
+
+        # Route label
+        route_lbl = txt("Route = 4 + 3 = 7 m", 26, INK)
+        route_lbl.move_to([3.5, 1.6, 0])
+        self.cue("That route covers seven metres",
+                 FadeIn(route_lbl), run_time=0.7)
+
+        # Dashed pink diagonal
+        diag = DashedLine(A, C, color=PINK, stroke_width=3, dash_length=0.15)
+        qmark = txt("?", 32, PINK).move_to(
+            (A + C) / 2 + np.array([-0.25, 0.1, 0]))
+
+        self.cue("But the robot can also drive straight across the diagonal",
+                 Create(diag), run_time=1.0)
+        self.cue("How long is that shortcut",
+                 FadeIn(qmark), run_time=0.6)
+
+        # Panel
+        p1 = eq(r"4 + 3 = 7\text{ m}", 34, INK)
+        p2 = txt("Diagonal = ?", 26, PINK)
+        self.cue("By the end, you will be able to calculate it",
+                 self.panel_to(p1, p2), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 02 ──────────────────────────────────────────────────────
+        self.begin("02")
+
+        # Fade rectangle, keep triangle sides
+        tri_bottom = Line(A, B, color=TEAL, stroke_width=3)
+        tri_right  = Line(B, C, color=GOLD, stroke_width=3)
+        tri_diag   = Line(A, C, color=PINK, stroke_width=3)
+
+        self.cue("Look at those three line segments",
+                 AnimationGroup(
+                     FadeOut(rect),
+                     Create(tri_bottom), Create(tri_right), Create(tri_diag),
+                     FadeOut(diag),
+                     lag_ratio=0),
+                 run_time=1.0)
+
+        # Right-angle marker at B
+        ra_mark = make_right_angle_mark(B,
+                                        A, C + np.array([0, -3*SCALE, 0]),
+                                        size=0.16, color=INK)
+        # correct: legs from B toward A and toward C
+        ra_mark = make_right_angle_mark(B, A, C, size=0.16, color=INK)
+
+        self.cue("Where the two legs meet, the corner is a right angle",
+                 Create(ra_mark), run_time=0.8)
+
+        # Glow sequence
+        self.cue("The little corner mark tells us it is exactly ninety degrees",
+                 Indicate(ra_mark, color=GOLD, scale_factor=1.4), run_time=0.7)
+
+        self.cue("Keep watching that mark",
+                 AnimationGroup(
+                     Indicate(tri_bottom, color=TEAL, scale_factor=1.05),
+                     run_time=0.6))
+        self.play(Indicate(tri_right, color=GOLD, scale_factor=1.05), run_time=0.5)
+        self.play(Indicate(tri_diag,  color=PINK, scale_factor=1.05), run_time=0.5)
+
+        p3 = txt("Right angle at corner", 26, INK)
+        p4 = txt("Makes theorem possible", 24, MUTED)
+        self.cue("It is the condition that makes the relationship",
+                 self.panel_to(p3, p4), run_time=0.7)
+
+        self.finish()
+
+        # ── BEAT 03 ──────────────────────────────────────────────────────
+        self.begin("03")
+
+        # Number line below triangle
+        nl_y = -2.3
+        nl_x0, nl_x1 = -5.5, -1.0
+        nline = Line([nl_x0, nl_y, 0], [nl_x1, nl_y, 0],
+                     color=MUTED, stroke_width=2)
+        # ticks 0..8
+        ticks = VGroup()
+        tick_lbls = VGroup()
+        for i in range(9):
+            tx = nl_x0 + i * (nl_x1 - nl_x0) / 8
+            ticks.add(Line([tx, nl_y-0.07, 0], [tx, nl_y+0.07, 0],
+                           color=MUTED, stroke_width=1.5))
+            tick_lbls.add(txt(str(i), 16, MUTED).move_to([tx, nl_y-0.22, 0]))
+
+        self.cue("Before calculating, estimate",
+                 AnimationGroup(Create(nline), Create(ticks), FadeIn(tick_lbls),
+                                lag_ratio=0),
+                 run_time=0.9)
+
+        # Bracket 4..7
+        x4 = nl_x0 + 4 * (nl_x1 - nl_x0) / 8
+        x7 = nl_x0 + 7 * (nl_x1 - nl_x0) / 8
+        bracket = Brace(Line([x4, nl_y, 0], [x7, nl_y, 0]),
+                        direction=UP, color=PINK)
+        bk_lbl = txt("diagonal lives here", 20, PINK)
+        bk_lbl.next_to(bracket, UP, buff=0.08)
+
+        self.cue("The diagonal is longer than either leg",
+                 GrowFromCenter(bracket), run_time=0.8)
+        self.cue("But the straight path is shorter than the bent",
+                 FadeIn(bk_lbl), run_time=0.6)
+
+        # Pulse diagonal
+        self.cue("Our answer must lie between four and seven",
+                 Indicate(tri_diag, color=PINK, scale_factor=1.06), run_time=0.7)
+
+        p5 = eq(r"4 < \text{diagonal} < 7", 34, INK)
+        p6 = txt("Estimate before calculating", 24, MUTED)
+        self.cue("An estimate gives us a way to challenge an answer",
+                 self.panel_to(p5, p6), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 04 ──────────────────────────────────────────────────────
+        self.begin("04")
+
+        # Remove number line
+        self.play(FadeOut(VGroup(nline, ticks, tick_lbls, bracket, bk_lbl)),
+                  run_time=0.5)
+
+        # Three attempts on right side
+        att1 = VGroup(
+            eq(r"4 + 3 = 7", 32, MUTED),
+            txt("(route, not diagonal)", 20, MUTED)
+        ).arrange(DOWN, buff=0.1)
+        cross1 = Cross(att1, color=RED, stroke_width=2)
+
+        att2 = VGroup(
+            eq(r"4 \times 3 = 12", 32, MUTED),
+            txt("(area, not length)", 20, MUTED)
+        ).arrange(DOWN, buff=0.1)
+        cross2 = Cross(att2, color=RED, stroke_width=2)
+
+        att3 = VGroup(
+            eq(r"4^2 + 3^2 = \;?", 34, GOLD),
+        )
+
+        attempts = VGroup(att1, att2, att3).arrange(DOWN, buff=0.45)
+        attempts.move_to([3.5, 0.3, 0])
+
+        self.cue("Why would anyone think to square the side lengths",
+                 FadeIn(att1), run_time=0.7)
+        self.cue("Adding four and three gives seven",
+                 FadeIn(cross1), run_time=0.5)
+        self.cue("Multiplying gives twelve",
+                 FadeIn(att2), run_time=0.6)
+        self.play(FadeIn(cross2), run_time=0.4)
+
+        self.cue("Squaring has a geometric meaning",
+                 FadeIn(att3), run_time=0.7)
+
+        # Small preview squares on triangle sides
+        sv = 0.28  # small square size
+        sq_a_prev = Square(side_length=sv, color=TEAL,
+                           fill_color=TEAL, fill_opacity=0.4,
+                           stroke_width=1.5)
+        sq_a_prev.move_to(A + np.array([0, -sv*0.6, 0]))
+
+        sq_b_prev = Square(side_length=sv, color=GOLD,
+                           fill_color=GOLD, fill_opacity=0.4,
+                           stroke_width=1.5)
+        sq_b_prev.move_to(C + np.array([sv*0.6, 0, 0]))
+
+        self.cue("it turns a side length into the area of a square",
+                 AnimationGroup(FadeIn(sq_a_prev), FadeIn(sq_b_prev),
+                                lag_ratio=0.3),
+                 run_time=0.8)
+
+        p7 = eq(r"4^2 + 3^2 = \;?", 36, GOLD)
+        p8 = txt("Why squares?", 26, INK)
+        self.cue("How could comparing areas help us discover a length",
+                 self.panel_to(p7, p8), run_time=0.8)
+
+        self.finish()
+        self.done()
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# C02 – LENGTH BECOMES AREA
+# ═══════════════════════════════════════════════════════════════════════════
+class C02(LessonScene):
+    def construct(self):
+        self.chapter(2)
+
+        # Triangle geometry (same scale as C01)
+        SCALE = 0.55
+        OX, OY = -4.8, -1.6
+        A = np.array([OX,            OY,           0.0])
+        B = np.array([OX + 4*SCALE,  OY,           0.0])
+        C = np.array([OX + 4*SCALE,  OY + 3*SCALE, 0.0])
+
+        def make_triangle():
+            tri = Polygon(A, B, C,
+                          stroke_color=INK, stroke_width=2,
+                          fill_color=BG, fill_opacity=0)
+            tb = Line(A, B, color=TEAL, stroke_width=3)
+            tr = Line(B, C, color=GOLD, stroke_width=3)
+            td = Line(A, C, color=PINK, stroke_width=3)
+            ra = make_right_angle_mark(B, A, C, size=0.16, color=INK)
+            return VGroup(tri, tb, tr, td, ra)
+
+        tri_grp = make_triangle()
+
+        # ── BEAT 05 ──────────────────────────────────────────────────────
+        self.begin("05")
+
+        self.play(FadeIn(tri_grp), run_time=0.6)
+
+        # Teal square on bottom leg (outward = downward from A-B)
+        # A=(OX,OY), B=(OX+4s,OY); outward = DOWN
+        s4 = 4 * SCALE
+        s3 = 3 * SCALE
+        sq_a_origin = A + np.array([0, -s4, 0])
+        sq_a_side   = np.array([s4, 0, 0])
+        sq_a_perp   = np.array([0,  s4, 0])
+        sq_a = make_grid_square(sq_a_origin, sq_a_side, sq_a_perp,
+                                4, TEAL, TEAL, 0.30)
+
+        self.cue("Let us build a square on each side of our triangle",
+                 FadeIn(tri_grp), run_time=0.5)
+
+        self.cue("On the four-metre teal leg, we grow a square outward",
+                 Create(sq_a), run_time=1.2)
+
+        lbl_16 = txt("16 sq m", 22, TEAL)
+        lbl_16.move_to(sq_a_origin + np.array([s4/2, s4/2, 0]))
+
+        self.cue("Its area is four times four, which is sixteen square metres",
+                 FadeIn(lbl_16), run_time=0.8)
+
+        # Gold square on right leg (outward = RIGHT from B-C)
+        # B=(OX+4s,OY), C=(OX+4s,OY+3s); outward = RIGHT
+        sq_b_origin = B
+        sq_b_side   = np.array([s3, 0, 0])
+        sq_b_perp   = np.array([0,  s3, 0])
+        sq_b = make_grid_square(sq_b_origin, sq_b_side, sq_b_perp,
+                                3, GOLD, GOLD, 0.30)
+
+        self.cue("On the three-metre gold leg, we grow another square outward",
+                 Create(sq_b), run_time=1.0)
+
+        lbl_9 = txt("9 sq m", 22, GOLD)
+        lbl_9.move_to(sq_b_origin + np.array([s3/2, s3/2, 0]))
+
+        self.cue("Its area is three times three, which is nine square metres",
+                 FadeIn(lbl_9), run_time=0.7)
+
+        p1 = eq(r"a^2 = 4^2 = 16", 34, TEAL)
+        p2 = eq(r"b^2 = 3^2 = 9",  34, GOLD)
+        self.cue("These are real geometric squares with real area",
+                 self.panel_to(p1, p2), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 06 ──────────────────────────────────────────────────────
+        self.begin("06")
+
+        # Show 16+9=25
+        sum_eq = eq(r"16 + 9 = 25", 34, INK).move_to([3.5, 1.5, 0])
+        self.cue("Now add those two areas together",
+                 FadeIn(sum_eq), run_time=0.7)
+
+        # Pink square on diagonal (outward = upper-left from A-C)
+        # A=(OX,OY), C=(OX+4s,OY+3s)
+        # diagonal vector AC, perp outward (rotate 90° CCW)
+        AC = C - A
+        AC_len = np.linalg.norm(AC)
+        AC_unit = AC / AC_len
+        perp_unit = np.array([-AC_unit[1], AC_unit[0], 0.0])
+        s5 = AC_len  # should be 5*SCALE
+        sq_c_origin = A
+        sq_c_side   = AC
+        sq_c_perp   = perp_unit * s5
+
+        sq_c = make_grid_square(sq_c_origin, sq_c_side, sq_c_perp,
+                                5, PINK, PINK, 0.28)
+
+        self.cue("The claim of the Pythagorean theorem is that the square built on the diagonal",
+                 Create(sq_c), run_time=1.2)
+
+        lbl_25 = txt("25 sq m", 22, PINK)
+        lbl_25.move_to(sq_c_origin + (sq_c_side + sq_c_perp) / 2)
+
+        self.cue("also has an area of exactly twenty-five square metres",
+                 FadeIn(lbl_25), run_time=0.7)
+
+        # sqrt arrow
+        sqrt_eq = eq(r"\sqrt{25} = 5\text{ m}", 34, PINK).move_to([3.5, 0.5, 0])
+        arr_to_sqrt = Arrow([3.5, 1.1, 0], [3.5, 0.9, 0],
+                            color=PINK, buff=0.05, stroke_width=2)
+
+        self.cue("the diagonal's length must be the number whose square is twenty-five",
+                 AnimationGroup(FadeIn(arr_to_sqrt), FadeIn(sqrt_eq),
+                                lag_ratio=0.3),
+                 run_time=0.9)
+
+        p3 = eq(r"16+9=25,\; c=5\text{ m}", 30, INK)
+        p4 = eq(r"c^2=a^2+b^2", 34, INK)
+        self.cue("the area is twenty-five square metres, but the length is five metres",
+                 self.panel_to(p3, p4), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 07 ──────────────────────────────────────────────────────
+        self.begin("07")
+
+        # Replace numeric labels with variable labels on triangle sides
+        lbl_a = txt("a", 24, TEAL)
+        lbl_b = txt("b", 24, GOLD)
+        lbl_c = txt("c", 24, PINK)
+        lbl_a.move_to((A + B) / 2 + np.array([0, -0.22, 0]))
+        lbl_b.move_to((B + C) / 2 + np.array([0.22, 0, 0]))
+        lbl_c.move_to((A + C) / 2 + np.array([-0.22, 0.1, 0]))
+
+        self.cue("Five lies between four and seven, so the answer passes our estimate",
+                 AnimationGroup(FadeIn(lbl_a), FadeIn(lbl_b), FadeIn(lbl_c),
+                                lag_ratio=0.3),
+                 run_time=0.8)
+
+        # Main formula large
+        main_formula = eq(r"c^2 = a^2 + b^2", 44, INK).move_to([3.5, 1.3, 0])
+        self.cue("Now call the teal leg a, the gold leg b, and the pink diagonal c",
+                 FadeIn(main_formula), run_time=0.8)
+
+        # Specific substitution colour-coded
+        spec = VGroup(
+            MathTex(r"5^2", font_size=36, color=PINK),
+            MathTex(r"=", font_size=36, color=INK),
+            MathTex(r"4^2", font_size=36, color=TEAL),
+            MathTex(r"+", font_size=36, color=INK),
+            MathTex(r"3^2", font_size=36, color=GOLD),
+        ).arrange(RIGHT, buff=0.12).move_to([3.5, 0.4, 0])
+
+        self.cue("Here, twenty-five equals sixteen plus nine",
+                 FadeIn(spec), run_time=0.8)
+
+        self.cue("But checking one example is evidence, not a proof",
+                 Indicate(main_formula, scale_factor=1.05), run_time=0.7)
+
+        p5 = eq(r"c^2 = a^2 + b^2", 38, INK)
+        p6 = txt("One example ≠ proof", 24, MUTED)
+        self.cue("We still need to explain why this must work for every right triangle",
+                 self.panel_to(p5, p6), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 08 ──────────────────────────────────────────────────────
+        self.begin("08")
+
+        # Fade squares slightly
+        self.play(
+            sq_a.animate.set_opacity(0.4),
+            sq_b.animate.set_opacity(0.4),
+            sq_c.animate.set_opacity(0.4),
+            run_time=0.6)
+
+        # New generic triangle on left
+        gA = np.array([-5.5, -1.5, 0])
+        gB = np.array([-3.8, -1.5, 0])
+        gC = np.array([-3.8,  0.3, 0])
+        gen_tri = Polygon(gA, gB, gC,
+                          stroke_color=INK, stroke_width=2,
+                          fill_color=BG, fill_opacity=0)
+        gen_ra  = make_right_angle_mark(gB, gA, gC, size=0.16, color=INK)
+        gen_la  = txt("a", 22, TEAL).move_to((gA+gB)/2 + np.array([0,-0.2,0]))
+        gen_lb  = txt("b", 22, GOLD).move_to((gB+gC)/2 + np.array([0.2,0,0]))
+        gen_lc  = txt("c", 22, PINK).move_to((gA+gC)/2 + np.array([-0.2,0.1,0]))
+
+        self.cue("A proof must work for any positive lengths a and b",
+                 AnimationGroup(
+                     Create(gen_tri), Create(gen_ra),
+                     FadeIn(gen_la), FadeIn(gen_lb), FadeIn(gen_lc),
+                     lag_ratio=0.2),
+                 run_time=1.0)
+
+        # Thought bubble text
+        thought = txt("Works for ANY a and b?", 24, GOLD)
+        thought.move_to([-4.65, 1.1, 0])
+        thought_box = SurroundingRectangle(thought, color=GOLD,
+                                           stroke_width=1.5, buff=0.15,
+                                           corner_radius=0.2)
+
+        self.cue("The claim is that the square on the hypotenuse has exactly the same area",
+                 AnimationGroup(FadeIn(thought), Create(thought_box),
+                                lag_ratio=0.3),
+                 run_time=0.9)
+
+        p7 = txt("Proof needed for all a, b", 26, INK)
+        p8 = eq(r"c^2 = a^2 + b^2 \;?", 32, MUTED)
+        self.cue("First, though, let us make sure we can identify the sides",
+                 self.panel_to(p7, p8), run_time=0.8)
+
+        self.finish()
+        self.done()
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# C03 – IDENTIFY THE RIGHT SIDE
+# ═══════════════════════════════════════════════════════════════════════════
+class C03(LessonScene):
+    def construct(self):
+        self.chapter(3)
+
+        # Triangle: right angle at B (bottom-right)
+        SCALE = 0.70
+        A = np.array([-5.2, -1.8, 0.0])
+        B = np.array([-5.2 + 4*SCALE, -1.8,           0.0])
+        C = np.array([-5.2 + 4*SCALE, -1.8 + 3*SCALE, 0.0])
+
+        def build_tri(pA, pB, pC, ra_size=0.18):
+            leg_a = Line(pA, pB, color=TEAL, stroke_width=3)
+            leg_b = Line(pB, pC, color=GOLD, stroke_width=3)
+            hyp   = Line(pA, pC, color=PINK, stroke_width=3)
+            ra    = make_right_angle_mark(pB, pA, pC, size=ra_size, color=INK)
+            return VGroup(leg_a, leg_b, hyp, ra)
+
+        # ── BEAT 09 ──────────────────────────────────────────────────────
+        self.begin("09")
+
+        tri = build_tri(A, B, C)
+        self.play(Create(tri), run_time=0.8)
+
+        # Labels
+        lbl_a = txt("a", 26, TEAL).move_to((A+B)/2 + np.array([0,-0.25,0]))
+        lbl_b = txt("b", 26, GOLD).move_to((B+C)/2 + np.array([0.25,0,0]))
+        lbl_c = txt("c", 26, PINK).move_to((A+C)/2 + np.array([-0.28,0.1,0]))
+
+        self.cue("Find the right-angle mark",
+                 AnimationGroup(
+                     Indicate(tri[3], color=GOLD, scale_factor=1.5),
+                     lag_ratio=0),
+                 run_time=0.7)
+
+        self.cue("The side opposite that corner is the hypotenuse",
+                 AnimationGroup(
+                     FadeIn(lbl_a), FadeIn(lbl_b), FadeIn(lbl_c),
+                     Indicate(tri[2], color=PINK, scale_factor=1.05),
+                     lag_ratio=0.3),
+                 run_time=0.9)
+
+        # Arrow label "opposite the right angle"
+        opp_lbl = txt("opposite the\nright angle", 20, PINK)
+        opp_lbl.move_to([-2.5, 0.2, 0])
+        opp_arr = Arrow(opp_lbl.get_left() + np.array([-0.1, 0, 0]),
+                        (A+C)/2 + np.array([0.1, 0, 0]),
+                        color=PINK, buff=0.05, stroke_width=2,
+                        max_tip_length_to_length_ratio=0.15)
+
+        self.cue("In a right triangle it is also the longest side",
+                 AnimationGroup(FadeIn(opp_lbl), GrowArrow(opp_arr),
+                                lag_ratio=0.3),
+                 run_time=0.9)
+
+        # Pulse RA mark twice
+        self.cue("The two legs that meet at the right angle are teal and gold",
+                 AnimationGroup(
+                     Indicate(tri[3], color=GOLD, scale_factor=1.4),
+                     lag_ratio=0),
+                 run_time=0.6)
+        self.play(Indicate(tri[3], color=GOLD, scale_factor=1.4), run_time=0.5)
+
+        p1 = txt("c is opposite the\nright angle", 26, PINK)
+        p2 = txt("Longest side = hypotenuse", 24, MUTED)
+        self.cue("These names describe relationships inside the triangle",
+                 self.panel_to(p1, p2), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 10 ──────────────────────────────────────────────────────
+        self.begin("10")
+
+        # Formula stays on right
+        form = eq(r"c^2 = a^2 + b^2", 36, INK).move_to([3.8, 1.8, 0])
+        self.play(FadeIn(form), run_time=0.5)
+
+        # Rotate whole triangle group (including labels, arrow, ra)
+        # We rotate the triangle + labels as one group
+        tri_full = VGroup(tri, lbl_a, lbl_b, lbl_c, opp_lbl, opp_arr)
+        center_pt = (A + B + C) / 3
+
+        self.cue("Watch the whole triangle rotate until the pink hypotenuse is at the bottom",
+                 Rotate(tri_full, angle=PI*0.75, about_point=center_pt),
+                 run_time=2.0)
+
+        self.cue("The right-angle mark has moved to the top",
+                 Indicate(tri[3], color=GOLD, scale_factor=1.4), run_time=0.7)
+
+        self.cue("Pink is still opposite the right angle",
+                 Indicate(tri[2], color=PINK, scale_factor=1.05), run_time=0.7)
+
+        p3 = txt("Rotation changes nothing", 26, INK)
+        p4 = eq(r"c^2 = a^2 + b^2", 34, INK)
+        self.cue("The formula remains c squared equals a squared plus b squared",
+                 self.panel_to(p3, p4), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 11 ──────────────────────────────────────────────────────
+        self.begin("11")
+
+        # Reset triangle to standard orientation
+        self.play(FadeOut(tri_full), run_time=0.4)
+
+        # Build a variable-angle triangle: legs fixed at 3s and 4s
+        # Pivot at origin P, leg1 along x-axis length 4s, leg2 at angle theta
+        SCALE2 = 0.65
+        P  = np.array([-5.0, -0.5, 0.0])
+        L1 = 4 * SCALE2  # teal leg
+        L2 = 3 * SCALE2  # gold leg
+
+        def tri_from_angle(theta_deg):
+            theta = math.radians(theta_deg)
+            pA = P
+            pB = P + np.array([L1, 0, 0])
+            pC = P + np.array([L2 * math.cos(math.pi/2 + theta - math.pi/2),
+                                L2 * math.sin(math.pi/2 + theta - math.pi/2), 0])
+            # simpler: leg1 along x, leg2 at angle theta from leg1
+            pC = P + np.array([L2 * math.cos(math.radians(90) + math.radians(theta_deg - 90)),
+                                L2 * math.sin(math.radians(90) + math.radians(theta_deg - 90)), 0])
+            return pA, pB, pC
+
+        def tri_from_angle_v2(theta_deg):
+            """P is pivot (right-angle vertex), leg1 east, leg2 at theta_deg from east."""
+            pP = P
+            pA = P + np.array([L1, 0, 0])   # end of teal leg
+            angle = math.radians(theta_deg)
+            pC = P + np.array([L2 * math.cos(angle), L2 * math.sin(angle), 0])
+            return pA, pP, pC  # A, right-angle-vertex, C
+
+        # Start at 90 degrees
+        pA90, pP90, pC90 = tri_from_angle_v2(90)
+
+        leg1_line = Line(pP90, pA90, color=TEAL, stroke_width=3)
+        leg2_line = Line(pP90, pC90, color=GOLD, stroke_width=3)
+        hyp_line  = Line(pA90, pC90, color=PINK, stroke_width=3)
+        ra_90     = make_right_angle_mark(pP90, pA90, pC90, size=0.16, color=INK)
+
+        self.play(Create(leg1_line), Create(leg2_line),
+                  Create(hyp_line), Create(ra_90), run_time=0.7)
+
+        lbl_3v = txt("3", 22, GOLD).next_to(leg2_line, LEFT, buff=0.1)
+        lbl_4v = txt("4", 22, TEAL).next_to(leg1_line, DOWN, buff=0.1)
+        self.play(FadeIn(lbl_3v), FadeIn(lbl_4v), run_time=0.4)
+
+        # Angle arc at P
+        angle_arc = Arc(radius=0.35, start_angle=0,
+                        angle=math.radians(90),
+                        arc_center=pP90, color=MUTED, stroke_width=2)
+        angle_lbl = txt("90°", 20, INK).move_to(pP90 + np.array([0.45, 0.25, 0]))
+        self.play(Create(angle_arc), FadeIn(angle_lbl), run_time=0.5)
+
+        self.cue("Now keep the three-metre and four-metre legs fixed",
+                 Indicate(leg1_line, color=TEAL), run_time=0.6)
+
+        # Animate to 120 degrees
+        pA120, pP120, pC120 = tri_from_angle_v2(120)
+        hyp_120 = Line(pA120, pC120, color=PINK, stroke_width=3)
+        arc_120 = Arc(radius=0.35, start_angle=0, angle=math.radians(120),
+                      arc_center=pP120, color=MUTED, stroke_width=2)
+        lbl_120 = txt("120°", 20, INK).move_to(pP120 + np.array([0.5, 0.35, 0]))
+        warn1 = eq(r"c \neq 5", 28, RED).move_to([-2.5, 0.8, 0])
+
+        self.cue("Open the angle beyond ninety degrees",
+                 AnimationGroup(
+                     Transform(leg2_line,
+                                Line(pP120, pC120, color=GOLD, stroke_width=3)),
+                     Transform(hyp_line,  hyp_120),
+                     Transform(angle_arc, arc_120),
+                     Transform(angle_lbl, lbl_120),
+                     FadeOut(ra_90),
+                     lag_ratio=0),
+                 run_time=1.0)
+        self.play(FadeIn(warn1), run_time=0.4)
+
+        # Animate to 60 degrees
+        pA60, pP60, pC60 = tri_from_angle_v2(60)
+        hyp_60  = Line(pA60, pC60, color=PINK, stroke_width=3)
+        arc_60  = Arc(radius=0.35, start_angle=0, angle=math.radians(60),
+                      arc_center=pP60, color=MUTED, stroke_width=2)
+        lbl_60  = txt("60°", 20, INK).move_to(pP60 + np.array([0.5, 0.22, 0]))
+
+        self.cue("Close it below ninety",
+                 AnimationGroup(
+                     Transform(leg2_line,
+                                Line(pP60, pC60, color=GOLD, stroke_width=3)),
+                     Transform(hyp_line,  hyp_60),
+                     Transform(angle_arc, arc_60),
+                     Transform(angle_lbl, lbl_60),
+                     lag_ratio=0),
+                 run_time=1.0)
+
+        # Back to 90 with right-angle mark
+        self.cue("Three and four give five only when they meet at a right angle",
+                 AnimationGroup(
+                     Transform(leg2_line,
+                                Line(pP90, pC90, color=GOLD, stroke_width=3)),
+                     Transform(hyp_line,
+                                Line(pA90, pC90, color=PINK, stroke_width=3)),
+                     Transform(angle_arc,
+                                Arc(radius=0.35, start_angle=0,
+                                    angle=math.radians(90),
+                                    arc_center=pP90, color=MUTED, stroke_width=2)),
+                     FadeOut(angle_lbl),
+                     FadeOut(warn1),
+                     lag_ratio=0),
+                 run_time=1.0)
+        ra_back = make_right_angle_mark(pP90, pA90, pC90, size=0.16, color=INK)
+        c5_lbl  = eq(r"c = 5", 28, PINK).move_to([-2.5, 0.8, 0])
+        self.play(Create(ra_back), FadeIn(c5_lbl), run_time=0.5)
+
+        p5 = txt("Right angle required", 26, INK)
+        p6 = txt("Check angle before theorem", 24, MUTED)
+        self.cue("That is why we check the angle before using the theorem",
+                 self.panel_to(p5, p6), run_time=0.7)
+
+        self.finish()
+
+        # ── BEAT 12 ──────────────────────────────────────────────────────
+        self.begin("12")
+
+        # Clean up variable-angle stuff, show standard triangle
+        self.play(
+            FadeOut(VGroup(leg1_line, leg2_line, hyp_line,
+                           ra_back, lbl_3v, lbl_4v,
+                           angle_arc, c5_lbl)),
+            run_time=0.5)
+
+        # Standard triangle
+        A2 = np.array([-5.2, -1.8, 0.0])
+        B2 = np.array([-5.2 + 4*SCALE2, -1.8,            0.0])
+        C2 = np.array([-5.2 + 4*SCALE2, -1.8 + 3*SCALE2, 0.0])
+        tri2 = build_tri(A2, B2, C2)
+        la2 = txt("a=4", 22, TEAL).move_to((A2+B2)/2 + np.array([0,-0.22,0]))
+        lb2 = txt("b=3", 22, GOLD).move_to((B2+C2)/2 + np.array([0.22,0,0]))
+        lc2 = txt("c=5", 22, PINK).move_to((A2+C2)/2 + np.array([-0.28,0.1,0]))
+
+        self.play(Create(tri2), FadeIn(la2), FadeIn(lb2), FadeIn(lc2),
+                  run_time=0.7)
+
+        # Crossed-out wrong equation
+        wrong = eq(r"a + b = c", 34, MUTED).move_to([3.5, 1.2, 0])
+        wrong_x = Cross(wrong, color=RED, stroke_width=2.5)
+        self.cue("Return the corner to ninety degrees",
+                 FadeIn(wrong), run_time=0.5)
+        self.cue("Notice that a plus b does not equal c",
+                 FadeIn(wrong_x), run_time=0.6)
+
+        # Correct formula
+        correct = eq(r"c^2 = a^2 + b^2", 38, TEAL).move_to([3.5, 0.1, 0])
+        self.cue("The theorem combines the squares of the legs",
+                 FadeIn(correct), run_time=0.8)
+
+        # Colour swatches
+        sw_a = VGroup(Square(0.2, fill_color=TEAL, fill_opacity=1,
+                             stroke_width=0), txt("a", 20, TEAL)).arrange(RIGHT, buff=0.1)
+        sw_b = VGroup(Square(0.2, fill_color=GOLD, fill_opacity=1,
+                             stroke_width=0), txt("b", 20, GOLD)).arrange(RIGHT, buff=0.1)
+        sw_c = VGroup(Square(0.2, fill_color=PINK, fill_opacity=1,
+                             stroke_width=0), txt("c", 20, PINK)).arrange(RIGHT, buff=0.1)
+        swatches = VGroup(sw_a, sw_b, sw_c).arrange(RIGHT, buff=0.4)
+        swatches.move_to([3.5, -1.0, 0])
+
+        self.cue("It is a different operation because we are measuring a different path",
+                 FadeIn(swatches), run_time=0.8)
+
+        p7 = eq(r"a + b \neq c", 34, RED)
+        p8 = eq(r"c^2 = a^2 + b^2", 34, INK)
+        self.cue("The sum three plus four measures the bent route",
+                 self.panel_to(p7, p8), run_time=0.8)
+
+        self.finish()
+        self.done()
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# C04 – BUILD A PROOF
+# ═══════════════════════════════════════════════════════════════════════════
+class C04(LessonScene):
+    def construct(self):
+        self.chapter(4)
+
+        # We build the classic "four triangles in a square" proof diagram.
+        # Outer square side = a+b.  We use a=4s, b=3s, s=0.38 for display.
+        s = 0.38
+        a = 4 * s
+        b = 3 * s
+        side = a + b   # outer square side
+
+        # Outer square bottom-left corner
+        OX, OY = -5.8, -2.1
+        # Outer square corners (CCW from bottom-left)
+        SQ = [
+            np.array([OX,        OY,        0.0]),
+            np.array([OX+side,   OY,        0.0]),
+            np.array([OX+side,   OY+side,   0.0]),
+            np.array([OX,        OY+side,   0.0]),
+        ]
+
+        # Four right triangles, each with right angle at an outer corner.
+        # Triangle i has right angle at SQ[i].
+        # Arrangement: legs a (teal) and b (gold) along the outer edges.
+        # Bottom-left corner: leg a goes RIGHT (east), leg b goes UP (north)
+        # Bottom-right corner: leg b goes UP, leg a goes LEFT
+        # Top-right corner: leg a goes LEFT, leg b goes DOWN
+        # Top-left corner: leg b goes DOWN, leg a goes RIGHT
+        # This gives hypotenuses forming a tilted inner square.
+
+        def tri_corners(i):
+            """Return (right_angle_pt, end_of_a_leg, end_of_b_leg) for corner i."""
+            P = SQ[i]
+            if i == 0:  # bottom-left: a→east, b→north
+                return P, P+np.array([a,0,0]), P+np.array([0,b,0])
+            elif i == 1:  # bottom-right: b→north, a→west
+                return P, P+np.array([0,b,0]), P+np.array([-a,0,0])
+            elif i == 2:  # top-right: a→west, b→south
+                return P, P+np.array([-a,0,0]), P+np.array([0,-b,0])
+            else:  # top-left: b→south, a→east
+                return P, P+np.array([0,-b,0]), P+np.array([a,0,0])
+
+        def make_proof_triangle(i, fill=True):
+            P, Ea, Eb = tri_corners(i)
+            poly = Polygon(P, Ea, Eb,
+                           stroke_color=INK, stroke_width=1.5,
+                           fill_color=GRID, fill_opacity=0.5 if fill else 0)
+            leg_a = Line(P, Ea, color=TEAL, stroke_width=2.5)
+            leg_b = Line(P, Eb, color=GOLD, stroke_width=2.5)
+            hyp   = Line(Ea, Eb, color=PINK, stroke_width=2.5)
+            ra    = make_right_angle_mark(P, Ea, Eb, size=0.14, color=INK)
+            return VGroup(poly, leg_a, leg_b, hyp, ra)
+
+        # Central square corners = hypotenuse endpoints
+        def central_corners():
+            pts = []
+            for i in range(4):
+                P, Ea, Eb = tri_corners(i)
+                pts.append(Ea)
+            return pts
+
+        # ── BEAT 13 ──────────────────────────────────────────────────────
+        self.begin("13")
+
+        # Draw outer square first
+        outer_sq = Polygon(*SQ,
+                           stroke_color=MUTED, stroke_width=2,
+                           fill_color=BG, fill_opacity=0)
+        self.cue("Let us build the proof",
+                 Create(outer_sq), run_time=0.7)
+
+        # Place triangles one by one
+        tris = [make_proof_triangle(i) for i in range(4)]
+
+        self.cue("Take a right triangle with legs a and b and hypotenuse c",
+                 Create(tris[0]), run_time=0.8)
+        self.cue("Make four identical copies",
+                 AnimationGroup(Create(tris[1]), Create(tris[2]), Create(tris[3]),
+                                lag_ratio=0.3),
+                 run_time=1.0)
+
+        # Label outer side a+b
+        ab_lbl = eq(r"a+b", 28, INK)
+        ab_lbl.move_to(np.array([OX + side/2, OY - 0.28, 0]))
+        self.cue("the outer side is a plus b",
+                 FadeIn(ab_lbl), run_time=0.6)
+
+        # Label a and b on bottom triangle legs
+        la_lbl = txt("a", 20, TEAL).move_to(
+            tri_corners(0)[0] + (tri_corners(0)[1]-tri_corners(0)[0])*0.5
+            + np.array([0, -0.2, 0]))
+        lb_lbl = txt("b", 20, GOLD).move_to(
+            tri_corners(0)[0] + (tri_corners(0)[2]-tri_corners(0)[0])*0.5
+            + np.array([-0.2, 0, 0]))
+        self.play(FadeIn(la_lbl), FadeIn(lb_lbl), run_time=0.5)
+
+        # Central region highlight
+        cc = central_corners()
+        central_sq = Polygon(*cc,
+                             stroke_color=PINK, stroke_width=2,
+                             fill_color=PINK, fill_opacity=0.2)
+        self.cue("The four hypotenuses enclose a shape in the centre",
+                 Create(central_sq), run_time=0.8)
+
+        p1 = eq(r"\text{Outer side} = a+b", 30, INK)
+        p2 = txt("4 congruent triangles", 24, MUTED)
+        self.cue("Around each outer edge, a leg of length a meets a leg of length b",
+                 self.panel_to(p1, p2), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 14 ──────────────────────────────────────────────────────
+        self.begin("14")
+
+        # Highlight central square with pink fill
+        self.play(central_sq.animate.set_fill(PINK, opacity=0.35), run_time=0.5)
+
+        # Label all four sides c
+        cc = central_corners()
+        c_labels = VGroup()
+        for i in range(4):
+            mid = (cc[i] + cc[(i+1)%4]) / 2
+            offset_dir = mid - np.array([OX + side/2, OY + side/2, 0])
+            offset_dir = offset_dir / (np.linalg.norm(offset_dir) + 1e-6) * 0.22
+            c_labels.add(txt("c", 20, PINK).move_to(mid + offset_dir))
+
+        self.cue("Is that central shape really a square",
+                 FadeIn(c_labels), run_time=0.7)
+
+        # Zoom into one corner of central square
+        # Corner cc[0] is the hypotenuse endpoint of triangle 0 and triangle 3
+        # The two acute angles meeting there are from tri 0 and tri 3
+        corner_pt = cc[0]  # = tri_corners(0)[1]
+
+        # Angle arcs at corner_pt
+        # From tri 0: hyp goes to cc[1], leg_a goes to SQ[0]
+        # From tri 3: hyp goes to cc[3], leg_b goes to SQ[0]+...
+        # Actually the two triangle angles at corner_pt:
+        # tri 0: angle at Ea = angle between (P0→Ea) and (Ea→Eb0)
+        # tri 3: angle at Ea3 = ...
+        # For display, just show alpha and beta arcs
+
+        alpha_arc = Arc(radius=0.22, start_angle=PI,
+                        angle=math.radians(37),  # arctan(3/4)≈37°
+                        arc_center=corner_pt, color=TEAL, stroke_width=2)
+        beta_arc  = Arc(radius=0.28, start_angle=PI + math.radians(37),
+                        angle=math.radians(53),  # 90-37=53°
+                        arc_center=corner_pt, color=GOLD, stroke_width=2)
+
+        alpha_lbl = MathTex(r"\alpha", font_size=24, color=TEAL)
+        alpha_lbl.move_to(corner_pt + np.array([-0.38, 0.12, 0]))
+        beta_lbl  = MathTex(r"\beta",  font_size=24, color=GOLD)
+        beta_lbl.move_to(corner_pt + np.array([-0.42, 0.35, 0]))
+
+        self.cue("Focus on one central corner",
+                 AnimationGroup(Create(alpha_arc), Create(beta_arc),
+                                FadeIn(alpha_lbl), FadeIn(beta_lbl),
+                                lag_ratio=0.2),
+                 run_time=1.0)
+
+        self.cue("Two acute triangle angles sit beside it along a straight outer edge",
+                 Indicate(alpha_arc, scale_factor=1.2), run_time=0.6)
+
+        p3 = txt("All sides = c", 26, PINK)
+        p4 = txt("Check corners for 90°", 24, MUTED)
+        self.cue("Call those acute angles alpha and beta",
+                 self.panel_to(p3, p4), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 15 ──────────────────────────────────────────────────────
+        self.begin("15")
+
+        # Show alpha+beta=90 in a triangle
+        angle_sum = eq(r"\alpha + \beta = 90^\circ", 34, INK).move_to([3.5, 1.6, 0])
+        self.cue("The angles inside a triangle total one hundred and eighty degrees",
+                 FadeIn(angle_sum), run_time=0.7)
+
+        # Central angle theta
+        theta_arc = Arc(radius=0.18, start_angle=math.radians(37),
+                        angle=math.radians(90),
+                        arc_center=corner_pt, color=INK, stroke_width=2)
+        theta_lbl = MathTex(r"\theta", font_size=22, color=INK)
+        theta_lbl.move_to(corner_pt + np.array([0.1, 0.32, 0]))
+
+        self.cue("Our triangle already has a ninety-degree angle, so alpha and beta together total ninety degrees",
+                 AnimationGroup(Create(theta_arc), FadeIn(theta_lbl),
+                                lag_ratio=0.3),
+                 run_time=1.0)
+
+        theta_eq = eq(r"\theta = 180^\circ - (\alpha+\beta) = 90^\circ",
+                      32, INK).move_to([3.5, 0.7, 0])
+        self.cue("The central angle is therefore one hundred and eighty minus alpha minus beta",
+                 FadeIn(theta_eq), run_time=0.9)
+
+        # Highlight all four central corners
+        self.cue("The same reasoning works at all four corners",
+                 AnimationGroup(
+                     *[Indicate(c_labels[i], scale_factor=1.3) for i in range(4)],
+                     lag_ratio=0.2),
+                 run_time=0.9)
+
+        # Box the central square
+        self.play(central_sq.animate.set_stroke(GOLD, width=3), run_time=0.5)
+
+        p5 = eq(r"\alpha+\beta=90^\circ", 32, INK)
+        p6 = txt("→ corners are right angles", 24, MUTED)
+        self.cue("Equal sides and right angles make the central shape a square",
+                 self.panel_to(p5, p6), run_time=0.8)
+
+        self.finish()
+
+        # ── BEAT 16 ──────────────────────────────────────────────────────
+        self.begin("16")
+
+        # Specific numbers: a=3, b=4 (swap for this beat to match narration "3-4-5")
+        # Outer side = 7, area = 49
+        outer_lbl = eq(r"7 \times 7 = 49", 30, INK)
+        outer_lbl.move_to(np.array([OX + side/2, OY - 0.5, 0]))
+        self.cue("Check our three-four-five example",
+                 FadeIn(outer_lbl), run_time=0.7)
+
+        # Each triangle area
+        tri_lbl = eq(r"\tfrac{1}{2}\times 4\times 3 = 6", 28, TEAL)
+        tri_lbl.move_to([3.5, 1.5, 0])
+        self.cue("Each triangle has area one half times three times four, which is six",
+                 FadeIn(tri_lbl), run_time=0.8)
+
+        # Running subtraction
+        sub1 = eq(r"49 - 4\times 6 = 49 - 24", 30, INK).move_to([3.5, 0.7, 0])
+        sub2 = eq(r"= 25 = 5^2", 34, PINK).move_to([3.5, 0.1, 0])
+
+        self.cue("Four triangles occupy twenty-four square units",
+                 FadeIn(sub1), run_time=0.8)
+        self.cue("The space remaining is forty-nine minus twenty-four, or twenty-five",
+                 FadeIn(sub2), run_time=0.8)
+
+        # Light up central square
+        self.play(central_sq.animate.set_fill(PINK, opacity=0.55), run_time=0.5)
+        area25_lbl = txt("area = 25 = 5²", 22, PINK)
+        area25_lbl.move_to(np.array([OX + side/2, OY + side/2, 0]))
+        self.play(FadeIn(area25_lbl), run_time=0.4)
+
+        p7 = eq(r"49 - 24 = 25 = 5^2", 30, INK)
+        p8 = eq(r"(a+b)^2 - 4\cdot\tfrac{1}{2}ab = c^2", 28, MUTED)
+        self.cue("Now we will repeat this calculation with letters",
+                 self.panel_to(p7, p8), run_time=0.8)
+
+        self.finish()
+        self.done()
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# C05 – COUNT THE SAME AREA TWICE
+# ═══════════════════════════════════════════════════════════════════════════

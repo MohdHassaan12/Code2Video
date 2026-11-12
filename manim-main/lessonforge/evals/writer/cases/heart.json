@@ -1,0 +1,487 @@
+{
+ "name": "heart",
+ "from_lesson": "20261012-104158-5d3fe6",
+ "brief": {
+  "topic": "Human heart and double circulation",
+  "grade": 10,
+  "audience": "Class 10 students",
+  "level": "standard",
+  "goal": "Follow one drop of blood through the four chambers of the heart and say why it passes through the heart twice in one round",
+  "style": "storyteller",
+  "language": "hinglish",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "worked_examples"
+ },
+ "card": {
+  "big_idea": {
+   "text": "In one complete round, a drop of blood goes through the heart twice: the right side sends low-oxygen blood to the lungs, and the left side sends oxygen-rich blood to the body.",
+   "cites": [
+    "S1#8",
+    "S1#9",
+    "S3#1"
+   ]
+  },
+  "why_it_matters": {
+   "text": "This route explains how blood can collect oxygen in the lungs and then deliver that oxygen to every part of your body.",
+   "cites": [
+    "S1#6",
+    "S1#8"
+   ]
+  },
+  "the_why": {
+   "text": "Blood returning from the body must first be pumped to the lungs, where it gains oxygen and releases carbon dioxide. It then has to return to the heart so the other side can pump the oxygen-rich blood out to the body without mixing the two kinds of blood.",
+   "cites": [
+    "S1#8",
+    "S1#9",
+    "S3#5"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Trace a drop of blood from the body through the right atrium and right ventricle to the lungs, then through the left atrium and left ventricle to the body.",
+    "level": "apply",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Distinguish pulmonary circulation from systemic circulation by deciding whether blood is travelling between the heart and lungs or between the heart and body.",
+    "level": "analyze",
+    "checked_by": "q3"
+   },
+   {
+    "can": "Explain why a blood drop enters the heart twice during one complete circuit.",
+    "level": "understand",
+    "checked_by": "try_it"
+   }
+  ],
+  "picture": {
+   "text": "Start with one simple four-compartment heart in the centre: right atrium above right ventricle on the viewer's left, and left atrium above left ventricle on the viewer's right. Add lungs above the heart and a body outline below it. A blue drop and arrows grow from body to right atrium, right ventricle, and lungs; at the lungs the drop changes to red, then red arrows grow to left atrium, left ventricle, and body. The completed picture is one continuous loop, with the two heart visits lit in turn.",
+   "cites": [
+    "S1#8",
+    "S1#9",
+    "S3#2",
+    "S3#3",
+    "S3#4",
+    "S3#5",
+    "S4#5",
+    "S4#7"
+   ],
+   "standard": "Simplified four-chamber heart diagram with arrows showing pulmonary and systemic"
+  },
+  "diagram_ask": "A simplified labelled double-circulation diagram: a four-chamber heart in the centre, lungs above, and body tissues below. Label right atrium, right ventricle, left atrium, left ventricle, lungs, and body; show blue arrows from body to right atrium to right ventricle to lungs, and red arrows from lu",
+  "needs_first": [
+   {
+    "text": "Blood carries oxygen and carbon dioxide, and oxygen enters blood in the lungs.",
+    "cites": [
+     "S1#6",
+     "S1#8"
+    ]
+   },
+   {
+    "text": "The heart has upper receiving chambers called atria and lower pumping chambers called ventricles.",
+    "cites": [
+     "S1#8",
+     "S2#2",
+     "S4#5"
+    ]
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "A vein always carries low-oxygen blood and an artery always carries oxygen-rich blood.",
+    "why_it_fails": "Arteries are named because they carry blood away from the heart, and veins because they bring it back; the pulmonary artery carries low-oxygen blood to the lungs, while pulmonary veins return oxygen-rich blood.",
+    "cites": [
+     "S2#13",
+     "S2#14",
+     "S4#4",
+     "S4#7"
+    ]
+   },
+   {
+    "mistake": "Blood goes from the right ventricle straight to the body.",
+    "why_it_fails": "The right ventricle pumps low-oxygen blood to the lungs; the left ventricle pumps oxygen-rich blood to the body.",
+    "cites": [
+     "S1#8",
+     "S2#10",
+     "S2#12",
+     "S3#5"
+    ]
+   },
+   {
+    "mistake": "One complete circulation uses only the chambers on one side of the heart.",
+    "why_it_fails": "The lungs-to-heart part uses the right ventricle and left atrium, while the body-to-heart part uses the left ventricle and right atrium.",
+    "cites": [
+     "S3#4",
+     "S3#5",
+     "S3#8"
+    ]
+   },
+   {
+    "mistake": "Blue and red in the diagram are the real colours of blood inside the vessels.",
+    "why_it_fails": "The colours are a diagram code for lower-oxygen and higher-oxygen blood; human blood is red, although its shade can vary.",
+    "cites": [
+     "S2#9",
+     "S4#2"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "A drop of blood leaves your toe with little oxygen. Before it can return to the toe with oxygen, do you think it enters the heart once, twice, or not at all? Commit to one guess.",
+   "guesses": [
+    "Once, because one loop should need one visit to the heart.",
+    "Twice, because it may need to go to the lungs and then back to the heart before going around the body.",
+    "Not at all, because blood can travel directly from the lungs to the toe."
+   ],
+   "answer": "Twice: once on the right side before travelling to the lungs, and once on the left side after returning from the lungs.",
+   "cites": [
+    "S1#9",
+    "S3#1",
+    "S4#6",
+    "S4#7"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show a blue drop at the body and ask whether it will enter the heart once, twice, or not at all before it returns oxygen-rich.",
+    "cites": [
+     "S1#9",
+     "S3#1",
+     "S4#6"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Hold the three choices beside the still-unlabelled heart-and-lungs picture so the learner commits to a route before seeing arrows.",
+    "cites": [
+     "S1#9",
+     "S3#1"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Draw the body-to-right-atrium-to-right-ventricle path one arrow at a time. Ask which destination follows the right ventricle: lungs or body.",
+    "cites": [
+     "S1#8",
+     "S2#10",
+     "S3#5",
+     "S4#6",
+     "S4#7"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Move the blue drop into the lungs and change it to red. Ask why it cannot go straight from the body to the left side, then show that the lungs are where oxygen enters blood and carbon dioxide is removed.",
+    "cites": [
+     "S1#6",
+     "S1#8",
+     "S3#5",
+     "S4#7"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Draw the red return through left atrium and left ventricle, then name heart-to-lungs-to-heart as pulmonary circulation and heart-to-body-to-heart as systemic circulation.",
+    "cites": [
+     "S3#4",
+     "S3#5",
+     "S3#8"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Trace one complete drop slowly: body → right atrium → right ventricle → lungs → left atrium → left ventricle → body. Highlight the two separate moments when it is inside the heart.",
+    "cites": [
+     "S1#8",
+     "S3#6",
+     "S3#7",
+     "S4#6",
+     "S4#7"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Place a wrong shortcut beside the completed loop: right ventricle → body. Ask which route works, then break the shortcut because it would send low-oxygen blood to the body instead of first taking it to the lungs.",
+    "cites": [
+     "S1#8",
+     "S2#10",
+     "S2#12",
+     "S3#5"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Hide the arrows after the lungs and ask the learner to choose and say the next two chambers and the final destination.",
+    "cites": [
+     "S1#8",
+     "S3#5",
+     "S4#7"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "The learner draws and traces the one continuous loop on paper, predicts the number of heart visits, and explains why two visits are needed.",
+    "cites": [
+     "S1#9",
+     "S3#6",
+     "S3#7"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Show the complete loop once more and have the learner say: body to right heart to lungs to left heart to body, then explain why the two heart visits are necessary.",
+    "cites": [
+     "S1#8",
+     "S1#9",
+     "S3#1"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "A blue-coded, low-oxygen drop has just entered the right ventricle. Where should its next arrow go?",
+    "options": [
+     "To the lungs",
+     "To the body through the aorta",
+     "To the left atrium"
+    ],
+    "answer_index": 0,
+    "explain": "It goes to the lungs first because this is where blood gains oxygen before it can be pumped around the body.",
+    "cites": [
+     "S1#8",
+     "S2#10",
+     "S3#5",
+     "S4#7"
+    ]
+   },
+   {
+    "question": "After a drop leaves the lungs with oxygen, which route correctly gets it to the body?",
+    "options": [
+     "Left atrium → left ventricle → body",
+     "Right atrium → right ventricle → body",
+     "Left atrium → right ventricle → body"
+    ],
+    "answer_index": 0,
+    "explain": "Oxygen-rich blood returns from the lungs to the left atrium, moves to the left ventricle, and is then pumped to the body.",
+    "cites": [
+     "S1#8",
+     "S2#11",
+     "S2#12",
+     "S3#5",
+     "S4#7"
+    ]
+   },
+   {
+    "question": "Which statement correctly compares the two loops?",
+    "options": [
+     "Pulmonary circulation goes between heart and lungs; systemic circulation goes between heart and body.",
+     "Pulmonary circulation goes between heart and body; systemic circulation goes between heart and lungs.",
+     "Both loops use only chambers on the same side of the heart."
+    ],
+    "answer_index": 0,
+    "explain": "The lung loop and body loop have different destinations, and each links chambers from opposite sides of the heart.",
+    "cites": [
+     "S3#4",
+     "S3#5",
+     "S3#8"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Trace the two heart visits",
+   "kind": "paper",
+   "materials": [
+    "paper",
+    "pencil",
+    "two coloured pencils or pens if available"
+   ],
+   "stands_for": "Your paper circles stand for the four heart chambers; one blue mark is a low-oxygen blood drop, and one red mark is the same drop after the lungs.",
+   "predict": "Before drawing arrows, predict: in one complete trip from body back to body, will your drop be inside the heart once or twice?",
+   "steps": [
+    "Draw four small circles in a two-by-two heart shape and label them right atrium, right ventricle, left atrium, and left ventricle.",
+    "Draw a cloud labelled lungs above the circles and a box labelled body below them.",
+    "Use blue to draw arrows from body to right atrium to right ventricle to lungs.",
+    "Use red to draw arrows from lungs to left atrium to left ventricle to body.",
+    "Put a tick at each heart entry and count the ticks."
+   ],
+   "observe": "There are two heart entries: one before the lungs and one after the lungs. The route changes from blue to red at the lungs.",
+   "question": "Why does the drop need two heart visits instead of one?",
+   "expected": "The drop visits the heart twice because the first visit sends low-oxygen blood from the right side to the lungs, where it gains oxygen, and the second visit brings that oxygen-rich blood to the left side so it can be pumped to the body.",
+   "write": "Write or say: “My drop visited the heart ___ times.” Then write or say: “It needed two visits because ___.”",
+   "in_class": "Students work in pairs, each pair draws one four-circle heart, lungs, and body. The teacher writes “body → right heart → lungs → left heart → body” with blanks for the four chambers on the board. Ask: “Why are there two heart visits?” A class answer that says “because there are four chambers” shows that students can count structures but have not connected the lung oxygenation step to the second pump.",
+   "cites": [
+    "S1#8",
+    "S1#9",
+    "S3#5",
+    "S3#6",
+    "S3#7",
+    "S4#7"
+   ]
+  },
+  "leave_out": [
+   "{'text': 'The names and positions of individual valves, except the broad idea that valves prevent backward flow.', 'cites': ['S1#8', 'S2#6', 'S2#7', 'S4#6']}",
+   "{'text': 'The electrical control of the heartbeat, cardiac cycle timing, heart sounds, ECGs, and pacemakers.', 'cites': ['S2#17', 'S2#18', 'S2#19', 'S4#9']}",
+   "{'text': 'Coronary circulation, portal circulation, and heart defects.', 'cites': ['S3#8', 'S4#8', 'S4#10']}",
+   "{'text': 'Detailed capillary exchange and blood composition.', 'cites': ['S1#8', 'S1#10', 'S3#8', 'S4#3']}"
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "The route that gives atria the receiving role and ventricles the pumping role, then traces low-oxygen blood to lungs and oxygen-rich blood back to the left side before the body.",
+    "left": "Detailed valve names, wall thickness, heart layers, diagnostic tests, and calculations, because they do not help answer why the drop enters twice in a three-minute lesson."
+   },
+   {
+    "source": "S3",
+    "took": "The simplified four-compartment diagram, the growing arrow loop, and the explicit split into pulmonary and systemic circulation.",
+    "left": "The extended flowchart terminology such as greater and lesser circulation, because the central learning goal is the two heart visits and their reason."
+   },
+   {
+    "source": "S4",
+    "took": "Starting with a drop returning from a body part and tracing it through lungs, heart chambers, and back to the body, plus the artery/vein exception warning.",
+    "left": "Blood components, coronary circulation, and medical conditions, because they would add separate ideas without strengthening the central route."
+   }
+  ],
+  "uncited": [
+   "The exact animation choices of lighting the two heart visits in turn and hiding later arrows for retrieval practice.",
+   "The paper-task format, its classroom timing, and the diagnostic interpretation of the stated wrong class answer."
+  ],
+  "teacher_talk": [
+   "opens with an energetic greeting and an encouraging statement that a complicated topic is actually simple",
+   "asks direct rhetorical questions to check understanding and prompt the listener",
+   "uses a conversational, chalkboard-teaching style with physical gestures and drawing analogies",
+   "transitions between topics by instructing the viewer to take screenshots and building the diagram piece by piece",
+   "begins by reviewing previous knowledge before introducing the new topic",
+   "uses verbal prompts to guide drawing and labeling in real time"
+  ],
+  "source_flows": {
+   "S1": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "assessment"
+   ],
+   "S2": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "application",
+    "integration"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "application",
+    "integration"
+   ],
+   "S4": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "application",
+    "integration",
+    "integration"
+   ]
+  },
+  "topic": "Human heart and double circulation",
+  "asked": "Human heart and double circulation",
+  "klass": 10,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Science, Class 10, chapter 5: Chapter",
+    "url": "https://ncert.nic.in/textbook/pdf/jesc105.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Khan GS Research Centre: How does the heart work? Structure and function of the heart | Human Heart & Its Function in Hindi",
+    "url": "https://www.youtube.com/watch?v=a7TJzv_1icU",
+    "note": "Hindi lecture, 24 min, automatic captions"
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "Neela Bakore Tutorials: Body Fluids and Circulation | NEET | Human Heart - Systemic and Pulmonary Circulation | Neela Bakore",
+    "url": "https://www.youtube.com/watch?v=FohSQwUHm7Y",
+    "note": "English lecture, 10 min, automatic captions"
+   },
+   {
+    "id": "S4",
+    "kind": "lecture",
+    "title": "Amoeba Sisters: Circulatory System and Pathway of Blood Through the Heart",
+    "url": "https://www.youtube.com/watch?v=_vZ0lefPg_0",
+    "note": "English lecture, 8 min"
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "5ae8685dbf798957",
+  "diagram": {
+   "ask": "A labelled diagram of the human heart showing the right atrium, right ventricle, left atrium, left ventricle, pulmonary artery, and aorta, with arrows indicating the flow of blood.",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_labelled_diagram_of_th-1487c88169/manifest.json",
+   "parts": [
+    "right_atrium",
+    "right_ventricle",
+    "aorta",
+    "pulmonary_artery",
+    "left_atrium",
+    "left_ventricle"
+   ],
+   "names": {
+    "right_atrium": "Right atrium",
+    "right_ventricle": "Right ventricle",
+    "aorta": "Aorta",
+    "pulmonary_artery": "Pulmonary artery",
+    "left_atrium": "Left atrium",
+    "left_ventricle": "Left ventricle"
+   },
+   "credit": "Art: Servier Medical Art (smart.servier.com), CC BY 3.0",
+   "style": "pointers",
+   "shown": "parts",
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [
+     "arrows indicating the flow of blood are missing"
+    ],
+    "judge": "3ee5f13189"
+   },
+   "shows": "The four-chambered structure of the human heart and the pathways of blood circulation through it.",
+   "visual_kind": "labelled diagram",
+   "holds": {
+    "things": [
+     "a red heart with blue and light blue vessels",
+     "a large red vessel at the top of the heart",
+     "a blue vessel next to the large red vessel",
+     "a light blue vessel connected to the blue vessel",
+     "a dark red chamber in the upper right of the heart",
+     "a dark red chamber in the upper left of the heart",
+     "a light red chamber in the lower right of the heart",
+     "a light red chamber in the lower left of the heart",
+     "a valve between the upper and lower right chambers",
+     "a valve between the upper and lower left chambers",
+     "a black line pointing to the top red vessel",
+     "a black line pointing to the light blue vessel",
+     "a black line pointing to the upper left chamber",
+     "a black line pointing to the lower left chamber",
+     "a black line pointing to the upper right chamber",
+     "a black line pointing to the lower right chamber"
+    ],
+    "print": [
+     "Aorta",
+     "Right atrium",
+     "Pulmonary artery",
+     "Right ventricle",
+     "Left atrium",
+     "Left ventricle",
+     "Art: Servier Medical Art (smart.servier.com), CC BY 3.0"
+    ]
+   }
+  }
+ }
+}

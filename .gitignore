@@ -33,6 +33,7 @@ demo_outputs/*
 !demo_outputs/benchmark_summary.csv
 !demo_outputs/pareto_frontier.png
 media/
+lessonforge_workspace/
 
 # IDE files
 .vscode/

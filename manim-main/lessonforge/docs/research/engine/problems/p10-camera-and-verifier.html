@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P10 · The verifier sets the expressiveness ceiling — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">10</div>
+  <div>
+    <h1>The verifier sets the expressiveness ceiling</h1>
+    <div class="sub">Camera zoom and pan are deliberately absent — not unbuilt, <i>forbidden</i>, because a moving camera
+    would blind the probe. The general form: every visual capability is capped by the verifier’s assumptions, and verifiers
+    that survive capability growth are an unsolved design problem.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>10</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-v">V · probes own truth — but only geometric truth</span>
+  <span class="chip t2">T2 applied research</span>
+  <span class="chip mat">Maturity: L0 by design — a documented architectural constraint</span>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today</div>
+  <ul>
+    <li>The only camera verb is semantic: <code>focus</code> — dim everything except the target, then restore
+      (<code>viz_helpers.spotlight_on/off:1653/:1678</code>, emitted by <code>transpiler.py:1004-1010</code>) — chosen precisely
+      because “opacity changes geometry not at all, so every probe invariant survives” <span class="src">CLAUDE.md:166-173</span>.</li>
+    <li>Zoom/pan via <code>MovingCameraScene</code> are barred: the probe’s clipped-text check measures against a fixed
+      <code>config.frame_width/height</code>; a moving camera “would report legitimately off-frame content as clipped and miss
+      real clipping — it would break the verifier” <span class="src">CLAUDE.md:166-173</span>.</li>
+    <li>The generalized rule is already doctrine: “a rendering feature that invalidates a verifier must ship <i>with</i> the
+      verifier upgrade, never before it” <span class="src">reference-architecture.md:1080-1082</span>. The unblocking item is
+      open roadmap priority #17, “Frame-aware probe” <span class="src">pipeline-roadmap.md:658</span>.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why this is research-grade</div>
+  <p>The camera is the visible symptom; the disease is coupling. The probe verifies by <b>reading Manim’s internals</b> —
+  it patches <code>Scene.play</code> and measures mobject geometry against frame constants. That makes it exact, and makes it
+  fragile in two directions: any capability that changes the geometry↔screen mapping (camera, 3D, scaling groups) silently
+  invalidates it, and any new renderer backend (the §21 <code>RendererBackend</code> contract names SVG/web, Three.js,
+  Blender, Unity) needs the whole probe family re-invented per backend. The open question: what does verification look like
+  when it must survive capability growth — probe the <i>projected</i> geometry (frame-aware transforms), or probe the
+  <i>pixels</i> (backend-independent but inheriting all of <a href="p03-vision-qa.html">P03</a>’s trust problems)?
+  This is a capability the incumbent structurally cannot have without answering that question first.</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>The constraint is enforced socially today — a doc rule (“Implement camera moves only together with a frame-aware
+      probe”) — with no test pinning it; nothing stops a future contributor from adding <code>MovingCameraScene</code> and
+      quietly blinding the probe.</li>
+    <li>The cost is real pedagogy: the zoom-into-detail move is a staple of the 3Blue1Brown genre this system emulates;
+      every storyboard that wants one gets a spotlight instead.</li>
+    <li>Precedent that the ceiling can move: the spotlight itself was implemented as the probe-safe subset — proof the team
+      designs capabilities <i>around</i> the verifier (the discipline this page generalizes).</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art <span class="tag">citation-check before external use</span></div>
+  <p>Camera planning is a solved craft in graphics/cinematography literature (constraint-based virtual cinematography);
+  that is not the hard part here. The hard part — verification oracles that survive system evolution — is the metamorphic
+  testing problem: define properties invariant under the new capability (text legibility in <i>view</i> space, not world
+  space) and check those. Compiler correctness work (translation validation) offers the cleanest analogy: verify the
+  projected output of each transform, not the transform’s internals.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — cheap → deep</div>
+  <ol>
+    <li><span class="badge solid-green">$0</span> Pin the constraint: a harness check that fails if generated code ever
+      contains <code>MovingCameraScene</code> while the probe is frame-fixed — turning a doc rule into a gate (the house
+      pattern for every other trap).</li>
+    <li><span class="badge solid-green">$0</span> Frame-aware probe v1: track the camera transform (center, scale) at each
+      beat and map mobject bboxes into <i>view</i> space before the clipped/overlap checks — roadmap #17, no new
+      dependencies, pinned by planting a clipped-text bug under zoom in <code>test_overlap_probe.py</code> style.</li>
+    <li><span class="badge solid-amber">metered</span> Ship zoom/pan as Director directives only after v1 lands, with an
+      A/B on the benchmark topics — does camera language reduce violations-adjusted quality or improve it
+      (needs <a href="p01-quality-score.html">P01</a> to answer honestly)?</li>
+    <li><span class="badge solid-purple">research</span> Backend-independent verification for the §21 multi-backend future:
+      a probe contract stated in view-space/pixel-space properties that any <code>RendererBackend</code> can satisfy —
+      converging with <a href="p03-vision-qa.html">P03</a> if the answer is pixels.</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p>The verifier’s own standard: under zoom, a planted off-view clipped text must be caught and a legitimately off-frame
+  element must not be flagged (the exact failure CLAUDE.md predicts). Then violation rates with camera moves enabled vs.
+  disabled on the same boards — expressiveness gained per violation added.</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p03-vision-qa.html">P03 machine perception</a> — the pixel route to capability-independence ·
+  <a href="p04-repair-convergence.html">P04 repair convergence</a> — new capabilities widen the repair search space ·
+  <a href="p01-quality-score.html">P01 quality score</a> — “was the zoom worth it” is unanswerable without it.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p09-pedagogy-gate.html">← prev: P09 pedagogy gate</a>
+  <a href="p11-layout-frameworks.html">next: P11 no structure to lay out →</a>
+  <a href="index.html">back to index →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "file": "chapters678",
+  "classes": [
+    "C06",
+    "C07",
+    "C08"
+  ],
+  "beats": [
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+    "32"
+  ],
+  "cue_count": 44,
+  "issues": [
+    "Missing spoken cue: A marker at 10",
+    "Missing spoken cue: The right-angle marker"
+  ]
+}

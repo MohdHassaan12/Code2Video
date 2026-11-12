@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-07",
+  "source_sha256": {
+    "lesson.json": "645632417ccd88292a57e8e5f4d1901611f901f30efd640f37dbe3dbe8b532e8",
+    "chapters_first_four.py": "2f8b55d1ed006e44950e94821aa582a83fc7bf536181c5f13b3dcc9a4acf2c01",
+    "chapters_rest.py": "55093b1286b34867de612b41d2b0bd4db15096d9594b7498fd5ba23f3f10f213",
+    "lesson_runtime.py": "7bd2f4103868a478682334f769a635a0796c678a48c004eb8e64510adeebf8ec",
+    "build_audio.py": "bd7872217074a9e2a8864e00c386efbc0c70e47fb3c8b111f762c1dbe56038d0",
+    "timeline.json": "049584b36df49f037848f2842e9a114d16b078a15e0618da63c1851354bc3793"
+  },
+  "tts_source": "https://github.com/thewh1teagle/kokoro-onnx",
+  "tts_model_license": "Apache-2.0",
+  "tts_runtime_license": "MIT",
+  "voice": "af_heart (stock voice; no teacher voice cloning)",
+  "renderer": "Manim Community0.19.0",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "video_sha256": "a8786717e6581b20d41c3a276c6a2225ef999ddf40f9a2c84dc14c26cf1dd667"
+}

@@ -1,0 +1,435 @@
+{
+  "cap_usd": 5.0,
+  "known_cost_usd": 0.48565189,
+  "records": [
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "plan",
+      "status": "returned",
+      "id": "gen-1791305892-cnpiB4wC62K1yPh5E4Dc",
+      "elapsed_seconds": 109.61,
+      "usage": {
+        "prompt_tokens": 381,
+        "completion_tokens": 6000,
+        "total_tokens": 6381,
+        "cost": 0.091143,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.091143,
+          "upstream_inference_prompt_cost": 0.001143,
+          "upstream_inference_completions_cost": 0.09
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "length",
+      "artifact": "anthropic__claude-sonnet-4.6__plan.txt",
+      "reserved_usd": 0.1311011
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "code",
+      "status": "returned",
+      "id": "gen-1791306002-k02fiydARaDkIKMWTTFK",
+      "elapsed_seconds": 48.6,
+      "usage": {
+        "prompt_tokens": 359,
+        "completion_tokens": 3761,
+        "total_tokens": 4120,
+        "cost": 0.057492,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.057492,
+          "upstream_inference_prompt_cost": 0.001077,
+          "upstream_inference_completions_cost": 0.056415
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "artifact": "anthropic__claude-sonnet-4.6__code.txt",
+      "reserved_usd": 0.1304048
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "task": "plan",
+      "status": "returned",
+      "id": "gen-1791306050-4MNb4Ih54gkSCnUcuxCP",
+      "elapsed_seconds": 29.5,
+      "usage": {
+        "prompt_tokens": 355,
+        "completion_tokens": 6000,
+        "total_tokens": 6355,
+        "cost": 0.0151065,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0151065,
+          "upstream_inference_prompt_cost": 0.0001065,
+          "upstream_inference_completions_cost": 0.015
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "length",
+      "artifact": "google__gemini-2.5-flash__plan.txt",
+      "reserved_usd": 0.037710110000000005
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "task": "code",
+      "status": "returned",
+      "id": "gen-1791306080-4HLR68HVSMeTI7gAMtkd",
+      "elapsed_seconds": 3.45,
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "error",
+      "artifact": "google__gemini-2.5-flash__code.txt",
+      "reserved_usd": 0.037640480000000004
+    },
+    {
+      "model": "qwen/qwen3-coder-30b-a3b-instruct",
+      "task": "plan",
+      "status": "returned",
+      "id": "gen-1791306083-ahQCZEk5PCDS6YgqVS47",
+      "elapsed_seconds": 60.54,
+      "usage": {
+        "prompt_tokens": 354,
+        "completion_tokens": 2050,
+        "total_tokens": 2404,
+        "cost": 0.00059878,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00059878,
+          "upstream_inference_prompt_cost": 2.478e-05,
+          "upstream_inference_completions_cost": 0.000574
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "artifact": "qwen__qwen3-coder-30b-a3b-instruct__plan.txt",
+      "reserved_usd": 0.022130359000000002
+    },
+    {
+      "model": "qwen/qwen3-coder-30b-a3b-instruct",
+      "task": "code",
+      "status": "returned",
+      "id": "gen-1791306144-ntZuYYY0KbHXYkHrOkOj",
+      "elapsed_seconds": 33.85,
+      "usage": {
+        "prompt_tokens": 334,
+        "completion_tokens": 2021,
+        "total_tokens": 2355,
+        "cost": 0.00056905,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00056905,
+          "upstream_inference_prompt_cost": 2.338e-05,
+          "upstream_inference_completions_cost": 0.00054567
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "artifact": "qwen__qwen3-coder-30b-a3b-instruct__code.txt",
+      "reserved_usd": 0.022114112000000002
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "full_script",
+      "status": "returned",
+      "id": "gen-1791306178-Dke7qEZBWndbMXIVKlZb",
+      "elapsed_seconds": 115.73,
+      "usage": {
+        "prompt_tokens": 335,
+        "completion_tokens": 5922,
+        "total_tokens": 6257,
+        "cost": 0.089835,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.089835,
+          "upstream_inference_prompt_cost": 0.001005,
+          "upstream_inference_completions_cost": 0.08883
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "artifact": "anthropic__claude-sonnet-4.6__full_script.txt",
+      "reserved_usd": 0.19663909999999998
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "plan_followup",
+      "status": "returned",
+      "id": "gen-1791306385-nmbmMImglR51dxoitoH2",
+      "elapsed_seconds": 131.16,
+      "usage": {
+        "prompt_tokens": 381,
+        "completion_tokens": 7308,
+        "total_tokens": 7689,
+        "cost": 0.110763,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.110763,
+          "upstream_inference_prompt_cost": 0.001143,
+          "upstream_inference_completions_cost": 0.10962
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "artifact": "anthropic__claude-sonnet-4.6__plan_followup.txt",
+      "reserved_usd": 0.2301011
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "task": "plan_followup",
+      "status": "returned",
+      "id": "gen-1791306517-fuqG9qcIZqGrjrPaXIow",
+      "elapsed_seconds": 34.52,
+      "usage": {
+        "prompt_tokens": 355,
+        "completion_tokens": 7071,
+        "total_tokens": 7426,
+        "cost": 0.017784,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.017784,
+          "upstream_inference_prompt_cost": 0.0001065,
+          "upstream_inference_completions_cost": 0.0176775
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "artifact": "google__gemini-2.5-flash__plan_followup.txt",
+      "reserved_usd": 0.054210110000000006
+    },
+    {
+      "model": "qwen/qwen3-coder-30b-a3b-instruct",
+      "task": "plan_followup",
+      "status": "empty_content",
+      "id": "gen-1791306551-HtFE1Vt9DbiNFERsEQbK",
+      "elapsed_seconds": 20.96,
+      "usage": {
+        "prompt_tokens": 354,
+        "completion_tokens": 2013,
+        "total_tokens": 2367,
+        "cost": 0.00056829,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00056829,
+          "upstream_inference_prompt_cost": 2.478e-05,
+          "upstream_inference_completions_cost": 0.00054351
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "artifact": "qwen__qwen3-coder-30b-a3b-instruct__plan_followup.txt",
+      "reserved_usd": 0.023978359
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "task": "code_followup",
+      "status": "returned",
+      "id": "gen-1791306572-7RLghqm3Tppnf07IltJ9",
+      "elapsed_seconds": 15.71,
+      "usage": {
+        "prompt_tokens": 326,
+        "completion_tokens": 2815,
+        "total_tokens": 3141,
+        "cost": 0.0071353,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0071353,
+          "upstream_inference_prompt_cost": 9.78e-05,
+          "upstream_inference_completions_cost": 0.0070375
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "artifact": "google__gemini-2.5-flash__code_followup.txt",
+      "reserved_usd": 0.037640480000000004
+    },
+    {
+      "model": "qwen/qwen3-coder-30b-a3b-instruct",
+      "task": "code_followup",
+      "status": "returned",
+      "id": "gen-1791306587-uHMX7Do2KUPPDEEM8tcm",
+      "elapsed_seconds": 12.5,
+      "usage": {
+        "prompt_tokens": 334,
+        "completion_tokens": 1317,
+        "total_tokens": 1651,
+        "cost": 0.00037897,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00037897,
+          "upstream_inference_prompt_cost": 2.338e-05,
+          "upstream_inference_completions_cost": 0.00035559
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "artifact": "qwen__qwen3-coder-30b-a3b-instruct__code_followup.txt",
+      "reserved_usd": 0.022114112000000002
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "diagnostic_repair",
+      "id": "gen-1791306690-ZQ1BUo9DrfIjPjXdB6Tm",
+      "status": "returned",
+      "usage": {
+        "prompt_tokens": 4171,
+        "completion_tokens": 5451,
+        "total_tokens": 9622,
+        "cost": 0.094278,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.094278,
+          "upstream_inference_prompt_cost": 0.012513,
+          "upstream_inference_completions_cost": 0.081765
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "elapsed_seconds": 73.81,
+      "artifact": "sonnet_repair_candidate.txt",
+      "reserved_usd": 0.35
+    }
+  ]
+}

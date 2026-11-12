@@ -1,0 +1,161 @@
+{
+  "scope": "one topic, matched prompts, no statistical model ranking",
+  "known_cost_usd": 0.48565189,
+  "calls": [
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "plan",
+      "status": "truncated",
+      "provider": "Claude Platform on AWS",
+      "cost_usd": 0.091143,
+      "finish_reason": "length",
+      "valid_json": false,
+      "parse_failure": "JSONDecodeError"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "code",
+      "status": "returned",
+      "provider": "Claude Platform on AWS",
+      "cost_usd": 0.057492,
+      "finish_reason": "stop"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "task": "plan",
+      "status": "truncated",
+      "provider": "Google",
+      "cost_usd": 0.0151065,
+      "finish_reason": "length",
+      "valid_json": false,
+      "parse_failure": "JSONDecodeError"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "task": "code",
+      "status": "provider_error",
+      "provider": "Google",
+      "cost_usd": 0,
+      "finish_reason": "error"
+    },
+    {
+      "model": "qwen/qwen3-coder-30b-a3b-instruct",
+      "task": "plan",
+      "status": "returned",
+      "provider": "SiliconFlow",
+      "cost_usd": 0.00059878,
+      "finish_reason": "stop",
+      "valid_json": true,
+      "sections": 8,
+      "duration_sum_seconds": 960,
+      "duration_requirement_passed": false,
+      "opening_words": 137,
+      "opening_length_passed": false
+    },
+    {
+      "model": "qwen/qwen3-coder-30b-a3b-instruct",
+      "task": "code",
+      "status": "empty_content",
+      "provider": "Novita",
+      "cost_usd": 0.00056905,
+      "finish_reason": "stop"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "full_script",
+      "status": "returned",
+      "provider": "Claude Platform on AWS",
+      "cost_usd": 0.089835,
+      "finish_reason": "stop"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "plan_followup",
+      "status": "returned",
+      "provider": "Claude Platform on AWS",
+      "cost_usd": 0.110763,
+      "finish_reason": "stop",
+      "valid_json": true,
+      "sections": 12,
+      "duration_sum_seconds": 1300,
+      "duration_requirement_passed": false,
+      "opening_words": 411,
+      "opening_length_passed": true
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "task": "plan_followup",
+      "status": "returned",
+      "provider": "Google",
+      "cost_usd": 0.017784,
+      "finish_reason": "stop",
+      "valid_json": true,
+      "sections": 12,
+      "duration_sum_seconds": 1290,
+      "duration_requirement_passed": false,
+      "opening_words": 251,
+      "opening_length_passed": false
+    },
+    {
+      "model": "qwen/qwen3-coder-30b-a3b-instruct",
+      "task": "plan_followup",
+      "status": "empty_content",
+      "provider": "Novita",
+      "cost_usd": 0.00056829,
+      "finish_reason": "stop"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "task": "code_followup",
+      "status": "returned",
+      "provider": "Google",
+      "cost_usd": 0.0071353,
+      "finish_reason": "stop"
+    },
+    {
+      "model": "qwen/qwen3-coder-30b-a3b-instruct",
+      "task": "code_followup",
+      "status": "returned",
+      "provider": "Novita",
+      "cost_usd": 0.00037897,
+      "finish_reason": "stop"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "task": "diagnostic_repair",
+      "status": "returned",
+      "provider": "Claude Platform on AWS",
+      "cost_usd": 0.094278,
+      "finish_reason": "stop"
+    }
+  ],
+  "code": [
+    {
+      "artifact": "sonnet_original.py",
+      "scheduled_seconds": 58.0,
+      "scheduled_duration_passed": false,
+      "rendered_video_exists": true,
+      "encoded_seconds": 58.067
+    },
+    {
+      "artifact": "gemini_original.py",
+      "scheduled_seconds": 42.0,
+      "scheduled_duration_passed": false,
+      "rendered_video_exists": false
+    },
+    {
+      "artifact": "qwen_original.py",
+      "scheduled_seconds": 30.0,
+      "scheduled_duration_passed": false,
+      "rendered_video_exists": true,
+      "encoded_seconds": 30.134
+    },
+    {
+      "artifact": "sonnet_repaired.py",
+      "scheduled_seconds": 58.0,
+      "scheduled_duration_passed": false,
+      "rendered_video_exists": true,
+      "encoded_seconds": 58.067
+    }
+  ]
+}

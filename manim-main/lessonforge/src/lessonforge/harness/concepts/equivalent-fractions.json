@@ -1,0 +1,225 @@
+{
+ "id": "equivalent-fractions",
+ "names": [
+  "equivalent fractions",
+  "equal fractions",
+  "fractions that are equal",
+  "equivalent fraction",
+  "finding equivalent fractions",
+  "same fraction different numbers"
+ ],
+ "subject": "maths",
+ "classes": [
+  5,
+  7
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "figure",
+  "figure": {
+   "kind": "bars",
+   "parts": [
+    {
+     "label": "1/2",
+     "n": 1,
+     "d": 2,
+     "role": "given"
+    },
+    {
+     "label": "2/4",
+     "n": 2,
+     "d": 4,
+     "role": "given"
+    },
+    {
+     "label": "4/8",
+     "n": 4,
+     "d": 8,
+     "role": "result"
+    }
+   ]
+  },
+  "asks": [
+   "A labelled diagram of three equal paper strips one below the other, cut into halves, quarters and eighths, with one half, two quarters and four eighths shaded.",
+   "A drawing of a round roti cut into two equal halves, and beside it an equal roti cut into four equal quarters, with one half and two quarters shaded."
+  ],
+  "why": "Equal strips lined up show at a glance that one half, two quarters and four eighths cover the same length."
+ },
+ "card": {
+  "big_idea": {
+   "text": "Different fractions such as 1/2, 2/4 and 4/8 can name exactly the same amount.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Make an equivalent fraction by multiplying the top and bottom by the same number",
+    "level": "apply",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Explain why 2/4 is the same amount as 1/2",
+    "level": "understand",
+    "checked_by": "try_it"
+   },
+   {
+    "can": "Compare fractions with bigger numbers by the amount they show",
+    "level": "analyze",
+    "checked_by": "q2"
+   }
+  ],
+  "why_it_matters": {
+   "text": "It lets you see that half a packet and two quarters of a packet are the same, and it is the step that lets you add and compare fractions.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "Cutting every piece of a strip into two equal smaller pieces doubles the number of pieces in the whole and doubles the number shaded, but the shaded length does not change, so 1/2 and 2/4 are the same amount.",
+   "cites": []
+  },
+  "picture": {
+   "text": "One strip with half shaded. A line cuts each half into two: now 2 of 4 parts are shaded, and the shaded length has not moved. Another cut makes 4 of 8. The three strips line up one below another; the shaded parts end at the same place.",
+   "standard": "fraction strips (fraction wall)",
+   "cites": []
+  },
+  "diagram_ask": "A labelled diagram of three equal paper strips one below the other, cut into halves, quarters and eighths, with one half, two quarters and four eighths shaded.",
+  "needs_first": [
+   {
+    "text": "What the top and bottom numbers of a fraction mean.",
+    "cites": []
+   },
+   {
+    "text": "Halves and quarters of a shape are equal parts.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Thinking 4/8 is more than 1/2 because 4 and 8 are bigger numbers.",
+    "why_it_fails": "The bigger numbers count smaller pieces: 8 small pieces make the whole, so 4 of them are still half.",
+    "cites": []
+   },
+   {
+    "mistake": "Adding the same number to top and bottom: 1/2 = 2/3.",
+    "why_it_fails": "2/3 covers more of the strip than 1/2; only multiplying both by the same number cuts every piece the same way.",
+    "cites": []
+   },
+   {
+    "mistake": "Multiplying only the bottom: 1/2 = 1/4.",
+    "why_it_fails": "Cutting the pieces smaller without counting the new shaded pieces makes the shaded part half as big.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "Asha eats 1/2 of a chikki bar and Ravi eats 2/4 of the same size bar. Who ate more?",
+   "guesses": [
+    "Ravi, because 2 and 4 are bigger",
+    "Asha, because halves are big pieces",
+    "Both ate the same"
+   ],
+   "answer": "Both ate the same amount: 2/4 is the same as 1/2.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show a strip with half shaded and ask whether 2/4 of the same strip is more, less or the same. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Cut each half of the strip into two: now 4 parts, 2 shaded. The shaded length did not move.",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Ask: when each piece is cut in two, what happens to the shaded pieces and the whole? Both counts double, but the amount stays.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Cut again: 4 of 8 parts shaded. Line the three strips up: the shaded parts end at the same place.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name them equivalent fractions, and write the rule: multiply top and bottom by the same number.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Try 1/2 = 2/3 by adding 1 to each: the 2/3 strip's shading goes further. Adding does not work; multiplying does.",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "2/3 = 4/6: cut each third into two.",
+    "cites": []
+   },
+   {
+    "move": "your_turn",
+    "what": "Find a fraction equal to 3/4 with 8 at the bottom (6/8) before it is shown.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says why 2/4 is the same as 1/2.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "Which fraction is the same amount as 2/3?",
+    "options": [
+     "4/6",
+     "3/4",
+     "2/6"
+    ],
+    "answer_index": 0,
+    "explain": "Cutting each third into two gives 4 of 6 pieces; 3/4 adds one to each, and 2/6 changes only the bottom.",
+    "cites": []
+   },
+   {
+    "question": "Is 4/8 more than, less than, or the same as 1/2?",
+    "options": [
+     "The same",
+     "More, because 4 and 8 are bigger numbers",
+     "Less, because eighths are small pieces"
+    ],
+    "answer_index": 0,
+    "explain": "Four eighths cover exactly half the strip: more pieces, but each piece is smaller.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "Fold the strips",
+   "kind": "hands",
+   "materials": [
+    "three equal strips of paper",
+    "pencil",
+    "ruler"
+   ],
+   "stands_for": "Each strip is one whole; each fold cuts every piece into two equal smaller pieces.",
+   "predict": "Will the shaded part of 4/8 end before, at, or after the shaded part of 1/2?",
+   "steps": [
+    "Fold the first strip in half once, open it and shade one part.",
+    "Fold the second strip in half twice, open it and shade two parts.",
+    "Fold the third strip in half three times, open it and shade four parts.",
+    "Lay the three strips one below another, lined up at the left edge."
+   ],
+   "observe": "The shaded parts of all three strips end at the same place, exactly in the middle.",
+   "question": "Why do one half, two quarters and four eighths cover the same length?",
+   "expected": "Because each fold cuts every piece into two, so the number of pieces in the whole and the number shaded both double, while the shaded length stays the same.",
+   "write": "1/2, 2/4 and 4/8 are the same amount. Multiplying the top and bottom by the same number gives an equivalent fraction.",
+   "in_class": "Pairs, three strips each. The teacher draws a fraction wall of halves, quarters and eighths on the board. Ask: which is more, 1/2 or 4/8, and why? A class that says 4/8 is reading the numbers, not the strip.",
+   "cites": []
+  },
+  "leave_out": [
+   "simplest form using HCF",
+   "cross multiplication to test equality",
+   "fractions greater than one"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

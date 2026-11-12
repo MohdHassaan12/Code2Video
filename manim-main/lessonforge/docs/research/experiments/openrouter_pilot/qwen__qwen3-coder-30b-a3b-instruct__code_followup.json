@@ -1,0 +1,46 @@
+{
+  "id": "gen-1791306587-uHMX7Do2KUPPDEEM8tcm",
+  "object": "chat.completion",
+  "created": 1791306587,
+  "model": "qwen/qwen3-coder-30b-a3b-instruct",
+  "provider": "Novita",
+  "system_fingerprint": null,
+  "service_tier": null,
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "```python\nfrom manim import *\nimport numpy as np\n\nclass SlopeInterceptDemo(Scene):\n    def construct(self):\n        # Setup canvas and axes\n        axes = Axes(\n            x_range=[-3, 3, 1],\n            y_range=[-3, 5, 1],\n            axis_config={\"color\": WHITE},\n            tips=False,\n        )\n        axes_labels = axes.get_axis_labels(x_label=\"x\", y_label=\"y\")\n        \n        # Create equation display\n        eq = MathTex(\"y = mx + b\", font_size=24)\n        eq.to_corner(UR)\n        eq.shift(LEFT * 0.5)\n        \n        # Create explanation text\n        explanation = VGroup()\n        explanation.to_corner(DR)\n        explanation.shift(UP * 0.5)\n        \n        # Stage A: Fix m=1, vary b\n        self.play(Create(axes), run_time=1)\n        self.play(Write(axes_labels), run_time=1)\n        self.wait(0.5)\n        \n        # Initial line y = x + 1\n        line1 = axes.plot(lambda x: x + 1, color=YELLOW)\n        self.play(Create(line1), run_time=1)\n        \n        # Mark point (0,1)\n        dot = Dot(point=axes.c2p(0, 1), color=RED)\n        self.play(FadeIn(dot), run_time=0.5)\n        \n        # Show equation and explanation\n        self.play(Write(eq), run_time=0.5)\n        exp_text = Text(\"Initial line: y = x + 1\", font_size=22)\n        exp_text.next_to(eq, DOWN, buff=0.2)\n        self.play(Write(exp_text), run_time=0.5)\n        explanation.add(exp_text)\n        self.wait(1.5)\n        \n        # Animate b changing from 1 to 2\n        b_tracker = ValueTracker(1)\n        line_moving = always_redraw(\n            lambda: axes.plot(lambda x: x + b_tracker.get_value(), color=YELLOW)\n        )\n        self.play(ReplacementTransform(line1, line_moving), run_time=1)\n        \n        # Show new equation\n        new_eq = MathTex(\"y = x + 2\", font_size=24)\n        new_eq.to_corner(UR)\n        new_eq.shift(LEFT * 0.5)\n        self.play(Transform(eq, new_eq), run_time=0.5)\n        \n        # Update explanation\n        self.play(Transform(explanation[0], Text(\"Changing b to 2\", font_size=22)), run_time=0.5)\n        self.wait(1.5)\n        \n        # Show slope calculation\n        rise_run = always_redraw(\n            lambda: self.create_slope_triangle(axes, 0, 1, 1, 2, YELLOW)\n        )\n        self.play(Create(rise_run), run_time=0.5)\n        self.wait(1.5)\n        \n        # Move b back to 1\n        self.play(b_tracker.animate.set_value(1), run_time=1)\n        self.play(Transform(explanation[0], Text(\"Back to y = x + 1\", font_size=22)), run_time=0.5)\n        self.wait(1.5)\n        \n        # Clear slope triangle\n        self.play(FadeOut(rise_run), run_time=0.5)\n        \n        # Stage B: Fix b=1, vary m\n        # Reset equation\n        reset_eq = MathTex(\"y = x + 1\", font_size=24)\n        reset_eq.to_corner(UR)\n        reset_eq.shift(LEFT * 0.5)\n        self.play(Transform(eq, reset_eq), run_time=0.5)\n        self.play(Transform(explanation[0], Text(\"Now changing m\", font_size=22)), run_time=0.5)\n        self.wait(1.5)\n        \n        # Animate m changing from 1 to -1\n        m_tracker = ValueTracker(1)\n        line_moving2 = always_redraw(\n            lambda: axes.plot(lambda x: m_tracker.get_value() * x + 1, color=YELLOW)\n        )\n        self.play(ReplacementTransform(line_moving, line_moving2), run_time=1)\n        \n        # Show slope triangle for m = -1\n        self.play(Write(Text(\"Slope = -1\", font_size=22).next_to(eq, DOWN, buff=0.2)), run_time=0.5)\n        self.wait(1.5)\n        \n        # Show rise/run triangle for m = -1\n        rise_run2 = always_redraw(\n            lambda: self.create_slope_triangle(axes, 0, 1, 1, -1, YELLOW)\n        )\n        self.play(Create(rise_run2), run_time=0.5)\n        self.wait(1.5)\n        \n        # Move m back to 1\n        self.play(m_tracker.animate.set_value(1), run_time=1)\n        self.play(FadeOut(rise_run2), run_time=0.5)\n        self.wait(1.5)\n        \n        # Final state\n        self.play(Transform(explanation[0], Text(\"Final result\", font_size=22)), run_time=0.5)\n        self.wait(1.5)\n        \n        # Keep final state\n        self.play(FadeOut(explanation), run_time=0.5)\n        self.wait(1.5)\n    \n    def create_slope_triangle(self, axes, x1, y1, x2, y2, color):\n        # Create a right triangle showing rise/run\n        p1 = axes.c2p(x1, y1)\n        p2 = axes.c2p(x2, y1)\n        p3 = axes.c2p(x2, y2)\n        \n        # Horizontal leg\n        h_line = Line(p1, p2, color=color)\n        # Vertical leg\n        v_line = Line(p2, p3, color=color)\n        # Hypotenuse\n        hyp = Line(p1, p3, color=color)\n        \n        return VGroup(h_line, v_line, hyp)\n```",
+        "refusal": null,
+        "reasoning": null
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 334,
+    "completion_tokens": 1317,
+    "total_tokens": 1651,
+    "cost": 0.00037897,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.00037897,
+      "upstream_inference_prompt_cost": 2.338e-05,
+      "upstream_inference_completions_cost": 0.00035559
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}

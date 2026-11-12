@@ -1,0 +1,14 @@
+stage,model,judge_score,correctness,teaching,language,picture,economy,structural_pass,failed_calls,asked_again,length_ratio,cost_per_unit_usd,seconds_per_unit,judge_cost_usd
+written,anthropic/claude-haiku-5.5,83.33,4.33,3.67,4.5,4.67,3.67,2/6,0,0,1.09,0.01945,163.62,0.0371
+written,anthropic/claude-haiku-5.5:none,68.67,3.67,4.0,3.5,2.83,3.17,0/6,0,1,1.34,0.00438,30.88,0.0438
+written,deepseek/deepseek-v3.2:none,74.0,3.5,4.0,4.0,5.0,2.0,0/6,4,0,1.48,0.00734,181.8,0.0131
+written,qwen/qwen3.8-flash:none,68.8,3.8,3.8,3.2,2.4,4.0,0/6,1,2,1.04,0.00304,68.42,0.0336
+written,google/gemini-3.1-flash-lite:none,70.0,3.5,3.83,2.83,3.67,3.67,0/6,0,2,0.89,0.01348,21.67,0.0313
+written,openai/gpt-5.4-nano:none,66.67,3.83,3.17,3.33,3.67,2.67,0/6,0,0,1.15,0.00601,22.68,0.0397
+written,z-ai/glm-4.7-flash:none,44.8,2.2,3.0,2.2,2.0,1.8,0/6,1,4,1.29,0.00592,209.92,0.0402
+after review,anthropic/claude-haiku-5.5,81.33,4.0,3.83,4.67,4.5,3.33,4/6,0,0,1.01,0.0394,326.92,0.0823
+after review,anthropic/claude-haiku-5.5:none,74.4,3.4,3.6,4.6,3.8,3.2,0/6,1,0,1.05,0.00865,61.9,0.0557
+after review,deepseek/deepseek-v3.2:none,71.33,3.83,3.5,4.0,3.33,3.17,1/6,0,0,1.1,0.01391,590.35,0.077
+after review,qwen/qwen3.8-flash:none,84.67,4.5,4.33,4.0,4.17,4.17,2/6,0,2,0.98,0.00544,147.78,0.0717
+after review,openai/gpt-5.4-nano:none,68.67,4.0,3.17,3.83,3.33,2.83,0/6,0,1,1.08,0.01859,91.03,0.0695
+after review,google/gemini-3.1-flash-lite:none,66.67,3.5,3.0,3.83,3.17,3.17,3/6,0,4,0.84,0.02752,50.92,0.0806

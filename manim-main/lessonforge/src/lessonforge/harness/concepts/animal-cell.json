@@ -1,0 +1,207 @@
+{
+ "id": "animal-cell",
+ "names": [
+  "animal cell",
+  "structure of animal cell",
+  "parts of an animal cell",
+  "animal cell diagram",
+  "cell structure animal",
+  "animal cell and its parts",
+  "cheek cell"
+ ],
+ "subject": "science",
+ "classes": [
+  8,
+  9
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "drawing",
+  "figure": null,
+  "asks": [
+   "A labelled diagram of an animal cell, showing the cell membrane, the cytoplasm, the nucleus, mitochondria and a small vacuole.",
+   "A labelled diagram of cheek cells as seen under a microscope, showing the cell membrane, the cytoplasm and the nucleus of each cell.",
+   "A labelled diagram of an animal cell beside a plant cell, showing the cell membrane, the cell wall, the nucleus, the chloroplasts and the large vacuole."
+  ],
+  "why": "The labelled animal cell is the drawing every learner copies into their notebook, and each part can be lit as its job is told."
+ },
+ "card": {
+  "big_idea": {
+   "text": "An animal cell is a tiny living unit: a thin membrane holds jelly-like cytoplasm, and a nucleus inside controls what the cell does.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Name the main parts of an animal cell and say the job of each",
+    "level": "remember",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Explain why animal cells can take many shapes while plant cells are boxy",
+    "level": "understand",
+    "checked_by": "try_it"
+   },
+   {
+    "can": "Predict what would go wrong if one part of a cell stopped working",
+    "level": "analyze",
+    "checked_by": "q2"
+   }
+  ],
+  "why_it_matters": {
+   "text": "Your skin, blood and muscles are all made of cells like this, so knowing its parts is knowing how your body works.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "A cell has to let food and oxygen in and keep its contents together, which a thin, flexible membrane does; its work happens in a liquid where things can move about, the cytoplasm; and it needs instructions to grow and divide, which the nucleus holds.",
+   "cites": []
+  },
+  "picture": {
+   "text": "A rounded animal cell with a soft outline. First the thin outer boundary is lit, then the jelly-like inside, then the round nucleus near the middle, then the small mitochondria and a small vacuole, each named as its job is told. Last, a plant cell appears beside it with a stiff wall, a big vacuole and green chloroplasts that the animal cell does not have.",
+   "standard": "labelled diagram of an animal cell",
+   "cites": []
+  },
+  "diagram_ask": "A labelled diagram of an animal cell, showing the cell membrane, the cytoplasm, the nucleus, mitochondria and a small vacuole.",
+  "needs_first": [
+   {
+    "text": "All living things are made of cells.",
+    "cites": []
+   },
+   {
+    "text": "A microscope makes very small things look big.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Animal cells have a cell wall, like plant cells.",
+    "why_it_fails": "Animal cells have only a thin, flexible membrane; the stiff wall is found in plant cells.",
+    "cites": []
+   },
+   {
+    "mistake": "All cells have the same shape.",
+    "why_it_fails": "Animal cells have no stiff wall, so they take many shapes to suit their job: long nerve cells, round blood cells, flat skin cells.",
+    "cites": []
+   },
+   {
+    "mistake": "A cell is an empty bag with a few parts floating in it.",
+    "why_it_fails": "The inside is full of cytoplasm, a jelly in which the cell's work goes on, and each part has a job.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "A cell from inside your cheek and a cell from an onion are both alive. Do you think they are built the same way?",
+   "guesses": [
+    "Yes, every cell is the same",
+    "No, animal cells have no parts",
+    "Mostly the same, with some differences"
+   ],
+   "answer": "Mostly the same: both have a membrane, cytoplasm and a nucleus, but the onion cell also has a stiff cell wall and a big vacuole.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show a cheek cell and an onion cell side by side and ask whether they are built the same way. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Light the thin outer boundary of the animal cell. Ask: what must it let in and keep in?",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name it the cell membrane: thin, flexible, letting food and oxygen in and wastes out.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Light the jelly inside, the cytoplasm, where the cell's work happens, then the mitochondria that release energy from food.",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Light the nucleus: it holds the instructions for the cell to grow and divide, so it controls the cell.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Bring the plant cell beside it: a stiff cell wall, a big vacuole and chloroplasts that the animal cell does not have.",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "Show cells of different shapes (nerve, blood, skin): with no stiff wall, animal cells can take any shape.",
+    "cites": []
+   },
+   {
+    "move": "try_it",
+    "what": "Set the task: a balloon cell with a marble nucleus.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner names the three main parts and says the job of each.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "Which part would you NOT find in a cell from your cheek?",
+    "options": [
+     "A cell wall",
+     "A nucleus",
+     "A cell membrane"
+    ],
+    "answer_index": 0,
+    "explain": "Animal cells have a membrane and a nucleus, but no stiff cell wall.",
+    "cites": []
+   },
+   {
+    "question": "If a cell's membrane were torn, what would go wrong first?",
+    "options": [
+     "The cytoplasm would leak out and the cell could not control what goes in and out",
+     "Nothing, because its cell wall would still hold it",
+     "Nothing, because a cell is mostly empty space"
+    ],
+    "answer_index": 0,
+    "explain": "The membrane is what holds the cell together and lets only some things through; animal cells have no wall to fall back on.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "A balloon cell",
+   "kind": "hands",
+   "materials": [
+    "balloon",
+    "water",
+    "marble",
+    "a few beans",
+    "box"
+   ],
+   "stands_for": "The balloon is the cell membrane, the water is the cytoplasm, the marble is the nucleus and the beans are mitochondria; the box is a plant cell's wall.",
+   "predict": "When you press the balloon cell gently, will it keep its shape like the box or change shape?",
+   "steps": [
+    "Push the marble and the beans into the balloon.",
+    "Fill the balloon with a little water from a tap and tie it.",
+    "Press the balloon gently with your hand and watch its shape.",
+    "Put it inside the box and press the box the same way."
+   ],
+   "observe": "The balloon changes shape easily and springs back, with the marble moving about inside; inside the box it keeps the box's shape.",
+   "question": "Why can animal cells take so many shapes while plant cells stay boxy?",
+   "expected": "Because an animal cell has only a thin, flexible membrane, like the balloon, while a plant cell also has a stiff cell wall, like the box, that holds its shape.",
+   "write": "An animal cell has a thin membrane, jelly-like cytoplasm and a nucleus. It has no cell wall, so it can change shape.",
+   "in_class": "Groups of four, one balloon cell per group. The teacher draws the animal cell on the board and asks groups to say which object stands for each part. Ask: what does the box stand for, and which cell has one? A group that puts the box on the animal cell still thinks all cells have walls.",
+   "cites": []
+  },
+  "leave_out": [
+   "the endoplasmic reticulum, Golgi body and ribosomes",
+   "cell division",
+   "how a microscope slide is prepared"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

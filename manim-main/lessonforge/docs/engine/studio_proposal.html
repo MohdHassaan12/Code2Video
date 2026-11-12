@@ -1,0 +1,819 @@
+<title>Concept Explorer — Studio: editor redesign proposal</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --panel: #ffffff;
+    --panel-2: #eef2f5;
+    --ink: #1a2530;
+    --ink-2: #4a5a68;
+    --ink-3: #77879a;
+    --line: #d8e0e6;
+    --accent: #0e7a99;
+    --accent-soft: #d9edf3;
+    --good: #2e8f66;
+    --good-soft: #ddf0e7;
+    --warn: #a8741a;
+    --warn-soft: #f5ead2;
+    --bad: #b3503f;
+    --bad-soft: #f6e0dc;
+    --canvas: #10161d;
+    --canvas-ink: #cfe3ea;
+    --code-bg: #eef2f5;
+    --shadow: 0 1px 2px rgba(16, 24, 32, .06), 0 8px 24px rgba(16, 24, 32, .05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e141b;
+      --panel: #161e27;
+      --panel-2: #1d2733;
+      --ink: #e4ecf2;
+      --ink-2: #9fb0bf;
+      --ink-3: #66788a;
+      --line: #263140;
+      --accent: #58c4dd;
+      --accent-soft: #14303b;
+      --good: #52c08d;
+      --good-soft: #13301f;
+      --warn: #d9a13b;
+      --warn-soft: #33270f;
+      --bad: #e07a68;
+      --bad-soft: #38180f;
+      --canvas: #0a0f14;
+      --canvas-ink: #b9d4dd;
+      --code-bg: #121a23;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 10px 28px rgba(0, 0, 0, .3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e141b; --panel: #161e27; --panel-2: #1d2733; --ink: #e4ecf2;
+    --ink-2: #9fb0bf; --ink-3: #66788a; --line: #263140; --accent: #58c4dd;
+    --accent-soft: #14303b; --good: #52c08d; --good-soft: #13301f;
+    --warn: #d9a13b; --warn-soft: #33270f; --bad: #e07a68; --bad-soft: #38180f;
+    --canvas: #0a0f14; --canvas-ink: #b9d4dd; --code-bg: #121a23;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 28px rgba(0,0,0,.3);
+  }
+  :root[data-theme="light"] {
+    --bg: #f6f8fa; --panel: #ffffff; --panel-2: #eef2f5; --ink: #1a2530;
+    --ink-2: #4a5a68; --ink-3: #77879a; --line: #d8e0e6; --accent: #0e7a99;
+    --accent-soft: #d9edf3; --good: #2e8f66; --good-soft: #ddf0e7;
+    --warn: #a8741a; --warn-soft: #f5ead2; --bad: #b3503f; --bad-soft: #f6e0dc;
+    --canvas: #10161d; --canvas-ink: #cfe3ea; --code-bg: #eef2f5;
+    --shadow: 0 1px 2px rgba(16,24,32,.06), 0 8px 24px rgba(16,24,32,.05);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, Menlo, monospace; }
+
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 96px; }
+  .prose { max-width: 760px; }
+  .prose p { margin: 0 0 1em; color: var(--ink-2); }
+  .prose p strong, .prose li strong { color: var(--ink); font-weight: 650; }
+  .prose ul { margin: 0 0 1.2em; padding-left: 1.2em; color: var(--ink-2); }
+  .prose li { margin-bottom: .45em; }
+  .prose li::marker { color: var(--accent); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover, a:focus-visible { text-decoration: underline; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  code, .code {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, Menlo, monospace;
+    font-size: .84em;
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: .1em .35em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  /* ---------- header ---------- */
+  header { padding: 64px 0 8px; }
+  .eyebrow {
+    font-size: 12px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  h1 {
+    font-size: clamp(30px, 4.6vw, 44px);
+    line-height: 1.12;
+    font-weight: 750;
+    letter-spacing: -.022em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+    max-width: 18em;
+  }
+  .lede { font-size: 18.5px; line-height: 1.6; color: var(--ink-2); max-width: 44em; margin: 0 0 20px; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; }
+  .meta-chip {
+    font-size: 12.5px; color: var(--ink-2);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 4px 12px; background: var(--panel);
+  }
+  .meta-chip b { color: var(--ink); font-weight: 620; }
+
+  /* ---------- sections ---------- */
+  section { margin-top: 72px; }
+  .sec-label {
+    font-size: 12px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sec-label::before {
+    content: ""; width: 22px; height: 2px; background: var(--accent); border-radius: 2px;
+  }
+  h2 {
+    font-size: 26px; font-weight: 720; letter-spacing: -.015em;
+    margin: 0 0 16px; text-wrap: balance;
+  }
+  h3 { font-size: 18px; font-weight: 680; letter-spacing: -.01em; margin: 28px 0 10px; }
+
+  /* ---------- pull / callout ---------- */
+  .pull {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin: 20px 0 24px;
+    max-width: 720px;
+    color: var(--ink);
+    font-size: 16.5px;
+    line-height: 1.55;
+  }
+  .pull .mono { font-size: .85em; }
+
+  /* ---------- tables ---------- */
+  .tbl-scroll { overflow-x: auto; margin: 18px 0 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 640px; }
+  th {
+    text-align: left; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 650; padding: 12px 16px 10px; border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+  }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-2); }
+  tr:last-child td { border-bottom: none; }
+  td b { color: var(--ink); font-weight: 630; }
+  td .code { white-space: nowrap; }
+
+  /* ---------- status chips (shared with wireframes) ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11.5px; font-weight: 640; letter-spacing: .02em;
+    border-radius: 999px; padding: 2.5px 10px; white-space: nowrap;
+  }
+  .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .chip.ok   { color: var(--good); background: var(--good-soft); }
+  .chip.warn { color: var(--warn); background: var(--warn-soft); }
+  .chip.bad  { color: var(--bad);  background: var(--bad-soft); }
+  .chip.dim  { color: var(--ink-3); background: var(--panel-2); }
+  .chip.acc  { color: var(--accent); background: var(--accent-soft); }
+
+  /* ---------- wireframe figures ---------- */
+  figure.frame { margin: 26px 0 10px; }
+  .frame-box {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  figcaption {
+    font-size: 13.5px; color: var(--ink-3); margin-top: 10px; line-height: 1.55; max-width: 760px;
+  }
+  figcaption b { color: var(--ink-2); font-weight: 640; }
+
+  .wf { font-size: 12.5px; color: var(--ink-2); }
+  .wf-topbar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--panel-2);
+  }
+  .wf-title { font-weight: 680; color: var(--ink); font-size: 13.5px; }
+  .wf-spacer { flex: 1; }
+  .wf-btn {
+    border: 1px solid var(--line); border-radius: 7px; padding: 4px 11px;
+    font-size: 12px; font-weight: 620; color: var(--ink-2); background: var(--panel);
+    white-space: nowrap;
+  }
+  .wf-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .wf-btn.ghost { border-style: dashed; color: var(--ink-3); }
+
+  .wf-body { display: grid; grid-template-columns: 1fr 296px; gap: 0; }
+  .wf-stage { padding: 14px; border-right: 1px solid var(--line); min-width: 0; }
+  .wf-canvas {
+    background: var(--canvas); border-radius: 10px; aspect-ratio: 16/9;
+    position: relative; overflow: hidden; color: var(--canvas-ink);
+  }
+  .wf-canvas svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cv-label { position: absolute; font-size: 11px; letter-spacing: .02em; }
+
+  .wf-scrub { display: flex; gap: 4px; margin-top: 10px; align-items: center; }
+  .scrub-seg { height: 7px; border-radius: 4px; background: var(--panel-2); border: 1px solid var(--line); flex: 1; }
+  .scrub-seg.active { background: var(--accent); border-color: var(--accent); }
+  .scrub-lab { font-size: 11px; color: var(--ink-3); white-space: nowrap; }
+
+  .wf-rail { display: flex; gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); overflow-x: auto; }
+  .wf-thumb {
+    min-width: 128px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel);
+    padding: 7px 9px 8px; position: relative;
+  }
+  .wf-thumb.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .thumb-pic { height: 42px; border-radius: 5px; background: var(--canvas); margin-bottom: 6px; position: relative; overflow: hidden; }
+  .thumb-pic i { position: absolute; background: var(--canvas-ink); opacity: .55; }
+  .thumb-name { font-size: 11.5px; font-weight: 630; color: var(--ink); line-height: 1.3; }
+  .thumb-sub { font-size: 10.5px; color: var(--ink-3); display: flex; gap: 6px; align-items: center; margin-top: 3px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .dot.ok { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+  .wf-thumb.add {
+    display: flex; align-items: center; justify-content: center; min-width: 64px;
+    border-style: dashed; color: var(--ink-3); font-size: 20px; font-weight: 300;
+  }
+
+  .wf-inspector { padding: 12px 14px; background: var(--panel); min-width: 0; }
+  .wf-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+  .wf-tab { padding: 6px 10px 8px; font-size: 12px; font-weight: 630; color: var(--ink-3); }
+  .wf-tab.on { color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); }
+  .insp-field { margin-bottom: 11px; }
+  .insp-lab { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); font-weight: 650; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: baseline; }
+  .insp-lab .mono { text-transform: none; letter-spacing: 0; font-size: 10px; color: var(--ink-3); opacity: .8; }
+  .insp-input {
+    border: 1px solid var(--line); border-radius: 7px; background: var(--panel-2);
+    padding: 6px 9px; font-size: 12px; color: var(--ink); line-height: 1.45;
+  }
+  .insp-input.select::after { content: " ▾"; color: var(--ink-3); }
+  .el-row {
+    display: flex; align-items: center; gap: 8px; border: 1px solid var(--line);
+    border-radius: 8px; padding: 6px 9px; margin-bottom: 6px; background: var(--panel);
+  }
+  .el-row.sel { border-color: var(--accent); background: var(--accent-soft); }
+  .el-type {
+    font-size: 9.5px; font-weight: 700; letter-spacing: .06em; border-radius: 4px;
+    padding: 1.5px 5px; background: var(--panel-2); color: var(--ink-3); text-transform: uppercase;
+  }
+  .el-row.sel .el-type { background: var(--panel); }
+  .el-name { font-size: 12px; color: var(--ink); font-weight: 590; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .el-anim { font-size: 10.5px; color: var(--ink-3); white-space: nowrap; }
+
+  .cue-row { border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; margin-bottom: 8px; background: var(--panel); }
+  .cue-head { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .cue-n { font-size: 10px; font-weight: 700; color: var(--accent); }
+  .cue-play { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--line); display: inline-flex; align-items: center; justify-content: center; font-size: 8px; color: var(--accent); background: var(--panel-2); }
+  .cue-text { font-size: 12px; color: var(--ink); line-height: 1.5; }
+  .cue-foot { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .evt {
+    font-size: 10px; font-family: ui-monospace, Consolas, Menlo, monospace;
+    border: 1px solid var(--line); border-radius: 5px; padding: 1.5px 6px; color: var(--ink-2); background: var(--panel-2);
+  }
+  .evt.add { border-style: dashed; color: var(--ink-3); }
+
+  /* library wireframe */
+  .lib-body { display: grid; grid-template-columns: 168px 1fr; }
+  .lib-side { border-right: 1px solid var(--line); padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+  .lib-filter { font-size: 12px; padding: 5px 9px; border-radius: 7px; color: var(--ink-2); }
+  .lib-filter.on { background: var(--accent-soft); color: var(--accent); font-weight: 650; }
+  .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; padding: 14px; }
+  .lib-card { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); }
+  .lib-pic { aspect-ratio: 16/9; background: var(--canvas); position: relative; overflow: hidden; }
+  .lib-pic i { position: absolute; background: var(--canvas-ink); opacity: .5; }
+  .lib-info { padding: 8px 10px 9px; }
+  .lib-name { font-size: 12px; font-weight: 640; color: var(--ink); margin-bottom: 5px; line-height: 1.3; }
+  .lib-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+
+  /* flow diagram */
+  .flow { display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding: 22px 18px; }
+  .flow-step { min-width: 148px; flex: 1; position: relative; padding-right: 26px; }
+  .flow-step:not(:last-child)::after {
+    content: "→"; position: absolute; right: 6px; top: 34px; color: var(--ink-3); font-size: 15px;
+  }
+  .flow-card {
+    border: 1px solid var(--line); border-radius: 10px; background: var(--panel);
+    padding: 10px 12px; height: 100%;
+  }
+  .flow-card.accented { border-color: var(--accent); }
+  .flow-k { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; font-weight: 680; color: var(--accent); margin-bottom: 4px; }
+  .flow-t { font-size: 13px; font-weight: 640; color: var(--ink); line-height: 1.35; margin-bottom: 4px; }
+  .flow-d { font-size: 11.5px; color: var(--ink-3); line-height: 1.45; }
+  .flow-note {
+    margin: 0 18px 18px; border: 1px dashed var(--line); border-radius: 9px;
+    padding: 9px 13px; font-size: 12.5px; color: var(--ink-2); background: var(--panel-2);
+  }
+  .flow-note b { color: var(--ink); }
+
+  /* phases */
+  .phase { border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 10px; background: var(--panel); padding: 16px 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
+  .phase-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .phase-n { font-size: 12px; font-weight: 750; color: var(--accent); letter-spacing: .05em; }
+  .phase-t { font-size: 16.5px; font-weight: 680; color: var(--ink); }
+  .phase-e { font-size: 12px; color: var(--ink-3); margin-left: auto; }
+  .phase p { font-size: 14.5px; color: var(--ink-2); margin: 6px 0 0; line-height: 1.6; }
+  .phase p b { color: var(--ink); font-weight: 630; }
+
+  /* diagnosis cards */
+  .diag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin: 20px 0 8px; }
+  .diag { border: 1px solid var(--line); border-radius: 11px; background: var(--panel); padding: 14px 17px; box-shadow: var(--shadow); }
+  .diag-t { font-size: 14.5px; font-weight: 670; color: var(--ink); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .diag-t::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--bad); flex: none; }
+  .diag p { font-size: 13.5px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 900px) {
+    .two-col { grid-template-columns: 1fr; }
+    .wf-body { grid-template-columns: 1fr; }
+    .wf-stage { border-right: none; border-bottom: 1px solid var(--line); }
+    .lib-body { grid-template-columns: 1fr; }
+    .lib-side { flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--line); }
+  }
+
+  footer { margin-top: 88px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-3); }
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Concept Explorer · Design proposal</div>
+  <h1>Studio: from a one-shot form to a scene-by-scene editor</h1>
+  <p class="lede">
+    Today the interface is a sidebar of thirteen knobs and one <b>Generate</b> button that runs the whole
+    pipeline as a black box. This proposal reshapes it around the thing users actually want to touch —
+    <b>individual scenes</b> — with modular editing of content, motion, and audio per scene, in the spirit of
+    Google&nbsp;Flow's SceneBuilder and Descript's edit-the-transcript model.
+  </p>
+  <div class="meta-row">
+    <span class="meta-chip"><b>Status</b> ideation — nothing built yet</span>
+    <span class="meta-chip"><b>Scope</b> stem_animation_lab web UI + API</span>
+    <span class="meta-chip"><b>Date</b> 2026-07-30</span>
+  </div>
+</header>
+
+<!-- ================= TLDR ================= -->
+<section>
+  <div class="sec-label">TL;DR</div>
+  <h2>The pitch in five lines</h2>
+  <div class="prose">
+    <ul>
+      <li><b>The storyboard IR is already a perfect editor document.</b> Scenes → elements (content), animation events (motion), narration cues (audio), composition + layout template (style). The editor edits the IR; the deterministic transpiler keeps owning the code. No new codegen concepts needed.</li>
+      <li><b>The backend already has per-scene primitives the UI never exposes:</b> per-scene scripts, parallel scene renders + ffmpeg concat, scene-scoped repair, and a shared TTS cache that makes re-renders of unchanged narration free. "Edit one slide, re-render one slide" is mostly wiring, not new machinery.</li>
+      <li><b>One surface, three views:</b> a <b>Library</b> (today's /timeline, made openable), a <b>Studio</b> (scene rail + preview canvas + inspector with Content / Motion / Audio / Style tabs), and an <b>Advanced drawer</b> (absorbing the debug sandbox's repair history, code view, and cost readouts).</li>
+      <li><b>Every edit follows the house rule "never lose a verified artifact":</b> edited scenes render as candidates, accept-if-better, old clip kept on failure.</li>
+      <li><b>Phase 0 is nearly free and pays immediately:</b> the browser today never sends <span class="code">scene_scripts</span>, so web renders always take the slow sequential path with no scene-scoped repair — one wiring fix turns the fast path on for everyone.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= DIAGNOSIS ================= -->
+<section>
+  <div class="sec-label">Diagnosis</div>
+  <h2>Why the current interface feels confusing</h2>
+  <div class="prose">
+    <p>
+      This is grounded in the actual code (<span class="code">static/index.html</span>,
+      <span class="code">static/app.js</span>, <span class="code">app/api/*</span>), not vibes.
+      The root problem: <b>the UI is organized around the pipeline's stages, but the user thinks in scenes.</b>
+      Everything below follows from that mismatch.
+    </p>
+  </div>
+  <div class="diag-grid">
+    <div class="diag">
+      <div class="diag-t">One button, no pauses, no steering</div>
+      <p>Generate runs storyboard → preflight → codegen → compile as one unattended chain (<span class="code">app.js:330-492</span>). You can't stop after the storyboard to fix a wrong cue, can't re-run codegen after a tweak, can't cancel.</p>
+    </div>
+    <div class="diag">
+      <div class="diag-t">The editable thing is the wrong thing</div>
+      <p>The storyboard renders in a read-only <span class="code">&lt;code&gt;</span> block; the only editable intermediate in the whole UI is the <i>Python textarea</i>. Educators want to change a narration line or a label — instead they're offered Manim source.</p>
+    </div>
+    <div class="diag">
+      <div class="diag-t">All-or-nothing regeneration</div>
+      <p>Changing one word of narration means re-running the entire video. Meanwhile per-scene clips <i>are</i> rendered server-side — then deleted after concat (<span class="code">render.py:1166</span>), with uuid names and no index, unreachable by design.</p>
+    </div>
+    <div class="diag">
+      <div class="diag-t">Four disconnected surfaces</div>
+      <p>Main page, /timeline, /bulk, and the Streamlit sandbox share no navigation and no state. Voice audition, repair history, env knobs, and cost readouts exist <i>only</i> in the sandbox; per-node regenerate exists <i>only</i> in the ce/ Streamlit app.</p>
+    </div>
+    <div class="diag">
+      <div class="diag-t">Progress is a log dump</div>
+      <p>2-second polling of a free-text <span class="code">progress</span> string, then the entire Manim stdout dumped into a console pane at the end. The WebSocket push endpoint exists (<span class="code">render_routes.py:106</span>) — no page uses it.</p>
+    </div>
+    <div class="diag">
+      <div class="diag-t">Fixes evaporate; state drifts</div>
+      <p>Asset re-tests patch the storyboard in browser memory only — there is no storyboard GET/PUT, so corrections die with the tab. Voice lists are hardcoded in <span class="code">app.js</span> as a manual mirror of the sandbox's table. Server errors are silently dropped (client reads <span class="code">err.error</span>, FastAPI sends <span class="code">detail</span>).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE UNLOCK ================= -->
+<section>
+  <div class="sec-label">The unlock</div>
+  <h2>The backend is already scene-modular — only the UI isn't</h2>
+  <div class="prose">
+    <p>
+      This is why the redesign is cheaper than it looks. Each editor capability below maps to machinery
+      that already exists and is tested; the missing layer is addressability (HTTP surface + persistence).
+    </p>
+  </div>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Editor capability</th><th>Existing primitive</th><th>What's missing</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Edit one slide, re-render one slide</b></td>
+          <td><span class="code">scene_scripts</span> per scene; <span class="code">_render_scenes_parallel</span> + <span class="code">_concat_scene_clips</span>; scene-scoped repair</td>
+          <td>A route that renders scene <i>k</i> of a project and re-concats; clips kept in a project folder instead of discarded</td>
+        </tr>
+        <tr>
+          <td><b>Cheap edit loops</b></td>
+          <td>Shared content-addressed TTS cache (unchanged cues re-bill ₹0); storyboard cache; bulk per-topic stage caches</td>
+          <td>Dirty-scene tracking (hash each scene's IR subtree vs. last rendered hash)</td>
+        </tr>
+        <tr>
+          <td><b>Edit content/motion/audio as fields, not code</b></td>
+          <td>The storyboard IR: <span class="code">elements</span>, <span class="code">animation_events</span>, <span class="code">narration_cues</span>, <span class="code">composition</span>, <span class="code">layout_template</span>; deterministic transpiler owns all geometry</td>
+          <td>A validated <span class="code">PATCH</span> for the storyboard, run through the existing shape gate + language heal before acceptance</td>
+        </tr>
+        <tr>
+          <td><b>Safe edits that never break a good video</b></td>
+          <td>Accept-if-better repair contract; <span class="code">_discard_video</span> loser cleanup; sidecar verification metadata</td>
+          <td>Nothing — reuse the exact contract for edit-triggered renders</td>
+        </tr>
+        <tr>
+          <td><b>Voice audition before spending a render</b></td>
+          <td>Sandbox already synthesizes + plays per-voice samples; TTS cache is keyed on request intent, so a previewed cue <i>pre-warms the render</i></td>
+          <td>A <span class="code">/api/tts/preview</span> route + a server-owned <span class="code">/api/voices</span> list (kills the hardcoded JS mirror)</td>
+        </tr>
+        <tr>
+          <td><b>Live scene-by-scene progress</b></td>
+          <td>WebSocket job status endpoint; per-scene logs index-aligned with scripts</td>
+          <td>Structured progress events (<span class="code">scene 2/4: rendering</span>) instead of a free-text string; a page that subscribes</td>
+        </tr>
+        <tr>
+          <td><b>A library you can return to</b></td>
+          <td>/timeline with sidecar badges; <span class="code">bulk_runs/&lt;id&gt;/</span> per-topic folders (storyboard + code persisted)</td>
+          <td>Generalize the bulk folder into a <b>project folder</b> for every video (this is roadmap §H's per-run folder, made load-bearing)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= NORTH STAR ================= -->
+<section>
+  <div class="sec-label">North star</div>
+  <h2>The Studio: scene rail · canvas · inspector</h2>
+  <div class="prose">
+    <p>
+      One editing surface per project. The scene rail (bottom) is the film strip you flow through;
+      the canvas previews the selected scene's clip; the inspector (right) edits the selected scene
+      through four modular tabs. Everything on screen is a view of the storyboard IR.
+    </p>
+  </div>
+
+  <figure class="frame">
+    <div class="frame-box wf" role="img" aria-label="Wireframe of the Studio editor: top bar with project name and render button, center preview canvas, right inspector with Content tab, bottom scene rail with four scene thumbnails">
+      <div class="wf-topbar">
+        <span class="wf-title">Pythagorean Theorem</span>
+        <span class="chip ok">Clean</span>
+        <span class="chip dim">4 scenes · 1:24</span>
+        <span class="wf-spacer"></span>
+        <span class="wf-btn">⌘ Ask AI</span>
+        <span class="wf-btn">Advanced</span>
+        <span class="wf-btn primary">Render 1 changed scene</span>
+      </div>
+      <div class="wf-body">
+        <div class="wf-stage">
+          <div class="wf-canvas">
+            <svg viewBox="0 0 640 360" aria-hidden="true">
+              <line x1="120" y1="310" x2="560" y2="310" stroke="currentColor" stroke-width="2" opacity=".7"/>
+              <line x1="150" y1="80" x2="150" y2="340" stroke="currentColor" stroke-width="2" opacity=".7"/>
+              <polygon points="220,290 460,290 460,140" fill="none" stroke="#58c4dd" stroke-width="3"/>
+              <text x="325" y="316" fill="currentColor" font-size="17" opacity=".85">a</text>
+              <text x="472" y="222" fill="currentColor" font-size="17" opacity=".85">b</text>
+              <text x="312" y="205" fill="#58c4dd" font-size="17">c</text>
+              <text x="200" y="60" fill="currentColor" font-size="22" opacity=".95">a² + b² = c²</text>
+            </svg>
+            <span class="cv-label" style="right:10px;bottom:8px;opacity:.55">scene 2 · 0:19 / 0:26</span>
+          </div>
+          <div class="wf-scrub">
+            <span class="scrub-lab">cues</span>
+            <span class="scrub-seg"></span>
+            <span class="scrub-seg active"></span>
+            <span class="scrub-seg"></span>
+            <span class="scrub-lab">2 / 3</span>
+          </div>
+        </div>
+        <div class="wf-inspector">
+          <div class="wf-tabs">
+            <span class="wf-tab on">Content</span>
+            <span class="wf-tab">Motion</span>
+            <span class="wf-tab">Audio</span>
+            <span class="wf-tab">Style</span>
+          </div>
+          <div class="insp-field">
+            <div class="insp-lab">Composition <span class="mono">composition</span></div>
+            <div class="insp-input">Title top; right triangle centre-left on axes; equation top-right.</div>
+          </div>
+          <div class="insp-field">
+            <div class="insp-lab">Elements <span class="mono">elements[]</span></div>
+            <div class="el-row"><span class="el-type">text</span><span class="el-name">Scene title</span><span class="el-anim">FadeIn ▾</span></div>
+            <div class="el-row sel"><span class="el-type">math</span><span class="el-name">a² + b² = c²</span><span class="el-anim">Write ▾</span></div>
+            <div class="el-row"><span class="el-type">shape</span><span class="el-name">right triangle</span><span class="el-anim">DrawBorderThenFill ▾</span></div>
+            <div class="el-row"><span class="el-type">coord</span><span class="el-name">axes x:0-6, y:0-6</span><span class="el-anim">Create ▾</span></div>
+            <div class="el-row" style="border-style:dashed;justify-content:center;color:var(--ink-3)">+ add element</div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-rail">
+        <div class="wf-thumb">
+          <div class="thumb-pic"><i style="left:12%;top:20%;width:40%;height:6px"></i><i style="left:12%;top:44%;width:60%;height:5px"></i></div>
+          <div class="thumb-name">1 · Hook — ladder problem</div>
+          <div class="thumb-sub"><span class="dot ok"></span>0:18 · rendered</div>
+        </div>
+        <div class="wf-thumb active">
+          <div class="thumb-pic"><i style="left:18%;top:64%;width:56%;height:4px"></i><i style="left:24%;top:30%;width:4px;height:38%"></i><i style="left:28%;top:36%;width:34%;height:4px;transform:rotate(-32deg)"></i></div>
+          <div class="thumb-name">2 · The theorem</div>
+          <div class="thumb-sub"><span class="dot warn"></span>edited · needs render</div>
+        </div>
+        <div class="wf-thumb">
+          <div class="thumb-pic"><i style="left:14%;top:24%;width:28%;height:28%"></i><i style="left:52%;top:24%;width:34%;height:6px"></i><i style="left:52%;top:42%;width:30%;height:5px"></i></div>
+          <div class="thumb-name">3 · Proof by squares</div>
+          <div class="thumb-sub"><span class="dot ok"></span>0:24 · rendered</div>
+        </div>
+        <div class="wf-thumb">
+          <div class="thumb-pic"><i style="left:16%;top:30%;width:50%;height:6px"></i><i style="left:16%;top:52%;width:64%;height:5px"></i></div>
+          <div class="thumb-name">4 · Recap + example</div>
+          <div class="thumb-sub"><span class="dot ok"></span>0:22 · rendered</div>
+        </div>
+        <div class="wf-thumb add" aria-label="add scene">+</div>
+      </div>
+    </div>
+    <figcaption>
+      <b>The Studio.</b> Scene 2 was edited, so only it is marked dirty — the render button says exactly what it will
+      re-render. Reordering scenes is dragging thumbnails (a pure IR edit). Before a first render, thumbnails show a
+      schematic "blueprint" drawn from the IR's zones and element types; after, a real mid-scene frame from the clip.
+    </figcaption>
+  </figure>
+
+  <div class="pull">
+    Selection model in one sentence: <b>the rail selects a scene, the canvas scrubs its cues, the inspector edits
+    what's selected</b> — and nothing ever edits generated code, because the transpiler owns structure.
+  </div>
+</section>
+
+<!-- ================= INSPECTOR TABS ================= -->
+<section>
+  <div class="sec-label">Modular editing</div>
+  <h2>Four tabs, each mapped 1:1 to IR fields</h2>
+  <div class="prose">
+    <p>
+      No invented concepts: every control below reads and writes an existing field of
+      <span class="code">StoryboardScene</span>. That keeps the editor honest — anything it can express,
+      the deterministic pipeline can already render, and the existing storyboard gate can already validate.
+    </p>
+  </div>
+
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Tab</th><th>Edits (IR field)</th><th>Controls</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Content</b></td>
+          <td><span class="code">elements[].content/type/color/scale</span>, <span class="code">composition</span>, scene <span class="code">description</span></td>
+          <td>Element list with inline text/LaTeX editing, type-aware fields (SMILES for molecules, axis ranges for graphs), add/remove element, color swatch from the theme palette</td>
+        </tr>
+        <tr>
+          <td><b>Motion</b></td>
+          <td><span class="code">elements[].entrance_animation</span>, <span class="code">narration_cues[].animation_events</span></td>
+          <td>Entrance picker seeded from the existing vocabulary (<span class="code">_ENTRANCE_CONFIG</span> / <span class="code">_SHAPE_ENTRANCES</span>); per-cue event chips (show / hide / transform / highlight / move_to / focus) with target dropdowns limited to this scene's element ids — cross-scene references impossible by construction, the exact bug class <span class="code">_drop_cross_scene_events</span> exists to catch</td>
+        </tr>
+        <tr>
+          <td><b>Audio</b></td>
+          <td><span class="code">narration_cues[].cue</span>, voice spec (language / persona / speaker / provider / tech_terms)</td>
+          <td>Per-cue narration textarea with ▶ preview (hits the shared TTS cache — auditioned audio is reused at render time), voice picker fed by <span class="code">/api/voices</span>, pacing tags surfaced as chips instead of raw <span class="code">[SPEED]</span> markup</td>
+        </tr>
+        <tr>
+          <td><b>Style</b></td>
+          <td><span class="code">layout_template</span>, <span class="code">wait_time</span>; project-level: style profile, background, quality, aspect</td>
+          <td>Template picker (TitleStageCaption / SplitScreen / FullCanvas) with tiny schematic previews; theme dropdown (existing five profiles); project-level knobs move here, out of the global sidebar</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="frame">
+    <div class="frame-box wf" style="max-width:430px" role="img" aria-label="Wireframe of the Audio tab: two narration cues with play buttons, editable text, animation event chips, and a voice picker">
+      <div class="wf-topbar"><span class="wf-title" style="font-size:12.5px">Scene 2 · Audio</span><span class="wf-spacer"></span><span class="chip acc">hi-IN · hybrid</span></div>
+      <div style="padding:12px 14px">
+        <div class="insp-field">
+          <div class="insp-lab">Voice</div>
+          <div class="insp-input select">shubh · Sarvam (falls back: Gemini → gTTS)</div>
+        </div>
+        <div class="insp-field">
+          <div class="insp-lab">Tech terms <span class="mono">tech_terms</span></div>
+          <div class="insp-input select">english — never re-said in Hindi</div>
+        </div>
+        <div class="cue-row">
+          <div class="cue-head"><span class="cue-play">▶</span><span class="cue-n">CUE 1</span><span class="chip dim" style="margin-left:auto">cached · ₹0</span></div>
+          <div class="cue-text">Socho, ek ladder wall ke against lean kar rahi hai…</div>
+          <div class="cue-foot"><span class="evt">show(title)</span><span class="evt">show(axes)</span><span class="evt add">+ event</span></div>
+        </div>
+        <div class="cue-row" style="border-color:var(--warn)">
+          <div class="cue-head"><span class="cue-play">▶</span><span class="cue-n">CUE 2</span><span class="chip warn" style="margin-left:auto">edited · will re-bill</span></div>
+          <div class="cue-text">Yahi hai Pythagoras theorem — a square plus b square equals c square.</div>
+          <div class="cue-foot"><span class="evt">show(equation)</span><span class="evt">highlight(triangle)</span><span class="evt add">+ event</span></div>
+        </div>
+      </div>
+    </div>
+    <figcaption>
+      <b>Audio tab.</b> The Descript move: fix narration by editing text, not by regenerating the video.
+      Cost is visible per cue — unchanged cues replay from the shared TTS cache, so the price of an edit
+      is exactly the cues you touched plus one scene render.
+    </figcaption>
+  </figure>
+</section>
+
+<!-- ================= EDIT LOOP ================= -->
+<section>
+  <div class="sec-label">The edit loop</div>
+  <h2>Every edit is validated, scoped, and reversible</h2>
+  <figure class="frame">
+    <div class="frame-box">
+      <div class="flow" role="img" aria-label="Five step edit loop: edit IR, validate, transpile dirty scene, render candidate clip, accept if better then re-concat">
+        <div class="flow-step"><div class="flow-card"><div class="flow-k">1 · Edit</div><div class="flow-t">Inspector patches the IR</div><div class="flow-d">Scene 2's subtree hash changes → marked dirty. Undo/redo is a patch stack.</div></div></div>
+        <div class="flow-step"><div class="flow-card"><div class="flow-k">2 · Validate</div><div class="flow-t">Existing gates run on save</div><div class="flow-d">Shape gate + language contract + <span class="mono" style="font-size:10px">normalize_onscreen_language</span>. Bad edits bounce with the gate's reason, before any spend.</div></div></div>
+        <div class="flow-step"><div class="flow-card"><div class="flow-k">3 · Transpile</div><div class="flow-t">Dirty scenes only</div><div class="flow-d">Deterministic, free, instant. Code is never edited by the user or the LLM.</div></div></div>
+        <div class="flow-step"><div class="flow-card"><div class="flow-k">4 · Render</div><div class="flow-t">Candidate clip per dirty scene</div><div class="flow-d">Probe + repair as today, scene-scoped. Unchanged narration replays from TTS cache.</div></div></div>
+        <div class="flow-step"><div class="flow-card accented"><div class="flow-k">5 · Accept</div><div class="flow-t">Accept-if-better, re-concat</div><div class="flow-d">Candidate must render and not regress violations; loser discarded via <span class="mono" style="font-size:10px">_discard_video</span>. The last good clip is never lost.</div></div></div>
+      </div>
+      <div class="flow-note"><b>Failure story:</b> if the candidate fails, the scene shows "edit failed — showing last good render" with the classified reason (infra / latex / code, per <span class="code">_classify_render_failure</span>) — the video keeps playing with the previous clip.</div>
+    </div>
+    <figcaption><b>Cost model that makes editing feel free:</b> one narration tweak = one cue of TTS + one scene render + one ffmpeg concat — seconds and paise, versus today's full-video regeneration.</figcaption>
+  </figure>
+
+  <h3>AI edits ride the same loop</h3>
+  <div class="prose">
+    <p>
+      An <b>"Ask AI"</b> box on the selected scene ("make this a two-step derivation", "add a real-world example
+      element") sends the instruction + that scene's IR to the LLM and gets back a <b>storyboard patch</b> — never code.
+      The UI shows the diff as chips (<span class="chip acc">+2 elements</span> <span class="chip acc">~1 cue</span>
+      <span class="chip warn">scene 2 dirty</span>) with Apply / Discard. Applied patches enter at step 1 like any
+      manual edit, so gates and accept-if-better still protect the artifact. This keeps the house rule intact:
+      <b>models own content, code owns structure.</b>
+    </p>
+  </div>
+</section>
+
+<!-- ================= IA / UNIFICATION ================= -->
+<section>
+  <div class="sec-label">Information architecture</div>
+  <h2>Three views replace four disconnected surfaces</h2>
+  <div class="prose">
+    <p>
+      Everything hangs off a persistent <b>project</b> (the generalized <span class="code">bulk_runs</span> folder:
+      storyboard, scene scripts, clips, final mp4, sidecar, cost — durable, resumable, sweep-exempt). One top nav:
+      <b>Library · Studio · Runs</b>.
+    </p>
+  </div>
+
+  <figure class="frame">
+    <div class="frame-box wf" role="img" aria-label="Wireframe of the Library: filter rail on the left, grid of project cards with status badges">
+      <div class="wf-topbar">
+        <span class="wf-title">Library</span>
+        <span class="wf-spacer"></span>
+        <span class="wf-btn">Runs</span>
+        <span class="wf-btn primary">+ New video</span>
+      </div>
+      <div class="lib-body">
+        <div class="lib-side">
+          <span class="lib-filter on">All projects</span>
+          <span class="lib-filter">Lab renders</span>
+          <span class="lib-filter">Merged finals</span>
+          <span class="lib-filter">Bulk runs</span>
+          <span class="lib-filter">Needs attention</span>
+        </div>
+        <div class="lib-grid">
+          <div class="lib-card">
+            <div class="lib-pic"><i style="left:20%;top:60%;width:55%;height:4px"></i><i style="left:30%;top:25%;width:36%;height:5px"></i></div>
+            <div class="lib-info"><div class="lib-name">Pythagorean Theorem</div><div class="lib-chips"><span class="chip ok">Clean</span><span class="chip dim">1:24</span></div></div>
+          </div>
+          <div class="lib-card">
+            <div class="lib-pic"><i style="left:15%;top:30%;width:26%;height:26%"></i><i style="left:55%;top:32%;width:30%;height:5px"></i></div>
+            <div class="lib-info"><div class="lib-name">Refraction — glass slab</div><div class="lib-chips"><span class="chip warn">Repaired ×2</span><span class="chip dim">1:41</span></div></div>
+          </div>
+          <div class="lib-card">
+            <div class="lib-pic"><i style="left:22%;top:55%;width:50%;height:4px"></i></div>
+            <div class="lib-info"><div class="lib-name">Dalton's Law</div><div class="lib-chips"><span class="chip bad">⚠ 3 findings</span><span class="chip dim">bulk</span></div></div>
+          </div>
+          <div class="lib-card">
+            <div class="lib-pic"><i style="left:25%;top:28%;width:44%;height:6px"></i><i style="left:25%;top:48%;width:34%;height:5px"></i></div>
+            <div class="lib-info"><div class="lib-name">Optical fibre</div><div class="lib-chips"><span class="chip ok">Clean</span><span class="chip dim">merged</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption>
+      <b>Library</b> = today's /timeline, upgraded from a gallery you can only watch into a place you open projects
+      from. Sidecar badges stay (they're already the honest verification signal); every card's primary action is
+      <b>Open in Studio</b>. Bulk runs appear as grouped rows here instead of a separate world.
+    </figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>Where the sandbox goes</h3>
+    <p>
+      The Streamlit debugger's unique powers move into an <b>Advanced drawer</b> inside the Studio, opened per project:
+      repair-round history with code diffs, per-stage cost and latency, generated code (read-mostly, with the escape-hatch
+      recompile the sandbox has today), env-override knobs, raw sidecar JSON. Casual users never see it; the debugging
+      workflow stops requiring a second app on another port. The sandbox itself can stay during migration — it shares
+      the same API.
+    </p>
+    <h3>Creating a new video becomes a two-beat flow</h3>
+    <p>
+      <b>Beat 1 — brief:</b> topic + the few choices that shape the storyboard (persona, language, tech-terms, style),
+      producing a storyboard in ~seconds for review in the Studio as an unrendered scene rail with blueprint thumbnails.
+      <b>Beat 2 — render:</b> after skimming/fixing the scenes (this is where today's silent failures get caught for
+      free), one button renders all scenes in parallel. The thirteen-knob sidebar dissolves: storyboard-shaping knobs
+      into the brief, render knobs into Style, debug knobs into Advanced.
+    </p>
+  </div>
+</section>
+
+<!-- ================= API ================= -->
+<section>
+  <div class="sec-label">API surface</div>
+  <h2>What the server needs to grow</h2>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Route</th><th>Purpose</th><th>Builds on</th></tr></thead>
+      <tbody>
+        <tr><td><span class="code">POST /api/projects</span></td><td>Brief → storyboard-only project (no render yet)</td><td><span class="code">generate_storyboard</span> + project folder (roadmap §H)</td></tr>
+        <tr><td><span class="code">GET /api/projects</span> / <span class="code">GET /api/projects/{id}</span></td><td>Library list; full project state (IR, per-scene status + clip URLs, sidecar)</td><td><span class="code">video_history</span>, sidecars, bulk manifest pattern</td></tr>
+        <tr><td><span class="code">PATCH /api/projects/{id}/storyboard</span></td><td>Apply an IR patch; runs shape gate + language heal; returns dirty scene set</td><td><span class="code">storyboard_shape_problems</span>, <span class="code">normalize_onscreen_language</span></td></tr>
+        <tr><td><span class="code">POST /api/projects/{id}/scenes/{n}/render</span></td><td>Transpile + render one scene as a candidate, accept-if-better, re-concat</td><td><span class="code">_render_scenes_parallel</span>, <span class="code">_concat_scene_clips</span>, repair loops</td></tr>
+        <tr><td><span class="code">POST /api/projects/{id}/render</span></td><td>Render all dirty scenes (parallel) + concat</td><td>same</td></tr>
+        <tr><td><span class="code">GET /api/voices</span></td><td>Single source of truth for provider/language/speaker lists</td><td>replaces the hardcoded JS mirror</td></tr>
+        <tr><td><span class="code">POST /api/tts/preview</span></td><td>Cue text + voice → audio (served from / written to the shared TTS cache)</td><td><span class="code">UniversalTTSService</span> + <span class="code">.tts_cache/</span></td></tr>
+        <tr><td><span class="code">POST /api/projects/{id}/ai_edit</span></td><td>Instruction + scene → proposed IR patch (never applied directly)</td><td>storyboard-tier LLM chain, metered</td></tr>
+        <tr><td><span class="code">WS /ws/projects/{id}</span></td><td>Structured progress: per-scene state machine, not a log blob</td><td>existing WS endpoint pattern</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose" style="margin-top:10px">
+    <p>
+      Two deliberate non-goals: <b>no code-editing API</b> beyond the existing escape hatch (structure stays code-owned),
+      and <b>no concurrent multi-user editing</b> — <span class="code">env_overrides</span> is process-global by design and
+      this stays a single-author tool for now.
+    </p>
+  </div>
+</section>
+
+<!-- ================= PHASES ================= -->
+<section>
+  <div class="sec-label">Rollout</div>
+  <h2>Five phases, each independently shippable</h2>
+
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">P0</span><span class="phase-t">Unblock what exists</span><span class="phase-e">~a day</span></div>
+    <p>Forward <b>scene_scripts</b> from the browser's compile call (turns on the parallel path + scene-scoped repair for web users — today they always get the slow sequential path); read <b>err.detail</b> so server errors stop vanishing; add a shared nav header across / · /timeline · /bulk; serve voices from <b>/api/voices</b>. No redesign yet — pure wiring debt.</p>
+  </div>
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">P1</span><span class="phase-t">Glass box + project persistence</span><span class="phase-e">~a week</span></div>
+    <p>Split Generate into <b>brief → review → render</b>; render the storyboard response as a read-only scene rail with blueprint thumbnails; project folders (keep clips, stop discarding); WebSocket per-scene progress; /timeline cards gain <b>Open in Studio</b>. The black box becomes inspectable before any editing ships.</p>
+  </div>
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">P2</span><span class="phase-t">Audio editing first</span><span class="phase-e">~a week</span></div>
+    <p>The Audio tab: edit cue text, audition voices (<b>/api/tts/preview</b>), per-scene re-render with accept-if-better. Audio is the cheapest, highest-demand edit (the tech-terms knob exists because of a narration complaint) and exercises the whole PATCH → dirty → render loop on the least risky field.</p>
+  </div>
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">P3</span><span class="phase-t">Content + motion editing</span><span class="phase-e">~1–2 weeks</span></div>
+    <p>Element list editing, entrance pickers, per-cue event chips, composition/layout-template controls; scene reorder / add / duplicate / delete on the rail (IR-level list operations + full re-concat).</p>
+  </div>
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">P4</span><span class="phase-t">AI edits + absorb the sandbox</span><span class="phase-e">~a week each</span></div>
+    <p><b>Ask AI</b> prompt-to-patch with diff preview; Advanced drawer (repair history, cost ledger readout when §H lands, code view, env knobs) so the Streamlit sandbox can retire from daily use.</p>
+  </div>
+</section>
+
+<!-- ================= INVARIANTS ================= -->
+<section>
+  <div class="sec-label">Invariants</div>
+  <h2>Rules the editor must never break</h2>
+  <div class="prose">
+    <ul>
+      <li><b>Never lose a verified artifact.</b> Edits produce candidates; accept-if-better; losers discarded. An editor that can destroy a good video on a bad edit is worse than no editor.</li>
+      <li><b>Code owns structure, models own content.</b> The editor and the AI box edit the IR only. The moment a UI control writes Python, the deterministic guarantees (probes, gates, repair) stop covering it.</li>
+      <li><b>Metered edges stay metered.</b> Preview buttons and AI edits are LLM/TTS spends — show cost affordances (the <span class="chip dim">cached · ₹0</span> chips), route through existing caches, and never put a metered call in a render-blocking hot path.</li>
+      <li><b>Validation before spend.</b> Every PATCH runs the shape gate + language contract before any render; a rejected edit costs nothing and explains itself.</li>
+      <li><b>Long operations narrate progress</b> per scene over the WebSocket — silence reads as a hang.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  Concept Explorer · Studio editor proposal · grounded in <span class="mono">static/app.js</span>, <span class="mono">app/api/*</span>, <span class="mono">app/schemas.py</span>, <span class="mono">app/render.py</span>, the debug sandbox, and <span class="mono">docs/pipeline-roadmap.md</span> · durable copy lives in-repo at <span class="mono">docs/studio-editor-design.md</span>
+</footer>
+
+</div>

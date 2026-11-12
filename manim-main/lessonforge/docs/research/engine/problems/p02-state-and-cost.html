@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P02 · Durable state, cost &amp; run ledger — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">02</div>
+  <div>
+    <h1>Durable state, cost &amp; run ledger</h1>
+    <div class="sub">The one honest T1 on this site. It is here, ranked second, because every experiment the other nine
+    problems need — A/Bs, bulk evals, cost-aware routing — is impossible to run rationally without it.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>02</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-l">L · the loop doesn’t close</span>
+  <span class="chip t1">T1 engineering — answer known</span>
+  <span class="chip mat">Maturity: L1 — the repo’s own “biggest operational gap”</span>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today</div>
+  <ul>
+    <li>Jobs live in a bounded <b>in-memory</b> <code>JobStore</code> (<code>app/jobs.py:27</code>); a server restart forgets
+      what was running. The only durable per-video record is the <code>.mp4.json</code> sidecar.</li>
+    <li>There is <b>no cost tracking at all</b> — no counter ties an LLM/TTS call to a job or a rupee
+      <span class="src">pipeline-roadmap.md:594-596</span> — in a pipeline whose own measurement says TTS alone is
+      ~85% of metered cost <span class="src">pipeline-roadmap.md:168</span>.</li>
+    <li>The LLM edge has <b>no wall-clock guard</b>: <code>call_gemini_with_fallback</code> configures no timeout, and there is
+      no stale-job detection, so a hung call leaves the job <code>running</code> forever
+      <span class="src">pipeline-roadmap.md:494-501</span>.</li>
+    <li>Artifacts scatter across <code>temp_renders/</code>, <code>static/videos/</code>, <code>media_*</code> — no per-run folder
+      groups a video with its storyboard, scripts, logs and spend.</li>
+    <li><code>env_overrides</code> repair knobs are process-global, last-writer-wins — explicitly a single-user debug
+      affordance, not isolation <span class="src">CLAUDE.md:26-31</span>.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why it earns a page despite being T1</div>
+  <p>Nothing here is unsolved in the field — job stores, ledgers and timeouts are settled engineering. It earns a page
+  because it <b>compounds</b>: P01’s eval loop needs per-run folders to compare runs; P04’s convergence study needs to know
+  what a repair round costs; P07’s memory A/B needs stable run identity; and the roadmap’s own cost-ledger spec already
+  names the two tests that make the ledger honest — “<i>cached re-render is not free</i> and <i>unknown ≠ $0</i>”
+  <span class="src">pipeline-roadmap.md:597-607</span>. The absence of this layer is why the strongest evidence in this audit
+  had to be scraped from sidecars and directory counts instead of read from a ledger.</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>Stage H graded <b>L1</b> — “⟵ biggest operational gap” <span class="src">pipeline-roadmap.md:581</span>.</li>
+    <li>Measured oddity a ledger would have caught instantly: the shared TTS cache shipped 2026-07-19, yet
+      <code>.tts_cache/</code> at the repo root holds <b>0 entries</b> (measured 2026-07-27) — either production renders since
+      then never hit it, or the cache path diverges. Nobody can currently tell, which is precisely the problem.</li>
+    <li>The bulk runner writes resumable per-topic stage caches (<code>bulk_runs/&lt;run_id&gt;/</code>, <code>bulk_runner.py:135</code>)
+      — the per-run-folder pattern exists in one corner of the codebase and nowhere else.</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art</div>
+  <p>Settled practice: durable queues and job journals (any of SQLite-WAL job tables, jsonl journals), per-request cost
+  metering at the client seam, and deadline propagation on outbound calls. Nothing needs a citation; it needs an afternoon.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — all $0, roadmap-endorsed</div>
+  <ol>
+    <li><span class="badge solid-green">$0</span> Wall-clock timeout + retry budget on the google-genai SDK call in
+      <code>app/llm.py</code>; stale-job sweep in <code>JobStore</code>.</li>
+    <li><span class="badge solid-green">$0</span> Durable <code>jobs.json</code> journal (the roadmap’s planned shape) so a crash
+      answers “what was running.”</li>
+    <li><span class="badge solid-green">$0</span> <code>runs/&lt;topic-hash&gt;/</code> per-run folders — generalize the bulk
+      runner’s existing cache layout to single renders.</li>
+    <li><span class="badge solid-green">$0</span> Cost ledger at the two metered seams (<code>app/llm.py</code>, the TTS client in
+      <code>viz_helpers.py</code>), pinned by the roadmap’s two named tests; surface per-video spend in the sidecar and on
+      <code>/timeline</code>.</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p>After: <code>kill -9</code> mid-render leaves no forever-running job (pin as a harness check, house style — LLM stubbed);
+  every mp4 in <code>static/videos/</code> traces to a run folder with a cost line; the <code>.tts_cache/</code> anomaly above
+  becomes answerable from the ledger in one query.</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p>Unblocks the experiments in <a href="p01-quality-score.html">P01</a>, <a href="p04-repair-convergence.html">P04</a> and
+  <a href="p07-repair-memory.html">P07</a> · the metered-edge discipline it enforces is CLAUDE.md’s own standing rule
+  (“a cache-key change is a billing change”).</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p01-quality-score.html">← prev: P01 quality score</a>
+  <a href="p03-vision-qa.html">next: P03 machine perception →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

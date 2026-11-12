@@ -1,0 +1,610 @@
+<title>Lessonforge Script Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: one reading column; the system and principle sections widen into a three-column ledger (what / today / change) that stacks on a phone. */
+:root {
+  --bg: #F4F7F5; --surface: #FFFFFF; --ink: #15211C; --muted: #56655E; --line: #D3DCD7;
+  --accent: #1B6B53; --accent-tint: #DDF0E8;
+  --amber: #8A5A00; --amber-tint: #FAEFD2;
+  --keep: #4A5852; --keep-tint: #E7ECEA;
+  --code-bg: #EBF0ED;
+  --display: "Bricolage Grotesque", "IBM Plex Sans", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1513; --surface: #161E1B; --ink: #E4EBE7; --muted: #9BA9A3; --line: #2B3732;
+    --accent: #63C7A5; --accent-tint: #143329;
+    --amber: #E7B75A; --amber-tint: #392D10;
+    --keep: #A9B6B0; --keep-tint: #202A26;
+    --code-bg: #1A2320; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1513; --surface: #161E1B; --ink: #E4EBE7; --muted: #9BA9A3; --line: #2B3732;
+  --accent: #63C7A5; --accent-tint: #143329;
+  --amber: #E7B75A; --amber-tint: #392D10;
+  --keep: #A9B6B0; --keep-tint: #202A26;
+  --code-bg: #1A2320; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--body); }
+.page { max-width: 62rem; margin: 0 auto; padding-inline: 20px; padding-block: 2.5rem 5rem; display: flex; flex-direction: column; gap: 3.25rem; }
+.page > * { min-width: 0; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(1.9rem, 4.6vw, 2.9rem); font-weight: 700; letter-spacing: -0.015em; }
+h2 { font-size: clamp(1.35rem, 2.6vw, 1.7rem); font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 500; }
+p, li, dd { max-width: 68ch; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+code, .mono { font-family: var(--mono); font-size: 0.86em; }
+code { background: var(--code-bg); padding: 0.08em 0.32em; border-radius: 3px; overflow-wrap: anywhere; }
+.eyebrow { font: 500 0.74rem/1.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 1.12rem; line-height: 1.55; }
+section { display: flex; flex-direction: column; gap: 1.1rem; }
+section > * { min-width: 0; }
+header { display: flex; flex-direction: column; gap: 1rem; }
+.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; font-size: 0.92rem; padding: 0; margin: 0; list-style: none; }
+.note { border-left: 3px solid var(--accent); padding: 0.1rem 0 0.1rem 1rem; color: var(--ink); }
+.quiet { color: var(--muted); font-size: 0.93rem; }
+blockquote { margin: 0; padding: 0.55rem 0.9rem; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; font-style: italic; max-width: 68ch; }
+dl.findings { display: grid; gap: 1.15rem; margin: 0; }
+dl.findings > div { display: flex; flex-direction: column; gap: 0.45rem; }
+dl.findings dt { font-weight: 600; }
+dl.findings dd { margin: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+ul.plain, ol.plain { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.5rem; }
+/* figure */
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem 2rem; align-items: start; }
+.figs > div { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+figure { margin: 0; display: flex; flex-direction: column; gap: 0.9rem; }
+figcaption { color: var(--muted); font-size: 0.93rem; max-width: 68ch; }
+svg.dg { width: 100%; max-width: 430px; height: auto; color: var(--ink); display: block; }
+svg.dg .bx { fill: var(--surface); stroke: currentColor; stroke-width: 1.2; }
+svg.dg .bx.new { stroke: var(--accent); stroke-width: 2.2; fill: var(--accent-tint); }
+svg.dg .bx.gap { fill: none; stroke: var(--amber); stroke-dasharray: 5 4; stroke-width: 1.4; }
+svg.dg .ar { fill: none; stroke: currentColor; stroke-width: 1.3; }
+svg.dg .t1 { font: 600 12.5px var(--body); fill: currentColor; }
+svg.dg .t2 { font: 400 11px var(--body); fill: var(--muted); }
+svg.dg .t2.warn { fill: var(--amber); }
+/* ledger */
+.ledger { border-top: 1px solid var(--line); }
+.ledger .r { display: grid; grid-template-columns: 13.5rem minmax(0, 1fr) minmax(0, 1.25fr); gap: 0.5rem 1.4rem; padding: 0.95rem 0; border-bottom: 1px solid var(--line); }
+.ledger .r > * { min-width: 0; }
+.ledger .r p, .ledger .r div { max-width: none; }
+.ledger .head { font: 500 0.72rem/1.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0.55rem 0; }
+.ledger .what { display: flex; flex-direction: column; gap: 0.25rem; }
+.ledger .what strong { font-weight: 600; }
+.ledger .what .mono { color: var(--muted); overflow-wrap: anywhere; }
+.ledger .r.is-new { background: linear-gradient(to right, var(--accent-tint), transparent 70%); margin-inline: -0.6rem; padding-inline: 0.6rem; }
+.tag { display: inline-block; font: 500 0.7rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 0.28rem 0.45rem; border-radius: 3px; margin-right: 0.45rem; vertical-align: 0.08em; }
+.tag.keep { background: var(--keep-tint); color: var(--keep); }
+.tag.change { background: var(--amber-tint); color: var(--amber); }
+.tag.new { background: var(--accent-tint); color: var(--accent); }
+@media (max-width: 800px) {
+  .ledger .r { grid-template-columns: 1fr; }
+  .ledger .head { display: none; }
+  .ledger [data-l]::before { content: attr(data-l); display: block; font: 500 0.68rem/1.6 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+}
+/* goals */
+.goals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem 2.4rem; }
+@media (max-width: 680px) { .goals { grid-template-columns: 1fr; } }
+.goals > div { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; border-top: 2px solid var(--ink); padding-top: 0.7rem; }
+.goals ul { margin: 0; padding-left: 1.05rem; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.95rem; }
+pre.code { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 4px; padding: 0.9rem 1rem; overflow-x: auto; font: 400 0.82rem/1.55 var(--mono); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.card dl { margin: 0; display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); gap: 0.55rem 1rem; }
+.card dt { font: 500 0.78rem/1.5 var(--mono); color: var(--muted); }
+.card dd { margin: 0; max-width: none; }
+@media (max-width: 640px) { .card dl { grid-template-columns: 1fr; gap: 0.1rem; } .card dd { margin-bottom: 0.55rem; } }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.6rem 0.9rem 0.6rem 0; border-bottom: 1px solid var(--line); }
+th { font: 500 0.72rem/1.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+td:first-child { font-weight: 600; min-width: 9.5rem; }
+ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: flex; flex-direction: column; }
+ol.steps > li { counter-increment: s; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 0 0.6rem; padding: 0.9rem 0; border-top: 1px solid var(--line); max-width: none; }
+ol.steps > li::before { content: counter(s); font: 700 1.25rem/1.2 var(--display); color: var(--accent); }
+ol.steps > li > div { display: flex; flex-direction: column; gap: 0.3rem; }
+ol.steps strong { font-weight: 600; }
+.refs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
+.refs li { display: flex; flex-direction: column; gap: 0.1rem; max-width: 74ch; }
+.refs .take { color: var(--muted); font-size: 0.93rem; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.5rem 2.2rem; }
+.cols > div { display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; }
+.cols ul { margin: 0; padding-left: 1.05rem; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.95rem; }
+</style>
+
+<main class="page">
+
+<header>
+  <div class="eyebrow">lessonforge · plan for the script · 9 October 2026</div>
+  <h1>From a correct script to one that teaches</h1>
+  <p class="lede">The scripts lessonforge writes today are correct and tidy, and dull. The cause sits before the writer: it is told the topic's name and a general lesson shape, and nothing about how that topic is taught. This plan adds two things before the writer (sources for the topic, turned into a one-page teaching card, and a script skill that holds the craft) and one thing after it (a task the learner does by hand). The rest of the system stays as it is.</p>
+  <ul class="toc">
+    <li><a href="#why">Why it is dull</a></li>
+    <li><a href="#idea">The change in one picture</a></li>
+    <li><a href="#goals">Goals</a></li>
+    <li><a href="#principles">Seven principles</a></li>
+    <li><a href="#card">The teaching card</a></li>
+    <li><a href="#skill">The script skill</a></li>
+    <li><a href="#system">Your system, annotated</a></li>
+    <li><a href="#order">Build order</a></li>
+    <li><a href="#reading">Reading list</a></li>
+    <li><a href="#decide">What I need from you</a></li>
+  </ul>
+</header>
+
+<section id="why">
+  <h2>Why the script is dull</h2>
+  <p>I read the two latest scripts sentence by sentence. These findings are from <em>Square Numbers Through Prime Factorization</em> (Class 8, Hinglish, job <code>20261008-190847-5038ab</code>). The gradient descent script has the same shape.</p>
+  <dl class="findings">
+    <div>
+      <dt>The rule is announced, never earned.</dt>
+      <dd>
+        <blockquote>Isliye exact test bahut simple hai. Prime factors ko identical pairs mein group kijiye.</blockquote>
+        <p>No sentence in the lesson says <em>why</em> pairs make a square. The reason is short: in n × n every prime of n comes twice, once from each n. That one sentence is also what joins the dot square of chapter 3 to the factor tiles of chapter 5. The script shows both pictures and never joins them.</p>
+      </dd>
+    </div>
+    <div>
+      <dt>The opening question is answered for the learner.</dt>
+      <dd>
+        <p>Chapter 2 asks whether 1764 ladoos can sit in equal rows and columns. Chapter 3 opens with the answer, before any working:</p>
+        <blockquote>Haan, ladoos box mein forty-two rows aur forty-two columns banenge.</blockquote>
+      </dd>
+    </div>
+    <div>
+      <dt>The first sentence of the lesson is a definition.</dt>
+      <dd>
+        <blockquote>Shuru karte hain prime numbers se. Prime number woh number hai jo greater than one ho…</blockquote>
+        <p>Nothing has yet made the learner want it. This is the "boring start" you reported.</p>
+      </dd>
+    </div>
+    <div>
+      <dt>The learner only recalls.</dt>
+      <dd><p>The questions are of the kind "inmein se kaun sa prime hai, six, seven, ya nine?". There is nothing to predict about the idea itself and nothing to do by hand.</p></dd>
+    </div>
+    <div>
+      <dt>Chapter titles are the framework's own stage names.</dt>
+      <dd><p>"GIVE IT A NAME", "SAY IT BACK". The shape of the lesson shows through because nothing topic-specific replaced it.</p></dd>
+    </div>
+  </dl>
+  <h3>The cause in the system</h3>
+  <p>The writer receives three things: the brief (topic, class, goal, language), one of three seven-stage frameworks, and a list of rules. The frameworks already stand on research (worked examples, Rosenshine, Mayer, Muller; see <code>docs/research/approaches/04</code>). The rules are mostly things <em>not</em> to do, each added after a bad lesson.</p>
+  <p>Everything specific to the topic is missing: the reason it is true, the picture that carries it, where learners go wrong, what they could try at home. The harness reads no sources at all. <code>engine/sources.py</code> exists, but only the storyboard engine uses it. A model that is given only a topic's name writes the average of everything it has read about that topic.</p>
+  <p class="note">More rules will not fix this. A script made by avoiding faults is a script with no faults and no life. The writer needs better material to write from.</p>
+</section>
+
+<section id="idea">
+  <h2>The change in one picture</h2>
+  <figure>
+    <div class="figs">
+      <div>
+        <div class="eyebrow">Today</div>
+        <svg class="dg" viewBox="0 0 360 272" role="img" aria-label="Today the writer receives the brief, a framework and rules. Nothing about how the topic is taught reaches it.">
+          <defs><marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+          <rect class="bx" x="8" y="14" width="206" height="48" rx="6"/>
+          <text class="t1" x="20" y="34">Brief</text>
+          <text class="t2" x="20" y="51">topic · class · goal</text>
+          <rect class="bx" x="8" y="76" width="206" height="48" rx="6"/>
+          <text class="t1" x="20" y="96">Framework</text>
+          <text class="t2" x="20" y="113">7 stages, same for any topic</text>
+          <rect class="bx" x="8" y="138" width="206" height="48" rx="6"/>
+          <text class="t1" x="20" y="158">Rules</text>
+          <text class="t2" x="20" y="175">format, and what not to do</text>
+          <rect class="bx gap" x="8" y="208" width="206" height="50" rx="6"/>
+          <text class="t1" x="20" y="229">How this topic is taught</text>
+          <text class="t2 warn" x="20" y="246">nothing reaches the writer</text>
+          <path class="ar" d="M214,38 H232 V80 H250" marker-end="url(#ah1)"/>
+          <path class="ar" d="M214,100 H250" marker-end="url(#ah1)"/>
+          <path class="ar" d="M214,162 H232 V120 H250" marker-end="url(#ah1)"/>
+          <rect class="bx" x="250" y="68" width="102" height="64" rx="6"/>
+          <text class="t1" x="301" y="96" text-anchor="middle">Writer</text>
+          <text class="t2" x="301" y="113" text-anchor="middle">plan → chapters</text>
+          <path class="ar" d="M301,132 V180" marker-end="url(#ah1)"/>
+          <rect class="bx" x="250" y="180" width="102" height="52" rx="6"/>
+          <text class="t1" x="301" y="202" text-anchor="middle">Script</text>
+          <text class="t2" x="301" y="219" text-anchor="middle">correct, flat</text>
+        </svg>
+      </div>
+      <div>
+        <div class="eyebrow">Proposed</div>
+        <svg class="dg" viewBox="0 0 360 396" role="img" aria-label="Proposed: sources for the topic are read into a teaching card. The card, a script skill and the brief reach the writer, which writes the script and a try-it-yourself task.">
+          <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+          <rect class="bx" x="8" y="14" width="206" height="96" rx="6"/>
+          <text class="t1" x="20" y="34">Sources for this topic</text>
+          <text class="t2" x="20" y="51">the textbook chapter</text>
+          <text class="t2" x="20" y="66">learners' known mistakes</text>
+          <text class="t2" x="20" y="81">an expert's explanation</text>
+          <text class="t2" x="20" y="96">activity books</text>
+          <path class="ar" d="M111,110 V142" marker-end="url(#ah2)"/>
+          <text class="t2" x="120" y="131">read, number, cite</text>
+          <rect class="bx new" x="8" y="142" width="206" height="52" rx="6"/>
+          <text class="t1" x="20" y="163">Teaching card</text>
+          <text class="t2" x="20" y="180">what to teach, with sources</text>
+          <rect class="bx new" x="8" y="224" width="206" height="52" rx="6"/>
+          <text class="t1" x="20" y="245">Script skill</text>
+          <text class="t2" x="20" y="262">how to teach: moves, examples</text>
+          <rect class="bx" x="8" y="306" width="206" height="46" rx="6"/>
+          <text class="t1" x="20" y="326">Brief</text>
+          <text class="t2" x="20" y="342">topic · class · goal</text>
+          <path class="ar" d="M214,168 H232 V234 H250" marker-end="url(#ah2)"/>
+          <path class="ar" d="M214,250 H250" marker-end="url(#ah2)"/>
+          <path class="ar" d="M214,329 H232 V266 H250" marker-end="url(#ah2)"/>
+          <rect class="bx" x="250" y="218" width="102" height="64" rx="6"/>
+          <text class="t1" x="301" y="246" text-anchor="middle">Writer</text>
+          <text class="t2" x="301" y="263" text-anchor="middle">moves → words</text>
+          <path class="ar" d="M301,282 V320" marker-end="url(#ah2)"/>
+          <rect class="bx" x="250" y="320" width="102" height="60" rx="6"/>
+          <text class="t1" x="301" y="345" text-anchor="middle">Script</text>
+          <text class="t2" x="301" y="362" text-anchor="middle">+ a task to try</text>
+        </svg>
+      </div>
+    </div>
+    <figcaption>What reaches the writer. Today the dashed box is empty. In the plan, the two green boxes fill it: the card says what to teach for this topic, the skill says how to teach. The same card later feeds the reviewer, the picture and the app.</figcaption>
+  </figure>
+</section>
+
+<section id="goals">
+  <h2>Goals</h2>
+  <p>Four high-level goals. Under each, what can be checked on any one lesson.</p>
+  <div class="goals">
+    <div>
+      <h3>1. The learner can say why</h3>
+      <p class="quiet">After watching, they can explain the reason, and can do more than repeat the steps.</p>
+      <ul>
+        <li>The first 20 seconds hold a question the learner cannot answer yet. It is answered by name before the end.</li>
+        <li>The reason is one sentence on the card, and one beat of the script says it with a picture that shows it.</li>
+        <li>No chapter opens with a definition. Chapter titles come from the content.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>2. Every lesson stands on sources</h3>
+      <p class="quiet">Named books, papers and the curriculum for that topic, and less of the model's average.</p>
+      <ul>
+        <li>At least three sources of three kinds per lesson. Every line of the card points to a numbered passage.</li>
+        <li>Nothing in the script contradicts the sources. The maths is still checked by code, as now.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>3. The learner does something</h3>
+      <p class="quiet">One task by hand, one question about it. Classrooms rarely have this.</p>
+      <ul>
+        <li>One task: things found at home, five steps or fewer, a prediction first, a question after, the expected result.</li>
+        <li>A second version of the same task for a teacher with a full class and five minutes.</li>
+        <li>At least one predict question whose wrong choices are the mistakes the sources document.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>4. The picture carries the idea</h3>
+      <p class="quiet">It shows what a teacher can only say in words.</p>
+      <ul>
+        <li>Every sentence has a screen action. No beat is text only.</li>
+        <li>One picture per lesson is named on the card, and it changes as the idea grows.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note"><strong>The real test:</strong> on three pilot topics you read the old and the new script without knowing which is which and prefer the new one, and you watch the new video to the end. Counts improved last time and you still rejected the videos, so counts are only the first gate.</p>
+</section>
+
+<section id="principles">
+  <h2>Seven principles, each standing on someone's work</h2>
+  <p>This is the whole framework. A teacher who "writes, explains, elaborates and uses visuals" is doing numbers 3 and 4.</p>
+  <div class="ledger">
+    <div class="r head"><div>Principle</div><div>What it means in the script</div><div>Whose work it stands on</div></div>
+    <div class="r">
+      <div class="what"><strong>1. Ask before telling</strong></div>
+      <div data-l="In the script">Open with a question the learner cannot answer yet. The rule comes after they have guessed.</div>
+      <div data-l="Stands on">Loewenstein 1994 (curiosity is a gap you can feel); Schwartz &amp; Bransford 1998 (telling works after a problem); Carpenter &amp; Toftness 2017 (questions before a video).</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>2. One idea, one picture, an example simpler than the idea</strong></div>
+      <div data-l="In the script">Already your rule ("no cricket, no festival"). The card now names the one picture.</div>
+      <div data-l="Stands on">Kaminski, Sloutsky &amp; Heckler 2008 (rich examples hurt transfer); Fyfe et al. 2014 (start concrete, then fade); Harp &amp; Mayer 1998 and Sundararajan &amp; Adesope 2020 (interesting extras cost learning).</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>3. Draw while saying</strong></div>
+      <div data-l="In the script">Each sentence has a screen action. Nothing arrives finished, the way a slide does.</div>
+      <div data-l="Stands on">Fiorella &amp; Mayer 2016 (watching a diagram being drawn beats seeing it drawn already); Mayer, Fiorella &amp; Stull 2020; Tversky et al. 2002 (animation helps only when it matches the idea); Richter et al. 2016 (pointing at the part being discussed).</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>4. Say why, as well as how</strong></div>
+      <div data-l="In the script">Each step runs in three moves. <em>Write</em>: it appears as it is said. <em>Explain</em>: why this step is allowed. <em>Elaborate</em>: one link, a contrast case or "what if".</div>
+      <div data-l="Stands on">Kulgemeyer 2018, 2020 (what makes an explanation and an explainer video work); Wittwer &amp; Renkl 2008 (why explanations often fail); Rosenshine 2012 (small steps, think aloud).</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>5. Meet the wrong idea in the open</strong></div>
+      <div data-l="In the script">Already a stage. Today the mistake comes only from the person who asks for the video. It will come from sources.</div>
+      <div data-l="Stands on">Muller et al. 2008 (videos that state and break the misconception teach more); Posner et al. 1982.</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>6. The learner does something</strong></div>
+      <div data-l="In the script">Predict, try by hand, answer. The task is short and has a question, so hands and head both work.</div>
+      <div data-l="Stands on">Chi &amp; Wylie 2014 (doing and producing beat watching); Crouch et al. 2004 (a demo teaches only if you predict first); Abrahams &amp; Millar 2008 (hands-on without a thinking question teaches little); Hörnlein &amp; Kulgemeyer 2026 (a video alone leaves a false feeling of understanding; a hard task after it cut that, d = 0.69).</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>7. Teach the topic the way that topic is taught</strong></div>
+      <div data-l="In the script">Every topic has its own best route, its own picture and its own traps. A good teacher knows them. The card writes them down.</div>
+      <div data-l="Stands on">Shulman 1986 (pedagogical content knowledge); Loughran, Mulhall &amp; Berry 2004 (the CoRe, a one-page form for exactly this); Ball, Thames &amp; Phelps 2008.</div>
+    </div>
+  </div>
+</section>
+
+<section id="card">
+  <h2>New part 1: the teaching card</h2>
+  <p>This is the "Google LM" part. I read that as NotebookLM, the shape you asked for in August. Three Google systems are worth copying from, and one thing from each is enough:</p>
+  <ul class="plain">
+    <li><strong>NotebookLM</strong> answers only from the sources you load. We take: sources first, each passage numbered so a claim can point to it.</li>
+    <li><strong>LearnLM</strong> is given its pedagogy as written instructions and is judged on five principles (active learning, cognitive load, metacognition, curiosity, adapting to the learner). We take: the teaching craft lives in a file a person can read, which is the skill below.</li>
+    <li><strong>Learn Your Way</strong> starts from a textbook chapter, re-levels it and builds several forms with questions inside. In Google's trial with 60 students, recall after 3 to 5 days was 78% against 67% for a plain reader. We take: the textbook chapter is always the first source.</li>
+  </ul>
+  <p class="quiet">NotebookLM itself cannot be our engine. Its API is in alpha and covers notebooks, sources and audio; I found no endpoint for a script or a video (this is from third-party client docs, not Google's own). So we build its shape and use the product by hand as the lesson to beat.</p>
+
+  <h3>Four kinds of source per topic</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Kind</th><th>What it gives the card</th><th>Where to find it for classes 6 to 10</th></tr></thead>
+      <tbody>
+        <tr><td>The textbook</td><td>What must be taught, the words and notation the class uses, what came before.</td><td><a href="https://ncert.nic.in/textbook.php">NCERT textbooks</a> (free PDFs). The new class 6 to 8 books are built around activities.</td></tr>
+        <tr><td>Learners' mistakes</td><td>Where learners go wrong and what they believe instead. Becomes the wrong choices in questions.</td><td>Driver et al., <em>Making Sense of Secondary Science</em>; for maths, Van de Walle's <em>Teaching Developmentally</em> and the <a href="https://www.map.mathshell.org/">Mathematics Assessment Project</a> lessons, which list common issues per topic.</td></tr>
+        <tr><td>An expert's explanation</td><td>The order of moves and the picture a strong explainer uses.</td><td>Transcripts of one or two respected videos on the topic (<code>engine/sources.py</code> already reads YouTube transcripts). We study the route. We do not copy the words.</td></tr>
+        <tr><td>An activity</td><td>The task to try by hand.</td><td>NCERT laboratory manuals; <a href="https://www.arvindguptatoys.com/">Arvind Gupta's toys and books</a>; <a href="https://azimpremjiuniversity.edu.in/at-right-angles">At Right Angles</a> (maths, Azim Premji University); <a href="https://www.eklavya.in/">Eklavya</a>; <a href="https://www.exploratorium.edu/snacks">Exploratorium Science Snacks</a>; <a href="https://phet.colorado.edu/">PhET</a>; <a href="https://nrich.maths.org/">NRICH</a>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>What the card holds</h3>
+  <p>Ten lines, adapted from the CoRe form that Loughran and colleagues use with teachers. Each line cites the passages it came from. Here it is for the square numbers lesson. I wrote this one by hand to show the shape; a real card is filled from the sources.</p>
+  <div class="card">
+    <div class="eyebrow">Teaching card · square numbers by prime factorisation · class 8</div>
+    <dl>
+      <dt>big idea</dt><dd>A whole number is a square exactly when each of its prime factors comes an even number of times.</dd>
+      <dt>why it matters</dt><dd>You can tell whether a large number is a square without trying every size.</dd>
+      <dt>the why</dt><dd>In n × n every prime of n arrives twice, once from each n. So each pair gives one factor to the rows and one to the columns: 36 = 2·2·3·3 = (2·3) × (2·3) = 6 × 6.</dd>
+      <dt>the picture</dt><dd>Factor tiles dealt into two equal hands. Each hand multiplies to 6, and the two 6s become the sides of a 6 by 6 dot square. For 18 = 2·3·3 the hands come out as 6 and 3: a rectangle.</dd>
+      <dt>needs first</dt><dd>Prime numbers; writing a number as a product of primes.</dd>
+      <dt>where learners go wrong</dt><dd>Pairing two different primes (a 2 with a 3). Calling 18 a square because "it has a pair".</dd>
+      <dt>route</dt><dd>Question → small squares of dots → factorise 36 and 18 side by side → deal into two hands → the why → 1764 → a number that fails.</dd>
+      <dt>questions</dt><dd>"36 dots make a square. 18 do not. Before factorising: which of 12, 16, 18 will?"</dd>
+      <dt>try it yourself</dt><dd>36 beans, or dots on squared paper. Lay out 12, 16, 18 and 36 in equal rows. Predict first which close into a square. Then write each as primes. Question: 18 has a pair of 3s, so why is it not a square? Expected: 16 and 36 close; in 18 the 2 has no partner. In class: pairs of students, squared paper, five minutes, the four factorisations collected on the board in two columns.</dd>
+      <dt>leave out</dt><dd>Square roots by long division; perfect cubes.</dd>
+    </dl>
+  </div>
+  <p>Compare this card with the script in the first section. The line called "the why" and the line called "the picture" are exactly what the script lacked.</p>
+  <p><strong>How it is built.</strong> Code gathers the sources and numbers the passages (this exists). One long-context model fills the card and cites passages. Code then checks what code can check: every line has a citation, the task uses only allowed materials (paper, pencil, coins, beans, thread, a ruler, a glass of water, a torch; nothing that burns or cuts for young classes), the steps are five or fewer. The card is shown in the app before the script is written, and can be edited.</p>
+</section>
+
+<section id="skill">
+  <h2>New part 2: the script skill</h2>
+  <p>Today the teaching craft is spread through one long prompt in <code>harness/writer.py</code>, mixed with format rules. The skill is a small folder that holds the craft in one place, in words a teacher could read and correct. Code loads it into the writer and the reviewer. Format rules that code checks stay in code.</p>
+<pre class="code">harness/skills/teaching_script/
+  SKILL.md           the seven principles; the order of work; what to hand back
+  card.schema.json   the ten lines of the teaching card
+  moves.md           write → explain → elaborate, each with one good and one dull example
+  practicum.md       how to design the try-it task; allowed materials; the class version
+  checks.md          the yes/no questions the reviewer asks
+  examples/          two or three scripts you have approved, one per kind of lesson</pre>
+  <p>The order of work written in <code>SKILL.md</code>:</p>
+  <ol class="plain">
+    <li>Read the card. Say the big idea and the why in your own words before writing anything.</li>
+    <li>Plan the lesson as a chain of moves, without wording: question → guess → what is seen → why → name → one worked case → your turn → try it → say it back.</li>
+    <li>For each move, write the screen action first, then the sentence that is spoken over it.</li>
+    <li>Read the draft as the learner. Where would they ask "but why?" Answer it there.</li>
+  </ol>
+  <p class="quiet">Two notes. The three frameworks stay, and no chapter is added: "the why" becomes a required beat inside the stage that names the idea, and the task is set in two or three sentences at the end of practice and then lives in the app. And the skill has a version that joins the cache key, as prompt versions already do, so a change to it regenerates and bills once.</p>
+</section>
+
+<section id="system">
+  <h2>Your system, annotated</h2>
+  <p>The harness path as it runs today, top to bottom, with what changes at each stage.</p>
+  <div class="ledger">
+    <div class="r head"><div>Stage</div><div>Today</div><div>In this plan</div></div>
+    <div class="r">
+      <div class="what"><strong>Intake</strong><span class="mono">harness/intake.py · interviewer.py</span></div>
+      <div data-l="Today">Asks topic, class, level, goal, kind of video, voice, language, length, an example, a known mistake.</div>
+      <div data-l="In this plan"><span class="tag change">small change</span>One more optional question: "Do you have the chapter or a link?" The known-mistake question stays optional, because the card now finds mistakes in the sources.</div>
+    </div>
+    <div class="r is-new">
+      <div class="what"><strong>Research</strong><span class="mono">harness/research.py (new) · engine/sources.py (exists)</span></div>
+      <div data-l="Today">Does not exist on this path. The writer never sees a source.</div>
+      <div data-l="In this plan"><span class="tag new">new</span>Gathers three to six sources, numbers the passages, fills the teaching card, saves <code>teaching_pack.json</code> with the lesson. Shown in the app before writing.</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>Framework</strong><span class="mono">harness/frameworks.py</span></div>
+      <div data-l="Today">Three shapes by level, seven stages each. The stage jobs are the same for every topic. The foundation shape opens by pre-teaching words.</div>
+      <div data-l="In this plan"><span class="tag change">change</span>Keep all three. Stage jobs are filled from the card (which picture, which mistake, which question). Every shape opens with the question, then recalls what is needed. One stage owns "the why".</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>Writer</strong><span class="mono">harness/writer.py</span></div>
+      <div data-l="Today">Plans, then writes chapter by chapter against a ledger of what was already said. One long system prompt.</div>
+      <div data-l="In this plan"><span class="tag change">change</span>Reads the card and the skill. Plans moves before words. Writes each sentence with its screen action. The ledger, the length budget and the format checks stay.</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>Reviewer</strong><span class="mono">harness/critic.py</span></div>
+      <div data-l="Today">A second model scores four qualities. Code checks the maths, the language mix, repeats, pauses, reading level.</div>
+      <div data-l="In this plan"><span class="tag change">change</span>Adds yes/no questions it can point to in the script: Is a question asked before the rule? Is the why said, with a picture? Is the card's mistake met? Does every beat have a screen action? Does the task have an expected result? Code also flags a chapter that opens with a definition.</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>Pictures</strong><span class="mono">longform/figures.py · engine/sim_gen.py</span></div>
+      <div data-l="Today">Six drawn figure kinds plus model-written scenes, chosen beat by beat.</div>
+      <div data-l="In this plan"><span class="tag change">later</span>Scenes are derived from the card's one picture, so the same objects stay and change through the lesson. This is step 6 and it joins the visual work you already asked for.</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>Speech and timing</strong><span class="mono">longform/speech.py · audio.py · align.py</span></div>
+      <div data-l="Today">Narration is made first and measured. Every cue is aligned to the spoken words.</div>
+      <div data-l="In this plan"><span class="tag keep">keep</span>No change.</div>
+    </div>
+    <div class="r">
+      <div class="what"><strong>Render and checks</strong><span class="mono">longform/runtime.py · build.py · vision_review.py</span></div>
+      <div data-l="Today">Chapters rendered against the audio, layout measured, one frame per beat reviewed.</div>
+      <div data-l="In this plan"><span class="tag keep">keep</span>No change in this plan.</div>
+    </div>
+    <div class="r is-new">
+      <div class="what"><strong>The app</strong><span class="mono">clients/lessonforge-app · harness/feedback.py</span></div>
+      <div data-l="Today">Plays the video, stops for questions, offers shorter cuts, stores reviews.</div>
+      <div data-l="In this plan"><span class="tag new">new</span>A "Try it yourself" card after the video: what you need, the steps, guess first, then answer. A teacher's note for doing it with a class. Answers are stored with the lesson.</div>
+    </div>
+    <div class="r is-new">
+      <div class="what"><strong>Judging a lesson</strong></div>
+      <div data-l="Today">Counts from the checks, and you watching the video.</div>
+      <div data-l="In this plan"><span class="tag new">new</span>Judge earlier and cheaper: first the card (one page), then old and new script side by side as text, and only then a video. NotebookLM's video from the same sources is the reference to beat.</div>
+    </div>
+  </div>
+</section>
+
+<section id="order">
+  <h2>Build order</h2>
+  <p>Each step ends with something you can look at. If a step does not convince you, we fix it before the next one.</p>
+  <ol class="steps">
+    <li><div><strong>A baseline, no code.</strong><span>Pick three topics. Collect their sources. Put the same sources into NotebookLM by hand and keep its video. That is the lesson to beat.</span></div></li>
+    <li><div><strong>The teaching card.</strong><span>Three cards you can read in five minutes each. Judge here first: a dull card gives a dull video, and a card takes about a minute to make, where a video has taken about ten minutes and 0.20 to 0.90 USD. What a card costs is not measured yet; this step measures it.</span></div></li>
+    <li><div><strong>The skill and the writer.</strong><span>For each topic, the old script and the new one as text, unlabelled. You choose. Nothing is rendered yet.</span></div></li>
+    <li><div><strong>The reviewer's teaching checks.</strong><span>Run on real scripts and read for what the checks themselves break, as the repetition gate once cut a definition in half.</span></div></li>
+    <li><div><strong>Try it yourself in the app.</strong><span>One full lesson through the browser, with the task card and a stored answer.</span></div></li>
+    <li><div><strong>The picture follows the card.</strong><span>The one picture carried through the lesson.</span></div></li>
+  </ol>
+  <p class="quiet">Left out on purpose, so the work does not spread: fine-tuning, personalisation by age, new figure kinds, voices. None of them makes a dull script teach.</p>
+</section>
+
+<section id="reading">
+  <h2>Reading list</h2>
+  <p>Curated, with what we take from each. Every paper with a link was checked against the publisher's record today.</p>
+
+  <h3>Read these six first</h3>
+  <ul class="refs">
+    <li><span>Kulgemeyer (2020). <a href="https://doi.org/10.1007/s11165-018-9787-7">A framework of effective science explanation videos informed by criteria for instructional explanations</a>. <em>Research in Science Education</em> 50.</span><span class="take">Seven factors and fourteen features of a good explainer video, among them adapting to prior knowledge and misconceptions, avoiding digressions, and summaries. A video built to it gave more declarative knowledge (d = 0.42); for conceptual knowledge no difference was found. The closest thing to a checklist for our script.</span></li>
+    <li><span>Mayer, Fiorella &amp; Stull (2020). <a href="https://doi.org/10.1007/s11423-020-09749-6">Five ways to increase the effectiveness of instructional video</a>. <em>Educational Technology Research and Development</em> 68.</span><span class="take">Draw as you explain; make the learner produce something during the video; skip attractive footage that is off the point.</span></li>
+    <li><span>Loughran, Mulhall &amp; Berry (2004). <a href="https://doi.org/10.1002/tea.20007">In search of pedagogical content knowledge in science</a>. <em>Journal of Research in Science Teaching</em> 41.</span><span class="take">The CoRe: eight questions that capture how one idea is taught. Our teaching card is this form plus the task.</span></li>
+    <li><span>Muller, Bewes, Sharma &amp; Reimann (2008). <a href="https://doi.org/10.1111/j.1365-2729.2007.00248.x">Saying the wrong thing: improving learning with multimedia by including misconceptions</a>. <em>Journal of Computer Assisted Learning</em> 24.</span><span class="take">A clear video can leave learners confident and wrong. Stating the wrong idea and breaking it teaches more.</span></li>
+    <li><span>Abrahams &amp; Millar (2008). <a href="https://doi.org/10.1080/09500690701749305">Does practical work really work?</a> <em>International Journal of Science Education</em> 30.</span><span class="take">Practical work gets students to do things with objects and rarely to think with the ideas. So our task always carries a prediction and a question.</span></li>
+    <li><span>Chi &amp; Wylie (2014). <a href="https://doi.org/10.1080/00461520.2014.965823">The ICAP framework</a>. <em>Educational Psychologist</em> 49.</span><span class="take">Four levels of what a learner is doing: watching, handling, producing, discussing. Each step up teaches more. A measure for our questions and tasks.</span></li>
+  </ul>
+
+  <h3>Then, by question</h3>
+  <div class="cols">
+    <div>
+      <div class="eyebrow">How to explain</div>
+      <ul>
+        <li>Kulgemeyer (2018). <a href="https://doi.org/10.1080/03057267.2018.1598054">Towards a framework for effective instructional explanations in science teaching</a>.</li>
+        <li>Wittwer &amp; Renkl (2008). <a href="https://doi.org/10.1080/00461520701756420">Why instructional explanations often do not work</a>.</li>
+        <li>Rosenshine (2012). <a href="https://www.aft.org/sites/default/files/Rosenshine.pdf">Principles of instruction</a>. Free, ten pages.</li>
+        <li>Schwartz &amp; Bransford (1998). <a href="https://doi.org/10.1207/s1532690xci1604_4">A time for telling</a>.</li>
+        <li>Loewenstein (1994). <a href="https://doi.org/10.1037/0033-2909.116.1.75">The psychology of curiosity</a>.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow">How to show</div>
+      <ul>
+        <li>Fiorella &amp; Mayer (2016). <a href="https://doi.org/10.1037/edu0000065">Effects of observing the instructor draw diagrams</a>.</li>
+        <li>Tversky, Morrison &amp; Betrancourt (2002). <a href="https://doi.org/10.1006/ijhc.2002.1017">Animation: can it facilitate?</a></li>
+        <li>Höffler &amp; Leutner (2007). <a href="https://doi.org/10.1016/j.learninstruc.2007.09.013">Instructional animation versus static pictures: a meta-analysis</a>.</li>
+        <li>Ainsworth (2006). <a href="https://doi.org/10.1016/j.learninstruc.2006.03.001">DeFT: learning with multiple representations</a>.</li>
+        <li>Kaminski, Sloutsky &amp; Heckler (2008). <a href="https://doi.org/10.1126/science.1154659">The advantage of abstract examples in learning math</a>.</li>
+        <li>Fyfe, McNeil, Son &amp; Goldstone (2014). <a href="https://doi.org/10.1007/s10648-014-9249-3">Concreteness fading</a>.</li>
+        <li>Sundararajan &amp; Adesope (2020). <a href="https://doi.org/10.1007/s10648-020-09522-4">Keep it coherent: the seductive details effect</a>.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow">What the learner does</div>
+      <ul>
+        <li>Hörnlein &amp; Kulgemeyer (2026). <a href="https://arxiv.org/abs/2512.02824">Learning science and the illusion of understanding</a>.</li>
+        <li>Crouch, Fagen, Callan &amp; Mazur (2004). <a href="https://doi.org/10.1119/1.1707018">Classroom demonstrations: learning tools or entertainment?</a></li>
+        <li>Fiorella &amp; Mayer (2016). <a href="https://doi.org/10.1007/s10648-015-9348-9">Eight ways to promote generative learning</a>.</li>
+        <li>Szpunar, Khan &amp; Schacter (2013). <a href="https://doi.org/10.1073/pnas.1221764110">Interpolated memory tests reduce mind wandering</a>.</li>
+        <li>Hofstein &amp; Lunetta (2004). <a href="https://doi.org/10.1002/sce.10106">The laboratory in science education</a>.</li>
+        <li>Ainsworth, Prain &amp; Tytler (2011). <a href="https://doi.org/10.1126/science.1204153">Drawing to learn in science</a>.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow">Knowing the topic's own teaching</div>
+      <ul>
+        <li>Shulman (1986). <a href="https://doi.org/10.3102/0013189X015002004">Those who understand: knowledge growth in teaching</a>.</li>
+        <li>Ball, Thames &amp; Phelps (2008). <a href="https://doi.org/10.1177/0022487108324554">Content knowledge for teaching</a>.</li>
+        <li>Posner, Strike, Hewson &amp; Gertzog (1982). <a href="https://doi.org/10.1002/sce.3730660207">Accommodation of a scientific conception</a>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Books for the shelf</h3>
+  <div class="cols">
+    <div>
+      <div class="eyebrow">The craft in general</div>
+      <ul>
+        <li>Mayer, <em>Multimedia Learning</em> (3rd ed.)</li>
+        <li>Willingham, <em>Why Don't Students Like School?</em></li>
+        <li>Pólya, <em>How to Solve It</em></li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow">Topic by topic</div>
+      <ul>
+        <li>Driver, Squires, Rushworth &amp; Wood-Robinson, <em>Making Sense of Secondary Science</em></li>
+        <li>Arons, <em>Teaching Introductory Physics</em></li>
+        <li>Van de Walle, Karp &amp; Bay-Williams, <em>Elementary and Middle School Mathematics: Teaching Developmentally</em></li>
+        <li>Liping Ma, <em>Knowing and Teaching Elementary Mathematics</em></li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow">Things to do by hand, Indian classrooms</div>
+      <ul>
+        <li>NCERT textbooks and laboratory manuals</li>
+        <li>Arvind Gupta's books of toys from everyday things</li>
+        <li>Eklavya's <em>Bal Vaigyanik</em> workbooks</li>
+        <li><em>At Right Angles</em>, back issues</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Journals to follow</h3>
+  <div class="cols">
+    <div>
+      <div class="eyebrow">Learning from words and pictures</div>
+      <ul>
+        <li><em>Educational Psychology Review</em></li>
+        <li><em>Journal of Educational Psychology</em></li>
+        <li><em>Learning and Instruction</em></li>
+        <li><em>Computers &amp; Education</em></li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow">How single topics are taught</div>
+      <ul>
+        <li><em>Journal of Research in Science Teaching</em></li>
+        <li><em>International Journal of Science Education</em></li>
+        <li><em>Educational Studies in Mathematics</em></li>
+        <li><em>Physical Review Physics Education Research</em> (free to read)</li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow">Written for teachers, free</div>
+      <ul>
+        <li><em>American Educator</em></li>
+        <li><em>At Right Angles</em></li>
+        <li><em>Resonance: Journal of Science Education</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Systems to learn from</h3>
+  <ul class="refs">
+    <li><span><a href="https://blog.google/technology/google-labs/notebooklm-video-overviews-studio-upgrades/">NotebookLM Video Overviews</a> (Google).</span><span class="take">Sources in, a narrated video out. Our baseline.</span></li>
+    <li><span><a href="https://arxiv.org/abs/2412.16429">LearnLM</a> and <a href="https://services.google.com/fh/files/misc/googlespedagogicalframework.pdf">Google's pedagogical framework</a>; <a href="https://arxiv.org/abs/2509.13348">Towards an AI-Augmented Textbook</a> (Learn Your Way).</span><span class="take">Pedagogy as written instructions; a textbook as the source.</span></li>
+    <li><span><a href="https://arxiv.org/abs/2510.01174">Code2Video</a> and <a href="https://arxiv.org/abs/2502.19400">TheoremExplainAgent</a>.</span><span class="take">Manim video from a planner, a coder and a critic. Code2Video's TeachQuiz measures what a video teaches. Both are already in <code>docs/research/approaches/04</code>.</span></li>
+    <li><span><a href="https://arxiv.org/abs/2608.08852">Teaching Monster Challenge</a> (2026) and <a href="https://arxiv.org/abs/2607.18529">EduPanel</a> (2026).</span><span class="take">A benchmark of topic-plus-learner to teaching video, and a three-agent judge for teaching videos. Their finding matters for us: today's systems get the content right and are weak on presentation and on fitting the learner, and automatic judges cannot rank the best videos. A person still has to watch.</span></li>
+    <li><span><a href="https://github.com/3b1b/videos">3b1b/videos</a>.</span><span class="take">How narration and animation are paired, scene by scene. Study the moves; check the licence before any code goes into a prompt.</span></li>
+  </ul>
+</section>
+
+<section id="decide">
+  <h2>What I need from you</h2>
+  <ol class="plain">
+    <li><strong>Three pilot topics.</strong> My suggestion: square numbers by prime factorisation (three earlier versions exist to compare with), one science topic with a strong home task, and one more of your choice.</li>
+    <li><strong>Where sources come from at first.</strong> You paste links or the chapter PDF, or the system searches. Searching needs a search key (Tavily, Serper or Brave); only the OpenRouter key is set up today.</li>
+    <li><strong>The NotebookLM baseline.</strong> It needs a Google account, so you or I with your sign-in make three videos by hand.</li>
+    <li><strong>Who approves the example scripts</strong> that go into the skill. One approved script per kind of lesson is enough to start.</li>
+  </ol>
+</section>
+
+</main>

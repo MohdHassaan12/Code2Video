@@ -1,0 +1,1029 @@
+{
+  "title": "Unpacking y = mx + b: The Story of Straight Lines",
+  "prerequisites": [
+    "Coordinates (x, y)",
+    "Basic arithmetic (addition, subtraction, multiplication, division)",
+    "Solving simple equations (e.g., 2x + 3 = 7)"
+  ],
+  "notation": [
+    "x: horizontal coordinate",
+    "y: vertical coordinate",
+    "m: slope (steepness and direction of the line)",
+    "b: y-intercept (where the line crosses the y-axis)",
+    "\u0394x (delta x): change in x",
+    "\u0394y (delta y): change in y"
+  ],
+  "sections": [
+    {
+      "id": "intro_coordinates",
+      "duration_seconds": 90,
+      "purpose": "Introduce the idea of describing a line using an equation, starting with a simple point.",
+      "new_inference": "A point (x,y) can be part of a line described by an equation.",
+      "prior_dependency": [],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": null,
+        "equation_display": ""
+      },
+      "visual_actions": [
+        {
+          "action": "add_point",
+          "coordinates": [
+            0,
+            0
+          ],
+          "color": "blue",
+          "label": "(0,0)"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            2,
+            3
+          ],
+          "color": "red",
+          "label": "(2,3)"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            -1,
+            1
+          ],
+          "color": "green",
+          "label": "(-1,1)"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              0
+            ],
+            "color": "blue"
+          },
+          {
+            "coordinates": [
+              2,
+              3
+            ],
+            "color": "red"
+          },
+          {
+            "coordinates": [
+              -1,
+              1
+            ],
+            "color": "green"
+          }
+        ],
+        "line": null,
+        "equation_display": ""
+      },
+      "transition_words": "Alright, so we've got some points on our graph. Now, imagine we want to draw a straight line through some of these points, or maybe just describe *any* straight line. How can we do that with an equation?"
+    },
+    {
+      "id": "b_intro",
+      "duration_seconds": 120,
+      "purpose": "Introduce 'b' as the y-intercept and explain its meaning.",
+      "new_inference": "The 'b' in y=mx+b tells us where the line crosses the y-axis (the y-intercept).",
+      "prior_dependency": [
+        "intro_coordinates"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": {
+          "equation": "y = 0x + 0",
+          "color": "purple"
+        },
+        "equation_display": "y = mx + b"
+      },
+      "visual_actions": [
+        {
+          "action": "update_equation_display",
+          "text": "y = mx + b"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            0,
+            0
+          ],
+          "color": "orange",
+          "label": "(0,0)"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 0x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 0x + 2",
+          "color": "purple"
+        },
+        {
+          "action": "move_point",
+          "from": [
+            0,
+            0
+          ],
+          "to": [
+            0,
+            2
+          ],
+          "color": "orange",
+          "label": "(0,2)"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 0x - 1",
+          "color": "purple"
+        },
+        {
+          "action": "move_point",
+          "from": [
+            0,
+            2
+          ],
+          "to": [
+            0,
+            -1
+          ],
+          "color": "orange",
+          "label": "(0,-1)"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              -1
+            ],
+            "color": "orange"
+          }
+        ],
+        "line": {
+          "equation": "y = 0x - 1",
+          "color": "purple"
+        },
+        "equation_display": "y = mx + b"
+      },
+      "transition_words": "So, 'b' is pretty straightforward. It tells us where the line hits the y-axis. But what about 'm'?"
+    },
+    {
+      "id": "m_intro_concept",
+      "duration_seconds": 120,
+      "purpose": "Introduce 'm' as slope, the 'steepness' and 'direction' of the line.",
+      "new_inference": "The 'm' in y=mx+b represents the slope, which describes the steepness and direction of the line.",
+      "prior_dependency": [
+        "b_intro"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              0
+            ],
+            "color": "orange"
+          }
+        ],
+        "line": {
+          "equation": "y = 0x + 0",
+          "color": "purple"
+        },
+        "equation_display": "y = mx + b"
+      },
+      "visual_actions": [
+        {
+          "action": "update_line",
+          "equation": "y = 0x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            0,
+            0
+          ],
+          "color": "orange",
+          "label": "(0,0)"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 1x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 2x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 0.5x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_line",
+          "equation": "y = -1x + 0",
+          "color": "purple"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              0
+            ],
+            "color": "orange"
+          }
+        ],
+        "line": {
+          "equation": "y = -1x + 0",
+          "color": "purple"
+        },
+        "equation_display": "y = mx + b"
+      },
+      "transition_words": "So, 'm' clearly changes how the line looks. But what exactly is it measuring?"
+    },
+    {
+      "id": "m_delta_y_delta_x",
+      "duration_seconds": 150,
+      "purpose": "Define slope as 'rise over run' (\u0394y/\u0394x) and explain why.",
+      "new_inference": "Slope (m) is calculated as the change in y (\u0394y) divided by the change in x (\u0394x) between any two points on the line.",
+      "prior_dependency": [
+        "m_intro_concept"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": {
+          "equation": "y = 1x + 0",
+          "color": "purple"
+        },
+        "equation_display": "y = mx + b"
+      },
+      "visual_actions": [
+        {
+          "action": "update_line",
+          "equation": "y = 1x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            0,
+            0
+          ],
+          "color": "red",
+          "label": "P1 (0,0)"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            2,
+            2
+          ],
+          "color": "blue",
+          "label": "P2 (2,2)"
+        },
+        {
+          "action": "draw_delta_lines",
+          "point1": [
+            0,
+            0
+          ],
+          "point2": [
+            2,
+            2
+          ],
+          "color": "gray"
+        },
+        {
+          "action": "label_delta",
+          "dx": 2,
+          "dy": 2,
+          "color": "gray"
+        },
+        {
+          "action": "pause",
+          "duration": 10
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 0.5x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "move_point",
+          "from": [
+            2,
+            2
+          ],
+          "to": [
+            2,
+            1
+          ],
+          "color": "blue",
+          "label": "P2 (2,1)"
+        },
+        {
+          "action": "draw_delta_lines",
+          "point1": [
+            0,
+            0
+          ],
+          "point2": [
+            2,
+            1
+          ],
+          "color": "gray"
+        },
+        {
+          "action": "label_delta",
+          "dx": 2,
+          "dy": 1,
+          "color": "gray"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              0
+            ],
+            "color": "red"
+          },
+          {
+            "coordinates": [
+              2,
+              1
+            ],
+            "color": "blue"
+          }
+        ],
+        "line": {
+          "equation": "y = 0.5x + 0",
+          "color": "purple"
+        },
+        "equation_display": "y = mx + b"
+      },
+      "transition_words": "So, we've seen how to calculate 'm'. Now let's put 'm' and 'b' together."
+    },
+    {
+      "id": "m_b_together",
+      "duration_seconds": 120,
+      "purpose": "Show how 'm' and 'b' work together to define a line.",
+      "new_inference": "Changing 'b' with 'm' fixed translates the line vertically. Changing 'm' with 'b' fixed pivots the line around the y-intercept.",
+      "prior_dependency": [
+        "m_delta_y_delta_x",
+        "b_intro"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": {
+          "equation": "y = 1x + 0",
+          "color": "purple"
+        },
+        "equation_display": "y = 1x + 0"
+      },
+      "visual_actions": [
+        {
+          "action": "update_equation_display",
+          "text": "y = 1x + 0"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 1x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            0,
+            0
+          ],
+          "color": "orange",
+          "label": "(0,0)"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_equation_display",
+          "text": "y = 1x + 2"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 1x + 2",
+          "color": "purple"
+        },
+        {
+          "action": "move_point",
+          "from": [
+            0,
+            0
+          ],
+          "to": [
+            0,
+            2
+          ],
+          "color": "orange",
+          "label": "(0,2)"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_equation_display",
+          "text": "y = -0.5x + 2"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = -0.5x + 2",
+          "color": "purple"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_equation_display",
+          "text": "y = 2x - 1"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 2x - 1",
+          "color": "purple"
+        },
+        {
+          "action": "move_point",
+          "from": [
+            0,
+            2
+          ],
+          "to": [
+            0,
+            -1
+          ],
+          "color": "orange",
+          "label": "(0,-1)"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              -1
+            ],
+            "color": "orange"
+          }
+        ],
+        "line": {
+          "equation": "y = 2x - 1",
+          "color": "purple"
+        },
+        "equation_display": "y = 2x - 1"
+      },
+      "transition_words": "This interaction between 'm' and 'b' is key. Now, let's look at some special cases for 'm'."
+    },
+    {
+      "id": "special_slopes",
+      "duration_seconds": 120,
+      "purpose": "Explain the meaning of positive, negative, and zero slopes. Address vertical lines.",
+      "new_inference": "Positive slope means the line rises left-to-right. Negative slope means it falls left-to-right. Zero slope means the line is horizontal. Vertical lines cannot be described by y=mx+b.",
+      "prior_dependency": [
+        "m_delta_y_delta_x"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": {
+          "equation": "y = 1x + 0",
+          "color": "purple"
+        },
+        "equation_display": "y = 1x + 0"
+      },
+      "visual_actions": [
+        {
+          "action": "update_equation_display",
+          "text": "y = 1x + 0"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 1x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_equation_display",
+          "text": "y = -1x + 0"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = -1x + 0",
+          "color": "purple"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "update_equation_display",
+          "text": "y = 0x + 2"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 0x + 2",
+          "color": "purple"
+        },
+        {
+          "action": "pause",
+          "duration": 5
+        },
+        {
+          "action": "add_vertical_line",
+          "x_value": 3,
+          "color": "red",
+          "label": "x=3"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": {
+          "equation": "y = 0x + 2",
+          "color": "purple"
+        },
+        "equation_display": "y = 0x + 2",
+        "vertical_line": {
+          "x_value": 3,
+          "color": "red"
+        }
+      },
+      "transition_words": "So, we've covered the different types of slopes. Let's try to predict what a line will look like given its equation."
+    },
+    {
+      "id": "prediction_1",
+      "duration_seconds": 90,
+      "purpose": "Practice predicting line appearance from an equation.",
+      "new_inference": "I can visualize a line given its equation y=mx+b.",
+      "prior_dependency": [
+        "m_b_together",
+        "special_slopes"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": null,
+        "equation_display": "y = 2x + 1"
+      },
+      "visual_actions": [
+        {
+          "action": "update_equation_display",
+          "text": "y = 2x + 1"
+        },
+        {
+          "action": "pause",
+          "duration": 20
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 2x + 1",
+          "color": "purple"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            0,
+            1
+          ],
+          "color": "orange",
+          "label": "(0,1)"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              1
+            ],
+            "color": "orange"
+          }
+        ],
+        "line": {
+          "equation": "y = 2x + 1",
+          "color": "purple"
+        },
+        "equation_display": "y = 2x + 1"
+      },
+      "transition_words": "Great job! Let's try another one, a bit trickier."
+    },
+    {
+      "id": "prediction_2",
+      "duration_seconds": 90,
+      "purpose": "Further practice predicting line appearance from an equation, including negative slope and intercept.",
+      "new_inference": "I can visualize a line given its equation y=mx+b, even with negative values.",
+      "prior_dependency": [
+        "prediction_1"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": null,
+        "equation_display": "y = -0.5x - 2"
+      },
+      "visual_actions": [
+        {
+          "action": "update_equation_display",
+          "text": "y = -0.5x - 2"
+        },
+        {
+          "action": "pause",
+          "duration": 20
+        },
+        {
+          "action": "update_line",
+          "equation": "y = -0.5x - 2",
+          "color": "purple"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            0,
+            -2
+          ],
+          "color": "orange",
+          "label": "(0,-2)"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              -2
+            ],
+            "color": "orange"
+          }
+        ],
+        "line": {
+          "equation": "y = -0.5x - 2",
+          "color": "purple"
+        },
+        "equation_display": "y = -0.5x - 2"
+      },
+      "transition_words": "Excellent! You're getting the hang of it. Now, let's summarize what we've learned."
+    },
+    {
+      "id": "summary",
+      "duration_seconds": 60,
+      "purpose": "Recap the roles of 'm' and 'b' in y=mx+b.",
+      "new_inference": "I understand the complete meaning and function of 'm' and 'b' in y=mx+b.",
+      "prior_dependency": [
+        "prediction_2"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              -2
+            ],
+            "color": "orange"
+          }
+        ],
+        "line": {
+          "equation": "y = -0.5x - 2",
+          "color": "purple"
+        },
+        "equation_display": "y = -0.5x - 2"
+      },
+      "visual_actions": [
+        {
+          "action": "update_equation_display",
+          "text": "y = mx + b"
+        },
+        {
+          "action": "clear_all_but_axes"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": null,
+        "equation_display": "y = mx + b"
+      },
+      "transition_words": "So, we've explored the building blocks of straight lines. Now, let's tackle some problems where you'll apply what you've learned."
+    },
+    {
+      "id": "worked_problem_1",
+      "duration_seconds": 120,
+      "purpose": "Work through an example of finding the equation from a graph.",
+      "new_inference": "I can determine the equation y=mx+b from a given graph.",
+      "prior_dependency": [
+        "summary"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": null,
+        "equation_display": ""
+      },
+      "visual_actions": [
+        {
+          "action": "update_equation_display",
+          "text": "Find the equation for this line:"
+        },
+        {
+          "action": "update_line",
+          "equation": "y = 2x + 3",
+          "color": "purple"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            0,
+            3
+          ],
+          "color": "orange",
+          "label": "(0,3)"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            1,
+            5
+          ],
+          "color": "red",
+          "label": "(1,5)"
+        },
+        {
+          "action": "draw_delta_lines",
+          "point1": [
+            0,
+            3
+          ],
+          "point2": [
+            1,
+            5
+          ],
+          "color": "gray"
+        },
+        {
+          "action": "label_delta",
+          "dx": 1,
+          "dy": 2,
+          "color": "gray"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              0,
+              3
+            ],
+            "color": "orange"
+          },
+          {
+            "coordinates": [
+              1,
+              5
+            ],
+            "color": "red"
+          }
+        ],
+        "line": {
+          "equation": "y = 2x + 3",
+          "color": "purple"
+        },
+        "equation_display": "y = 2x + 3"
+      },
+      "transition_words": "That's one down. Let's try another worked example, this time starting with points."
+    },
+    {
+      "id": "worked_problem_2",
+      "duration_seconds": 120,
+      "purpose": "Work through an example of finding the equation from two points.",
+      "new_inference": "I can determine the equation y=mx+b from two given points.",
+      "prior_dependency": [
+        "worked_problem_1"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": null,
+        "equation_display": ""
+      },
+      "visual_actions": [
+        {
+          "action": "update_equation_display",
+          "text": "Find the equation for the line passing through (1, 4) and (3, 0)."
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            1,
+            4
+          ],
+          "color": "red",
+          "label": "P1 (1,4)"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            3,
+            0
+          ],
+          "color": "blue",
+          "label": "P2 (3,0)"
+        },
+        {
+          "action": "draw_delta_lines",
+          "point1": [
+            1,
+            4
+          ],
+          "point2": [
+            3,
+            0
+          ],
+          "color": "gray"
+        },
+        {
+          "action": "label_delta",
+          "dx": 2,
+          "dy": -4,
+          "color": "gray"
+        },
+        {
+          "action": "pause",
+          "duration": 10
+        },
+        {
+          "action": "update_line",
+          "equation": "y = -2x + 6",
+          "color": "purple"
+        },
+        {
+          "action": "add_point",
+          "coordinates": [
+            0,
+            6
+          ],
+          "color": "orange",
+          "label": "(0,6)"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [
+          {
+            "coordinates": [
+              1,
+              4
+            ],
+            "color": "red"
+          },
+          {
+            "coordinates": [
+              3,
+              0
+            ],
+            "color": "blue"
+          },
+          {
+            "coordinates": [
+              0,
+              6
+            ],
+            "color": "orange"
+          }
+        ],
+        "line": {
+          "equation": "y = -2x + 6",
+          "color": "purple"
+        },
+        "equation_display": "y = -2x + 6"
+      },
+      "transition_words": "You've seen how to tackle these problems. Now it's your turn to try some on your own."
+    },
+    {
+      "id": "independent_problems_intro",
+      "duration_seconds": 90,
+      "purpose": "Introduce independent practice problems.",
+      "new_inference": "I can independently apply my knowledge of y=mx+b.",
+      "prior_dependency": [
+        "worked_problem_2"
+      ],
+      "visual_start_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": null,
+        "equation_display": ""
+      },
+      "visual_actions": [
+        {
+          "action": "clear_all_but_axes"
+        },
+        {
+          "action": "update_equation_display",
+          "text": "Independent Practice Problems"
+        }
+      ],
+      "visual_end_state": {
+        "graph_axes": true,
+        "points": [],
+        "line": null,
+        "equation_display": "Independent Practice Problems"
+      },
+      "transition_words": "Alright, time to put your skills to the test! Remember to think about 'b' first, then 'm'."
+    }
+  ],
+  "worked_problems": [
+    {
+      "problem": "Find the equation of the line shown on the graph.",
+      "solution": "First, find the y-intercept (b). The line crosses the y-axis at (0, 3). So, b = 3. Next, find the slope (m). Pick another point on the line, for example (1, 5). From (0, 3) to (1, 5), \u0394x = 1 - 0 = 1 and \u0394y = 5 - 3 = 2. So, m = \u0394y/\u0394x = 2/1 = 2. Therefore, the equation is y = 2x + 3."
+    },
+    {
+      "problem": "Find the equation of the line that passes through the points (1, 4) and (3, 0).",
+      "solution": "First, find the slope (m). Using the points (x1, y1) = (1, 4) and (x2, y2) = (3, 0): \u0394x = x2 - x1 = 3 - 1 = 2. \u0394y = y2 - y1 = 0 - 4 = -4. So, m = \u0394y/\u0394x = -4/2 = -2. Now, use one of the points and the slope in y = mx + b to find b. Let's use (1, 4): 4 = (-2)(1) + b. 4 = -2 + b. Add 2 to both sides: b = 6. Therefore, the equation is y = -2x + 6."
+    }
+  ],
+  "independent_problems": [
+    {
+      "problem": "What is the equation of a line with a slope of 3 and a y-intercept of -1?",
+      "answer": "y = 3x - 1"
+    },
+    {
+      "problem": "A line passes through the points (0, 5) and (2, 9). What is its equation?",
+      "answer": "y = 2x + 5"
+    },
+    {
+      "problem": "Describe the line y = -1/2x + 4. What is its slope and y-intercept? Does it rise or fall from left to right?",
+      "answer": "The slope (m) is -1/2. The y-intercept (b) is 4. Since the slope is negative, the line falls from left to right."
+    }
+  ],
+  "opening_narration": "Hey everyone! Today, we're going on a journey to unlock the secrets of straight lines. You've all worked with coordinates, plotting points like (2,3) or (-1,1) on a graph. You know how to do basic math, and you've solved simple equations. That's fantastic, because we're going to use all of that to understand one of the most fundamental equations in algebra: y = mx + b. \n\nThink about it: a single point on a graph is just a location. But what if we want to describe a whole *line* of points? How can we capture that entire path with a neat, tidy equation? That's where y = mx + b comes in. It's like a secret code that tells us everything we need to know about any straight line.\n\nWe're going to build this understanding piece by piece, starting with what each letter in that equation actually means. We'll see how changing one part of the equation changes the line on our graph, and why it changes it in that specific way. We'll watch lines move, tilt, and shift, all by adjusting 'm' and 'b'.\n\nBy the end of this, you won't just be memorizing rules; you'll understand *why* those rules work. You'll be able to look at an equation and picture the line in your head, or look at a line and write its equation. It's a powerful tool, and it's going to open up a lot of doors in your mathematical journey. So, let's dive in and start exploring!",
+  "misconception_checks": [
+    {
+      "id": "misconception_steepness",
+      "check_point": "m_intro_concept",
+      "question": "If we have a line with m=2 and another with m=-3, which one is 'steeper'?",
+      "explanation": "This is a common trap! While -3 is numerically smaller than 2, the 'steepness' of a line is determined by the *absolute value* of 'm'. So, a slope of -3 is steeper than a slope of 2, even though it goes downwards. The negative sign only tells us the *direction* (falling left-to-right), not the magnitude of the steepness."
+    },
+    {
+      "id": "misconception_vertical_lines",
+      "check_point": "special_slopes",
+      "question": "Can we write the equation for a vertical line, like x=3, in the form y=mx+b?",
+      "explanation": "No, we can't. For a vertical line, the x-value never changes, meaning \u0394x would be 0. If \u0394x is 0, then calculating m = \u0394y/\u0394x would involve dividing by zero, which is undefined. This tells us that vertical lines have an undefined slope and cannot be expressed in the y=mx+b form. They are a special case, described simply as x = c, where 'c' is the x-intercept."
+    }
+  ]
+}

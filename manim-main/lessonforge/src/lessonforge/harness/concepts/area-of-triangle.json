@@ -1,0 +1,216 @@
+{
+ "id": "area-of-triangle",
+ "names": [
+  "area of triangle",
+  "area of a triangle",
+  "triangle area",
+  "half base times height",
+  "area of triangle formula",
+  "base and height of a triangle",
+  "how to find area of triangle"
+ ],
+ "subject": "maths",
+ "classes": [
+  6,
+  7
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "drawing",
+  "figure": {
+   "kind": "rectangle",
+   "w": 6,
+   "h": 4,
+   "grid": true,
+   "labels": {
+    "w": "base 6 cm",
+    "h": "height 4 cm"
+   }
+  },
+  "asks": [
+   "A labelled diagram of a triangle drawn inside a rectangle of the same base and height on squared paper, showing the base, the height as a dotted line, and the two leftover corner pieces shaded.",
+   "A drawing of a rectangle on squared paper cut along one diagonal into two equal right-angled triangles, showing the base, the height and the diagonal.",
+   "A standard diagram of a triangle ABC with base BC and a dotted height drawn from A to BC, showing the right-angle mark where the height meets the base."
+  ],
+  "why": "The rectangle around the triangle shows that the triangle is exactly half of it, which is where the half in the rule comes from."
+ },
+ "card": {
+  "big_idea": {
+   "text": "The area of a triangle is half the area of the rectangle that has the same base and the same height.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Work out the area of a triangle from its base and height",
+    "level": "apply",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Explain why a triangle is half of the rectangle around it",
+    "level": "understand",
+    "checked_by": "try_it"
+   },
+   {
+    "can": "Predict whether two triangles on the same base and height have the same area",
+    "level": "analyze",
+    "checked_by": "q2"
+   }
+  ],
+  "why_it_matters": {
+   "text": "Plots of land, roofs, kites and sails are triangles, and this tells you how much space one covers without counting squares.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "The dotted height cuts the rectangle into two smaller rectangles, and a side of the triangle cuts each of them into two equal halves, one inside the triangle and one outside, so the triangle holds exactly half of the rectangle.",
+   "cites": []
+  },
+  "picture": {
+   "text": "A triangle with base 6 cm and height 4 cm on squared paper. A rectangle 6 by 4 is drawn around it, then the dotted height splits the rectangle into two parts, each cut in half by a side of the triangle. The two outside halves are shaded and slide over onto the triangle, covering it exactly.",
+   "standard": "triangle with base and dotted height inside its rectangle",
+   "cites": []
+  },
+  "diagram_ask": "A labelled diagram of a triangle drawn inside a rectangle of the same base and height on squared paper, showing the base, the height as a dotted line, and the two leftover corner pieces shaded.",
+  "needs_first": [
+   {
+    "text": "The area of a rectangle is length times breadth.",
+    "cites": []
+   },
+   {
+    "text": "What a right angle is.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Multiplying the base by a slanting side instead of the height.",
+    "why_it_fails": "The height must be at right angles to the base; a slanting side is longer than the height, so it gives too much area.",
+    "cites": []
+   },
+   {
+    "mistake": "Forgetting the half: base times height.",
+    "why_it_fails": "Base times height is the whole rectangle around the triangle, and the triangle covers only half of it.",
+    "cites": []
+   },
+   {
+    "mistake": "Thinking a leaning triangle has more area because its sides are longer.",
+    "why_it_fails": "Area depends on the base and the height only; a leaning triangle with the same base and height is still half the same rectangle.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "A triangle has a base of 6 cm and is 4 cm tall. How many 1 cm squares of paper would it take to cover it?",
+   "guesses": [
+    "24",
+    "10",
+    "12"
+   ],
+   "answer": "12 squares, half of the 6 × 4 = 24 squares of the rectangle around it.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the triangle with base 6 cm and height 4 cm on squared paper and ask how many squares cover it. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Counting whole and half squares is messy, so draw the rectangle 6 by 4 around the triangle: 24 squares.",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Drop the dotted height. Ask: what does each side of the triangle do to each small rectangle? It cuts it into two equal halves, one in and one out.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Slide the two outside pieces onto the triangle: they cover it exactly, so the triangle is half of 24, which is 12.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name the base and the height (at right angles to the base) and write area = half of base × height.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Lean the top corner over to the side, keeping the height 4 cm: the rectangle is the same, so the area is still 12, though the sides got longer.",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "Base 10 cm and height 7 cm: the rectangle is 70 square cm, so the triangle is 35 square cm.",
+    "cites": []
+   },
+   {
+    "move": "your_turn",
+    "what": "Base 8 cm and height 5 cm: the learner finds 20 square cm before it is shown.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says where the half comes from.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "A triangle has base 6 cm, height 4 cm and a slanting side of 5 cm. What is its area?",
+    "options": [
+     "12 square cm",
+     "24 square cm",
+     "15 square cm"
+    ],
+    "answer_index": 0,
+    "explain": "Half of 6 × 4 is 12; 24 forgets the half, and 15 uses the slanting side instead of the height.",
+    "cites": []
+   },
+   {
+    "question": "Two triangles stand on the same 6 cm base and are both 4 cm tall, but one leans far to the side. Which has more area?",
+    "options": [
+     "They have the same area",
+     "The leaning one, because its sides are longer",
+     "The straight one, because it is neater"
+    ],
+    "answer_index": 0,
+    "explain": "Both are half of the same 6 by 4 rectangle, so both are 12 square cm.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "Two corners make the triangle",
+   "kind": "hands",
+   "materials": [
+    "squared paper",
+    "pencil",
+    "ruler",
+    "scissors"
+   ],
+   "stands_for": "The cut-out rectangle is the rectangle around the triangle; each small square is one square centimetre.",
+   "predict": "After you cut out the triangle, will the two leftover corner pieces be bigger than the triangle, smaller, or exactly the same?",
+   "steps": [
+    "Draw a rectangle 6 squares long and 4 squares tall on squared paper and cut it out.",
+    "Mark any point on the top side.",
+    "Draw lines from that point to the two bottom corners.",
+    "Cut along the two lines so you have one triangle and two corner pieces.",
+    "Lay the two corner pieces on top of the triangle."
+   ],
+   "observe": "The two corner pieces together cover the triangle exactly, with no gap and nothing sticking out.",
+   "question": "Why do the two corner pieces cover the triangle exactly, wherever you put the point?",
+   "expected": "Because the height from the point cuts the rectangle into two parts, and each part is split into two equal halves, one in the triangle and one outside, so the triangle is half the rectangle: 12 of the 24 squares.",
+   "write": "A triangle is half of the rectangle with the same base and height. Area of a triangle = half of base × height.",
+   "in_class": "Pairs, each pair choosing a different point on the top side. The teacher draws the rectangle with the triangle and the dotted height on the board. Ask: whose corner pieces did not cover the triangle? If a pair says theirs did not fit, they usually cut off the rectangle's edge or did not use its corners.",
+   "cites": []
+  },
+  "leave_out": [
+   "Heron's formula",
+   "area using coordinates",
+   "the area of a parallelogram as a separate rule"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

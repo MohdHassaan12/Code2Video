@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P11 · The scene has no structure to lay out — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">11</div>
+  <div>
+    <h1>The scene has no structure to lay out</h1>
+    <div class="sub">Frames come out sparse, arbitrary and overlapping, and the instinct is to blame Manim. The evidence says
+    otherwise: the IR hands the renderer a <i>flat bag of positioned elements</i>, so no renderer — and no layout framework —
+    can compose what was never expressed.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>11</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-s">S · code owns structure — but there is no structure to own</span>
+  <span class="chip t2">T2 applied research</span>
+  <span class="chip mat">Maturity: L1 — flat element list, no relations, no solver</span>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🎯</span> Fix strategies — concrete, ordered by payoff (2026-08-03)</div>
+  <p>Below is the <b>actual</b> path out of the current composition mess, ordered by what measurably improves frames
+  today. Each step is small, deterministic, and independently shippable.</p>
+  <ol>
+    <li><b>Revive the <code>composition</code> descriptor.</b> It is populated on every scene at billed LLM tokens but
+      consumed only as a log line (<code>transpiler.py:1238</code>). Parse it for a closed vocabulary of layout keywords
+      (<code>"left column"</code>, <code>"grid centre"</code>, <code>"stacked right"</code>, <code>"banner top"</code>,
+      <code>"split"</code>) and map hits onto the existing <code>layout_template</code> and zone-assignment paths — the
+      consumption machinery already exists at <code>_apply_template_zones</code> (<code>transpiler.py:502</code>).
+      <b>Cost: $0, <code>test_axes_zones.py</code>-style no-manim harness.</b> The split-screen trigger
+      (<code>_maybe_minimize_diagram</code>, <code>transpiler.py:1096</code>) that had to be widened from math-only after
+      a live job split on zero scenes is the class of bug this kills: heuristic triggers chase what the descriptor
+      already said.</li>
+    <li><b>Wire <code>shape_overlaps</code> into the repair loop.</b> The probe has measured shape×shape collisions
+      since 2026-08-01 and reports them into the sidecar as <code>shape_overlaps</code>. They are deliberately
+      <i>not</i> counted for repair yet — so two diagrams sitting on each other ship with
+      <code>violations_remaining: 0</code>. The metric has been running passively for days; the data exists to set a
+      threshold. Add the class to <code>_overlap_violations</code> with its own weight, then let the existing
+      accept-if-better repair loop treat it as one more violation class. <b>Cost: ~30 lines, <code>test_overlap_probe.py</code>
+      extension.</b></li>
+    <li><b>Sample mid-transition, not just at beat boundaries.</b> The probe patches <code>Scene.play</code> and runs
+      after it completes — a collision during <code>ReplacementTransform</code> or a slide is invisible. The fix:
+      add an <code>anim_count</code> incrementing per play(), sample a subset (every N frames or every M seconds),
+      and register mid-animation collisions under a distinct <code>mid-transition</code> class. Low-computation
+      overhead given the TTS-stubbed dry-run context. <b>Cost: ~80 lines in <code>_OVERLAP_PROBE_SNIPPET</code>,
+      plus a planted-clip harness.</b></li>
+    <li><b>Add a whole-frame mass/balance solver.</b> Today the transpiler prevents bad outcomes (overlap, clipping)
+      but does not <i>compose</i> — nothing balances visual weight across the frame or aligns unrelated groups to
+      a shared baseline. The simplest form: after all zone claims and graph layout, run a deterministic pass that
+      (a) centres the combined bounding-box of elements, (b) equalises gaps between groups, (c) sizes elements to
+      fill available space. Each is a separate lever behind a flag; start with centre-of-mass.
+      <b>Cost: ~150 lines in <code>transpiler.py</code>, verification by measuring <code>vision-dead-frame</code>
+      count before/after.</b></li>
+    <li><b>Add <code>row</code> and <code>column</code> IR relation primitives.</b> The IR now has <code>connects</code>
+      (edges) and <code>inside</code> (containment). It still lacks the ordinary vocabulary of visual composition:
+      "these three are in a row", "this label sits left of that shape", "equal gaps between peers".
+      Two new <code>RelativePosition</code> relations — <code>"row"</code> and <code>"column"</code> — with gap
+      and alignment parameters, emitted by the transpiler as a <code>VGroup(...).arrange(RIGHT/DOWN, buff=…)</code>
+      that replaces individual zone claims for grouped elements. Pinned in harness, schema re-exported with
+      <code>--regen</code>. <b>Cost: ~200 lines + schema change.</b></li>
+    <li><b>General constraint solver (Cassowary).</b> After rows, columns, insides and edges are declarable, the
+      zone-claiming + fallback-chain system can be replaced with a constraint solver that resolves all six relations
+      simultaneously. This is the <i>clean-sheet</i> solution the table below calls "replaces zone-claiming with a
+      solver" — do it only when the declarable vocabulary covers enough real boards to make the switch worth
+      measuring. <b>Cost: ~500 lines, changes the repair loop's character.</b></li>
+  </ol>
+  <div class="note">Items 1–4 are each independently shippable. Do NOT bundle them — a single-lever experiment is
+  measurable; a batch change is a guess. Item 1 is the cheapest, highest-ROI move and closes the crack between
+  P05 (intent) and P11 (structure) simultaneously.</div>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🚀</span> Update 2026-08-01 — step 1 shipped, and it moved the grade</div>
+  <p>The IR now carries structure. <code>connects: [id_a, id_b]</code> makes an element an <b>edge</b> whose endpoints are
+  computed from the two shapes it joins; <code>relative_positioning.relation: "inside"</code> makes an element a
+  <b>container's content</b>, distributed across the container and shrunk to fit. All geometry stays code-owned
+  (<code>viz_helpers.connector()</code> / <code>place_inside()</code>); the model only names the relationship.
+  <b>Render-verified:</b> the factor tree that drew as one circle and three floating stubs now draws five labelled nodes
+  joined by four real edges, and the tray that drew empty now holds six distributed sweets.
+  Pinned by <code>test_ir_structure.py</code> (36 checks).</p>
+  <p><b>Two findings from doing it, both bigger than the feature:</b></p>
+  <ul>
+    <li><b>The Layout QA Critic was silently deleting elements.</b> Its rewrite was accepted if it merely parsed and kept
+      the class name — nothing checked it preserved the objects. Asked to tidy a tray of six sweets it collapsed all six
+      into ONE mobject and replaced <code>place_inside()</code> with its own <code>arrange_in_grid</code>. <b>This is the
+      real answer to “codegen has too little control”</b>: an LLM pass was rewriting structure the deterministic layer had
+      correct. It is now rejected when it drops an element variable or dissolves a structural helper — the QC pass
+      improves or stands aside, it can no longer destroy.</li>
+    <li><b>Shape×shape overlap is measured</b> (finding 3 below), under its own <code>shape-overlap</code> class and
+      reported into the sidecar as <code>shape_overlaps</code> — deliberately <i>not</i> counted for repair yet, so a new
+      metric proves itself on real runs first.</li>
+  </ul>
+  <p><b>Step 3 followed the same day: graph auto-layout.</b> Node positions are now computed from the graph — layered
+  BFS-from-root, distributed per row, scaled into the band between title and caption — <i>overriding</i> whatever
+  coordinates the model guessed. Six nodes piled within 0.1u of a single point rendered as a correct, balanced factor
+  tree. That closes “no layout solver” for the node-and-edge case; rows/stacks are partly covered by
+  <code>place_inside()</code>, and radial/force-directed/flow layouts remain open (this is precisely where Graphviz or
+  ELK become drop-in).</p>
+  <p>Doing it surfaced a <b>third</b> instance of the critic disease: it rewrote a BOTTOM_CENTER caption's
+  <code>.to_edge(DOWN)</code> into <code>.move_to([0, BODY_Y, 0])</code> — and <code>BODY_Y</code> is the frame's
+  <i>middle</i> — dropping the caption through the tree. Nothing was deleted, so both earlier guards passed it; a third
+  invariant now protects zone anchors. <b>The lesson generalises: prefer a new invariant over tightening the critic
+  prompt — the prompt is advice, the invariant is a contract.</b> Each guard was found by looking at a rendered frame,
+  never by a test.</p>
+  <p>Still open: <b>nothing consumes <code>composition</code></b> (<a href="p05-semantic-composition.html">P05</a>), and
+  there is no <i>whole-frame</i> solver — layout is now correct per structure, but nothing balances mass or aligns
+  unrelated groups against each other. Steps 4–5 below stand.</p>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">🎯</span> The question this page answers</div>
+  <p><i>“Composition is bad and frames overlap — should we move to another framework?”</i></p>
+  <p><b>Short answer: the framework is not the bottleneck, and switching renderers would carry the defect across
+  unchanged.</b> Three independent findings below place the failure <i>above</i> the renderer, in what the Storyboard IR
+  can say. There <i>are</i> frameworks worth adopting — but they are layout and constraint frameworks, not rendering ones,
+  and they only pay off after the IR can express structure.</p>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> Finding 1 — the IR cannot express a relationship</div>
+  <p>A <code>VisualElement</code> can say what it <i>is</i> (type, content, colour, scale) and where it <i>sits</i>
+  (<code>absolute_position</code>, <code>safe_zone_alignment</code>, <code>relative_positioning</code>). It cannot say what
+  it is <b>part of</b>, what it <b>contains</b>, or what it <b>connects</b>. A scene is a flat list.</p>
+  <p>So a model asked to draw a factor tree does the only thing available: it writes the structure into prose inside one
+  element’s <code>content</code>. Measured on the 2026-08-01 <i>Prime Factorization</i> board:</p>
+  <ul>
+    <li>“Two diagonal chalk branches from 84 <b>to circles containing 12 and 7</b>” — one element that is really
+      <b>2 edges + 2 labelled nodes</b>. The transpiler correctly emits one primitive; the child nodes never exist.</li>
+    <li>“Large coral chalk frame <b>with a short factor branch ending at circles 2 and 6</b>” — a container plus its
+      contents, in one element. Renders as an empty rectangle.</li>
+    <li>“Rectangular tray <b>containing twelve evenly spaced slots</b>” — twelve objects that are not elements.
+      Renders as an empty box (this is the frame the user reported).</li>
+  </ul>
+  <p>The result is structurally guaranteed, not bad luck: <b>a labelled root, disconnected line stubs, and empty
+  panels</b>. Roadmap gap <b>D8</b> <span class="src">pipeline-roadmap.md §D5b</span>. This is the same lesson as D1
+  (data-space coordinates) and D7 (containment) one level up — <b>the model is emitting structure as prose, where code
+  should own it</b>.</p>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">📐</span> Finding 2 — there is no layout solver, only collision avoidance</div>
+  <p>The layout engine is defensively strong and offensively absent. It claims zones, routes around axes, computes label
+  slots, and splits the screen when text piles onto a diagram. Every one of those is a rule that prevents a <i>bad</i>
+  outcome. None of them <i>composes</i>: nothing balances mass across the frame, aligns siblings to a shared grid,
+  distributes a set of peers evenly, or sizes a container to its contents.</p>
+  <p>That is why a frame can pass every check and still read as arbitrary — one circle top-left, three line stubs, and
+  60% empty canvas. And it is why the one field designed to carry intent, <code>composition</code>, is written by the LLM
+  on billed tokens and <b>consumed by a log line</b> (<a href="p05-semantic-composition.html">P05</a>).</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">👁️</span> Finding 3 — the probe is blind to the overlap being reported (partially fixed)</div>
+  <p>Videos ship with <code>violations_remaining: 0</code> while a viewer sees things collide. Three distinct faults,
+  two of them still live:</p>
+  <ul>
+    <li>text × text — measured and repaired.</li>
+    <li>text × shape — measured and repaired.</li>
+    <li><b>shape × shape — measured since 2026-08-01, NOT repaired.</b> <code>_ovl_shape_pair_check</code> reports into the
+      sidecar as <code>shape_overlaps</code> under its own class <code>shape-overlap</code> — deliberately kept OUT of
+      <code>_overlap_violations</code> so the metric could be graded on real runs before it ever triggers a repair round.
+      That grading is overdue: the data exists, set a threshold and wire it in (fix strategy #2 above).</li>
+  </ul>
+  <p>Two further blind spots remain: the probe samples <b>after each <code>play()</code> completes</b>, so mid-transition
+  collisions are invisible; and it ignores intersections under <b>15% of the smaller bounding box</b>, so partial grazes
+  pass. <b>"Zero violations" means "no <i>text</i> collided at a beat boundary", not "the frame is good."</b></p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">🧭</span> Why switching renderer will not fix it</div>
+  <p>The architecture already anticipated backend swaps: everything above the Layout Engine is renderer-independent, and a
+  new renderer is a backend attached at the IR waist — Manim, SVG/CSS, Three.js, Blender and Unity are each analysed in the
+  <b>Renderer Backend Contract</b> <span class="src">reference-architecture.md §21</span>. That analysis stands, and this
+  page does not repeat it.</p>
+  <p>But note what the contract requires each backend to implement: <code>transpile()</code> that
+  <i>“owns ALL geometry … implements the zone model, anchoring, data-space placement”</i>. In other words <b>every backend
+  re-implements the same flat-list layout logic against the same relation-free IR.</b> Port this scene to Three.js and you
+  get the identical empty tray in 3D. The defect is upstream of the waist.</p>
+  <div class="note">Rule of thumb: a renderer swap changes <i>how</i> things are drawn. Our failures are about <i>what</i>
+  and <i>where</i> — chosen before any renderer is called.</div>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">🧩</span> Frameworks that <i>do</i> address the real bottleneck</div>
+  <p>These are layout/constraint systems, adoptable <b>underneath</b> the existing transpiler without touching the
+  renderer. Each stays inside the determinism boundary: the model may choose a structure, the solver computes every
+  coordinate.</p>
+  <div class="tblwrap">
+  <table class="tbl">
+    <thead><tr><th>Framework / class</th><th>What it would own</th><th>Fit &amp; cost</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Graph layout</b><br><span class="small">Graphviz/dot, ELK, dagre</span></td>
+        <td>Node-and-edge diagrams: trees, flows, cycles, hierarchies. Computes node positions and edge routes from
+          <i>structure alone</i>.</td>
+        <td><b>Highest immediate payoff.</b> Factor trees, derivation chains, food webs, circuit topologies and org-style
+          diagrams are a large share of STEM boards. Pure-Python options (pydot/networkx) exist; output is x/y, which the
+          transpiler consumes directly. Needs the <code>connects</code> IR field first.</td>
+      </tr>
+      <tr>
+        <td><b>Constraint solvers</b><br><span class="small">Cassowary/Kiwi (matplotlib, AutoLayout)</span></td>
+        <td>Declarative relations — “these three are equal width”, “this sits inside that with 0.2 margin”, “balance mass
+          about the centre” — solved simultaneously instead of by ordered fallback chains.</td>
+        <td>Replaces zone-claiming + fallback chains with a solver. Strong fit for the container/containment gap (D7) and
+          for alignment. Real cost: constraints can be infeasible, so it needs a relaxation policy and would change the
+          repair loop’s character.</td>
+      </tr>
+      <tr>
+        <td><b>Penrose</b><br><span class="small">diagram synthesis from notation</span></td>
+        <td>The closest research match: you declare <i>substance</i> (what exists and how it relates) and <i>style</i>
+          (how that class of thing is drawn); an optimiser produces the diagram.</td>
+        <td>Architecturally the same thesis as this repo, one level higher. Interesting as a <b>design source</b> for the
+          IR even if never adopted as a dependency — its substance/style split is exactly the missing structure/appearance
+          separation. Adoption cost is high (new language, JS runtime).</td>
+      </tr>
+      <tr>
+        <td><b>Box/flow layout</b><br><span class="small">Flexbox/Yoga, CSS Grid semantics</span></td>
+        <td>Rows, columns, stacks, gaps, alignment, and <b>sizing a parent to its children</b> — the ordinary composition
+          vocabulary the engine currently lacks.</td>
+        <td>Cheapest to adopt: a few hundred lines of deterministic Python reproduces the useful subset. Would directly
+          fix “empty tray”, “tiles in a row”, and right-column derivation stacks.</td>
+      </tr>
+      <tr>
+        <td><b>Diagram DSLs</b><br><span class="small">D2, Mermaid, TikZ</span></td>
+        <td>A declarative textual layer for structured diagrams, with layout engines behind them.</td>
+        <td>Tempting for static figures, poor fit here: this pipeline needs <b>per-beat animation control and bbox
+          introspection</b> for the probe. Best treated as a <i>vocabulary</i> reference, not a runtime.</td>
+      </tr>
+      <tr>
+        <td><b>Renderer swaps</b><br><span class="small">SVG/CSS, Three.js, Blender, Unity</span></td>
+        <td>How pixels are produced; probe strategy; camera and 3D staging.</td>
+        <td>Already specified in §21 and <b>orthogonal to this problem</b>. SVG is the cheapest backend experiment and
+          would make the probe cheaper (DOM <code>getBBox</code>), but it composes no better. Defer until the IR carries
+          structure.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🪜</span> The order that makes any of them pay off — status as of 2026-08-03</div>
+  <ol>
+    <li><s><b>Give the IR structure.</b></s> <b>DONE.</b> <code>connects</code> + <code>relative_positioning.relation: "inside"</code>
+      shipped 2026-08-01. Schema re-exported, contract gate green, render-verified (factor tree: 5 nodes + 4 edges; tray: 6 sweets
+      inside a box).</li>
+    <li><s><b>Teach the storyboard prompt one element per drawable object.</b></s> <b>Prompt done, gate open.</b>
+      Prompt rule 4c shipped 2026-08-01. The gate is still open: an element whose content names objects it doesn't declare
+      should be a shape-gate rejection — needs measurement first (count "containing", "with", "to" clauses and cross-check
+      against element count).</li>
+    <li><s><b>Graph layout.</b></s> <b>DONE.</b> BFS-from-root layering shipped 2026-08-01 for node-and-edge scenes
+      (≥3 nodes). Box/flow: <code>place_inside()</code> covers containment-but-not-rows; a general row/column/gap
+      vocabulary is open (fix strategy #5 above). Radial, force-directed, left-to-right flow: open — Graphviz/ELK become
+      drop-in once a second layout kind is wanted.</li>
+    <li><s><b>Extend the probe to shape × shape.</b></s> <b>Measured, not repaired.</b> The probe has reported
+      <code>shape_overlaps</code> into the sidecar since 2026-08-01, but the class is NOT counted by
+      <code>_overlap_violations</code> — two diagrams colliding still ship with <code>violations_remaining: 0</code>.
+      <b>Next move:</b> set a threshold from sidecar data, then wire into repair (fix strategy #2 above).
+      <b>Mid-transition sampling</b> is still open — the probe measures at beat boundaries only; fix strategy #3 above.</li>
+    <li><b>Composition descriptor consumed → layout.</b> Every scene carries a <code>composition</code> field; the
+      transpiler logs it and does nothing else. Fix strategy #1 above closes this, and it is the cheapest single move
+      available ($0, keyword map, no schema change, no metered edge).</li>
+    <li><b>Whole-frame mass/balance solver.</b> Fix strategy #4 above. No code exists today for this.</li>
+    <li><b>Only then</b> reconsider the renderer, using §21's falsifiable SVG test.</li>
+  </ol>
+  <div class="note">The reason this problem persisted through a fully green build is that <b>the instrument reported success
+  on frames a human calls broken</b>. Shape overlap is now measured — use that data to set the repair threshold, and add
+  mid-transition sampling before claiming any composition improvement is real.</div>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">✅</span> What was already fixed here (so it isn’t re-litigated)</div>
+  <p>The 2026-08-01 audit of the same board fixed the <i>appearance</i> half of the failure — shape <b>types</b> and
+  <b>values</b> — while leaving the <i>structure</i> half open. Fixed and render-verified: prose shape descriptions now
+  match on the head noun with word-start boundaries (“tiles … with motion <b>arrows</b>” is no longer an
+  <code>Arrow</code>), unknown nouns route to the asset cascade instead of a generic <code>Circle()</code>, values named
+  as inside a shape are drawn (<code>value_in</code> — “circle containing 84” had been rendering an empty ring, so a
+  factor-tree video contained no numbers), and near-black text is flipped to a legible tint on dark canvases. Pinned by
+  <code>test_shape_resolution.py</code> (33 checks). <span class="src">pipeline-roadmap.md §D5</span></p>
+  <p>That work is why this page can state the remaining problem cleanly: with types and values correct, what is left
+  wrong is <b>exactly</b> the structure the IR cannot express.</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p05-semantic-composition.html">P05 composition intent</a> — the intent channel exists but is unconsumed; this
+  page is its structural twin (there is also nothing to apply intent <i>to</i>) ·
+  <a href="p03-vision-qa.html">P03 vision QA</a> — the only instrument that currently sees non-text composition at all ·
+  <a href="p01-quality-score.html">P01 quality score</a> — “is this frame good?” needs a number before layout work can be
+  graded · <a href="p04-repair-convergence.html">P04 repair convergence</a> — repair cannot fix a scene whose objects were
+  never created.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p10-camera-and-verifier.html">← prev: P10 camera &amp; verifier</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; findings 1–3 measured 2026-08-01 against the
+Prime Factorization render (<code>STEMAnimation_concat_f9f28704.mp4</code>, sidecar <code>violations_remaining: 0</code>).</footer>
+</body>
+</html>

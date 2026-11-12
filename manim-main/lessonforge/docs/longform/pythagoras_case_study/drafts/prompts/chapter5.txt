@@ -1,0 +1,139 @@
+You are a premium mathematical animation engineer. Deliver executable Python code ONLY (no fences) for Manim Community0.19.0, importing from lesson_runtime import * and optionally math or numpy. Generate the specified chapter classes C01..C05 (or C06..C10). Each subclass LessonScene defines construct(), begins self.chapter(n), calls self.begin("beatid") then self.cue("exact phrase", animations...,run_time=...) for timed animation, self.finish() for EVERY beat, and self.done() after fourbeats. No audio code (external exact1200sec narration will be muxed). The runtime and lesson JSON are below.
+
+QUALITY: This must be a moving teacher's board with substantial mathematical geometry, not static slides, not narration paragraphs on screen. Every beat needs2–4 visual events spread across actual spoken cues, including precise shape construction or transformation, guided highlights, or progressive equation derivation. Keep the board/geometry persistent across four beats, change only relevant objects. Maintain enough visual context to reason. No startup2second animation followedby30seconds staticboard; spreadchanges throughoutspeech. Thinkcarefully aboutmath, coordinates, layout, and continuity. Diagrams must explain the spoken script exactly. Questionsmuststayunanswereduntilnarration answers; do notshowanswersinquestionpauses.
+
+RUNTIME: self.chapter adds fixed header. Safe visual body x[-6.6,6.6],y[-2.55,2.3]. Reserve below-2.7forcaptions. Usually large diagram LEFT x[-6.5,0.8], equationsRIGHT x[1.15,6.5]. txt(str,size=28,color=INK),eq(latex,size=42,color=INK), fit(m,width,height,center) onlyscalesdown andcenters. self.panel_to(*mobjects) returnsAnimationGroup removingoldpanelandreplacingnew tofitright. Panelitems smalllist (<=4), no fullsentences longerthan35characters. Use explicit linebreaks in longlabels. Do notoverlappanelwithdiagram. NoTextbelow22pt exceptnonteaching smalllabels. Outwardsquaresgroup MUSTfitintodiagramregion; scaleentiregroup uniformly,includingtriangle tokeepmathgeometrycorrect. All standalone labelspositionsrelative toactualtransformedshapes, not guessedunscaledcoordinates. Diagramlabelsinconflict withsquarefills shouldmoveoutwithleaderlines.
+
+TIMING: Cue string is a verbatim contiguous substring from that beat's narration, ideally beginningofsentence. Runtime locates measured sentence theninterpolates wordpositionwithin. Use orderedcuesfirst/middle/late ineachbeat. Everycue mustexist. self.finish() waits to measured beatend andthrows ifoverrun. Avoidcueverylastword requiringanimationbeyondbeat. Never self.wait exceptbriefthinkinganimation ifessential; narrationtimingalreadyincludespauses. Questions haveexplicit thinkingpauses atbeatend. No globalscene audio ormusic. No timebasedupdaterspersistinginto wait intervals. Motionusesfiniteplay transforms. No loops basedonrenderertime. ForrotationsuseRotate onwholegeometryincludingmarks; labelsremaincorrect andreadable (canrotateshapeandrelabellater). Anytriangledeformationmustpreservefixedleglengths in nonrightcase. Numericaldiagonalnotlabeled5exceptknownrighttriangle. No bogus tilemorph claimingarea conservation whilechangingpolygonshape.
+
+MATH & IMPLEMENTATION: deterministicvectorgeometry, equalunits axes. Build Triangle using Polygonexplicitpoints. mathsymbolsMathTex not Unicode approximateformulas. Color a TEAL,b GOLD,c PINK; meaningsstable. NoManimdeprecatedget_graph; use plot forfunctions. No broadtry/except. Do notremovegroups thatwerenotaddedasgroups: ifyouplay Create(eachindividual) rememberexplicitlyremoveeach. Transform keeps sourceidentity; animateexistingobject orReplacementTransform thenassignnew. No nestedVGroup insideFadeOut thatleaves originalstalesceneobjects. No unsupported MathTex commands. No externalfiles exceptruntime. No filesystem/network/subprocess code. AvoidSVGMobjectandimages. Mustcompleteall20beats inrequestedhalf. Definehelpersyouneed. Don'tmerelydisplayboard_text; geometryandprogressivemotionarethepoint. Sceneswillbeinspectedatmultipleframesandfixesmade.
+
+
+GENERATE ONLY C05. Use compact clear code and reusable helpers; target120–170linesperchapter. Noverbosecodecomments. Neverexceedthetokenlimit;completeeveryclass.
+RUNTIME:
+"""Measured narration timing and shared visual style for generated Manim scenes."""
+from manim import *
+from pathlib import Path
+import json, math, re
+
+ROOT=Path(__file__).resolve().parent
+BG='#0B1220'; INK='#F3F5F7'; MUTED='#A9B6CA'; TEAL='#57D6BF'; GOLD='#FFD17C'; PINK='#F08CA9'; GRID='#29394F'
+config.background_color=BG
+
+def txt(s,size=28,color=INK):
+    return Text(s,font='Lato',font_size=size,color=color)
+
+def eq(s,size=42,color=INK):
+    return MathTex(s,font_size=size,color=color)
+
+def fit(m,width=6.5,height=4.7,center=(-2.8,-.1,0)):
+    factor=min(1,width/max(m.width,.001),height/max(m.height,.001))
+    m.scale(factor).move_to(center)
+    return m
+
+class LessonScene(Scene):
+    def chapter(self,n):
+        self.chapter_number=n
+        self.timeline={t['id']:t for t in json.loads((ROOT/'timeline.json').read_text())}
+        self.lesson=json.loads((ROOT/'lesson.json').read_text())
+        ch=self.lesson['chapters'][n-1]
+        self.chapter_start=self.timeline[ch['beats'][0]['id']]['start']
+        self.records=[];self.cue_records=[]
+        title=txt(ch['title'],34)
+        if title.width>11.7:title.scale_to_fit_width(11.7)
+        title.move_to([-6.45,2.94,0],aligned_edge=LEFT)
+        eyebrow=txt('THE GEOMETRY OF A SHORTCUT',16,TEAL).move_to([-6.45,3.53,0],aligned_edge=LEFT)
+        number=txt(f'{n:02} / 10',18,MUTED).move_to([6.12,3.5,0])
+        self.chrome=VGroup(title,eyebrow,number,Line([-6.45,2.45,0],[6.45,2.45,0],color=GRID),Line([-6.45,-2.7,0],[6.45,-2.7,0],color=GRID))
+        self.add(self.chrome)
+        self.panel=VGroup()
+    def begin(self,beat_id):
+        self.current=self.timeline[str(beat_id).zfill(2)]
+        self.beat_start=self.current['start']-self.chapter_start
+        self.until(self.beat_start)
+    def until(self,t):
+        delta=t-self.renderer.time
+        if delta>1/config.frame_rate:
+            self.wait(round(delta*config.frame_rate)/config.frame_rate)
+    def cue(self,phrase,*animations,run_time=1.2):
+        norm=lambda s:re.sub(r'[^a-z0-9 ]','',s.lower())
+        needle=norm(phrase);offset=None
+        for sentence in self.current['sentences']:
+            hay=norm(sentence['text'])
+            if needle in hay:
+                pos=hay.index(needle)
+                offset=sentence['start']+sentence['duration']*len(hay[:pos].split())/max(1,len(hay.split()))
+                break
+        if offset is None: raise ValueError(f'Cue not found in beat {self.current["id"]}: {phrase}')
+        target=self.beat_start+offset
+        self.cue_records.append({'beat':self.current['id'],'phrase':phrase,'target':target,'actual_before_wait':self.renderer.time})
+        self.until(target)
+        if animations:self.play(*animations,run_time=run_time)
+    def panel_to(self,*items):
+        new=VGroup(*items).arrange(DOWN,buff=.4,aligned_edge=LEFT)
+        fit(new,5.15,4.3,(3.7,-.05,0))
+        old=self.panel;self.panel=new
+        return AnimationGroup(FadeOut(old),FadeIn(new),lag_ratio=0)
+    def finish(self):
+        target=self.beat_start+self.current['duration']
+        if self.renderer.time>target+.05:raise ValueError(f'Beat overrun {self.current["id"]}: {self.renderer.time-target}')
+        self.until(target)
+        violations=[]
+        for m in self.mobjects:
+            if m is self.chrome:continue
+            if m.width<.001 and m.height<.001:continue
+            box=[float(m.get_left()[0]),float(m.get_right()[0]),float(m.get_bottom()[1]),float(m.get_top()[1])]
+            if box[0]<-6.8 or box[1]>6.8 or box[2]<-2.65 or box[3]>2.4:
+                violations.append({'type':type(m).__name__,'bbox':box})
+        self.records.append({'beat':self.current['id'],'time':self.renderer.time,'bounds_violations':violations})
+    def done(self):
+        (ROOT/'output'/f'chapter_{self.chapter_number:02}_audit.json').write_text(json.dumps({'bounds':self.records,'cues':self.cue_records},indent=2))
+
+
+LESSON:
+[
+  {
+    "id": 5,
+    "title": "COUNT THE SAME AREA TWICE",
+    "learning_goal": "Complete the algebraic proof by expanding the outer square, equating two expressions for the same area, and cancelling triangle areas to obtain a\u00b2 + b\u00b2 = c\u00b2.",
+    "beats": [
+      {
+        "id": "17",
+        "narration": "Keep the same picture, but replace the numbers with a and b. The outer square has side a plus b, so its area is the quantity a plus b, all squared. Multiplying a plus b by itself gives a squared, plus ab, plus another ab, plus b squared. Together those middle terms are two ab. This expression counts the whole outer square. We will now count that same area using its pieces.",
+        "visual": "The outer square with side 'a + b' is shown. The expansion (a + b)\u00b2 = a\u00b2 + 2ab + b\u00b2 animates term by term, with each term highlighted as it appears. A geometric interpretation shows the outer square split into four rectangles: one a\u00d7a, two a\u00d7b, and one b\u00d7b, each colour-coded to match the algebraic terms.",
+        "board_text": "(a + b)\u00b2 = a\u00b2 + 2ab + b\u00b2",
+        "equation": "(a+b)^2 = a^2 + 2ab + b^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can expand the binomial square and connect each term to a rectangular region in the diagram."
+      },
+      {
+        "id": "18",
+        "narration": "Each corner triangle has area one half times a times b. There are four identical triangles, so together their area is two ab. The central square has side c and area c squared. Add the pieces: two ab plus c squared. This is the very same outer square we counted a moment ago. Its area cannot depend on which counting method we choose, so the two expressions must be equal.",
+        "visual": "The four triangles inside the outer square are shaded and labelled '4 \u00d7 \u00bdab = 2ab'. The central square is labelled 'c\u00b2'. An equals sign connects the two expressions: 'a\u00b2 + 2ab + b\u00b2' on the left and '2ab + c\u00b2' on the right, both representing the outer square area.",
+        "board_text": "Same area: a\u00b2 + 2ab + b\u00b2 = 2ab + c\u00b2",
+        "equation": "a^2 + 2ab + b^2 = 2ab + c^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer sees that both expressions describe the total outer square area and must therefore be equal."
+      },
+      {
+        "id": "19",
+        "narration": "Set those expressions equal. A squared plus two ab plus b squared equals two ab plus c squared. Subtract two ab from both sides. Visually, that removes the same total triangle area from each count. What remains is a squared plus b squared equals c squared. That is the theorem. We used arbitrary positive lengths a and b, so this conclusion applies to every right triangle, not just our numerical example.",
+        "visual": "The equation a\u00b2 + 2ab + b\u00b2 = 2ab + c\u00b2 is shown. The two '2ab' terms on each side are highlighted in matching orange and then simultaneously crossed out. The remaining equation a\u00b2 + b\u00b2 = c\u00b2 is written in large text with a box around it. A checkmark appears beside it.",
+        "board_text": "Cancel 2ab \u2192 a\u00b2 + b\u00b2 = c\u00b2",
+        "equation": "a^2 + b^2 = c^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can describe the cancellation step and explain why the result holds for arbitrary positive values of a and b."
+      },
+      {
+        "id": "20",
+        "narration": "Notice what the proof depended on. Four congruent triangles, a square outside, and a square in the centre. We justified the central square using the right angle in the original triangle. Then we counted the same region twice. No measurement or lucky choice of numbers made the equation true. The algebra records an area comparison. When you remember the formula, try to remember this picture and the reason the triangle areas cancel.",
+        "visual": "The full diagram with generic labels a, b, c is shown. A summary panel lists three key facts used: '1. Four congruent triangles', '2. Central shape is a square (\u03b1 + \u03b2 = 90\u00b0)', '3. Same outer area counted two ways'. Each fact is ticked off in sequence. The final equation a\u00b2 + b\u00b2 = c\u00b2 remains prominently displayed.",
+        "board_text": "Area conserved \u2192 proof complete",
+        "equation": "a^2 + b^2 = c^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can articulate the three logical steps that make the proof valid for all right triangles."
+      }
+    ]
+  }
+]
+Use central square vertices (a,0),(a+b,a),(b,a+b),(0,b) before uniformscale. Fourrighttriangles atoutercorners. Do not literallycancelobjects bydifferentarea morphs; algebrahighlight andremove terms.

@@ -1,0 +1,478 @@
+{
+ "name": "angles",
+ "from_lesson": "20261012-104217-18bf87",
+ "brief": {
+  "topic": "Angle sum property of a triangle",
+  "grade": 7,
+  "audience": "Class 7 students",
+  "level": "foundation",
+  "goal": "See why the three angles of any triangle add up to 180 degrees, and use it to find a missing angle",
+  "style": "tutor",
+  "language": "en-IN",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "concrete_first"
+ },
+ "card": {
+  "big_idea": {
+   "text": "The three interior angles of every triangle add to 180°, so you can find an unknown angle by subtracting the two known angles from 180°.",
+   "cites": [
+    "S1#9",
+    "S1#13"
+   ]
+  },
+  "why_it_matters": {
+   "text": "It lets you calculate an angle exactly from the information marked on a diagram instead of trusting what the drawing happens to look like.",
+   "cites": [
+    "S5#5",
+    "S5#10"
+   ]
+  },
+  "the_why": {
+   "text": "Draw a line through one vertex parallel to the opposite side. The two base angles reappear at that vertex as equal alternate interior angles, and those two copied angles plus the top angle fill one straight angle, which is 180°.",
+   "cites": [
+    "S1#7",
+    "S1#9",
+    "S2#5",
+    "S2#6"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Explain why the three interior angles of a triangle make 180° by relating them to angles on a straight line.",
+    "level": "understand",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Work out a missing interior angle when two angles of a triangle are known.",
+    "level": "apply",
+    "checked_by": "q3"
+   },
+   {
+    "can": "Decide whether two proposed angles can belong to one triangle.",
+    "level": "analyze",
+    "checked_by": "q2"
+   }
+  ],
+  "picture": {
+   "text": "Start with triangle ABC, with BC as a horizontal base and its three interior angles lightly coloured. Through top vertex A, draw horizontal line XY parallel to BC. Then move the colour of angle B to the left angle at A and the colour of angle C to the right angle at A; the two copied angles and angle A sit next to one another along straight line XY.",
+   "cites": [
+    "S1#7",
+    "S1#9",
+    "S2#3",
+    "S2#7",
+    "S4#1",
+    "S4#4"
+   ],
+   "standard": "Triangle angle-sum proof using an auxiliary line through a vertex parallel to th"
+  },
+  "diagram_ask": "Standard geometry proof diagram: triangle ABC with BC as a horizontal base and A above it; draw horizontal line XY through A parallel to BC. Label A, B, C, X and Y, mark matching arrowheads on XY and BC for parallel lines, and show small coloured angle arcs at B, A and C plus matching arcs at the tw",
+  "needs_first": [
+   {
+    "text": "Recognise an interior angle of a triangle and know that angles along a straight line total 180°.",
+    "cites": [
+     "S1#8",
+     "S3#1"
+    ]
+   },
+   {
+    "text": "Know that alternate interior angles are equal when a transversal crosses parallel lines.",
+    "cites": [
+     "S1#7",
+     "S2#5"
+    ]
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "“A stretched or differently shaped triangle can have a different total of angles.”",
+    "why_it_fails": "The parallel-line construction works for every shape of triangle, and it always turns the three interior angles into one straight angle.",
+    "cites": [
+     "S3#3",
+     "S1#9"
+    ]
+   },
+   {
+    "mistake": "“I can measure the drawing or judge it by eye to get the missing angle.”",
+    "why_it_fails": "A geometry diagram may not be drawn to scale, so the given measures and angle facts—not appearance—must determine the answer.",
+    "cites": [
+     "S5#5",
+     "S5#7"
+    ]
+   },
+   {
+    "mistake": "“The new angles at the parallel line are equal just because they look alike.”",
+    "why_it_fails": "They are equal only for the stated reason: each is an alternate interior angle made by a transversal crossing parallel lines.",
+    "cites": [
+     "S1#7",
+     "S2#5",
+     "S4#2"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "A triangle has two interior angles of 50° and 70°. Before we measure or calculate, what do you predict its third angle could be: 50°, 60°, or 70°?",
+   "guesses": [
+    "50°, because the triangle might have two equal angles",
+    "60°, because the three angles may complete a half-turn",
+    "70°, because it looks close to the other base angle"
+   ],
+   "answer": "60°",
+   "cites": [
+    "S1#7",
+    "S1#8"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show triangle ABC with 50° at B and 70° at C; ask for a prediction of angle A without measuring.",
+    "cites": [
+     "S1#7"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Hold the choices 50°, 60°, and 70° beside angle A so the learner commits to one before seeing the construction.",
+    "cites": [
+     "S1#8"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Draw line XY through A parallel to base BC, one stroke at a time; mark the parallel arrows.",
+    "cites": [
+     "S1#7",
+     "S4#1"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Point first to angle B and then to the left angle at A; ask why they match, then identify them as alternate interior angles. Repeat for angle C and the right angle at A.",
+    "cites": [
+     "S1#7",
+     "S2#5",
+     "S4#3"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Bring the copied 50°, angle A, and copied 70° together on line XY; ask why their total is 180°, then name the resulting fact the angle sum property of a triangle.",
+    "cites": [
+     "S1#8",
+     "S1#9"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Use the same picture to calculate angle A: 180° minus 50° minus 70° gives 60°; show 50° + 60° + 70° filling the straight line.",
+    "cites": [
+     "S1#8"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Show two proposed pairs side by side: 70° and 30° leave a positive third angle, while 35° and 150° already exceed 180°; ask which pair can belong to a triangle.",
+    "cites": [
+     "S1#16"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Show a new triangle with angles 36°, 72°, and a blank. Ask the learner to pause, subtract the known angles from 180°, and choose the missing angle.",
+    "cites": [
+     "S1#17"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "Have the learner cut or tear the three corners from a paper triangle and arrange them edge to edge as one straight angle, then explain what this shows.",
+    "cites": [
+     "S1#10",
+     "S3#1",
+     "S3#2"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Ask the learner to say the rule and its reason: copied base angles plus the top angle make a straight angle.",
+    "cites": [
+     "S1#9",
+     "S2#6"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "After XY is drawn parallel to BC, which angle has the same measure as angle B?",
+    "options": [
+     "The new angle at A on the left of AB",
+     "The angle at A inside the triangle",
+     "The new angle at A on the right of AC"
+    ],
+    "answer_index": 0,
+    "explain": "The left new angle and angle B are alternate interior angles made when AB crosses the parallel lines XY and BC.",
+    "cites": [
+     "S1#7",
+     "S2#5"
+    ]
+   },
+   {
+    "question": "Which pair can be two angles of one triangle?",
+    "options": [
+     "70° and 30°",
+     "35° and 150°",
+     "50° and 150°"
+    ],
+    "answer_index": 0,
+    "explain": "70° plus 30° is less than 180°, leaving a positive third angle; each other pair already totals more than 180°.",
+    "cites": [
+     "S1#6",
+     "S1#16"
+    ]
+   },
+   {
+    "question": "A triangle has angles 36° and 72°. What is its third angle?",
+    "options": [
+     "72°",
+     "108°",
+     "36°"
+    ],
+    "answer_index": 0,
+    "explain": "The missing angle is 180° − 36° − 72° = 72°, because all three interior angles total 180°.",
+    "cites": [
+     "S1#17"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Three corners, one straight line",
+   "kind": "hands",
+   "materials": [
+    "one sheet of paper",
+    "pencil",
+    "scissors or careful tearing"
+   ],
+   "stands_for": "Each cut-off corner is one interior angle of the same triangle; their pointed vertices show the angle measures being combined.",
+   "predict": "Before cutting, predict: when the three corners touch edge to edge, will their pointed vertices make a straight angle, a smaller angle, or a larger angle?",
+   "steps": [
+    "Draw one large triangle on the paper.",
+    "Cut or tear off its three corners.",
+    "Place the three pointed vertices together along one straight edge.",
+    "Check whether the three angle openings fill the straight line.",
+    "Say or write the conclusion."
+   ],
+   "observe": "The three corners fit together to make one straight angle, or 180°.",
+   "question": "Why does making one straight angle from the three corners support the angle sum property?",
+   "expected": "It shows that the three interior angles together make 180°, because the three separate corners exactly fill a straight angle.",
+   "write": "“The angles in my triangle add to ___°.”\n“They add to this because ___.”",
+   "in_class": "Students work in pairs with one paper triangle per pair. The teacher writes “angle 1 + angle 2 + angle 3 = ?” on the board. Pairs arrange their three corners on a ruled straight line, then answer: “What angle did your three corners make, and why?” A result other than 180° suggests that corners were not cut at the vertices or were not placed edge to edge.",
+   "cites": [
+    "S1#10",
+    "S3#1",
+    "S3#2"
+   ]
+  },
+  "leave_out": [
+   "Exterior-angle theorem and calculations with an extended side.",
+   "Triangle inequality and deciding whether three side lengths can make a triangle.",
+   "Classifying triangles by sides or by acute, right, and obtuse angles.",
+   "Formal proof formats and proofs of the parallel-line angle facts."
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "The parallel-line-through-a-vertex proof and the move from that proof to finding an unknown angle.",
+    "left": "The opening review of triangle classifications, because it does not help establish the angle-sum reason in a three-minute lesson."
+   },
+   {
+    "source": "S3",
+    "took": "The cut-corner arrangement as a short hands-on verification after the logical explanation.",
+    "left": "The protractor-measuring stage and exterior-angle derivation, because measurement can encourage empirical checking rather than the central parallel-line reason."
+   },
+   {
+    "source": "S4",
+    "took": "The slow, explicit matching of each base angle to its alternate interior angle before combining angles on the straight line.",
+    "left": "The generalized letter-heavy proof as the main example, because a numbered 50° and 70° case makes the idea more accessible at foundation level."
+   }
+  ],
+  "uncited": [],
+  "teacher_talk": [
+   "opens with energetic real-world examples and conversational hooks, asks rhetorical questions to check understanding, pauses for viewer responses and comments, bridges topics enthusiastically",
+   "starts by clearly stating the topic and defining basic terms",
+   "uses rhetorical questions and pauses briefly to prompt the learner to think before providing the answer",
+   "transitions smoothly from hands-on activities to measurement and then to logical proof using step-by-step deductive reasoning",
+   "opens by stating the goal plainly and naming the geometric figures to be used",
+   "checks for understanding periodically by asking if things are clear before moving forward"
+  ],
+  "source_flows": {
+   "S1": [
+    "motivation",
+    "demonstration",
+    "activation",
+    "demonstration",
+    "integration",
+    "application"
+   ],
+   "S2": [
+    "motivation",
+    "activation",
+    "demonstration",
+    "application",
+    "integration"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ],
+   "S4": [
+    "motivation",
+    "demonstration",
+    "demonstration"
+   ],
+   "S5": [
+    "activation",
+    "demonstration",
+    "application",
+    "integration",
+    "assessment"
+   ]
+  },
+  "topic": "Angle Sum Property of a Triangle",
+  "asked": "Angle sum property of a triangle",
+  "klass": 7,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Ganita Prakash, Class 7, chapter 7: A Tale Of Three Intersecting Lines",
+    "url": "https://ncert.nic.in/textbook/pdf/gegp107.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "BYJU'S - Class 6, 7 & 8: Triangles and its Properties | Angle Sum Property of a Triangle | Class 7 | Maths | BYJU'S",
+    "url": "https://www.youtube.com/watch?v=wc_NX676Y7s",
+    "note": "English lecture, 9 min, automatic captions"
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "TicTacLearn English: Angle Sum Property of a Triangle | Part 1/3 | English | Class 7",
+    "url": "https://www.youtube.com/watch?v=KE4lntKea5k",
+    "note": "English lecture, 4 min, automatic captions"
+   },
+   {
+    "id": "S4",
+    "kind": "lecture",
+    "title": "Arinjay Academy: Proof of Angle sum property of a Triangle - Maths",
+    "url": "https://www.youtube.com/watch?v=75GCr5ua6N8",
+    "note": "English lecture, 5 min, automatic captions"
+   },
+   {
+    "id": "S5",
+    "kind": "lesson_plan",
+    "title": "Mathematics Assessment Project: Identifying Similar Triangles",
+    "url": "https://www.map.mathshell.org/lessons.php?unit=8320&collection=8",
+    "note": ""
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "72211fd09b560c06",
+  "diagram": {
+   "ask": "A standard diagram of a triangle with angles labeled angle 1, angle 2, and angle 3 at its three corners, and a straight line touching the top vertex showing a straight angle of 180 degrees.",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-4f73a0f3fd/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-4f73a0f3fd/whole.png",
+   "points": {
+    "5": {
+     "name": "5",
+     "box": [
+      0.52,
+      0.2928,
+      0.5359,
+      0.3306
+     ]
+    },
+    "4": {
+     "name": "4",
+     "box": [
+      0.3266,
+      0.3221,
+      0.3437,
+      0.3586
+     ]
+    },
+    "1": {
+     "name": "1",
+     "box": [
+      0.4395,
+      0.3754,
+      0.4525,
+      0.4132
+     ]
+    },
+    "2": {
+     "name": "2",
+     "box": [
+      0.2902,
+      0.7948,
+      0.3059,
+      0.8327
+     ]
+    },
+    "3": {
+     "name": "3",
+     "box": [
+      0.8237,
+      0.8208,
+      0.8397,
+      0.8599
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   },
+   "shows": "The sum of the three interior angles of a triangle is equal to a straight angle of 180 degrees.",
+   "visual_kind": "standard diagram",
+   "holds": {
+    "things": [
+     "a dashed horizontal line at the top",
+     "a brown arrow pointing right on the dashed line",
+     "a gray semicircle above the dashed line",
+     "a blue triangle with vertices A, B, C",
+     "an arc marking angle 1 inside the triangle at vertex A",
+     "an arc marking angle 2 inside the triangle at vertex B",
+     "an arc marking angle 3 inside the triangle at vertex C",
+     "an arc marking angle 4 outside the triangle at vertex A",
+     "an arc marking angle 5 outside the triangle at vertex A",
+     "a brown arrow pointing right on the base of the triangle"
+    ],
+    "print": [
+     "A",
+     "B",
+     "C",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
+   }
+  }
+ }
+}

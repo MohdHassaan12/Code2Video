@@ -1,0 +1,12 @@
+[
+  {
+    "model": "gemini",
+    "exit_code": 1,
+    "render_seconds": 2.93
+  },
+  {
+    "model": "qwen",
+    "exit_code": 0,
+    "render_seconds": 4.48
+  }
+]

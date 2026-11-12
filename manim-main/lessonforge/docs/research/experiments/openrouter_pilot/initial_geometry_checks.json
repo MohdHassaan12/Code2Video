@@ -1,0 +1,46 @@
+[
+  {
+    "candidate": "sonnet_original",
+    "x_unit": 0.9333333333333331,
+    "y_unit": 0.8,
+    "equal_units": false,
+    "axes_top": 2.978538808333333,
+    "axes_bottom": -3.578538808333333,
+    "axes_caption_clear": false,
+    "axes_in_frame": true,
+    "scope": "initial axes only; labels and temporal collisions require separate inspection"
+  },
+  {
+    "candidate": "gemini_original",
+    "x_unit": 1.0,
+    "y_unit": 1.0,
+    "equal_units": true,
+    "axes_top": 4.0856787,
+    "axes_bottom": -4.0856787,
+    "axes_caption_clear": false,
+    "axes_in_frame": false,
+    "scope": "initial axes only; labels and temporal collisions require separate inspection"
+  },
+  {
+    "candidate": "qwen_original",
+    "x_unit": 2.0,
+    "y_unit": 0.75,
+    "equal_units": false,
+    "axes_top": 3.0,
+    "axes_bottom": -3.0,
+    "axes_caption_clear": false,
+    "axes_in_frame": true,
+    "scope": "initial axes only; labels and temporal collisions require separate inspection"
+  },
+  {
+    "candidate": "sonnet_repaired",
+    "x_unit": 0.7999999999999998,
+    "y_unit": 0.8,
+    "equal_units": true,
+    "axes_top": 3.928538808333333,
+    "axes_bottom": -2.628538808333333,
+    "axes_caption_clear": false,
+    "axes_in_frame": true,
+    "scope": "initial axes only; labels and temporal collisions require separate inspection"
+  }
+]

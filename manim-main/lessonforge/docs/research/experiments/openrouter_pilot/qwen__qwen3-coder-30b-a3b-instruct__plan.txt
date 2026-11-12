@@ -1,0 +1,125 @@
+{
+  "title": "Understanding Linear Equations Through Graph Evolution",
+  "prerequisites": ["Coordinates on a plane", "Basic arithmetic operations", "Simple linear equations"],
+  "notation": "y = mx + b where m represents slope and b represents y-intercept",
+  "sections": [
+    {
+      "id": "intro",
+      "duration_seconds": 120,
+      "purpose": "Introduce the concept of linear equations and their graphical representation",
+      "new_inference": "Linear equations can be visualized as straight lines on a coordinate plane",
+      "prior_dependency": "Students know how to plot points and read coordinates",
+      "visual_start_state": "Empty coordinate plane with axes labeled",
+      "visual_actions": "Graph shows y = 0x + 0 (the x-axis) as starting point",
+      "visual_end_state": "The x-axis appears on the graph",
+      "transition_words": "Let's start by thinking about how we can represent relationships between x and y values using equations."
+    },
+    {
+      "id": "slope_definition",
+      "duration_seconds": 120,
+      "purpose": "Define slope as the rate of change between y and x values",
+      "new_inference": "Slope measures how much y changes for every unit change in x",
+      "prior_dependency": "Students understand coordinates and basic arithmetic",
+      "visual_start_state": "Graph shows y = 0x + 0",
+      "visual_actions": "Add two points (0,0) and (2,1) and draw connecting line",
+      "visual_end_state": "Line through (0,0) and (2,1) with slope calculation shown",
+      "transition_words": "Now let's think about what makes one line steeper than another."
+    },
+    {
+      "id": "slope_calculation",
+      "duration_seconds": 120,
+      "purpose": "Teach calculation of slope using rise over run",
+      "new_inference": "Slope equals change in y divided by change in x (delta y over delta x)",
+      "prior_dependency": "Students understand basic arithmetic and coordinate reading",
+      "visual_start_state": "Graph shows line through (0,0) and (2,1)",
+      "visual_actions": "Draw vertical and horizontal segments showing rise and run, label delta y and delta x",
+      "visual_end_state": "Graph shows calculation: m = (1-0)/(2-0) = 1/2",
+      "transition_words": "Let's try calculating slope for a different example."
+    },
+    {
+      "id": "intercept_concept",
+      "duration_seconds": 120,
+      "purpose": "Introduce the y-intercept concept",
+      "new_inference": "The y-intercept is where the line crosses the y-axis",
+      "prior_dependency": "Students understand coordinates and slope calculation",
+      "visual_start_state": "Graph shows line with slope 1/2 passing through (0,0)",
+      "visual_actions": "Move the line up so it passes through (0,2) and (2,3)",
+      "visual_end_state": "Graph shows y = 1/2x + 2 with y-intercept clearly marked",
+      "transition_words": "Now we're getting somewhere. What happens when we change where the line crosses the y-axis?"
+    },
+    {
+      "id": "b_effect",
+      "duration_seconds": 120,
+      "purpose": "Show how changing b translates the line vertically",
+      "new_inference": "Changing the y-intercept value moves the entire line up or down",
+      "prior_dependency": "Students understand y-intercept concept",
+      "visual_start_state": "Graph shows y = 1/2x + 2",
+      "visual_actions": "Change b from 2 to 4, then to 0, showing vertical translation",
+      "visual_end_state": "Three parallel lines showing y = 1/2x + 4, y = 1/2x + 2, y = 1/2x + 0",
+      "transition_words": "Notice how all these lines have the same steepness but different y-intercepts."
+    },
+    {
+      "id": "m_effect",
+      "duration_seconds": 120,
+      "purpose": "Show how changing m affects the steepness and direction of the line",
+      "new_inference": "Changing the slope value changes how steep the line is and whether it goes up or down",
+      "prior_dependency": "Students understand how to calculate slope and y-intercept",
+      "visual_start_state": "Graph shows y = 1/2x + 2",
+      "visual_actions": "Change m from 1/2 to 2, then to -1, showing different steepness and direction",
+      "visual_end_state": "Three lines with different slopes: y = 1/2x + 2, y = 2x + 2, y = -x + 2",
+      "transition_words": "Let's look more carefully at what happens when we make the slope negative."
+    },
+    {
+      "id": "negative_slope",
+      "duration_seconds": 120,
+      "purpose": "Explain negative slope and its visual representation",
+      "new_inference": "Negative slope means the line falls from left to right",
+      "prior_dependency": "Students understand slope calculation and positive slope behavior",
+      "visual_start_state": "Graph shows y = -x + 2",
+      "visual_actions": "Show how the line goes down as we move from left to right",
+      "visual_end_state": "Graph clearly shows negative slope with downward trend",
+      "transition_words": "What happens when the slope is zero?"
+    },
+    {
+      "id": "zero_slope",
+      "duration_seconds": 120,
+      "purpose": "Introduce horizontal lines as special case of slope zero",
+      "new_inference": "When slope equals zero, the line is horizontal",
+      "prior_dependency": "Students understand negative slope behavior",
+      "visual_start_state": "Graph shows y = -x + 2",
+      "visual_actions": "Set m = 0, showing y = 0x + 2 becomes y = 2",
+      "visual_end_state": "Graph shows horizontal line y = 2",
+      "transition_words": "Now let's work through some problems to solidify our understanding."
+    }
+  ],
+  "worked_problems": [
+    {
+      "problem": "Write the equation of a line that passes through points (0,3) and (2,7).",
+      "solution": "First find slope: m = (7-3)/(2-0) = 4/2 = 2. Since the line passes through (0,3), the y-intercept is 3. The equation is y = 2x + 3."
+    },
+    {
+      "problem": "A line has slope -3 and y-intercept 1. What is the equation of this line?",
+      "solution": "Using the form y = mx + b, with m = -3 and b = 1, the equation is y = -3x + 1."
+    }
+  ],
+  "independent_problems": [
+    {
+      "problem": "Find the equation of the line that passes through (0,5) and (3,2).",
+      "answer": "m = (2-5)/(3-0) = -3/3 = -1. Since it passes through (0,5), b = 5. Equation is y = -x + 5."
+    },
+    {
+      "problem": "What is the slope of the line y = 4x - 7?",
+      "answer": "The equation is in the form y = mx + b, so m = 4."
+    },
+    {
+      "problem": "A line has slope 0.5 and passes through (0,1). What is its equation?",
+      "answer": "Using y = mx + b with m = 0.5 and b = 1, the equation is y = 0.5x + 1."
+    }
+  ],
+  "opening_narration": "Hey everyone! Today we're going to explore how equations can create beautiful lines on a graph. You know how we can plot points like (2,3) or (0,5)? Well, when we connect many points that follow a pattern, we get lines. The equation y = mx + b is like a recipe for drawing these lines. The 'm' tells us how steep the line is, and the 'b' tells us where the line crosses the y-axis. Let's start by thinking about what makes a line go up versus down, and how we can measure that steepness. We'll use a graph that will evolve as we discover these concepts together. Remember, we're not just memorizing formulas - we're understanding why these relationships work. So pay attention to how the line changes when we adjust different parts of the equation.",
+  "misconception_checks": [
+    "Misconception: 'A larger slope always means a steeper line.' Check: 'What if we have slopes of 2 and -3? Which is steeper?'",
+    "Misconception: 'The y-intercept is the same as the slope.' Check: 'If I have y = 3x + 5, what are the slope and y-intercept?'",
+    "Misconception: 'The line goes up when slope is positive and down when negative.' Check: 'What does it mean when we say a line falls left-to-right?'"
+  ]
+}

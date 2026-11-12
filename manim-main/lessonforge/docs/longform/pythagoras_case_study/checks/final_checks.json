@@ -1,0 +1,27 @@
+{
+  "status": "technical_checks_passed",
+  "duration_seconds": 1200.003,
+  "video_frames": 36000,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "audio_codec": "aac",
+  "audio_sample_rate": 48000,
+  "audio_max_dbfs": -1.5,
+  "captions": 274,
+  "chapters": 10,
+  "full_ffmpeg_decode": "passed",
+  "beat_end_bounds_checks": 40,
+  "bounds_violations": 0,
+  "animation_anchors": 173,
+  "mathematical_checks": "passed; see math_checks.json and render_geometry_checks.json",
+  "visual_review": "120 preview samples and120 final-resolution chapter samples reviewed; repaired angle-motion sample inspected separately",
+  "review_limits": [
+    "Not every frame visually inspected",
+    "Sentence-based synchronization; within-sentence positions estimated",
+    "No teacher approval, learner study or continuous human listening review"
+  ],
+  "video_sha256": "a8786717e6581b20d41c3a276c6a2225ef999ddf40f9a2c84dc14c26cf1dd667"
+}

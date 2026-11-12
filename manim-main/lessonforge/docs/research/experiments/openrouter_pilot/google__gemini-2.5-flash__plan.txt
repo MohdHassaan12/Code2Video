@@ -1,0 +1,353 @@
+```json
+{
+  "title": "Understanding Lines: The y=mx+b Equation",
+  "prerequisites": [
+    "Coordinates (x, y)",
+    "Basic arithmetic (addition, subtraction, multiplication, division)",
+    "Solving simple linear equations"
+  ],
+  "notation": [
+    "x: horizontal coordinate",
+    "y: vertical coordinate",
+    "m: slope of the line",
+    "b: y-intercept (the y-coordinate where the line crosses the y-axis)"
+  ],
+  "sections": [
+    {
+      "id": "intro_coords_line",
+      "duration_seconds": 90,
+      "purpose": "Introduce the idea of a line on a coordinate plane and how points define it. Connect to prior knowledge of plotting points.",
+      "new_inference": "A line is a collection of points that follow a consistent pattern.",
+      "prior_dependency": "Coordinates, plotting points.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": null
+      },
+      "visual_actions": [
+        {"action": "plot_point", "x": 1, "y": 2, "color": "blue"},
+        {"action": "plot_point", "x": 3, "y": 4, "color": "blue"},
+        {"action": "draw_line_through_points", "point1_x": 1, "point1_y": 2, "point2_x": 3, "point2_y": 4, "color": "red"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 1, "y": 2, "color": "blue"}, {"x": 3, "y": 4, "color": "blue"}],
+        "line": {"point1_x": 1, "point1_y": 2, "point2_x": 3, "point2_y": 4, "color": "red"}
+      },
+      "transition_words": "Alright, so we've got our line. But how do we describe *this specific line* using an equation?"
+    },
+    {
+      "id": "intro_y_intercept",
+      "duration_seconds": 120,
+      "purpose": "Introduce 'b' as the y-intercept and explain its meaning.",
+      "new_inference": "The 'b' in y=mx+b tells us where the line crosses the y-axis (when x=0).",
+      "prior_dependency": "Understanding coordinates, especially x=0 on the y-axis.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 1, "y": 2, "color": "blue"}, {"x": 3, "y": 4, "color": "blue"}],
+        "line": {"point1_x": 1, "point1_y": 2, "point2_x": 3, "point2_y": 4, "color": "red"}
+      },
+      "visual_actions": [
+        {"action": "highlight_point", "x": 0, "y": 1, "color": "green", "label": "(0, b)"},
+        {"action": "add_text", "text": "y-intercept (b)", "position_x": 0.5, "position_y": 1.5, "color": "green"},
+        {"action": "change_line_equation", "equation": "y=x+1", "color": "red"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 1, "y": 2, "color": "blue"}, {"x": 3, "y": 4, "color": "blue"}, {"x": 0, "y": 1, "color": "green"}],
+        "line": {"equation": "y=x+1", "color": "red"},
+        "text": [{"text": "y-intercept (b)", "position_x": 0.5, "position_y": 1.5, "color": "green"}]
+      },
+      "transition_words": "So, 'b' tells us where we start on the y-axis. But how does the line *move* from there?"
+    },
+    {
+      "id": "intro_slope_concept",
+      "duration_seconds": 150,
+      "purpose": "Introduce 'm' as slope, explaining it as 'rise over run' or change in y over change in x. Emphasize direction and steepness.",
+      "new_inference": "The 'm' in y=mx+b represents the slope, which is the ratio of the change in y to the change in x (rise/run).",
+      "prior_dependency": "Understanding 'b', coordinates.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 0, "y": 1, "color": "green"}],
+        "line": {"equation": "y=x+1", "color": "red"}
+      },
+      "visual_actions": [
+        {"action": "plot_point", "x": 1, "y": 2, "color": "blue"},
+        {"action": "draw_vector", "start_x": 0, "start_y": 1, "end_x": 1, "end_y": 1, "color": "orange", "label": "Δx"},
+        {"action": "draw_vector", "start_x": 1, "start_y": 1, "end_x": 1, "end_y": 2, "color": "purple", "label": "Δy"},
+        {"action": "add_text", "text": "m = Δy / Δx", "position_x": 2, "position_y": 3, "color": "black"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 0, "y": 1, "color": "green"}, {"x": 1, "y": 2, "color": "blue"}],
+        "line": {"equation": "y=x+1", "color": "red"},
+        "vectors": [
+          {"start_x": 0, "start_y": 1, "end_x": 1, "end_y": 1, "color": "orange", "label": "Δx"},
+          {"start_x": 1, "start_y": 1, "end_x": 1, "end_y": 2, "color": "purple", "label": "Δy"}
+        ],
+        "text": [{"text": "m = Δy / Δx", "position_x": 2, "position_y": 3, "color": "black"}]
+      },
+      "transition_words": "Now, let's see how changing 'm' affects our line, keeping 'b' fixed."
+    },
+    {
+      "id": "changing_m_pivot",
+      "duration_seconds": 120,
+      "purpose": "Demonstrate that changing 'm' (slope) while 'b' (y-intercept) is fixed causes the line to pivot around (0,b).",
+      "new_inference": "Changing 'm' with 'b' fixed makes the line rotate around the y-intercept.",
+      "prior_dependency": "Understanding 'm' and 'b'.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 0, "y": 1, "color": "green"}],
+        "line": {"equation": "y=x+1", "color": "red"}
+      },
+      "visual_actions": [
+        {"action": "change_line_equation", "equation": "y=2x+1", "color": "red", "animation_duration": 1},
+        {"action": "change_line_equation", "equation": "y=0.5x+1", "color": "red", "animation_duration": 1},
+        {"action": "change_line_equation", "equation": "y=-x+1", "color": "red", "animation_duration": 1},
+        {"action": "change_line_equation", "equation": "y=x+1", "color": "red", "animation_duration": 1}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 0, "y": 1, "color": "green"}],
+        "line": {"equation": "y=x+1", "color": "red"}
+      },
+      "transition_words": "What happens if we keep the slope the same, but change 'b'?"
+    },
+    {
+      "id": "changing_b_translate",
+      "duration_seconds": 90,
+      "purpose": "Demonstrate that changing 'b' (y-intercept) while 'm' (slope) is fixed causes the line to translate vertically.",
+      "new_inference": "Changing 'b' with 'm' fixed makes the line move up or down, staying parallel to its original position.",
+      "prior_dependency": "Understanding 'm' and 'b'.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": {"equation": "y=x+1", "color": "red"}
+      },
+      "visual_actions": [
+        {"action": "change_line_equation", "equation": "y=x+3", "color": "red", "animation_duration": 1},
+        {"action": "change_line_equation", "equation": "y=x-1", "color": "red", "animation_duration": 1},
+        {"action": "change_line_equation", "equation": "y=x+1", "color": "red", "animation_duration": 1}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": {"equation": "y=x+1", "color": "red"}
+      },
+      "transition_words": "So, 'm' controls the tilt, 'b' controls the vertical position. Let's look closer at the signs of 'm'."
+    },
+    {
+      "id": "negative_zero_slope",
+      "duration_seconds": 120,
+      "purpose": "Explain negative slope (falls left-to-right) and zero slope (horizontal line).",
+      "new_inference": "Negative slope means the line goes down as you move right; zero slope means the line is horizontal.",
+      "prior_dependency": "Understanding slope as rise/run.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": {"equation": "y=x+1", "color": "red"}
+      },
+      "visual_actions": [
+        {"action": "change_line_equation", "equation": "y=-2x+1", "color": "red", "animation_duration": 1},
+        {"action": "add_text", "text": "Negative slope: Falls left-to-right", "position_x": 2, "position_y": -2, "color": "black"},
+        {"action": "change_line_equation", "equation": "y=0x+1", "color": "red", "animation_duration": 1},
+        {"action": "remove_text", "text": "Negative slope: Falls left-to-right"},
+        {"action": "add_text", "text": "Zero slope: Horizontal line", "position_x": 2, "position_y": 1.5, "color": "black"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": {"equation": "y=1", "color": "red"},
+        "text": [{"text": "Zero slope: Horizontal line", "position_x": 2, "position_y": 1.5, "color": "black"}]
+      },
+      "transition_words": "Now, a quick but important point about lines that don't fit this form."
+    },
+    {
+      "id": "vertical_lines_exception",
+      "duration_seconds": 60,
+      "purpose": "Explain why vertical lines (x=c) cannot be represented by y=mx+b.",
+      "new_inference": "Vertical lines have undefined slope and cannot be written in y=mx+b form.",
+      "prior_dependency": "Understanding slope as Δy/Δx, and division by zero.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": {"equation": "y=1", "color": "red"}
+      },
+      "visual_actions": [
+        {"action": "remove_line"},
+        {"action": "draw_vertical_line", "x_value": 2, "color": "blue"},
+        {"action": "add_text", "text": "x = 2 (Undefined slope)", "position_x": 2.5, "position_y": 3, "color": "blue"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": {"type": "vertical", "x_value": 2, "color": "blue"},
+        "text": [{"text": "x = 2 (Undefined slope)", "position_x": 2.5, "position_y": 3, "color": "blue"}]
+      },
+      "transition_words": "Okay, with that in mind, let's try to put it all together."
+    },
+    {
+      "id": "worked_problem_1",
+      "duration_seconds": 120,
+      "purpose": "Work through an example: given m and b, draw the line and find points.",
+      "new_inference": "Can graph a line and find points given m and b.",
+      "prior_dependency": "All previous concepts.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": null,
+        "text": []
+      },
+      "visual_actions": [
+        {"action": "add_text", "text": "Problem 1: Graph y = 2x - 3", "position_x": -4, "position_y": 4, "color": "black"},
+        {"action": "plot_point", "x": 0, "y": -3, "color": "green", "label": "(0, -3)"},
+        {"action": "draw_vector", "start_x": 0, "start_y": -3, "end_x": 1, "end_y": -3, "color": "orange", "label": "Δx=1"},
+        {"action": "draw_vector", "start_x": 1, "start_y": -3, "end_x": 1, "end_y": -1, "color": "purple", "label": "Δy=2"},
+        {"action": "plot_point", "x": 1, "y": -1, "color": "blue"},
+        {"action": "draw_line_through_points", "point1_x": 0, "point1_y": -3, "point2_x": 1, "point2_y": -1, "color": "red"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 0, "y": -3, "color": "green"}, {"x": 1, "y": -1, "color": "blue"}],
+        "line": {"point1_x": 0, "point1_y": -3, "point2_x": 1, "point2_y": -1, "color": "red"},
+        "vectors": [
+          {"start_x": 0, "start_y": -3, "end_x": 1, "end_y": -3, "color": "orange", "label": "Δx=1"},
+          {"start_x": 1, "start_y": -3, "end_x": 1, "end_y": -1, "color": "purple", "label": "Δy=2"}
+        ],
+        "text": [{"text": "Problem 1: Graph y = 2x - 3", "position_x": -4, "position_y": 4, "color": "black"}]
+      },
+      "transition_words": "Let's try another one, this time finding the equation from a graph."
+    },
+    {
+      "id": "worked_problem_2",
+      "duration_seconds": 120,
+      "purpose": "Work through an example: given a graph, find m and b and write the equation.",
+      "new_inference": "Can determine m and b from a graph and write the equation.",
+      "prior_dependency": "All previous concepts.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": null,
+        "text": []
+      },
+      "visual_actions": [
+        {"action": "add_text", "text": "Problem 2: Find the equation of this line", "position_x": -4, "position_y": 4, "color": "black"},
+        {"action": "draw_line_through_points", "point1_x": -2, "point1_y": 3, "point2_x": 4, "point2_y": 0, "color": "red"},
+        {"action": "highlight_point", "x": 0, "y": 2, "color": "green", "label": "y-intercept"},
+        {"action": "plot_point", "x": 0, "y": 2, "color": "green"},
+        {"action": "plot_point", "x": 2, "y": 1, "color": "blue"},
+        {"action": "draw_vector", "start_x": 0, "start_y": 2, "end_x": 2, "end_y": 2, "color": "orange", "label": "Δx=2"},
+        {"action": "draw_vector", "start_x": 2, "start_y": 2, "end_x": 2, "end_y": 1, "color": "purple", "label": "Δy=-1"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 0, "y": 2, "color": "green"}, {"x": 2, "y": 1, "color": "blue"}],
+        "line": {"point1_x": -2, "point1_y": 3, "point2_x": 4, "point2_y": 0, "color": "red"},
+        "vectors": [
+          {"start_x": 0, "start_y": 2, "end_x": 2, "end_y": 2, "color": "orange", "label": "Δx=2"},
+          {"start_x": 2, "start_y": 2, "end_x": 2, "end_y": 1, "color": "purple", "label": "Δy=-1"}
+        ],
+        "text": [{"text": "Problem 2: Find the equation of this line", "position_x": -4, "position_y": 4, "color": "black"}]
+      },
+      "transition_words": "You've seen me work through a couple. Now it's your turn to try some on your own."
+    },
+    {
+      "id": "independent_problem_1",
+      "duration_seconds": 100,
+      "purpose": "First independent practice problem: given m and b, find points.",
+      "new_inference": "Can apply knowledge to new scenarios.",
+      "prior_dependency": "Worked Problem 1.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": null,
+        "text": []
+      },
+      "visual_actions": [
+        {"action": "add_text", "text": "Independent Problem 1: For y = -x + 2, what is 'b'? What is 'm'? Plot the line.", "position_x": -4, "position_y": 4, "color": "black"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": null,
+        "text": [{"text": "Independent Problem 1: For y = -x + 2, what is 'b'? What is 'm'? Plot the line.", "position_x": -4, "position_y": 4, "color": "black"}]
+      },
+      "transition_words": "Ready for another? This one asks you to find the equation."
+    },
+    {
+      "id": "independent_problem_2",
+      "duration_seconds": 100,
+      "purpose": "Second independent practice problem: given a graph, find m and b and write the equation.",
+      "new_inference": "Can apply knowledge to new scenarios.",
+      "prior_dependency": "Worked Problem 2.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": null,
+        "text": []
+      },
+      "visual_actions": [
+        {"action": "add_text", "text": "Independent Problem 2: Find the equation of the line passing through (0, -1) and (3, 2).", "position_x": -4, "position_y": 4, "color": "black"},
+        {"action": "plot_point", "x": 0, "y": -1, "color": "blue"},
+        {"action": "plot_point", "x": 3, "y": 2, "color": "blue"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [{"x": 0, "y": -1, "color": "blue"}, {"x": 3, "y": 2, "color": "blue"}],
+        "line": null,
+        "text": [{"text": "Independent Problem 2: Find the equation of the line passing through (0, -1) and (3, 2).", "position_x": -4, "position_y": 4, "color": "black"}]
+      },
+      "transition_words": "One last challenge for you."
+    },
+    {
+      "id": "independent_problem_3",
+      "duration_seconds": 100,
+      "purpose": "Third independent practice problem: more complex scenario or interpretation.",
+      "new_inference": "Can apply knowledge to new scenarios.",
+      "prior_dependency": "All previous concepts.",
+      "visual_start_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": null,
+        "text": []
+      },
+      "visual_actions": [
+        {"action": "add_text", "text": "Independent Problem 3: A line has a y-intercept of 4 and a slope of -1/2. Write its equation and find the x-intercept.", "position_x": -4, "position_y": 4, "color": "black"}
+      ],
+      "visual_end_state": {
+        "axes": true,
+        "grid": true,
+        "points": [],
+        "line": null,
+        "text": [{"text": "Independent Problem 3: A line has a y-intercept of 4 and a slope of -1/2. Write its equation and find the x-intercept.", "position_x": -4, "position_y": 4, "color": "black"}]
+      },
+      "transition_words": "Great work today! You've learned a lot about lines."
+    }
+  ],
+  "worked_problems": [
+    {
+      "problem": "Graph the line given by the equation y = 2x - 3. Identify its y-intercept and slope.",
+      "solution": "First, identify 'b' and 'm'. In y = 2x - 3, 'b' is -3. This means the line crosses the y-axis at (0, -3). Plot this point (green). Next, 'm' is 2. Remember, slope is

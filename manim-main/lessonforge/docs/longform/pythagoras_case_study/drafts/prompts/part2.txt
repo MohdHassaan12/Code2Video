@@ -1,0 +1,310 @@
+You are a premium mathematical animation engineer. Deliver executable Python code ONLY (no fences) for Manim Community0.19.0, importing from lesson_runtime import * and optionally math or numpy. Generate the specified chapter classes C01..C05 (or C06..C10). Each subclass LessonScene defines construct(), begins self.chapter(n), calls self.begin("beatid") then self.cue("exact phrase", animations...,run_time=...) for timed animation, self.finish() for EVERY beat, and self.done() after fourbeats. No audio code (external exact1200sec narration will be muxed). The runtime and lesson JSON are below.
+
+QUALITY: This must be a moving teacher's board with substantial mathematical geometry, not static slides, not narration paragraphs on screen. Every beat needs2–4 visual events spread across actual spoken cues, including precise shape construction or transformation, guided highlights, or progressive equation derivation. Keep the board/geometry persistent across four beats, change only relevant objects. Maintain enough visual context to reason. No startup2second animation followedby30seconds staticboard; spreadchanges throughoutspeech. Thinkcarefully aboutmath, coordinates, layout, and continuity. Diagrams must explain the spoken script exactly. Questionsmuststayunanswereduntilnarration answers; do notshowanswersinquestionpauses.
+
+RUNTIME: self.chapter adds fixed header. Safe visual body x[-6.6,6.6],y[-2.55,2.3]. Reserve below-2.7forcaptions. Usually large diagram LEFT x[-6.5,0.8], equationsRIGHT x[1.15,6.5]. txt(str,size=28,color=INK),eq(latex,size=42,color=INK), fit(m,width,height,center) onlyscalesdown andcenters. self.panel_to(*mobjects) returnsAnimationGroup removingoldpanelandreplacingnew tofitright. Panelitems smalllist (<=4), no fullsentences longerthan35characters. Use explicit linebreaks in longlabels. Do notoverlappanelwithdiagram. NoTextbelow22pt exceptnonteaching smalllabels. Outwardsquaresgroup MUSTfitintodiagramregion; scaleentiregroup uniformly,includingtriangle tokeepmathgeometrycorrect. All standalone labelspositionsrelative toactualtransformedshapes, not guessedunscaledcoordinates. Diagramlabelsinconflict withsquarefills shouldmoveoutwithleaderlines.
+
+TIMING: Cue string is a verbatim contiguous substring from that beat's narration, ideally beginningofsentence. Runtime locates measured sentence theninterpolates wordpositionwithin. Use orderedcuesfirst/middle/late ineachbeat. Everycue mustexist. self.finish() waits to measured beatend andthrows ifoverrun. Avoidcueverylastword requiringanimationbeyondbeat. Never self.wait exceptbriefthinkinganimation ifessential; narrationtimingalreadyincludespauses. Questions haveexplicit thinkingpauses atbeatend. No globalscene audio ormusic. No timebasedupdaterspersistinginto wait intervals. Motionusesfiniteplay transforms. No loops basedonrenderertime. ForrotationsuseRotate onwholegeometryincludingmarks; labelsremaincorrect andreadable (canrotateshapeandrelabellater). Anytriangledeformationmustpreservefixedleglengths in nonrightcase. Numericaldiagonalnotlabeled5exceptknownrighttriangle. No bogus tilemorph claimingarea conservation whilechangingpolygonshape.
+
+MATH & IMPLEMENTATION: deterministicvectorgeometry, equalunits axes. Build Triangle using Polygonexplicitpoints. mathsymbolsMathTex not Unicode approximateformulas. Color a TEAL,b GOLD,c PINK; meaningsstable. NoManimdeprecatedget_graph; use plot forfunctions. No broadtry/except. Do notremovegroups thatwerenotaddedasgroups: ifyouplay Create(eachindividual) rememberexplicitlyremoveeach. Transform keeps sourceidentity; animateexistingobject orReplacementTransform thenassignnew. No nestedVGroup insideFadeOut thatleaves originalstalesceneobjects. No unsupported MathTex commands. No externalfiles exceptruntime. No filesystem/network/subprocess code. AvoidSVGMobjectandimages. Mustcompleteall20beats inrequestedhalf. Definehelpersyouneed. Don'tmerelydisplayboard_text; geometryandprogressivemotionarethepoint. Sceneswillbeinspectedatmultipleframesandfixesmade.
+
+
+GENERATE C06,C07,C08,C09,C10
+RUNTIME SOURCE:
+"""Measured narration timing and shared visual style for generated Manim scenes."""
+from manim import *
+from pathlib import Path
+import json, math, re
+
+ROOT=Path(__file__).resolve().parent
+BG='#0B1220'; INK='#F3F5F7'; MUTED='#A9B6CA'; TEAL='#57D6BF'; GOLD='#FFD17C'; PINK='#F08CA9'; GRID='#29394F'
+config.background_color=BG
+
+def txt(s,size=28,color=INK):
+    return Text(s,font='Lato',font_size=size,color=color)
+
+def eq(s,size=42,color=INK):
+    return MathTex(s,font_size=size,color=color)
+
+def fit(m,width=6.5,height=4.7,center=(-2.8,-.1,0)):
+    factor=min(1,width/max(m.width,.001),height/max(m.height,.001))
+    m.scale(factor).move_to(center)
+    return m
+
+class LessonScene(Scene):
+    def chapter(self,n):
+        self.chapter_number=n
+        self.timeline={t['id']:t for t in json.loads((ROOT/'timeline.json').read_text())}
+        self.lesson=json.loads((ROOT/'lesson.json').read_text())
+        ch=self.lesson['chapters'][n-1]
+        self.chapter_start=self.timeline[ch['beats'][0]['id']]['start']
+        self.records=[];self.cue_records=[]
+        title=txt(ch['title'],34)
+        if title.width>11.7:title.scale_to_fit_width(11.7)
+        title.move_to([-6.45,2.94,0],aligned_edge=LEFT)
+        eyebrow=txt('THE GEOMETRY OF A SHORTCUT',16,TEAL).move_to([-6.45,3.53,0],aligned_edge=LEFT)
+        number=txt(f'{n:02} / 10',18,MUTED).move_to([6.12,3.5,0])
+        self.chrome=VGroup(title,eyebrow,number,Line([-6.45,2.45,0],[6.45,2.45,0],color=GRID),Line([-6.45,-2.7,0],[6.45,-2.7,0],color=GRID))
+        self.add(self.chrome)
+        self.panel=VGroup()
+    def begin(self,beat_id):
+        self.current=self.timeline[str(beat_id).zfill(2)]
+        self.beat_start=self.current['start']-self.chapter_start
+        self.until(self.beat_start)
+    def until(self,t):
+        delta=t-self.renderer.time
+        if delta>1/config.frame_rate:
+            self.wait(round(delta*config.frame_rate)/config.frame_rate)
+    def cue(self,phrase,*animations,run_time=1.2):
+        norm=lambda s:re.sub(r'[^a-z0-9 ]','',s.lower())
+        needle=norm(phrase);offset=None
+        for sentence in self.current['sentences']:
+            hay=norm(sentence['text'])
+            if needle in hay:
+                pos=hay.index(needle)
+                offset=sentence['start']+sentence['duration']*len(hay[:pos].split())/max(1,len(hay.split()))
+                break
+        if offset is None: raise ValueError(f'Cue not found in beat {self.current["id"]}: {phrase}')
+        target=self.beat_start+offset
+        self.cue_records.append({'beat':self.current['id'],'phrase':phrase,'target':target,'actual_before_wait':self.renderer.time})
+        self.until(target)
+        if animations:self.play(*animations,run_time=run_time)
+    def panel_to(self,*items):
+        new=VGroup(*items).arrange(DOWN,buff=.4,aligned_edge=LEFT)
+        fit(new,5.15,4.3,(3.7,-.05,0))
+        old=self.panel;self.panel=new
+        return AnimationGroup(FadeOut(old),FadeIn(new),lag_ratio=0)
+    def finish(self):
+        target=self.beat_start+self.current['duration']
+        if self.renderer.time>target+.05:raise ValueError(f'Beat overrun {self.current["id"]}: {self.renderer.time-target}')
+        self.until(target)
+        violations=[]
+        for m in self.mobjects:
+            if m is self.chrome:continue
+            if m.width<.001 and m.height<.001:continue
+            box=[float(m.get_left()[0]),float(m.get_right()[0]),float(m.get_bottom()[1]),float(m.get_top()[1])]
+            if box[0]<-6.8 or box[1]>6.8 or box[2]<-2.65 or box[3]>2.4:
+                violations.append({'type':type(m).__name__,'bbox':box})
+        self.records.append({'beat':self.current['id'],'time':self.renderer.time,'bounds_violations':violations})
+    def done(self):
+        (ROOT/'output'/f'chapter_{self.chapter_number:02}_audit.json').write_text(json.dumps({'bounds':self.records,'cues':self.cue_records},indent=2))
+
+
+CHAPTERS WITH FULL NARRATION AND VISUAL SCRIPT:
+[
+  {
+    "id": 6,
+    "title": "WORKED PROBLEM ONE",
+    "learning_goal": "Apply the theorem to find the hypotenuse of a six-by-eight rectangle, check plausibility, and avoid the common errors of stopping at c squared or adding the legs.",
+    "beats": [
+      {
+        "id": "21",
+        "narration": "Let us use the theorem to solve a real problem. A rectangular room is six metres wide and eight metres long. You want to know the length of the diagonal \u2014 the straight line from one corner to the opposite corner. First, sketch the rectangle and draw the diagonal. That diagonal is the hypotenuse of a right triangle whose legs are six metres and eight metres. Label the legs a equals six and b equals eight, and call the diagonal c. We want to find c.",
+        "visual": "A rectangle labelled '6 m' on the short side and '8 m' on the long side appears. A diagonal line is drawn from the bottom-left to the top-right corner, coloured pink and labelled 'c = ?'. The right-angle marker appears at the bottom-right corner. The triangle formed by the diagonal and two sides is shaded lightly.",
+        "board_text": "a = 6, b = 8, find c",
+        "equation": "c^2 = 6^2 + 8^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can identify the legs and hypotenuse in a rectangle diagonal problem."
+      },
+      {
+        "id": "22",
+        "narration": "Apply the formula. C squared equals a squared plus b squared. That is six squared plus eight squared. Six squared is thirty-six, and eight squared is sixty-four. Thirty-six plus sixty-four equals one hundred. So c squared equals one hundred. Now take the square root of both sides. The square root of one hundred is ten. Therefore c equals ten metres. Notice that we are taking the positive square root because a length cannot be negative. The diagonal is ten metres.",
+        "visual": "The equation c\u00b2 = 6\u00b2 + 8\u00b2 appears. Each term evaluates step by step: '6\u00b2 = 36' in teal, '8\u00b2 = 64' in gold, '36 + 64 = 100' in combined colour, then 'c\u00b2 = 100' and 'c = \u221a100 = 10 m' in pink. Each step appears sequentially with the previous step remaining visible.",
+        "board_text": "c\u00b2 = 100  \u2192  c = 10 m",
+        "equation": "c = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = 10",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can execute the full calculation and correctly take the positive square root at the final step."
+      },
+      {
+        "id": "23",
+        "narration": "Does ten metres make sense? The diagonal must be longer than eight, the longer leg. It must also be shorter than the fourteen-metre route along both walls. Ten satisfies both checks. These bounds do not prove the answer is exactly ten, but they would reject fifteen immediately. The equation gives the answer; the picture helps us decide whether that answer is sensible. Both forms of reasoning belong in a complete solution.",
+        "visual": "A number line from 0 to 15 appears below the diagram. A bracket marks the region between 8 and 14 with the label 'diagonal must be here'. A marker at 10 sits inside the bracket with a green checkmark. The labels '> 8' and '< 14' are shown with arrows pointing to the bracket boundaries.",
+        "board_text": "8 < 10 < 14 \u2713",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can apply the plausibility check to verify that the answer lies between the longer leg and the sum of both legs."
+      },
+      {
+        "id": "24",
+        "narration": "Watch for two different mistakes. Stopping at c squared equals one hundred does not give a length of one hundred metres. One hundred describes the square's area; taking its square root gives a side of ten metres. Area uses square metres, while length uses metres. The other mistake is adding six and eight directly. Fourteen measures the bent route. To find the diagonal, square the legs, add their squares, and take the positive root.",
+        "visual": "Two error boxes appear side by side. Left box: 'c = 100 m \u2717' with a red border and annotation 'area \u2260 length'. Right box: 'c = 6 + 8 = 14 m \u2717' with a red border and annotation 'route \u2260 diagonal'. Below both, the correct answer 'c = 10 m \u2713' appears in a green box.",
+        "board_text": "c \u2260 100,  c \u2260 14",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can identify and explain both common errors: confusing area with length, and adding legs instead of using the formula."
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "WORKED PROBLEM TWO",
+    "learning_goal": "Rearrange the theorem to find a leg when the hypotenuse and one leg are known, and recognise the subtraction structure.",
+    "beats": [
+      {
+        "id": "25",
+        "narration": "Now the unknown is a leg. In an idealized diagram, a thirteen-metre ladder reaches a vertical wall, with its foot five metres from the wall. How high does it reach? The wall and ground form the right angle. The ladder is opposite that angle, so thirteen is the hypotenuse. Label the vertical height h. Before calculating, notice that h must be less than thirteen. A vertical leg cannot be longer than the hypotenuse.",
+        "visual": "A diagram appears showing a vertical wall on the left, a horizontal ground line at the bottom, and a diagonal ladder leaning against the wall. The right-angle marker appears at the base of the wall where wall meets ground. The ladder is labelled '13 m' in pink, the ground distance '5 m' in teal, and the wall height 'h = ?' in gold.",
+        "board_text": "Hypotenuse = 13, leg = 5, find h",
+        "equation": "h^2 + 5^2 = 13^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer correctly identifies the ladder as the hypotenuse and sets up the equation with the unknown leg h."
+      },
+      {
+        "id": "26",
+        "narration": "Write the formula with the known values. H squared plus five squared equals thirteen squared. Five squared is twenty-five, and thirteen squared is one hundred and sixty-nine. So h squared plus twenty-five equals one hundred and sixty-nine. To isolate h squared, subtract twenty-five from both sides. H squared equals one hundred and sixty-nine minus twenty-five, which is one hundred and forty-four. Now take the square root. The square root of one hundred and forty-four is twelve. So h equals twelve metres.",
+        "visual": "The equation h\u00b2 + 5\u00b2 = 13\u00b2 appears. Step-by-step evaluation: '5\u00b2 = 25' and '13\u00b2 = 169' appear. Then 'h\u00b2 + 25 = 169'. An arrow shows subtracting 25 from both sides: 'h\u00b2 = 169 \u2212 25 = 144'. Finally 'h = \u221a144 = 12 m' appears in gold.",
+        "board_text": "h\u00b2 = 169 \u2212 25 = 144  \u2192  h = 12 m",
+        "equation": "h^2 = 13^2 - 5^2 = 169 - 25 = 144 \\quad h = 12",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can rearrange the theorem to isolate an unknown leg by subtracting the known squared leg from the squared hypotenuse."
+      },
+      {
+        "id": "27",
+        "narration": "Check twelve by substitution. Twelve squared plus five squared is one hundred and forty-four plus twenty-five, or one hundred and sixty-nine. That equals thirteen squared. Twelve is also less than the hypotenuse, so the answer fits the picture. Finding a leg means subtracting its partner's square from the hypotenuse's square. Finding the hypotenuse means adding the two leg squares. Identify the sides first; then let the equation tell you which operation is needed.",
+        "visual": "A verification panel shows: '12\u00b2 + 5\u00b2 = 144 + 25 = 169 = 13\u00b2 \u2713' with a green checkmark. Below it, a comparison table appears: 'Finding c: c\u00b2 = a\u00b2 + b\u00b2 (add)' versus 'Finding a leg: a\u00b2 = c\u00b2 \u2212 b\u00b2 (subtract)'. Each row is colour-coded.",
+        "board_text": "Verify: 144 + 25 = 169 \u2713",
+        "equation": "12^2 + 5^2 = 144 + 25 = 169 = 13^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can distinguish the add-to-find-hypotenuse structure from the subtract-to-find-leg structure."
+      },
+      {
+        "id": "28",
+        "narration": "What if someone adds thirteen squared and five squared? They get one hundred and ninety-four, whose square root is about thirteen point nine. That would make the height longer than the entire ladder. The diagram immediately exposes the mistake. The unknown is a leg, so it does not belong alone as the hypotenuse in the equation. Correcting that identification is more useful than simply saying to remember subtraction for this example.",
+        "visual": "An error demonstration shows the wrong equation '13\u00b2 + 5\u00b2 = 169 + 25 = 194' with a red border. The square root of 194 is shown as approximately 13.9. A red arrow points to the ladder diagram with the annotation 'height > ladder length: impossible'. The correct answer h = 12 m is shown in a green box for contrast.",
+        "board_text": "h cannot exceed 13 m",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can use geometric reasoning to identify that adding the hypotenuse square to a leg square produces an impossible result."
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "BEYOND WHOLE NUMBERS",
+    "learning_goal": "Apply the theorem to produce irrational results and to find distances between coordinate points, reinforcing that the formula is not limited to whole-number triples.",
+    "beats": [
+      {
+        "id": "29",
+        "narration": "Not every diagonal has a whole-number length. Take a square whose side is one metre. Its diagonal forms a right triangle with two one-metre legs. C squared is one plus one, or two. So c is the square root of two metres. Approximately, that is one point four one four metres. The exact square root has a decimal expansion that never ends or repeats. The radical gives an exact length; a rounded decimal gives an approximation.",
+        "visual": "A unit square with side 1 appears. Its diagonal is drawn in pink. The calculation c\u00b2 = 1\u00b2 + 1\u00b2 = 2 appears step by step. Then 'c = \u221a2 \u2248 1.414' appears. A number line shows \u221a2 marked between 1 and 2, with the annotation 'exact: \u221a2, approximate: 1.414'.",
+        "board_text": "c = \u221a2 (exact)",
+        "equation": "c = \\sqrt{1^2 + 1^2} = \\sqrt{2} \\approx 1.414",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer accepts that the exact answer can be an irrational number and distinguishes the exact form from a decimal approximation."
+      },
+      {
+        "id": "30",
+        "narration": "Place two points on a coordinate grid: one comma one, and five comma four. Their horizontal difference is five minus one, or four. Their vertical difference is four minus one, or three. Draw those two perpendicular differences as the legs of a triangle. The distance between the points is its hypotenuse. Four squared plus three squared is twenty-five, so the straight-line distance is five units. The coordinates have given us the legs.",
+        "visual": "A coordinate grid appears. Points (1,1) and (5,4) are plotted as dots. A horizontal dashed line from (1,1) to (5,1) is labelled '\u0394x = 4' in teal. A vertical dashed line from (5,1) to (5,4) is labelled '\u0394y = 3' in gold. The direct line from (1,1) to (5,4) is drawn in pink and labelled 'c = ?'. The calculation c = \u221a(4\u00b2 + 3\u00b2) = 5 appears.",
+        "board_text": "Distance = \u221a(\u0394x\u00b2 + \u0394y\u00b2) = 5",
+        "equation": "c = \\sqrt{(5-1)^2 + (4-1)^2} = \\sqrt{16+9} = 5",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can extract the horizontal and vertical differences as the legs of a right triangle and apply the theorem."
+      },
+      {
+        "id": "31",
+        "narration": "Slide both points three units to the right. They are now four comma one, and eight comma four. The horizontal difference is eight minus four, still four. The vertical difference is four minus one, still three. The triangle has moved without changing shape or size, so its hypotenuse is still five. Distance depends on the difference between positions. Moving both endpoints together does not change the gap between them.",
+        "visual": "Translate points (1,1),(5,4) three units right to (4,1),(8,4), keeping equal unit axes and entire right triangle visible. Update coordinate labels and show dx=8-4=4, dy=4-1=3; distance remains5.",
+        "board_text": "Translation preserves distance",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer understands that the theorem measures the straight-line displacement between two points, independent of their absolute positions."
+      },
+      {
+        "id": "32",
+        "narration": "A coordinate grid quietly supplies the right angle: its horizontal and vertical directions are perpendicular and use the same length units. That lets us turn coordinate differences into a right triangle. We can then calculate the straight-line separation, whether the answer is a whole number or an exact square root. We are not calculating every possible route between the points. We are calculating the direct gap across a flat plane.",
+        "visual": "A split panel shows three applications side by side: the original robot triangle, the ladder diagram, and the coordinate grid. Each is labelled with its right angle source: 'rectangular floor', 'wall meets ground', 'grid axes perpendicular'. The equation a\u00b2 + b\u00b2 = c\u00b2 appears once, centred above all three.",
+        "board_text": "Right angle: the common thread",
+        "equation": "a^2 + b^2 = c^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can identify the source of the right angle in each application context."
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "YOUR TURN",
+    "learning_goal": "Independently apply the theorem to find a hypotenuse, find a leg, and reason about an irrational result, with thinking time before each answer is revealed.",
+    "beats": [
+      {
+        "id": "33",
+        "narration": "Time to try one yourself. A right triangle has legs of five metres and twelve metres. What is the length of the hypotenuse? Set up the equation: c squared equals five squared plus twelve squared. Work it out. You have eight seconds before I continue. What is c?",
+        "visual": "A right triangle appears with teal leg labelled '5 m', gold leg labelled '12 m', and pink hypotenuse labelled 'c = ?'. The right-angle marker is shown. The equation c\u00b2 = 5\u00b2 + 12\u00b2 appears below. A countdown timer graphic shows 8 seconds. No answer is shown during the pause.",
+        "board_text": "c\u00b2 = 5\u00b2 + 12\u00b2",
+        "equation": "c^2 = 5^2 + 12^2",
+        "thinking_pause_seconds": 8,
+        "check": "Viewer attempts the calculation independently before the answer is revealed."
+      },
+      {
+        "id": "34",
+        "narration": "Five squared is twenty-five, twelve squared is one hundred and forty-four, and twenty-five plus one hundred and forty-four is one hundred and sixty-nine. The square root of one hundred and sixty-nine is thirteen. So c equals thirteen metres. Now a second question. A right triangle has a hypotenuse of ten metres and one leg of six metres. What is the other leg? Set up the equation: leg squared plus six squared equals ten squared. You have eight seconds.",
+        "visual": "The answer to the first question animates: '5\u00b2 = 25', '12\u00b2 = 144', '25 + 144 = 169', 'c = \u221a169 = 13 m' with a green checkmark. Then a new triangle appears: pink hypotenuse '10 m', teal leg '6 m', gold unknown leg 'h = ?'. The equation h\u00b2 + 6\u00b2 = 10\u00b2 appears. A countdown timer shows 8 seconds.",
+        "board_text": "c = 13 m  |  h\u00b2 + 6\u00b2 = 10\u00b2",
+        "equation": "c = \\sqrt{169} = 13 \\quad h^2 + 6^2 = 10^2",
+        "thinking_pause_seconds": 8,
+        "check": "Viewer correctly identifies the subtraction structure needed to find the unknown leg."
+      },
+      {
+        "id": "35",
+        "narration": "H squared plus thirty-six equals one hundred. Subtract thirty-six to get sixty-four, then take the positive square root: h is eight metres. Now a reasoning question. A square has sides of one metre. A student says its diagonal is two metres, because one plus one equals two. Another says the diagonal is the square root of two metres. Which student is correct? Use the areas of squares to justify your choice. Think for eight seconds.",
+        "visual": "First complete prior missing-leg answer8. Then replace with unit square and unlabeled diagonal, two candidate answers2 and sqrt2 shown neutrally. Do not select correct answer until nextbeat. Eight seconds thinking time.",
+        "board_text": "h = 8 m  |  diagonal = 2 or \u221a2?",
+        "equation": "h = \\sqrt{64} = 8",
+        "thinking_pause_seconds": 8,
+        "check": "Viewer reasons from area rather than guessing, connecting the area of the square on the diagonal to the side length."
+      },
+      {
+        "id": "36",
+        "narration": "The diagonal is the square root of two metres. The squares on the two legs each have area one square metre, so the square on the diagonal must have area two. Its side is therefore the square root of two. If that side were two metres, its square would have area four, which contradicts our area relationship. The length two measures the bent route along two edges, not the diagonal across the square.",
+        "visual": "A unit square with diagonal is shown. The square built on the diagonal is drawn and labelled 'area = c\u00b2 = 2 sq units'. A second hypothetical square with side 2 appears beside it, labelled 'area = 4 sq units \u2014 too large'. The correct answer '\u221a2 \u2248 1.414' is shown in green. The wrong answer '2 = route length' is shown in red with a cross.",
+        "board_text": "c\u00b2 = 2  \u2192  c = \u221a2, not 2",
+        "equation": "c^2 = 1^2 + 1^2 = 2 \\quad c = \\sqrt{2} \\neq 2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can use the area of the square on the hypotenuse to justify why the diagonal is \u221a2 and not 2."
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "RETURN TO THE QUESTION",
+    "learning_goal": "Resolve the opening robot problem, articulate the full chain of reasoning from area conservation to diagonal length, and explain why adding legs fails.",
+    "beats": [
+      {
+        "id": "37",
+        "narration": "Return to our robot. Four metres east and three metres north form the two legs. Their squares have areas sixteen and nine, totalling twenty-five. So the diagonal's square has area twenty-five and its side is five metres. Let the robot take that straight path now. It travels five metres instead of seven, saving two metres. We have answered the opening question, and we can explain the answer rather than just announcing it.",
+        "visual": "The original robot diagram from beat 01 reappears: the rectangle with teal arrow east '4 m', gold arrow north '3 m', and pink diagonal. The calculation c\u00b2 = 4\u00b2 + 3\u00b2 = 25, c = 5 m animates step by step. The diagonal is now labelled '5 m' in pink. A comparison label shows 'Route: 7 m vs Diagonal: 5 m'.",
+        "board_text": "c = 5 m  (route was 7 m)",
+        "equation": "c = \\sqrt{4^2 + 3^2} = \\sqrt{25} = 5",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer connects the final answer back to the opening question and appreciates the two-metre difference."
+      },
+      {
+        "id": "38",
+        "narration": "Remember the connection. The leg lengths define two square areas. Our proof shows that their sum equals the area of the hypotenuse square. We established that by counting one outer square in two ways and subtracting the same triangle areas. Finally, a square root converts the resulting area back into a length. The geometry explains the equation, and the equation lets us calculate a distance that would be difficult to measure directly.",
+        "visual": "The three outward squares reappear on the right triangle: teal square area 16, gold square area 9, pink square area 25. An animation shows the 16-unit and 9-unit grids combining into the 25-unit grid. The four-triangle proof diagram appears briefly as a ghost overlay, then fades. The equation a\u00b2 + b\u00b2 = c\u00b2 is shown with area labels beneath each term.",
+        "board_text": "Area conserved: 16 + 9 = 25",
+        "equation": "a^2 + b^2 = c^2 \\quad (16 + 9 = 25)",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can narrate the area-conservation argument from memory without referring to specific numbers."
+      },
+      {
+        "id": "39",
+        "narration": "Before using the theorem, check for a right angle and identify the side opposite it. That is the hypotenuse. Square the known lengths, then add or subtract according to which side is missing. Take the positive square root and state the length unit. Check the result against the picture: a hypotenuse exceeds either leg but is shorter than their sum; an unknown leg must be shorter than the known hypotenuse. Every check has a geometric reason.",
+        "visual": "Progressively highlight rightangle,hypotenuse,squaredareas,positive root and units. Separate plausibility bounds for unknown hypotenuse from unknown leg.",
+        "board_text": "Six-step checklist",
+        "equation": "",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can reproduce the six-step checklist and explain the purpose of each step."
+      },
+      {
+        "id": "40",
+        "narration": "Try explaining one final idea in your own words: why does four plus three not give the diagonal? It measures a route with a turn. The diagonal crosses directly between the same endpoints. To find its length, we compare square areas instead. The square on the hypotenuse equals the two leg squares together because a right triangle lets us build two equal counts of the same area. Taking the square root turns that area relationship into the length of our shortcut.",
+        "visual": "The robot diagram returns one final time. The bent route is shown in dashed grey labelled '4 + 3 = 7 m (route)'. The straight diagonal is shown in solid pink labelled '\u221a(4\u00b2 + 3\u00b2) = 5 m (displacement)'. The three outward squares appear once more, small but clear. The final equation a\u00b2 + b\u00b2 = c\u00b2 is displayed in the centre of the screen as the last image.",
+        "board_text": "Route \u2260 diagonal; area explains why",
+        "equation": "a^2 + b^2 = c^2",
+        "thinking_pause_seconds": 0,
+        "check": "Viewer can explain in their own words why adding the legs gives the route length and why the theorem gives the diagonal length, grounding the answer in the area-conservation proof."
+      }
+    ]
+  }
+]

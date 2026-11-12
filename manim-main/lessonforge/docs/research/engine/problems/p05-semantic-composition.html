@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P05 · Composition intent never reaches the solver — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">05</div>
+  <div>
+    <h1>Composition intent never reaches the solver</h1>
+    <div class="sub">The layout engine can guarantee nothing collides. It cannot yet realize what the scene is <i>for</i> —
+    and the field designed to carry that intent, the composition descriptor, is currently consumed by a log line.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>05</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-s">S · code owns structure — but structure isn’t meaning</span>
+  <span class="chip t1">T1 engineering — the bridge path is known</span>
+  <span class="chip mat">Maturity: L1 — bridge designed and populated, unconsumed; containment shipped, keyword map is the cheat-first move</span>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🔧</span> Concrete fix strategy (2026-08-03)</div>
+  <p>The <b>cheapest, highest-ROI move</b> closes this problem AND P11’s structural gap simultaneously: parse the
+  <code>composition</code> descriptor for a closed vocabulary of layout keywords and map them onto the existing
+  zone/template machinery. This is <b>not</b> the research-grade constraint compiler — it is a deterministic, few-line
+  keyword map that the transpiler reads before zone assignment.</p>
+  <p><b>Vocabulary to parse (7 keywords covering ~80% of real storyboard compositions):</b></p>
+  <div class="tblwrap"><table class="tbl">
+    <thead><tr><th>Composition keyword</th><th>Maps to</th><th>Effect</th></tr></thead>
+    <tr><td><code>"title banner top"</code> / <code>"banner"</code></td><td><code>layout_template = "TitleStageCaption"</code></td><td>first element → TOP_CENTER, last → BOTTOM_CENTER</td></tr>
+    <tr><td><code>"split screen"</code> / <code>"left" + "right"</code> / <code>"…stacked right column"</code></td><td><code>layout_template = "SplitScreen"</code></td><td>alternates LEFT_CENTER / RIGHT_CENTER</td></tr>
+    <tr><td><code>"centre"</code> / <code>"middle"</code> / <code>"grid centre"</code></td><td>zone pre-claim CENTER for the named element</td><td>the main visual gets the centre zone</td></tr>
+    <tr><td><code>"full canvas"</code> / <code>"fill frame"</code></td><td><code>layout_template = "FullCanvas"</code></td><td>no zone constraints — element uses its own positioning</td></tr>
+    <tr><td><code>"…stacked"</code> / <code>"…column"</code></td><td>arrange DOWN with buff on the named elements</td><td>forces vertical stacking, no zone claims needed</td></tr>
+    <tr><td><code>"…grid"</code> / <code>"…row"</code></td><td>arrange RIGHT with buff on the named elements</td><td>forces horizontal row</td></tr>
+    <tr><td><code>"left half"</code> / <code>"right half"</code> / <code>"top"</code> / <code>"bottom"</code></td><td>zone pre-claim LEFT_CENTER / RIGHT_CENTER / TOP_CENTER / BOTTOM_CENTER</td><td>simple spatial override</td></tr>
+  </table></div>
+  <p><b>Implementation:</b> a <code>_apply_composition_hints(composition, elements, used_zones)</code> function
+  (<code>transpiler.py</code>, ~60 lines) called AFTER <code>_seed_axes_zones</code> but BEFORE individual element
+  zone assignment. It never overrides model-authored <code>safe_zone_alignment</code> or an already-templated zone —
+  the descriptor is a hint, not a command, following the "improves or stands aside" pattern. <b>Cost: $0, no schema
+  change, no metered edge.</b> Harness <code>test_axes_zones.py</code> style: a composition string → expected zone
+  pattern, without manim.</p>
+  <div class="note">This is fix strategy #1 from <a href="p11-layout-frameworks.html">P11</a> — the bridge between
+  the two composition problems, and the single cheapest move available. Once landed, the split-screen trigger
+  (<code>_maybe_minimize_diagram</code>) can be retired: the descriptor says "split", so split.</div>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today</div>
+  <ul>
+    <li>Layout is deterministic and defensively strong: zone claiming with axes-aware routing, data-space <code>c2p</code>
+      coordinates, code-computed label slots, and screen management that splits the screen when text piles onto a diagram
+      (<code>_maybe_minimize_diagram</code>, <code>transpiler.py</code>).</li>
+    <li>Every <code>StoryboardScene</code> carries a <code>composition</code> field — a 1–2 sentence layout gestalt the LLM must
+      write (“Every scene MUST include a composition string”, <code>app/storyboard.py:420</code>; schema at
+      <code>app/schemas.py:95</code>).</li>
+    <li><b>Measured:</b> the transpiler’s only reads of it are <code>logger.info("[COMPOSITION] …")</code> at
+      <code>transpiler.py:822-823</code> and <code>:1152-1153</code>. Contrast the sibling field <code>layout_template</code>,
+      which IS consumed via <code>_apply_template_zones</code> (<code>transpiler.py:337</code>).</li>
+    <li>Two neighboring symptoms of the same blindness: unknown shape keywords fall back to <code>Circle()</code>
+      (<code>transpiler.py:425</code>, roadmap gap D5 — <b>fixed 2026-08-01</b>), and containment is not a placement
+      primitive — “gas particles” render on or outside their container box (roadmap gap D7
+      <span class="src">pipeline-roadmap.md:784-791</span>).</li>
+    <li><b>Update 2026-08-01 — the deeper half is now isolated.</b> With shape types and contained values fixed, what
+      remains wrong is that the IR cannot express structure at all: an element cannot say what it contains or connects to,
+      so models write sub-diagrams into prose and the child objects never exist. That is
+      <a href="p11-layout-frameworks.html">P11</a>, this page’s structural twin — there is nothing for composition intent
+      to be applied <i>to</i>.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why this is research-grade</div>
+  <p>The house rule is “models own content, code owns structure” — but composition is <b>content about structure</b>, and it
+  currently falls into the crack between them. The LLM knows the scene’s gestalt (it wrote one, on billed tokens); the
+  solver that places every element never hears it. Result: scenes that are collision-free yet visually arbitrary — the
+  Director’s density measurements (avg 6.0 elements/scene on the optical-fibre board
+  <span class="src">pipeline-roadmap.md:354</span>) patch symptoms (sparseness) without ever seeing intent.</p>
+  <p>What makes it hard: translating free-text layout intent into solver constraints is a natural-language-to-program
+  problem where the output must stay inside the determinism boundary — the model may <i>choose</i> among layouts but must
+  never emit a coordinate. Get the interface wrong and you reopen the exact door (LLM-owned geometry) the architecture
+  closed. CLAUDE.md already treats the descriptor as the designated channel: “when adding a new layout rule or zone
+  heuristic, check whether the composition descriptor already conveys that intent before coding a new prompt instruction”
+  <span class="src">CLAUDE.md:66-72</span>.</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>Populated-but-unconsumed, measured by grep: no layout code reads <code>composition</code>; docs claim otherwise
+      (<code>app/schemas.py:102</code> says the transpiler “uses it to guide zone assignment” — a doc/code disagreement this
+      audit reports rather than resolves).</li>
+      <li>The split-screen trigger had to be widened after live job <code>bpipueek6</code> split on ZERO of its scenes — real
+      storyboards write derivation steps as <code>text</code>, not <code>math</code> <span class="src">CLAUDE.md:118-124</span>:
+      heuristics keep chasing what the descriptor already said. <b>The keyword map above replaces this heuristic entirely</b> —
+      if the descriptor says "derivation stacked right column", the transpiler can pre-claim zones before any trigger fires.</li>
+      <li><s>Particles-outside-their-box</s> — <b>partially fixed 2026-08-01</b> via <code>relative_positioning.relation: "inside"</code>
+      + <code>place_inside()</code>. Items inside a container are now distributed across its bbox; absolute-positioned
+      children (the old bug) are still possible but the fix-by-construction path exists. <span class="src">CLAUDE.md D5b-iv</span>.</li>
+      <li>The <b>keyword map above</b> (see the green panel) is the cheapest concrete move — parse composition, set
+      <code>layout_template</code> and pre-claim central zones, retire the trigger. <span class="src">P11 fix strategy #1</span>.</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art <span class="tag">citation-check before external use</span></div>
+  <p>Constraint-based layout is mature (Cassowary-family solvers power real UI toolkits); layout synthesis from examples or
+  specs is an active HCI/graphics research line; NL-conditioned layout generation (documents, posters, UIs) works in
+  research settings but without correctness guarantees. The constrained version here — NL intent compiled to constraints,
+  solved deterministically, verified by a probe — is a genuinely nice formulation the field hasn’t packaged.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — cheap → deep</div>
+  <ol>
+    <li><s>Close the loop crudely: parse <code>composition</code> for a closed keyword vocabulary and map hits onto the
+      existing <code>layout_template</code> zones.</s> <b>SPECIFIED 2026-08-03 in the green panel above; not yet built.</b>
+      The keyword table, implementation sketch, and harness pattern are all designed. This is the single cheapest move
+      available — ~60 lines of deterministic code, no schema change, no metered edge.</li>
+    <li><s>Make containment a placement primitive.</s> <b>SHIPPED 2026-08-01</b> as <code>relative_positioning.relation: "inside"</code>
+      + <code>viz_helpers.place_inside()</code>. Render-verified; pinned by <code>test_ir_structure.py</code>.</li>
+    <li><span class="badge solid-amber">metered</span> Typed <code>LayoutHints</code> IR: a storyboard-time LLM pass translates
+      the free-text descriptor into a small constraint vocabulary (schema field + <code>--regen</code> + admission gate, per
+      house rules). The transpiler solves; the model never places.</li>
+    <li><span class="badge solid-purple">research</span> The general compiler: arbitrary composition prose → constraint set
+      with a solvability check and a principled fallback when intent is unsatisfiable (report, don’t silently ignore —
+      the same contract the storyboard gates follow).</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p>Harness in the house style (<code>test_axes_zones.py</code> pattern — no manim, no keys): descriptor says “derivation
+  right column” ⇒ elements land in the right column. Downstream: violations at first render (before repair) should fall —
+  the metric <a href="p04-repair-convergence.html">P04</a> already tracks; and intent-match can become a scored dimension
+  in <a href="p01-quality-score.html">P01</a>’s rubric.</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p11-layout-frameworks.html">P11 no structure to lay out</a> — the structural twin: intent has nothing to act
+  on while the scene is a flat element list ·
+  <a href="p04-repair-convergence.html">P04 repair convergence</a> — intent-aware first layout prevents the repairs that
+  stall · <a href="p09-pedagogy-gate.html">P09 pedagogy</a> — composition is where visual pedagogy (signaling, contiguity)
+  would be enforced · <a href="p06-narration-sync.html">P06 sync</a> — the same IR-bridge pattern, in time instead of space.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p04-repair-convergence.html">← prev: P04 repair convergence</a>
+  <a href="p06-narration-sync.html">next: P06 narration sync →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

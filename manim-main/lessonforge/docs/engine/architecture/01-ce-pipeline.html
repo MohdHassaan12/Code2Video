@@ -1,0 +1,117 @@
+<link rel="stylesheet" href="style.css">
+<title>ce/ — Lesson & Video Pipeline (client)</title>
+
+<div class="hdr">
+  <div class="logo">🧠</div>
+  <div>
+    <h1>ce/ — Lesson &amp; Video Pipeline (client side)</h1>
+    <div class="sub">The lesson-side pipeline that decides which nodes deserve a video, plans the pedagogy, and drives the stem_animation_lab server over HTTP — then merges the returned clips into the final lesson video.</div>
+  </div>
+  <div class="crumb">Diagram <b>01 — ce/ video flow</b> · server side is diagram 02</div>
+</div>
+
+<div class="cols">
+  <div class="col grow" style="flex: 2.6;">
+
+    <!-- main chain -->
+    <div class="panel purple">
+      <div class="ptitle"><span class="ico">🎬</span> Video build chain (per lesson)</div>
+      <div class="strip">
+        <div class="card"><div class="ci">🗂️</div><h3>videos_build.py</h3><p><code>generate_lesson_video</code> / <code>generate_single_video</code> — loops lesson nodes; tags <code>video.provider = "stem_animation_lab"</code></p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🤔</div><h3>video_planner.py</h3><p><code>analyze_node()</code> — LLM decides IF a node needs a video + its type: MISCONCEPTION · PROCESS · EXPERIMENT · VISUALIZATION</p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">🎛️</div><h3>video_generation.py</h3><p><code>generate_animation()</code> — plan clips → generate each → merge. Returns <code>{path, clips}</code></p></div>
+        <div class="sep">→</div>
+        <div class="card"><div class="ci">✂️</div><h3>clip_planner.py</h3><p><code>plan()</code> — currently hardcoded to exactly <b>1 clip per node</b></p></div>
+      </div>
+      <div class="spacer" style="height:10px;"></div>
+      <div class="strip">
+        <div class="card hero" style="border-color: var(--purple-line); flex: 2;">
+          <div class="ci">📡</div><h3>stem_animation.py — the HTTP client</h3>
+          <p>Per clip: pedagogical plan (<code>planner_agent</code>) + grounding (<code>storyboard_context</code>) → POST <code>/api/generate_storyboard</code> → <code>/api/generate_code</code> → <code>/api/compile_video</code> → status via WebSocket <code>/ws/render_status/{job_id}</code> (HTTP poll fallback) → download mp4 to <code>generated_videos/</code></p>
+        </div>
+        <div class="sep">→</div>
+        <div class="card" style="flex: 1;"><div class="ci">🧵</div><h3>video_merger.py</h3><p><code>merge_videos()</code> — ffmpeg concat of clips + optional <code>bgm.mp3</code> mix (volume 0.08, amix) → final video in <code>generated_videos/</code></p></div>
+      </div>
+    </div>
+
+    <div class="vflow center"><div class="va"><span class="arr">↓</span> feeds topic + pedagogy + persona to the server (diagram 02)</div></div>
+
+    <!-- planning -->
+    <div class="panel blue">
+      <div class="ptitle"><span class="ico">📚</span> Pedagogy &amp; grounding (before the server sees anything)</div>
+      <div class="cards c2">
+        <div class="card">
+          <div class="ci">🧑‍🏫</div><h3>planner_agent.py — pedagogical storyboard</h3>
+          <p>PARTS / Google LearnLM framework. <code>generate_pedagogical_plan(topic, grade, ncert_content, …)</code> · <code>determine_scene_count()</code>: 4–10 scenes · <code>narration_wpm()</code>: 90 wpm for grade ≤ 4, else 150 · emits <code>scenes[{scene_number, core_idea, visual_description, voiceover_script}]</code></p>
+        </div>
+        <div class="card">
+          <div class="ci">🌏</div><h3>storyboard_context.py — grounding</h3>
+          <p><code>resolve_context()</code> resolution order: <b>YouTube transcript → content_store (NCERT) → none</b>. Keeps storyboards anchored to real curriculum content instead of model free-association</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- model seam -->
+    <div class="panel slate">
+      <div class="ptitle"><span class="ico">🔌</span> Model seam — every ce/ LLM call goes through agents.py</div>
+      <div class="cards c3">
+        <div class="card"><div class="ci">🧩</div><h3>agents.py</h3><p><code>complete_json</code> / <code>complete_text</code> / <code>complete_vision</code>. Provider: <b>OpenRouter preferred</b>, else Anthropic. Default model <code>CE_MODEL</code> env or <code>claude-sonnet-4.5</code>. No key → returns None → deterministic fallbacks</p></div>
+        <div class="card"><div class="ci">🎚️</div><h3>modelcfg.py</h3><p>Per-task model routing, persisted in <code>content_store/model_config.json</code> — live config: <code>google/gemini-2.5-flash</code> for all tasks; LearnLM tier <code>google/gemini-2.5-pro</code></p></div>
+        <div class="card"><div class="ci">💰</div><h3>usage.py</h3><p>Token/cost accounting — <code>usage.record / total / reset</code>. Metered edges: every call is attributable</p></div>
+      </div>
+      <div class="spacer" style="height:10px;"></div>
+      <div class="note"><b>Import-time trap:</b> <code>ce/agents.py</code> reads <code>OPENROUTER_API_KEY</code> at <b>import time</b> — load <code>stem_animation_lab/.env</code> before importing anything under <code>ce/</code>.</div>
+    </div>
+  </div>
+
+  <!-- right column -->
+  <div class="col" style="flex: 1;">
+    <div class="panel teal">
+      <div class="ptitle"><span class="ico">🌐</span> Language / persona resolution</div>
+      <div class="rows">
+        <div class="row"><span class="k">1.</span><p>per-node <code>videoSpec</code> (language, persona, speaker, style)</p></div>
+        <div class="row"><span class="k">2.</span><p><code>VIDEO_LANGUAGE</code> / <code>VIDEO_PERSONA</code> / <code>VIDEO_SPEAKER</code> / <code>VIDEO_STYLE</code> env</p></div>
+        <div class="row"><span class="k">3.</span><p>hardcoded tail: <code>hi-IN</code> / <code>hybrid</code> / <code>shubh</code> / 3blue1brown-minimalist — <b>why videos default to Hinglish</b></p></div>
+      </div>
+      <div class="spacer" style="height:9px;"></div>
+      <div class="badges">
+        <span class="badge">TTS_PROVIDER=sarvam</span>
+        <span class="badge">GEMINI_TTS_MODEL</span>
+      </div>
+    </div>
+
+    <div class="panel green">
+      <div class="ptitle"><span class="ico">📦</span> Outputs</div>
+      <div class="rows">
+        <div class="row"><span class="dot green"></span><p><b>generated_videos/</b> (repo root) — downloaded clips + final merged lesson videos</p></div>
+        <div class="row"><span class="dot green"></span><p>Node record gets <code>video.provider</code>, path, and clip list wired into the lesson</p></div>
+      </div>
+    </div>
+
+    <div class="panel orange">
+      <div class="ptitle"><span class="ico">💤</span> Stale periphery — don't extend</div>
+      <div class="rows">
+        <div class="row"><span class="dot orange"></span><p>The video flow above is the <b>live path</b> (current focus)</p></div>
+        <div class="row"><span class="dot orange"></span><p>Everything else in <code>ce/</code> is <b>stale</b> unless revived: images (<code>imagegen.py</code>, <code>assets_build.py</code>), interactions, question galleries, personalization, KG import, pedagogy skills</p></div>
+        <div class="row"><span class="dot orange"></span><p><code>DOCS.md</code> marks which docs are live / stale / frozen</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="howit">
+  <div class="lbl">Per node</div>
+  <div class="step"><span class="ico">🤔</span><div><h4>1. Should it be a video?</h4><p>video_planner classifies the node (or skips it)</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🧑‍🏫</span><div><h4>2. Plan pedagogy</h4><p>planner_agent: 4–10 scenes, grade-aware narration pace</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🌏</span><div><h4>3. Ground it</h4><p>YouTube / NCERT context via storyboard_context</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">📡</span><div><h4>4. Drive the server</h4><p>storyboard → code → compile, WS status until done</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">⬇️</span><div><h4>5. Download clip</h4><p>mp4 lands in generated_videos/</p></div></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="ico">🧵</span><div><h4>6. Merge + BGM</h4><p>ffmpeg concat, optional bgm.mp3 at 0.08 volume</p></div></div>
+</div>

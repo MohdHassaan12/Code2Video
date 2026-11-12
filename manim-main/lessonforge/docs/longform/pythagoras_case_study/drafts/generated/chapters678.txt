@@ -1,0 +1,407 @@
+from lesson_runtime import *
+import math
+import numpy as np
+
+# ── helpers ────────────────────────────────────────────────────────────────────
+def right_angle_mark(corner, d1, d2, size=0.18, color=INK):
+    p = np.array(corner)
+    u = np.array(d1) / np.linalg.norm(d1)
+    v = np.array(d2) / np.linalg.norm(d2)
+    pts = [p + size*u, p + size*u + size*v, p + size*v]
+    return Polygon(*[(*pt, 0) for pt in pts], color=color, stroke_width=1.5, fill_opacity=0)
+
+def make_error_box(lines, color=RED):
+    t = VGroup(*[eq(l, size=30, color=INK) for l in lines]).arrange(DOWN, buff=0.15)
+    box = SurroundingRectangle(t, color=color, buff=0.18, corner_radius=0.08)
+    return VGroup(box, t)
+
+# ══════════════════════════════════════════════════════════════════════════════
+class C06(LessonScene):
+    def construct(self):
+        self.chapter(6)
+
+        # ── Beat 21 ────────────────────────────────────────────────────────────
+        self.begin("21")
+        # Rectangle: 6 wide, 8 tall, scaled to fit left panel
+        scale = 0.38
+        W, H = 6*scale, 8*scale   # 2.28, 3.04
+        cx, cy = -3.2, -0.1
+        BL = np.array([cx - W/2, cy - H/2, 0])
+        BR = np.array([cx + W/2, cy - H/2, 0])
+        TR = np.array([cx + W/2, cy + H/2, 0])
+        TL = np.array([cx - W/2, cy + H/2, 0])
+
+        rect = Polygon(BL, BR, TR, TL, color=INK, stroke_width=2)
+        tri_fill = Polygon(BL, BR, TR, color=TEAL, fill_opacity=0.13, stroke_opacity=0)
+        diag = Line(BL, TR, color=PINK, stroke_width=2.5)
+        ram = right_angle_mark(BR[:2], [-1,0], [0,1], size=0.18, color=INK)
+
+        lbl_6 = txt("6 m", 26, TEAL).next_to(Line(BL, BR), DOWN, buff=0.12)
+        lbl_8 = txt("8 m", 26, GOLD).next_to(Line(BR, TR), RIGHT, buff=0.12)
+        mid_diag = (BL + TR) / 2
+        lbl_c = eq("c = ?", 30, PINK).move_to(mid_diag + np.array([-0.45, 0.25, 0]))
+
+        panel = self.panel_to(
+            txt("a = 6,  b = 8", 28, INK),
+            txt("find c", 28, GOLD),
+        )
+
+        self.cue("Let us use the theorem", Create(rect), run_time=1.2)
+        self.cue("draw the diagonal", Create(diag), FadeIn(tri_fill), run_time=1.0)
+        self.cue("Label the legs", FadeIn(lbl_6), FadeIn(lbl_8), FadeIn(ram), run_time=1.0)
+        self.cue("call the diagonal c", FadeIn(lbl_c), panel, run_time=1.0)
+        self.finish()
+
+        # ── Beat 22 ────────────────────────────────────────────────────────────
+        self.begin("22")
+        step1 = eq(r"c^2 = 6^2 + 8^2", 38, INK).move_to([3.7, 1.6, 0])
+        step2 = eq(r"6^2 = 36", 34, TEAL).move_to([3.7, 0.85, 0])
+        step3 = eq(r"8^2 = 64", 34, GOLD).move_to([3.7, 0.25, 0])
+        step4 = eq(r"36 + 64 = 100", 34, INK).move_to([3.7, -0.35, 0])
+        step5 = eq(r"c^2 = 100", 36, INK).move_to([3.7, -0.95, 0])
+        step6 = eq(r"c = \sqrt{100} = 10\text{ m}", 38, PINK).move_to([3.7, -1.65, 0])
+
+        self.cue("Apply the formula", Write(step1), run_time=1.2)
+        self.cue("Six squared is thirty-six", FadeIn(step2), FadeIn(step3), run_time=1.2)
+        self.cue("Thirty-six plus sixty-four", FadeIn(step4), FadeIn(step5), run_time=1.2)
+        self.cue("take the square root", FadeIn(step6), run_time=1.0)
+        self.finish()
+
+        # ── Beat 23 ────────────────────────────────────────────────────────────
+        self.begin("23")
+        # Remove equation steps, keep diagram; add number line
+        nl_y = -2.1
+        nl = Line([-5.5, nl_y, 0], [5.5, nl_y, 0], color=MUTED, stroke_width=1.5)
+        ticks = VGroup()
+        tick_labels = VGroup()
+        for v in range(0, 16, 2):
+            x = -5.5 + v * (11.0/15)
+            ticks.add(Line([x, nl_y-0.08, 0], [x, nl_y+0.08, 0], color=MUTED, stroke_width=1.5))
+            tick_labels.add(txt(str(v), 18, MUTED).move_to([x, nl_y-0.28, 0]))
+
+        def xpos(v): return -5.5 + v*(11.0/15)
+
+        bracket = Line([xpos(8), nl_y+0.22, 0], [xpos(14), nl_y+0.22, 0], color=GOLD, stroke_width=2)
+        b_l = Line([xpos(8), nl_y+0.12, 0], [xpos(8), nl_y+0.32, 0], color=GOLD, stroke_width=2)
+        b_r = Line([xpos(14), nl_y+0.12, 0], [xpos(14), nl_y+0.32, 0], color=GOLD, stroke_width=2)
+        lbl_range = txt("diagonal must be here", 20, GOLD).move_to([xpos(11), nl_y+0.58, 0])
+        dot10 = Dot([xpos(10), nl_y, 0], color=PINK, radius=0.1)
+        chk = txt("✓", 26, TEAL).move_to([xpos(10), nl_y-0.52, 0])
+        gt8 = txt("> 8", 20, TEAL).move_to([xpos(8)-0.4, nl_y+0.55, 0])
+        lt14 = txt("< 14", 20, TEAL).move_to([xpos(14)+0.45, nl_y+0.55, 0])
+
+        panel2 = self.panel_to(txt("8 < 10 < 14  ✓", 28, TEAL))
+
+        self.cue("Does ten metres make sense", FadeOut(VGroup(step1,step2,step3,step4,step5,step6)),
+                 Create(nl), Create(ticks), FadeIn(tick_labels), run_time=1.2)
+        self.cue("The diagonal must be longer than eight", Create(bracket), Create(b_l), Create(b_r),
+                 FadeIn(lbl_range), run_time=1.2)
+        self.cue("A marker at 10", FadeIn(dot10), FadeIn(gt8), FadeIn(lt14), run_time=1.0)
+        self.cue("Both forms of reasoning", FadeIn(chk), panel2, run_time=1.0)
+        self.finish()
+
+        # ── Beat 24 ────────────────────────────────────────────────────────────
+        self.begin("24")
+        err1 = make_error_box([r"c = 100\text{ m}\ \times"], RED)
+        err1.move_to([-1.5, 0.5, 0])
+        ann1 = txt("area ≠ length", 22, PINK).next_to(err1, DOWN, buff=0.18)
+
+        err2 = make_error_box([r"c = 6+8 = 14\text{ m}\ \times"], RED)
+        err2.move_to([3.2, 0.5, 0])
+        ann2 = txt("route ≠ diagonal", 22, PINK).next_to(err2, DOWN, buff=0.18)
+
+        correct = make_error_box([r"c = 10\text{ m}\ \checkmark"], GREEN)
+        correct.move_to([0.85, -1.4, 0])
+
+        panel3 = self.panel_to(
+            txt("c ≠ 100", 28, PINK),
+            txt("c ≠ 14", 28, PINK),
+        )
+
+        self.cue("Watch for two different mistakes",
+                 FadeOut(VGroup(nl, ticks, tick_labels, bracket, b_l, b_r,
+                                lbl_range, dot10, chk, gt8, lt14)),
+                 run_time=0.8)
+        self.cue("Stopping at c squared equals one hundred", FadeIn(err1), FadeIn(ann1), run_time=1.2)
+        self.cue("The other mistake is adding six and eight", FadeIn(err2), FadeIn(ann2), run_time=1.2)
+        self.cue("square the legs, add their squares", FadeIn(correct), panel3, run_time=1.0)
+        self.finish()
+        self.done()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+class C07(LessonScene):
+    def construct(self):
+        self.chapter(7)
+
+        # ── Beat 25 ────────────────────────────────────────────────────────────
+        self.begin("25")
+        # Ladder diagram: wall left, ground bottom
+        gx0, gy = -5.8, -1.8
+        wx, wy_top = -5.8, 1.8
+        # ground: gx0 to gx0+3.0
+        ground = Line([gx0, gy, 0], [gx0+3.2, gy, 0], color=INK, stroke_width=2)
+        wall   = Line([gx0, gy, 0], [wx, wy_top, 0], color=INK, stroke_width=2)
+
+        # ladder foot 2.4 units right of wall, top at wall
+        foot = np.array([gx0+2.4, gy, 0])
+        top  = np.array([gx0, gy+3.6, 0])
+        ladder = Line(foot, top, color=PINK, stroke_width=3)
+
+        ram2 = right_angle_mark([gx0, gy], [1,0], [0,1], size=0.2, color=INK)
+
+        lbl_13 = eq("13\\text{ m}", 28, PINK).move_to((foot+top)/2 + np.array([0.55, 0.1, 0]))
+        lbl_5  = eq("5\\text{ m}", 28, TEAL).move_to([gx0+1.2, gy-0.32, 0])
+        lbl_h  = eq("h = ?", 28, GOLD).move_to([gx0-0.55, gy+1.8, 0])
+
+        panel = self.panel_to(
+            txt("Hyp = 13, leg = 5", 26, INK),
+            txt("find h", 28, GOLD),
+        )
+
+        self.cue("Now the unknown is a leg", Create(ground), Create(wall), run_time=1.0)
+        self.cue("a thirteen-metre ladder", Create(ladder), FadeIn(lbl_13), run_time=1.0)
+        self.cue("The right-angle marker", FadeIn(ram2), FadeIn(lbl_5), run_time=1.0)
+        self.cue("Label the vertical height h", FadeIn(lbl_h), panel, run_time=1.0)
+        self.finish()
+
+        # ── Beat 26 ────────────────────────────────────────────────────────────
+        self.begin("26")
+        s1 = eq(r"h^2 + 5^2 = 13^2", 36, INK).move_to([3.7, 1.7, 0])
+        s2 = eq(r"5^2 = 25", 32, TEAL).move_to([3.7, 1.0, 0])
+        s3 = eq(r"13^2 = 169", 32, GOLD).move_to([3.7, 0.4, 0])
+        s4 = eq(r"h^2 + 25 = 169", 32, INK).move_to([3.7, -0.2, 0])
+        s5 = eq(r"h^2 = 169 - 25 = 144", 32, INK).move_to([3.7, -0.85, 0])
+        s6 = eq(r"h = \sqrt{144} = 12\text{ m}", 36, GOLD).move_to([3.7, -1.6, 0])
+
+        self.cue("Write the formula with the known values", Write(s1), run_time=1.2)
+        self.cue("Five squared is twenty-five", FadeIn(s2), FadeIn(s3), run_time=1.2)
+        self.cue("h squared plus twenty-five equals", FadeIn(s4), run_time=1.0)
+        self.cue("subtract twenty-five from both sides", FadeIn(s5), FadeIn(s6), run_time=1.2)
+        self.finish()
+
+        # ── Beat 27 ────────────────────────────────────────────────────────────
+        self.begin("27")
+        verify = eq(r"12^2 + 5^2 = 144 + 25 = 169 = 13^2\ \checkmark", 30, TEAL)
+        verify.move_to([3.7, 1.5, 0])
+
+        row_c  = VGroup(txt("Find c:", 26, PINK),
+                        eq(r"c^2 = a^2+b^2\ \text{(add)}", 28, PINK)).arrange(RIGHT, buff=0.2)
+        row_a  = VGroup(txt("Find leg:", 26, GOLD),
+                        eq(r"a^2 = c^2-b^2\ \text{(sub)}", 28, GOLD)).arrange(RIGHT, buff=0.2)
+        table  = VGroup(row_c, row_a).arrange(DOWN, buff=0.35, aligned_edge=LEFT)
+        table.move_to([3.7, -0.4, 0])
+
+        panel2 = self.panel_to(txt("Verify: 144+25=169 ✓", 24, TEAL))
+
+        self.cue("Check twelve by substitution",
+                 FadeOut(VGroup(s1,s2,s3,s4,s5,s6)), FadeIn(verify), run_time=1.2)
+        self.cue("Finding a leg means subtracting", FadeIn(table), run_time=1.2)
+        self.cue("Identify the sides first", panel2, run_time=1.0)
+        self.finish()
+
+        # ── Beat 28 ────────────────────────────────────────────────────────────
+        self.begin("28")
+        wrong_eq = make_error_box([r"13^2+5^2=169+25=194", r"\sqrt{194}\approx 13.9\text{ m}\ \times"], RED)
+        wrong_eq.move_to([3.5, 0.9, 0])
+        ann_imp = txt("height > ladder: impossible", 22, PINK).next_to(wrong_eq, DOWN, buff=0.2)
+        arr_imp = Arrow([3.5, -0.05, 0], [gx0+0.5, gy+1.0, 0], color=RED, stroke_width=2, buff=0.1)
+
+        correct2 = make_error_box([r"h = 12\text{ m}\ \checkmark"], GREEN)
+        correct2.move_to([3.5, -1.6, 0])
+
+        panel3 = self.panel_to(txt("h cannot exceed 13 m", 26, PINK))
+
+        self.cue("What if someone adds thirteen squared",
+                 FadeOut(VGroup(verify, table)), FadeIn(wrong_eq), run_time=1.2)
+        self.cue("That would make the height longer", FadeIn(ann_imp), Create(arr_imp), run_time=1.2)
+        self.cue("The unknown is a leg", FadeIn(correct2), panel3, run_time=1.0)
+        self.finish()
+        self.done()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+class C08(LessonScene):
+    def construct(self):
+        self.chapter(8)
+
+        # ── Beat 29 ────────────────────────────────────────────────────────────
+        self.begin("29")
+        # Unit square left panel
+        s = 2.2
+        cx, cy = -3.5, 0.1
+        SBL = np.array([cx-s/2, cy-s/2, 0])
+        SBR = np.array([cx+s/2, cy-s/2, 0])
+        STR = np.array([cx+s/2, cy+s/2, 0])
+        STL = np.array([cx-s/2, cy+s/2, 0])
+
+        sq = Polygon(SBL, SBR, STR, STL, color=INK, stroke_width=2)
+        sq_diag = Line(SBL, STR, color=PINK, stroke_width=2.5)
+        lbl_s1 = txt("1 m", 26, TEAL).next_to(Line(SBL, SBR), DOWN, buff=0.12)
+        lbl_s2 = txt("1 m", 26, TEAL).next_to(Line(SBR, STR), RIGHT, buff=0.12)
+        lbl_cd = eq(r"\sqrt{2}", 28, PINK).move_to((SBL+STR)/2 + np.array([-0.42, 0.22, 0]))
+
+        e1 = eq(r"c^2 = 1^2 + 1^2 = 2", 34, INK).move_to([3.7, 1.5, 0])
+        e2 = eq(r"c = \sqrt{2} \approx 1.414\text{ m}", 34, PINK).move_to([3.7, 0.7, 0])
+
+        # number line
+        nl_y = -1.7
+        nl2 = Line([1.2, nl_y, 0], [6.2, nl_y, 0], color=MUTED, stroke_width=1.5)
+        for v, lbl in [(0,"0"),(1,"1"),(1.414,""),(2,"2")]:
+            x = 1.2 + v*(5.0/2)
+            nl2.add(Line([x,nl_y-0.08,0],[x,nl_y+0.08,0],color=MUTED,stroke_width=1.5))
+        def nlx(v): return 1.2 + v*(5.0/2)
+        nl_ticks = VGroup(
+            txt("0",18,MUTED).move_to([nlx(0),nl_y-0.28,0]),
+            txt("1",18,MUTED).move_to([nlx(1),nl_y-0.28,0]),
+            txt("2",18,MUTED).move_to([nlx(2),nl_y-0.28,0]),
+        )
+        dot_sqrt2 = Dot([nlx(1.414), nl_y, 0], color=PINK, radius=0.09)
+        lbl_sqrt2 = txt("√2 ≈ 1.414", 20, PINK).move_to([nlx(1.414), nl_y-0.52, 0])
+
+        panel = self.panel_to(txt("c = √2  (exact)", 28, TEAL))
+
+        self.cue("Not every diagonal has a whole-number length", Create(sq), run_time=1.0)
+        self.cue("Its diagonal forms a right triangle", Create(sq_diag), FadeIn(lbl_s1), FadeIn(lbl_s2), run_time=1.0)
+        self.cue("C squared is one plus one", Write(e1), Write(e2), run_time=1.2)
+        self.cue("The radical gives an exact length",
+                 FadeIn(lbl_cd), Create(nl2), FadeIn(nl_ticks),
+                 FadeIn(dot_sqrt2), FadeIn(lbl_sqrt2), panel, run_time=1.2)
+        self.finish()
+
+        # ── Beat 30 ────────────────────────────────────────────────────────────
+        self.begin("30")
+        # Coordinate grid left panel
+        grid_ox, grid_oy = -4.8, -1.5
+        grid_scale = 0.72
+        def gp(x, y): return np.array([grid_ox + x*grid_scale, grid_oy + y*grid_scale, 0])
+
+        grid_lines = VGroup()
+        for i in range(7):
+            grid_lines.add(Line(gp(i,0), gp(i,5), color=GRID, stroke_width=0.8))
+        for j in range(6):
+            grid_lines.add(Line(gp(0,j), gp(6,j), color=GRID, stroke_width=0.8))
+
+        ax_x = Arrow(gp(0,0), gp(6.3,0), color=MUTED, stroke_width=1.5, buff=0)
+        ax_y = Arrow(gp(0,0), gp(0,5.3), color=MUTED, stroke_width=1.5, buff=0)
+
+        p1 = gp(1,1); p2 = gp(5,4)
+        dot1 = Dot(p1, color=TEAL, radius=0.1)
+        dot2 = Dot(p2, color=GOLD, radius=0.1)
+        lbl_p1 = txt("(1,1)", 20, TEAL).move_to(p1 + np.array([-0.38, -0.28, 0]))
+        lbl_p2 = txt("(5,4)", 20, GOLD).move_to(p2 + np.array([0.38, 0.22, 0]))
+
+        p_mid = np.array([p2[0], p1[1], 0])
+        h_leg = DashedLine(p1, p_mid, color=TEAL, stroke_width=2)
+        v_leg = DashedLine(p_mid, p2, color=GOLD, stroke_width=2)
+        hyp_line = Line(p1, p2, color=PINK, stroke_width=2.5)
+        lbl_dx = txt("Δx = 4", 22, TEAL).move_to((p1+p_mid)/2 + np.array([0, -0.28, 0]))
+        lbl_dy = txt("Δy = 3", 22, GOLD).move_to((p_mid+p2)/2 + np.array([0.38, 0, 0]))
+        lbl_c2 = eq("c = ?", 24, PINK).move_to((p1+p2)/2 + np.array([-0.42, 0.22, 0]))
+
+        e_dist = eq(r"c = \sqrt{4^2+3^2} = \sqrt{25} = 5", 32, INK).move_to([3.7, -1.3, 0])
+
+        panel2 = self.panel_to(
+            txt("Distance =", 26, INK),
+            eq(r"\sqrt{\Delta x^2+\Delta y^2}=5", 32, TEAL),
+        )
+
+        self.cue("Place two points on a coordinate grid",
+                 FadeOut(VGroup(sq, sq_diag, lbl_s1, lbl_s2, lbl_cd, e1, e2,
+                                nl2, nl_ticks, dot_sqrt2, lbl_sqrt2)),
+                 Create(grid_lines), Create(ax_x), Create(ax_y),
+                 FadeIn(dot1), FadeIn(dot2), FadeIn(lbl_p1), FadeIn(lbl_p2), run_time=1.4)
+        self.cue("Their horizontal difference is", Create(h_leg), FadeIn(lbl_dx), run_time=1.0)
+        self.cue("Their vertical difference is", Create(v_leg), FadeIn(lbl_dy), run_time=1.0)
+        self.cue("The distance between the points is its hypotenuse",
+                 Create(hyp_line), FadeIn(lbl_c2), Write(e_dist), panel2, run_time=1.2)
+        self.finish()
+
+        # ── Beat 31 ────────────────────────────────────────────────────────────
+        self.begin("31")
+        # Translate everything 3 units right on the grid
+        shift = np.array([3*grid_scale, 0, 0])
+        p1b = p1 + shift; p2b = p2 + shift
+        p_midb = p_mid + shift
+
+        dot1b = Dot(p1b, color=TEAL, radius=0.1)
+        dot2b = Dot(p2b, color=GOLD, radius=0.1)
+        lbl_p1b = txt("(4,1)", 20, TEAL).move_to(p1b + np.array([-0.38, -0.28, 0]))
+        lbl_p2b = txt("(8,4)", 20, GOLD).move_to(p2b + np.array([0.38, 0.22, 0]))
+        h_legb = DashedLine(p1b, p_midb, color=TEAL, stroke_width=2)
+        v_legb = DashedLine(p_midb, p2b, color=GOLD, stroke_width=2)
+        hyp_b  = Line(p1b, p2b, color=PINK, stroke_width=2.5)
+        lbl_dxb = txt("Δx = 4", 22, TEAL).move_to((p1b+p_midb)/2 + np.array([0, -0.28, 0]))
+        lbl_dyb = txt("Δy = 3", 22, GOLD).move_to((p_midb+p2b)/2 + np.array([0.38, 0, 0]))
+        lbl_still5 = eq(r"c = 5", 30, PINK).move_to((p1b+p2b)/2 + np.array([-0.42, 0.22, 0]))
+
+        panel3 = self.panel_to(txt("Translation preserves\ndistance", 26, TEAL))
+
+        self.cue("Slide both points three units to the right",
+                 ReplacementTransform(dot1, dot1b),
+                 ReplacementTransform(dot2, dot2b),
+                 ReplacementTransform(lbl_p1, lbl_p1b),
+                 ReplacementTransform(lbl_p2, lbl_p2b),
+                 ReplacementTransform(h_leg, h_legb),
+                 ReplacementTransform(v_leg, v_legb),
+                 ReplacementTransform(hyp_line, hyp_b),
+                 ReplacementTransform(lbl_c2, lbl_still5),
+                 run_time=1.4)
+        self.cue("The horizontal difference is eight minus four, still four",
+                 ReplacementTransform(lbl_dx, lbl_dxb),
+                 ReplacementTransform(lbl_dy, lbl_dyb), run_time=1.2)
+        self.cue("Distance depends on the difference between positions",
+                 panel3, run_time=1.0)
+        self.finish()
+
+        # ── Beat 32 ────────────────────────────────────────────────────────────
+        self.begin("32")
+        # Three mini diagrams
+        def mini_rect(label_ra):
+            s2 = 0.55; s3 = 0.75
+            pts = [[-s2,-s3,0],[s2,-s3,0],[s2,s3,0],[-s2,s3,0]]
+            r = Polygon(*pts, color=INK, stroke_width=1.5)
+            d = Line([-s2,-s3,0],[s2,s3,0], color=PINK, stroke_width=2)
+            ram = right_angle_mark([s2,-s3], [-1,0],[0,1], size=0.14, color=INK)
+            return VGroup(r, d, ram)
+
+        def mini_ladder():
+            wall = Line([-0.5,-0.8,0],[-0.5,0.8,0], color=INK, stroke_width=1.5)
+            gnd  = Line([-0.5,-0.8,0],[0.6,-0.8,0], color=INK, stroke_width=1.5)
+            lad  = Line([0.6,-0.8,0],[-0.5,0.5,0], color=PINK, stroke_width=2)
+            ram  = right_angle_mark([-0.5,-0.8],[1,0],[0,1],size=0.14,color=INK)
+            return VGroup(wall, gnd, lad, ram)
+
+        def mini_grid():
+            g = VGroup()
+            for i in range(4):
+                g.add(Line([i*0.35-0.5,-0.5,0],[i*0.35-0.5,0.5,0],color=GRID,stroke_width=0.8))
+            for j in range(4):
+                g.add(Line([-0.5,j*0.35-0.5,0],[0.5,j*0.35-0.5,0],color=GRID,stroke_width=0.8))
+            d = Line([-0.5,-0.5,0],[0.5,0.5,0], color=PINK, stroke_width=2)
+            g.add(d)
+            return g
+
+        m1 = mini_rect("rect"); m2 = mini_ladder(); m3 = mini_grid()
+        diagrams = VGroup(m1, m2, m3).arrange(RIGHT, buff=0.9)
+        diagrams.move_to([-2.0, 0.5, 0])
+
+        ann1 = txt("rectangular\nfloor", 20, MUTED).next_to(m1, DOWN, buff=0.15)
+        ann2 = txt("wall meets\nground", 20, MUTED).next_to(m2, DOWN, buff=0.15)
+        ann3 = txt("grid axes\nperpendicular", 20, MUTED).next_to(m3, DOWN, buff=0.15)
+
+        big_eq = eq(r"a^2 + b^2 = c^2", 40, INK).move_to([0.0, -1.7, 0])
+
+        panel4 = self.panel_to(txt("Right angle:\nthe common thread", 26, TEAL))
+
+        self.cue("A coordinate grid quietly supplies the right angle",
+                 FadeOut(VGroup(grid_lines, ax_x, ax_y, dot1b, dot2b,
+                                lbl_p1b, lbl_p2b, h_legb, v_legb, hyp_b,
+                                lbl_dxb, lbl_dyb, lbl_still5, e_dist)),
+                 run_time=0.8)
+        self.cue("We can then calculate the straight-line separation",
+                 FadeIn(diagrams), FadeIn(ann1), FadeIn(ann2), FadeIn(ann3), run_time=1.4)
+        self.cue("We are not calculating every possible route",
+                 Write(big_eq), panel4, run_time=1.2)
+        self.finish()
+        self.done()

@@ -1,0 +1,492 @@
+{
+ "name": "atom",
+ "from_lesson": "20261012-201940-1ca014",
+ "brief": {
+  "topic": "Structure of the atom: electrons, protons and neutrons",
+  "grade": 9,
+  "audience": "Class 9 students",
+  "level": "standard",
+  "goal": "Say where the electrons, protons and neutrons of an atom are and read an atom's make-up from its atomic number and mass number",
+  "style": "storyteller",
+  "language": "hinglish",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "worked_examples"
+ },
+ "card": {
+  "big_idea": {
+   "text": "An atom is mostly empty space: nearly all its mass sits in a tiny central nucleus of protons and neutrons, with electrons outside, and the atomic number and mass number tell you exactly how many of each it has.",
+   "cites": [
+    "S3#2",
+    "S2#11",
+    "S1#4",
+    "S1#6"
+   ]
+  },
+  "why_it_matters": {
+   "text": "Once you can read an atom's numbers, you can tell which element it is and how heavy its nucleus is, which is what the later lessons on valency and isotopes build on.",
+   "cites": [
+    "S1#15",
+    "S2#23"
+   ]
+  },
+  "the_why": {
+   "text": "Protons and electrons carry equal and opposite charges, so a neutral atom has as many electrons as protons; the atomic number is the proton count, and the neutrons (which carry no charge) are whatever is left of the mass number. The electrons are kept outside the nucleus because they move fast enough that the pull of the protons holds them in orbit rather than letting them fall in.",
+   "cites": [
+    "S1#4",
+    "S1#3",
+    "S3#4",
+    "S3#11"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "name where the protons, neutrons and electrons of an atom are, and the charge of each",
+    "level": "remember",
+    "checked_by": "q1"
+   },
+   {
+    "can": "explain why the electrons stay outside the nucleus while the nucleus holds almost all the mass",
+    "level": "understand",
+    "checked_by": "q3"
+   },
+   {
+    "can": "work out the protons, neutrons and electrons of an atom from its atomic number and mass number",
+    "level": "apply",
+    "checked_by": "q2"
+   },
+   {
+    "can": "tell apart the atomic number (protons, which identify the element) from the mass number (protons plus neutrons) when reading an atom's notation",
+    "level": "analyze",
+    "checked_by": "try_it"
+   }
+  ],
+  "picture": {
+   "text": "Start with a single small dot in the middle of a large empty circle: that dot is the nucleus, and the empty circle is the rest of the atom. Then add the particles: protons and neutrons packed into the dot, and electrons as small dots spread around its edge, moving in a cloud or shell. The picture changes as numbers are added: the dot gains protons and neutrons, and the outer dots are counted to match the protons.",
+   "cites": [
+    "S1#6",
+    "S2#18",
+    "S1#4"
+   ],
+   "standard": "The Bohr-Bury shell diagram: a nucleus in the centre with electrons drawn on rin"
+  },
+  "diagram_ask": "Labelled diagram of an atom drawn in the Bohr-Bury style: a very small nucleus at the centre, with protons and neutrons packed inside it, and electrons drawn as small dots on rings around the nucleus, with the labels nucleus, proton, neutron, electron and shell, and the outer empty space marked.",
+  "needs_first": [
+   {
+    "text": "Knows that matter is made of atoms, and that a substance is made of many atoms of a few kinds.",
+    "cites": [
+     "S2#1",
+     "S2#2"
+    ]
+   },
+   {
+    "text": "Knows that charges are either positive or negative, and that like charges push apart while opposite charges pull together.",
+    "cites": [
+     "S3#3",
+     "S3#7"
+    ]
+   },
+   {
+    "text": "Can add and subtract whole numbers, since the counting step uses a subtraction.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "The atom is a solid, indivisible ball with the particles spread evenly through it, like a filled sphere.",
+    "why_it_fails": "The gold foil result showed that most of an atom is empty and its mass is packed into a tiny nucleus, so a solid ball cannot match what was seen.",
+    "cites": [
+     "S1#1",
+     "S1#2",
+     "S2#10",
+     "S2#11"
+    ]
+   },
+   {
+    "mistake": "The mass number is the number of electrons, or the mass number counts the electrons as well as the nucleons.",
+    "why_it_fails": "Electrons have almost no mass and are not counted in the mass number, which is only protons plus neutrons; for a neutral atom the electrons equal the atomic number.",
+    "cites": [
+     "S1#4",
+     "S1#5",
+     "S3#11"
+    ]
+   },
+   {
+    "mistake": "Neutrons carry a positive or negative charge, or the neutron count is the same as the mass number.",
+    "why_it_fails": "Neutrons are electrically neutral, so they add mass but no charge, and neutrons are found by subtracting the atomic number from the mass number.",
+    "cites": [
+     "S3#3",
+     "S1#3",
+     "S1#5"
+    ]
+   },
+   {
+    "mistake": "The atom's mass is spread evenly through its whole volume, so the empty-looking outer space is about as heavy as the centre.",
+    "why_it_fails": "Nearly all the mass sits in a nucleus about a lakh times smaller than the atom, so the outer space is almost weightless, and an even spread cannot match what the scattering showed.",
+    "cites": [
+     "S3#2",
+     "S2#11",
+     "S2#12"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "Imagine an atom blown up to the size of a cricket stadium. Is most of that stadium solid, or mostly empty space with a tiny central piece?",
+   "guesses": [
+    "solid all the way through",
+    "mostly empty, with a tiny heavy centre",
+    "half solid and half empty"
+   ],
+   "answer": "Mostly empty. The nucleus is roughly one lakh times smaller than the atom, and nearly all the mass is packed into it.",
+   "cites": [
+    "S2#12",
+    "S3#2",
+    "S2#11"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the stadium-sized atom and ask the opening question out loud, pausing so the learner commits to a guess.",
+    "cites": [
+     "S2#12"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Collect the guesses on the board in the three options and do not reveal the answer yet.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Draw the empty circle with a small dot in the middle; point at the dot (the nucleus) and at the empty space around it. Say the dot holds nearly all the mass.",
+    "cites": [
+     "S3#2",
+     "S2#11"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Add protons (positive, in the nucleus), neutrons (no charge, in the nucleus) and electrons (negative, outside), each drawn as a different mark, and say the mass of an electron is almost nothing.",
+    "cites": [
+     "S3#3",
+     "S3#9",
+     "S1#3"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Ask why the electrons do not fall into the nucleus. Wait, then say: they move fast enough that the pull of the protons bends their path into an orbit, so the electrons stay out.",
+    "cites": [
+     "S3#4",
+     "S3#5"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Write the notation for carbon with mass number 12 on top and atomic number 6 below. Say the 6 below is the protons, the 6 neutrons is the 12 minus 6, and a neutral carbon atom has 6 electrons outside.",
+    "cites": [
+     "S2#23",
+     "S1#4",
+     "S1#5"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Put the correct reading for aluminium (13 protons, 13 electrons, 14 neutrons) beside the mistake of counting electrons as part of the mass number, and show why the second gives a wrong count.",
+    "cites": [
+     "S3#11",
+     "S1#4"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Give oxygen (mass number 16, atomic number 8) and ask the learner to say the protons, neutrons and electrons before you show them.",
+    "cites": [
+     "S1#4"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "Set the paper task and say what to draw and what to predict.",
+    "cites": [
+     "S1#5"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Ask the learner to say the big idea in their own words: where the particles are, and how the two numbers give the make-up.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "In a neutral atom, where are the protons found?",
+    "options": [
+     "in the nucleus, at the centre",
+     "spread through the electron cloud outside",
+     "in the empty space between electrons"
+    ],
+    "answer_index": 0,
+    "explain": "Protons and neutrons are packed into the nucleus, while electrons orbit outside it.",
+    "cites": [
+     "S3#1",
+     "S3#2"
+    ]
+   },
+   {
+    "question": "An atom has atomic number 6 and mass number 12. How many neutrons does it have?",
+    "options": [
+     "6",
+     "12",
+     "18"
+    ],
+    "answer_index": 0,
+    "explain": "Neutrons are the mass number minus the atomic number, so 12 minus 6 gives 6; choosing 12 treats the mass number as the neutron count, and 18 adds the two numbers.",
+    "cites": [
+     "S1#4",
+     "S1#5",
+     "S2#23"
+    ]
+   },
+   {
+    "question": "Why does an electron stay in orbit around the nucleus and not fall into it?",
+    "options": [
+     "its speed keeps it moving round while the pull of the protons holds it in orbit",
+     "it carries no charge, so nothing pulls on it",
+     "the protons push it outward and away from the nucleus"
+    ],
+    "answer_index": 0,
+    "explain": "The electron is moving fast and the electrostatic attraction bends its path, so it orbits rather than falling in; having no charge would mean no pull at all, and a push outward is the reverse of attraction.",
+    "cites": [
+     "S3#4",
+     "S3#5",
+     "S3#3"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Build the notation from the numbers",
+   "kind": "paper",
+   "materials": [
+    "a sheet of plain paper",
+    "a pencil",
+    "a coin or small button to mark each electron if you like"
+   ],
+   "stands_for": "Each dot in the circle is one particle: a P for a proton, an N for a neutron, and a small dot outside the circle for an electron.",
+   "predict": "Before drawing, write down how many electrons a neutral carbon atom with mass number 12 and atomic number 6 has.",
+   "steps": [
+    "Write the notation for carbon: 12 on top, 6 below, and the letter C beside them.",
+    "Draw a small circle in the middle of the page to be the nucleus.",
+    "Inside the circle, draw 6 P marks and 6 N marks (protons equal the atomic number; neutrons equal the mass number minus the atomic number).",
+    "Outside the circle, draw 6 dots spaced around it and label each e-.",
+    "Repeat for aluminium: 27 on top, 13 below, and draw 13 P, 14 N, and 13 electrons."
+   ],
+   "observe": "Carbon has 6 protons, 6 neutrons and 6 electrons; aluminium has 13 protons, 14 neutrons and 13 electrons. The electrons sit outside the small nucleus, not inside it.",
+   "question": "Why do the electrons outside the nucleus match the protons inside it, and why are the neutrons found by subtracting?",
+   "expected": "The electrons equal the protons because the atom is neutral: each positive proton's charge is cancelled by one negative electron, so the electron count is the proton count, which is the atomic number. The neutrons equal the mass number minus the atomic number because the mass number adds protons and neutrons together, so taking away the protons leaves the neutrons.",
+   "write": "Line 1: the number of electrons equals the atomic number, because the atom is neutral. Line 2: the neutrons equal the mass number minus the atomic number, because the mass number counts protons and neutrons together.",
+   "in_class": "Pairs of students each draw the carbon diagram on paper, while the teacher draws the same circle on the board and labels it as the class calls it. The teacher asks: 'If an atom has 8 protons and mass number 16, how many neutrons and how many electrons?' A wrong answer that gives 16 neutrons or 16 electrons shows the learner has taken the mass number as the particle count, which is the mistake to correct.",
+   "cites": [
+    "S1#4",
+    "S1#5",
+    "S3#11"
+   ]
+  },
+  "leave_out": [
+   "Quantum wave equations and detailed electron orbitals, which the sources mention as later topics.",
+   "Electron capture and nuclear reactions that change the element, which are a separate topic.",
+   "The strong nuclear force that holds the protons together, which is interesting but not needed to read the atom's make-up.",
+   "Electronic configuration and valency beyond the basic shell picture, which belong to the next lesson.",
+   "Isotopes and weighted average atomic mass, which are a later step once the make-up is read."
+  ],
+  "from_lectures": [
+   {
+    "source": "S3",
+    "took": "Opening with a single question the learner can answer, the nucleus-and-cloud picture drawn with colour-coded particles, the aluminium notation worked through step by step, and the check that the atom is neutral because protons equal electrons.",
+    "left": "The quiz format with five questions and the strong nuclear force and orbital discussion, which add length to a 3-minute lesson."
+   },
+   {
+    "source": "S2",
+    "took": "The gold-foil reasoning that shows most of the atom is empty and the nucleus is tiny, and the way the mass number and atomic number are read from the notation with a worked nitrogen example.",
+    "left": "The long historical sequence through Thomson, Rutherford and Bohr, and the Christmas-pudding picture, since the sources also mention that these models were later superseded."
+   }
+  ],
+  "uncited": [
+   "The use of a stadium-sized atom with a pea-sized nucleus as an analogy, which I chose to make the size difference concrete.",
+   "The paper task's use of the letter C and the carbon-aluminium pair as the two worked examples.",
+   "The oxygen check question in the route, mass number 16 and atomic number 8.",
+   "The suggestion that a stadium analogy will reach the learner, and the choice of cricket stadium in the opening question.",
+   "The idea that the notation is the same in both sources and the learner should copy it into their own notebook."
+  ],
+  "teacher_talk": [
+   "opens by welcoming viewers and explaining the value of subscribing, sets up a conversational tone with rhetorical questions, transitions by asking what comes next or who solved the problem, and uses …",
+   "opens by framing the video as a quiz and review",
+   "asks direct multiple-choice questions throughout",
+   "uses mnemonics and simple physical analogies to explain abstract concepts",
+   "transitions between topics by posing a new numbered question or referring back to the atomic structure"
+  ],
+  "source_flows": {
+   "S1": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "application",
+    "demonstration",
+    "assessment"
+   ],
+   "S2": [
+    "motivation",
+    "demonstration",
+    "application"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "application",
+    "application"
+   ]
+  },
+  "topic": "Structure of the atom",
+  "asked": "Structure of the atom: electrons, protons and neutrons",
+  "klass": 9,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Science, Class 9, chapter 8: chapter 8",
+    "url": "https://ncert.nic.in/textbook/pdf/iesc108.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Aasan Concept : Class 9 विज्ञान Chapter 4 | परमाणु की संरचना | structure of the atom",
+    "url": "https://www.youtube.com/watch?v=5BHvLH6EHGk",
+    "note": "Hindi lecture, 23 min, automatic captions"
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "The Organic Chemistry Tutor: Chemistry - Atomic Structure - EXPLAINED!",
+    "url": "https://www.youtube.com/watch?v=OH-aSu-rWgk",
+    "note": "English lecture, 11 min, automatic captions"
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "0e864fbf94ff80b0",
+  "diagram": {
+   "ask": "Labelled diagram of an atom drawn in the Bohr-Bury style: a very small nucleus at the centre, with protons and neutrons packed inside it, and electrons drawn as small dots on rings around the nucleus, with the labels nucleus, proton, neutron, electron and shell, and the outer empty space marked.",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/labelled_diagram_of_an_a-58aaf76db5/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/labelled_diagram_of_an_a-58aaf76db5/whole.png",
+   "points": {
+    "electron": {
+     "name": "electron",
+     "box": [
+      0.3092,
+      0.0073,
+      0.4012,
+      0.0369
+     ]
+    },
+    "outer_empty_space": {
+     "name": "outer empty space",
+     "box": [
+      0.5882,
+      0.1556,
+      0.8082,
+      0.188
+     ]
+    },
+    "proton": {
+     "name": "proton",
+     "box": [
+      0.007,
+      0.1637,
+      0.0809,
+      0.1957
+     ]
+    },
+    "proton_": {
+     "name": "Proton (+)",
+     "box": [
+      0.7598,
+      0.7227,
+      0.8923,
+      0.7646
+     ]
+    },
+    "shell": {
+     "name": "shell",
+     "box": [
+      0.0312,
+      0.7674,
+      0.0809,
+      0.797
+     ]
+    },
+    "electron__": {
+     "name": "Electron (-)",
+     "box": [
+      0.7597,
+      0.8498,
+      0.9094,
+      0.8916
+     ]
+    },
+    "nucleus": {
+     "name": "nucleus",
+     "box": [
+      0.6309,
+      0.9262,
+      0.7167,
+      0.9558
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   },
+   "holds": {
+    "things": [
+     "three concentric gray circles",
+     "four dark red spheres with plus signs in the center",
+     "four brown spheres in the center",
+     "eight blue spheres on the circles",
+     "black line pointing to a red sphere",
+     "black line pointing to a blue sphere",
+     "black line pointing to a brown sphere",
+     "black line pointing to the innermost circle",
+     "dashed gray line pointing to empty space",
+     "black line pointing to the central cluster of spheres",
+     "legend box with three colored circles",
+     "dark red circle in the legend",
+     "brown circle in the legend",
+     "blue circle in the legend"
+    ],
+    "print": [
+     "proton",
+     "electron",
+     "neutron",
+     "outer empty space",
+     "shell",
+     "nucleus",
+     "Proton (+)",
+     "Neutron",
+     "Electron (-)"
+    ]
+   }
+  }
+ }
+}

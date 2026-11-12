@@ -1,0 +1,548 @@
+{
+ "name": "ap",
+ "from_lesson": "20261012-204215-146113",
+ "brief": {
+  "topic": "Arithmetic progressions: the nth term",
+  "grade": 10,
+  "audience": "Class 10 students",
+  "level": "standard",
+  "goal": "See where a + (n - 1)d comes from and use it to find any term of an arithmetic progression",
+  "style": "tutor",
+  "language": "hinglish",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "worked_examples"
+ },
+ "card": {
+  "big_idea": {
+   "text": "In an arithmetic progression, the nth term is the first term plus the common difference taken exactly n − 1 times: an = a + (n − 1)d.",
+   "cites": [
+    "S1#4",
+    "S1#17",
+    "S4#1"
+   ]
+  },
+  "why_it_matters": {
+   "text": "You can find a far-away term, such as a salary in a later year, without writing every earlier term one by one.",
+   "cites": [
+    "S1#1",
+    "S1#9",
+    "S3#3"
+   ]
+  },
+  "the_why": {
+   "text": "The first term is already at position 1, so reaching position n requires n − 1 equal jumps. Each jump adds d, so the total added amount is (n − 1)d.",
+   "cites": [
+    "S1#4",
+    "S1#9",
+    "S4#1"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Explain why the multiplier of the common difference is n − 1 rather than n.",
+    "level": "understand",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Work out a distant term of an arithmetic progression from its first term and common difference.",
+    "level": "apply",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Identify the first term, common difference, and term number without confusing the term number with its value.",
+    "level": "analyze",
+    "checked_by": "q3"
+   }
+  ],
+  "picture": {
+   "text": "Start with one horizontal sequence strip: 3, 6, 9, 12 in four equally spaced boxes, with one arrow between each neighbouring pair. Extend the same strip toward a box labelled 10th; first count the nine arrows from the 1st box to it, then show each arrow as one equal jump of 3, and finally contrast nine jumps with the incorrect ten-jump path.",
+   "cites": [
+    "S2#8",
+    "S3#1",
+    "S3#4",
+    "S4#1"
+   ],
+   "standard": "A horizontal sequence-of-terms strip with equal arrows between consecutive terms"
+  },
+  "diagram_ask": "A horizontal arithmetic-sequence strip: equally spaced boxes labelled 1st, 2nd, 3rd, 4th, and 10th; put 3, 6, 9, and 12 in the first four boxes, leave the 10th box blank, and draw identical rightward arrows between consecutive positions. Do not include a formula or the value of the 10th term.",
+  "needs_first": [
+   {
+    "text": "Subtract consecutive numbers to find a difference, including when the result is negative.",
+    "cites": [
+     "S1#7",
+     "S1#8"
+    ]
+   },
+   {
+    "text": "Use brackets, multiplication, and substitution in a simple algebraic expression.",
+    "cites": [
+     "S1#9",
+     "S2#11",
+     "S2#12"
+    ]
+   },
+   {
+    "text": "Distinguish an ordinal position such as 10th from the number written at that position.",
+    "cites": [
+     "S2#7",
+     "S3#1"
+    ]
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "“For the 10th term, I add 10d.”",
+    "why_it_fails": "The first term needs zero jumps to reach itself, so the 10th position is reached after nine jumps, not ten.",
+    "cites": [
+     "S1#9",
+     "S4#1"
+    ]
+   },
+   {
+    "mistake": "“n is the value of the term.”",
+    "why_it_fails": "n names the position being requested; the value at that position is an.",
+    "cites": [
+     "S2#7",
+     "S2#11",
+     "S3#1"
+    ]
+   },
+   {
+    "mistake": "“For 6, 3, 0, −3, the difference is 3 because I subtract 3 from 6.”",
+    "why_it_fails": "The difference is next term minus previous term, so 3 − 6 = −3; the progression moves downward.",
+    "cites": [
+     "S1#7",
+     "S1#8"
+    ]
+   },
+   {
+    "mistake": "“Any sequence with an obvious pattern is an arithmetic progression.”",
+    "why_it_fails": "An AP specifically needs the same difference between every consecutive pair.",
+    "cites": [
+     "S1#2",
+     "S1#7",
+     "S4#4"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "The sequence begins 3, 6, 9, 12, … . Without writing every term up to it, what do you think is at the 10th position?",
+   "guesses": [
+    "30, because the sequence keeps adding 3.",
+    "33, because 10 groups of 3 make 30 and then perhaps 3 is added again.",
+    "I need to list all ten terms first."
+   ],
+   "answer": "The 10th term is 30, found by starting at 3 and making nine jumps of 3: 3 + 9 × 3.",
+   "cites": [
+    "S2#8",
+    "S2#12",
+    "S2#13",
+    "S3#1",
+    "S3#2"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Reveal the first four boxes, 3, 6, 9, 12, and an empty 10th box. Ask the opening question and require a prediction before any formula appears.",
+    "cites": [
+     "S2#8",
+     "S3#1"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Place the three likely guesses beside the empty 10th box: 30, 33, or “must list.” Ask the learner to choose one.",
+    "cites": [
+     "S3#3",
+     "S3#6"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Draw one arrow at a time from 3 to 6, 6 to 9, and 9 to 12. Point to one arrow and establish that every arrow is the same common difference, d = 3.",
+    "cites": [
+     "S1#5",
+     "S1#7",
+     "S2#3",
+     "S2#4"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Extend the same strip from the 1st position to the 10th position and count the arrows aloud. Ask, “Why are there nine jumps, not ten?” Then show that position 1 starts with zero jumps and position 10 is nine gaps away.",
+    "cites": [
+     "S1#9",
+     "S4#1"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Build the general strip underneath: 1st has a, 2nd has a + d, 3rd has a + 2d. Replace the visible jump count with n − 1 and write an = a + (n − 1)d only after the pattern is seen.",
+    "cites": [
+     "S1#4",
+     "S1#17",
+     "S2#15",
+     "S2#16",
+     "S4#1"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Use the original strip as the worked case: mark a = 3, d = 3, and n = 10; substitute one value at a time to obtain a10 = 3 + (10 − 1) × 3 = 30.",
+    "cites": [
+     "S2#9",
+     "S2#10",
+     "S2#11",
+     "S2#12",
+     "S3#1",
+     "S3#2"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Put two calculations side by side on the same strip: nine jumps gives 3 + 9 × 3 = 30, while the tempting ten-jump calculation gives 33. Cross out 33 because it lands one jump beyond the 10th position.",
+    "cites": [
+     "S1#9",
+     "S4#1"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Show the sequence 21, 18, 15, … and ask the learner to decide whether the 35th term is found with d = 3 or d = −3, then calculate a35.",
+    "cites": [
+     "S1#7",
+     "S1#8",
+     "S1#10"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "Set the short paper task: use the first term and equal jumps to find a distant term, then explain in words why the multiplier is one less than the term number.",
+    "cites": [
+     "S1#15",
+     "S2#22",
+     "S2#23",
+     "S2#24"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Point once to the first box and once to the gaps, then ask the learner to complete: “The nth term is a + (n − 1)d because …”",
+    "cites": [
+     "S1#17",
+     "S4#1"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "From the 1st position to the 10th position, how many equal jumps are there?",
+    "options": [
+     "10 jumps",
+     "9 jumps",
+     "1 jump"
+    ],
+    "answer_index": 1,
+    "explain": "There are nine gaps between positions 1 and 10, because the first position is the starting point rather than an extra jump.",
+    "cites": [
+     "S1#9",
+     "S4#1"
+    ]
+   },
+   {
+    "question": "For the AP 3, 6, 9, 12, …, which calculation finds the 10th term?",
+    "options": [
+     "3 + (10 − 1) × 3",
+     "10 + (3 − 1) × 3",
+     "3 + 10 × 3"
+    ],
+    "answer_index": 0,
+    "explain": "The first term is 3, the common difference is 3, and the 10th position needs nine additions of that difference.",
+    "cites": [
+     "S1#17",
+     "S2#11",
+     "S2#12"
+    ]
+   },
+   {
+    "question": "For 21, 18, 15, …, which common difference should you use to find a later term?",
+    "options": [
+     "3",
+     "18",
+     "−3"
+    ],
+    "answer_index": 2,
+    "explain": "The next term minus the previous term is 18 − 21 = −3, so each jump subtracts 3.",
+    "cites": [
+     "S1#7",
+     "S1#8",
+     "S1#10"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Count the gaps, not the label",
+   "kind": "paper",
+   "materials": [
+    "paper",
+    "pencil"
+   ],
+   "stands_for": "Each written number is a term, and each gap from one term to the next stands for one addition of the common difference.",
+   "predict": "Before calculating, predict: is the 8th term of 4, 7, 10, 13, … closer to 24 or 25?",
+   "steps": [
+    "Write 4, 7, 10, 13, … and label the first four positions 1st to 4th.",
+    "Write the common difference d beside the sequence.",
+    "Mark how many gaps lie between the 1st and 8th positions.",
+    "Calculate a8 using 4 + (8 − 1) × 3.",
+    "Say or write why the multiplier was 7."
+   ],
+   "observe": "The 8th term is 25, because there are seven jumps of 3 after the first term 4.",
+   "question": "Why did you multiply 3 by 7 instead of by 8?",
+   "expected": "I used 7 because the first term is already at position 1; only the seven gaps after it add the common difference.",
+   "write": "“The 8th term is 25.”\n“I used 7 common differences because position 8 is seven jumps after position 1.”",
+   "in_class": "Pairs share one sheet for five minutes. The teacher writes “4, 7, 10, 13, …; find a8” and a row of positions 1 through 8 on the board. At the end ask, “How many jumps are from the first term to the eighth?” If many pairs answer 8, they are treating the position number as the number of additions.",
+   "cites": [
+    "S1#4",
+    "S1#17",
+    "S2#22",
+    "S2#23",
+    "S2#24"
+   ]
+  },
+  "leave_out": [
+   "{'text': 'Finding which term has a specified value, where n must be solved from the nth-term equation.', 'cites': ['S1#10', 'S3#3', 'S3#4', 'S3#5', 'S3#6']}",
+   "{'text': 'The sum of the first n terms of an AP.', 'cites': ['S1#11', 'S1#17', 'S4#2', 'S4#3']}",
+   "{'text': 'Geometric progressions, where terms are connected by a common ratio instead of a common difference.', 'cites': ['S4#4', 'S4#5']}"
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "The clear substitution routine: identify a, d, and the requested position n, then substitute them one at a time into the nth-term expression.",
+    "left": "Generating several initial terms and extended live-session repetition, because this short lesson needs to focus on why n − 1 counts gaps."
+   },
+   {
+    "source": "S3",
+    "took": "The useful check that a far term can be verified against a displayed sequence, and the visual use of arrows between terms.",
+    "left": "The non-consecutive-terms problem, because it requires an additional method for finding a and d rather than strengthening the central derivation."
+   },
+   {
+    "source": "S4",
+    "took": "The derivation route from a, a + d, and a + 2d to the insight that the nth position contains n − 1 copies of d.",
+    "left": "The sum formula and geometric progression comparison, because they are adjacent topics that would dilute the single idea of this lesson."
+   }
+  ],
+  "uncited": [
+   "diagram_ask wording",
+   "try_it title and exact paper-task design",
+   "try_it in_class timing and diagnostic interpretation"
+  ],
+  "teacher_talk": [
+   "Informal, energetic, and engaging tone using conversational Hindi and pedagogical catchphrases",
+   "Repeatedly prompts the audience to interact, check-in, and press the like button for motivation",
+   "Uses step-by-step questioning and rhetorical questions ('बोलिए समांतर श्रेणी का मतलब आप लोग समझे आप लोग') to check understanding before moving forward",
+   "opens by stating the goal and immediately diving into a concrete problem",
+   "talks through calculations step-by-step while writing them out",
+   "transitions between topics by introducing a new, related problem to expand on the concept"
+  ],
+  "source_flows": {
+   "S1": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "application",
+    "integration"
+   ],
+   "S2": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "application",
+    "application"
+   ],
+   "S3": [
+    "demonstration",
+    "application",
+    "motivation",
+    "demonstration",
+    "application"
+   ],
+   "S4": [
+    "activation",
+    "demonstration",
+    "demonstration",
+    "demonstration"
+   ]
+  },
+  "topic": "Arithmetic Progressions: The Nth Term",
+  "asked": "Arithmetic progressions: the nth term",
+  "klass": 10,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Mathematics, Class 10, chapter 5: Arithmetic Progressions Arithmetic Progressions",
+    "url": "https://ncert.nic.in/textbook/pdf/jemh105.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Explain 4U - Hemant Patil: Arithmetic Progression | Parallel Series | Samantar Shreni Class 10 | NCERT Maths Class 10 Chapter 5",
+    "url": "https://www.youtube.com/watch?v=qET8XELKnhw",
+    "note": "Hindi lecture, 23 min, automatic captions"
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "The Organic Chemistry Tutor: How To Find The Nth Term of an Arithmetic Sequence",
+    "url": "https://www.youtube.com/watch?v=PStn9zHgXHU",
+    "note": "English lecture, 6 min, automatic captions"
+   },
+   {
+    "id": "S4",
+    "kind": "lecture",
+    "title": "Sri Chaitanya Academy NEET: Arithmetic Progression and Geometric Progression | Don't Memorise | (GMAT/GRE/CAT/Bank PO/SSC CGL)",
+    "url": "https://www.youtube.com/watch?v=gua96ju_FBk",
+    "note": "English lecture, 4 min"
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "b1ade7674509ec9d",
+  "diagram": {
+   "ask": "A standard diagram of a horizontal sequence strip of four boxes containing the numbers 3, 6, 9, 12, showing equal arrows between each neighbouring pair, and extending to a final box labeled n-th term.",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-dc90a3210d/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-dc90a3210d/whole_stacked.png",
+   "panels": [
+    "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-dc90a3210d/panel_1.png",
+    "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-dc90a3210d/panel_2.png"
+   ],
+   "panel_boxes": [
+    [
+     0,
+     0,
+     820,
+     293
+    ],
+    [
+     222,
+     330,
+     597,
+     523
+    ]
+   ],
+   "points": {
+    "6": {
+     "name": "6",
+     "box": [
+      0.3516,
+      0.292,
+      0.3702,
+      0.3397
+     ]
+    },
+    "9": {
+     "name": "9",
+     "box": [
+      0.6284,
+      0.292,
+      0.6473,
+      0.3397
+     ]
+    },
+    "12": {
+     "name": "12",
+     "box": [
+      0.8962,
+      0.2928,
+      0.9349,
+      0.3392
+     ]
+    },
+    "n_th_term": {
+     "name": "n-th term",
+     "box": [
+      0.4975,
+      0.7182,
+      0.6767,
+      0.7665
+     ]
+    },
+    "a__2d": {
+     "name": "a + 2d",
+     "box": [
+      0.5773,
+      0.4975,
+      0.7,
+      0.5513
+     ]
+    },
+    "a__3d": {
+     "name": "a + 3d",
+     "box": [
+      0.8542,
+      0.4975,
+      0.9768,
+      0.5513
+     ]
+    },
+    "a__n_1d": {
+     "name": "a + (n - 1)d",
+     "box": [
+      0.4693,
+      0.9239,
+      0.709,
+      0.9924
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   },
+   "shows": "how each successive term adds a common difference d, building up the formula a plus the product of n minus one and d.",
+   "visual_kind": "standard diagram",
+   "holds": {
+    "things": [
+     "rounded rectangle with 3, top left",
+     "rounded rectangle with 6, top middle left",
+     "rounded rectangle with 9, top middle right",
+     "rounded rectangle with 12, top right",
+     "curved arrow from 3 to 6",
+     "curved arrow from 6 to 9",
+     "curved arrow from 9 to 12",
+     "three dots, bottom left",
+     "rounded rectangle with n-th term, bottom middle"
+    ],
+    "print": [
+     "+3",
+     "+3",
+     "+3",
+     "3",
+     "6",
+     "9",
+     "12",
+     "a",
+     "a + d",
+     "a + 2d",
+     "a + 3d",
+     "...",
+     "n-th term",
+     "a + (n - 1)d"
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,206 @@
+{
+ "id": "photosynthesis",
+ "names": [
+  "photosynthesis",
+  "how plants make food",
+  "how do plants make their food",
+  "nutrition in plants",
+  "food making in plants",
+  "photosynthesis in plants",
+  "plants make food in leaves"
+ ],
+ "subject": "science",
+ "classes": [
+  7,
+  10
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "drawing",
+  "figure": null,
+  "asks": [
+   "A labelled diagram of a green plant in sunlight, showing the sun, a leaf, an arrow of carbon dioxide going into the leaf, an arrow of oxygen coming out, and water rising from the roots.",
+   "A drawing of a potted plant with part of one leaf covered by a strip of black paper, and beside it the same leaf after the starch test, the covered part pale.",
+   "A labelled diagram of a leaf cut across, showing the upper skin, the green cells with chloroplasts, a stoma on the lower side and air spaces."
+  ],
+  "why": "The plant with arrows in and out shows the three things a leaf takes in and the one it gives out, all meeting in the green leaf."
+ },
+ "card": {
+  "big_idea": {
+   "text": "Green leaves make the plant's food, a sugar, from carbon dioxide in the air and water from the soil, using the energy of sunlight, and give out oxygen.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Name what a leaf takes in and gives out when it makes food",
+    "level": "remember",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Explain why a leaf kept in the dark makes no food",
+    "level": "understand",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Predict what a leaf in water will show in sunlight and in the dark",
+    "level": "apply",
+    "checked_by": "try_it"
+   }
+  ],
+  "why_it_matters": {
+   "text": "Every grain of rice and every vegetable you eat was first made in a leaf, and the oxygen you breathe comes from it.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "The green colour in leaves, chlorophyll, catches the energy of sunlight, and that energy is used to join carbon dioxide and water into sugar; so a leaf, or a part of one, with no light or no green makes no food.",
+   "cites": []
+  },
+  "picture": {
+   "text": "A potted plant in sunlight. One by one, arrows appear: sunlight falling on a leaf, carbon dioxide going into the leaf from the air, water rising from the roots up the stem into the leaf. Inside the leaf the green parts glow and sugar is made; an arrow of oxygen comes out. Then a strip of black paper covers part of a leaf: the sunlight arrow stops there and that part makes no starch.",
+   "standard": "plant with arrows for sunlight, carbon dioxide, water and oxygen",
+   "cites": []
+  },
+  "diagram_ask": "A labelled diagram of a green plant in sunlight, showing the sun, a leaf, an arrow of carbon dioxide going into the leaf, an arrow of oxygen coming out, and water rising from the roots.",
+  "needs_first": [
+   {
+    "text": "Living things need food for energy and to grow.",
+    "cites": []
+   },
+   {
+    "text": "Air has carbon dioxide and oxygen in it.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Plants take their food from the soil through their roots.",
+    "why_it_fails": "Roots take in water and some minerals, but the food itself, the sugar, is made in the leaves from air and water.",
+    "cites": []
+   },
+   {
+    "mistake": "Sunlight is the plant's food.",
+    "why_it_fails": "Sunlight gives the energy to make food, but the food is a sugar made from carbon dioxide and water; light itself is not stored.",
+    "cites": []
+   },
+   {
+    "mistake": "Plants only take in carbon dioxide and never use oxygen.",
+    "why_it_fails": "Plants also breathe, using oxygen day and night; in sunlight they make far more oxygen than they use.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "A tiny mango seed grows into a huge tree, but the soil around it hardly goes down. Where did all that wood and leaf come from?",
+   "guesses": [
+    "From the soil",
+    "From the water",
+    "From the sunlight"
+   ],
+   "answer": "Mostly from carbon dioxide in the air, joined with water in the leaves using the energy of sunlight.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show a small plant growing into a big one beside a pot of soil that stays full. Ask where the plant's food came from. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Show the arrows one at a time on the plant: sunlight on the leaf, carbon dioxide going in, water coming up from the roots.",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Ask: why are leaves green? The green chlorophyll catches sunlight, and that energy joins carbon dioxide and water into sugar.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Show the oxygen arrow coming out of the leaf: oxygen is given out while the sugar is made.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name the process photosynthesis: making food with the help of light.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Cover part of a leaf with black paper for two days: the covered part has no starch, the uncovered part has. Light is needed.",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "A variegated leaf with white patches: only the green parts make starch, so chlorophyll is needed too.",
+    "cites": []
+   },
+   {
+    "move": "try_it",
+    "what": "Set the task: a leaf in a glass of water in sunlight and another in the dark.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says what a leaf needs to make food and why each is needed.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "A well-watered plant is kept in a dark cupboard for a week. What happens to its food making?",
+    "options": [
+     "It stops, because without light the leaf cannot make sugar",
+     "It goes on, because the roots take food from the soil",
+     "It goes faster, because it has plenty of water"
+    ],
+    "answer_index": 0,
+    "explain": "Light gives the energy that joins carbon dioxide and water, so in the dark no new food is made.",
+    "cites": []
+   },
+   {
+    "question": "Where does most of the material of a big tree come from?",
+    "options": [
+     "Carbon dioxide from the air, joined with water",
+     "The soil, taken in by the roots",
+     "Sunlight, turned into wood"
+    ],
+    "answer_index": 0,
+    "explain": "The sugar a leaf makes, and the wood built from it, is made of carbon dioxide and water; light gives only the energy.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "Bubbles from a leaf",
+   "kind": "hands",
+   "materials": [
+    "two glasses",
+    "water",
+    "a fresh green leaf for each glass",
+    "a box to keep one glass dark"
+   ],
+   "stands_for": "The bubbles on the leaf stand for the oxygen it gives out while it is making food.",
+   "predict": "Which leaf will show more tiny bubbles after an hour: the one in sunlight or the one in the dark?",
+   "steps": [
+    "Fill two glasses with water.",
+    "Put one fresh green leaf into each glass so it is under the water.",
+    "Keep one glass in bright sunlight and cover the other with a box.",
+    "After one hour, look closely at the surface of each leaf."
+   ],
+   "observe": "Tiny bubbles collect on the leaf in sunlight; the leaf in the dark has few or none.",
+   "question": "Why does the leaf in sunlight give out bubbles and the leaf in the dark does not?",
+   "expected": "Because the leaf in sunlight is making food from carbon dioxide and water and gives out oxygen as it does, while the leaf in the dark has no light energy to make food.",
+   "write": "Leaves make food from carbon dioxide and water using sunlight. They give out oxygen, which I saw as bubbles.",
+   "in_class": "Pairs set up the two glasses at the start of the day and look after lunch. The teacher draws the plant with its four arrows on the board. Ask: which glass had bubbles, and why? A class that says the dark leaf had more is probably seeing air bubbles from pouring; tell them to wait and look again.",
+   "cites": []
+  },
+  "leave_out": [
+   "the chemical equation with numbers of molecules",
+   "light and dark reactions",
+   "how stomata open and close"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

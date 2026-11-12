@@ -1,0 +1,457 @@
+{
+ "name": "triangle_area",
+ "from_lesson": "20261010-083607-6afe02",
+ "brief": {
+  "topic": "Area of a triangle",
+  "grade": 7,
+  "audience": "Class 7 students",
+  "level": "foundation",
+  "goal": "See why the area of a triangle is half of base times height, and use it",
+  "style": "tutor",
+  "language": "en-IN",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "concrete_first"
+ },
+ "card": {
+  "big_idea": {
+   "text": "A triangle with base b and perpendicular height h has area one-half of b times h because two matching copies make a base-by-height parallelogram.",
+   "cites": [
+    "S2#3",
+    "S2#4",
+    "S2#5",
+    "S4#3"
+   ]
+  },
+  "why_it_matters": {
+   "text": "You can find the space inside any triangular region by connecting it to a rectangle-like shape you already know how to measure.",
+   "cites": [
+    "S2#1",
+    "S2#2",
+    "S2#5"
+   ]
+  },
+  "the_why": {
+   "text": "A rotated copy of a triangle fits against the original to make a parallelogram with the same base and perpendicular height. That whole parallelogram has area base times height, and it is made of two equal triangles, so one triangle gets half.",
+   "cites": [
+    "S2#3",
+    "S2#4",
+    "S2#5",
+    "S4#3"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Explain why the one-half appears in the triangle-area rule by joining two equal triangles into one parallelogram.",
+    "level": "understand",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Identify the perpendicular height that belongs with a chosen base, including when that height is outside an obtuse triangle.",
+    "level": "analyze",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Work out the area of a triangle from its base and perpendicular height and state the answer in square units.",
+    "level": "apply",
+    "checked_by": "try_it"
+   }
+  ],
+  "picture": {
+   "text": "Start with one slanted triangle on a faint square grid, with its 6 cm base highlighted along the bottom and a dashed 4 cm perpendicular height dropping to that base. Copy the same triangle, rotate the copy, and slide it beside the first so the two coloured halves close into one parallelogram; keep the same base and height marked, then show 24 square units in the whole shape and 12 in either triangle.",
+   "cites": [
+    "S2#3",
+    "S2#4",
+    "S3#9",
+    "S3#10",
+    "S4#3"
+   ],
+   "standard": "Triangle base-and-perpendicular-height diagram, extended by a congruent rotated "
+  },
+  "diagram_ask": "A base-and-height triangle-area proof diagram: one slanted triangle with a horizontal base labelled b and a dashed perpendicular height labelled h, beside the same triangle rotated and joined to form a parallelogram labelled base b and height h; colour the two congruent triangles differently and mar",
+  "needs_first": [
+   {
+    "text": "Recognise area as the number of square units covering a flat shape.",
+    "cites": [
+     "S3#1",
+     "S3#2",
+     "S3#5"
+    ]
+   },
+   {
+    "text": "Find the area of a rectangle or parallelogram by multiplying base by perpendicular height.",
+    "cites": [
+     "S2#1",
+     "S2#2",
+     "S4#1",
+     "S4#2"
+    ]
+   },
+   {
+    "text": "Recognise a right angle and a perpendicular line.",
+    "cites": [
+     "S3#10"
+    ]
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "“The area is base times height; the half is just a rule to remember.”",
+    "why_it_fails": "Base times height counts the full parallelogram made from two equal copies, not one triangle.",
+    "cites": [
+     "S2#4",
+     "S2#5",
+     "S4#3"
+    ]
+   },
+   {
+    "mistake": "“The height is whichever sloping side looks tallest.”",
+    "why_it_fails": "The needed height must meet the chosen base at a right angle, because it measures the perpendicular distance between the parallel base lines.",
+    "cites": [
+     "S3#9",
+     "S3#10"
+    ]
+   },
+   {
+    "mistake": "“A height must stay inside the triangle.”",
+    "why_it_fails": "For an obtuse triangle, the perpendicular from the opposite vertex reaches the extension of the base outside the triangle.",
+    "cites": [
+     "S2#6",
+     "S3#10",
+     "S3#13"
+    ]
+   },
+   {
+    "mistake": "“A triangle with area 12 cm has an answer in cm.”",
+    "why_it_fails": "Area measures covered surface, so its units are square units such as cm².",
+    "cites": [
+     "S3#2",
+     "S3#4",
+     "S3#12"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "A triangle has a base of 6 cm and a perpendicular height of 4 cm. Will it cover 24 square centimetres, 12 square centimetres, or some other amount? Commit to a guess before we move anything.",
+   "guesses": [
+    "24 cm², because 6 times 4 is 24.",
+    "12 cm², because a triangle looks like half a rectangle.",
+    "18 cm², because the slanted sides should change the answer."
+   ],
+   "answer": "12 cm²: its area is one-half × 6 × 4.",
+   "cites": [
+    "S3#7",
+    "S3#8",
+    "S4#2",
+    "S4#3"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the single 6 cm by 4 cm triangle on a grid and ask the opening question, requiring a 24, 12, or other guess.",
+    "cites": [
+     "S3#7",
+     "S3#8"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Place the 24 cm² and 12 cm² guesses beside the unchanged triangle; do not confirm either yet.",
+    "cites": [
+     "S4#1",
+     "S4#3"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Trace the bottom side as the base, then draw the 4 cm line from the top vertex meeting the base at a right angle; ask which marked line is the height.",
+    "cites": [
+     "S3#9",
+     "S3#10"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Copy the triangle, rotate the copy, and fit it to the original as a parallelogram. Ask why the original must be half the new shape; answer: because the whole is exactly two equal copies.",
+    "cites": [
+     "S2#3",
+     "S2#4",
+     "S2#5",
+     "S4#3"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Light up the parallelogram's base 6 and height 4, calculate 6 × 4 = 24 square centimetres, split the two coloured equal halves, and name the rule A = 1/2 bh.",
+    "cites": [
+     "S2#1",
+     "S2#5",
+     "S3#12"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Return to the original triangle and work 1/2 × 6 × 4 = 12 cm², linking the 12 directly to one coloured half of the 24-square-unit parallelogram.",
+    "cites": [
+     "S3#7",
+     "S3#8",
+     "S4#3"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Show an obtuse triangle beside the first: one proposed sloping side and one perpendicular height falling outside the triangle. Ask which line works, then reject the sloping side because it does not meet the base at 90 degrees.",
+    "cites": [
+     "S2#6",
+     "S2#7",
+     "S3#10",
+     "S3#13"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Show a triangle with base 8 cm and perpendicular height 5 cm; ask the learner to choose 40, 20, or 13 cm² and explain the choice before the answer appears.",
+    "cites": [
+     "S3#12",
+     "S3#13"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "The learner draws one diagonal across a 6-by-4 rectangle, predicts the area of either triangular half, checks the square units, and says why the half appears.",
+    "cites": [
+     "S3#7",
+     "S3#8"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Ask the learner to complete: “A triangle is half of base times perpendicular height because ...” while the two matching triangle halves remain visible.",
+    "cites": [
+     "S2#4",
+     "S2#5",
+     "S4#3"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "After the rotated copy is joined to the original, what area does the whole parallelogram have when b = 6 cm and h = 4 cm?",
+    "options": [
+     "24 cm², because it is 6 × 4.",
+     "12 cm², because it is already one triangle.",
+     "10 cm², because the sloping sides must be added."
+    ],
+    "answer_index": 0,
+    "explain": "The joined shape is a parallelogram with base 6 cm and perpendicular height 4 cm, so its area is 24 cm²; one triangle is half of it.",
+    "cites": [
+     "S2#1",
+     "S2#4",
+     "S2#5"
+    ]
+   },
+   {
+    "question": "For an obtuse triangle whose chosen base is horizontal, which measurement can be its height?",
+    "options": [
+     "The line from the opposite vertex straight down to the extended base, making a right angle.",
+     "Any slanted side of the triangle.",
+     "Only a line that stays inside the triangle."
+    ],
+    "answer_index": 0,
+    "explain": "Height means perpendicular distance from the opposite vertex to the base line, so it can land on an extension outside an obtuse triangle.",
+    "cites": [
+     "S2#6",
+     "S3#9",
+     "S3#10"
+    ]
+   },
+   {
+    "question": "A triangle has base 8 cm and perpendicular height 5 cm. Which area is correct?",
+    "options": [
+     "20 cm².",
+     "40 cm².",
+     "13 cm."
+    ],
+    "answer_index": 0,
+    "explain": "First multiply 8 by 5 to get the doubled triangle's area, 40 cm², then take half to get 20 cm².",
+    "cites": [
+     "S3#12",
+     "S3#13"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Split a rectangle into two triangles",
+   "kind": "paper",
+   "materials": [
+    "squared paper",
+    "pencil",
+    "ruler"
+   ],
+   "stands_for": "Each small grid square is one square unit; the rectangle is the full base-times-height shape, and either diagonal half is one triangle.",
+   "predict": "Before drawing the diagonal, predict: if a 6-by-4 rectangle has area 24 square units, will one triangular half have 24, 12, or another number of square units?",
+   "steps": [
+    "Draw a 6-square-by-4-square rectangle on squared paper.",
+    "Draw one diagonal from one corner to the opposite corner.",
+    "Shade one of the two triangles.",
+    "Write the area of the shaded triangle.",
+    "Explain in one sentence why it is that area."
+   ],
+   "observe": "The diagonal makes two matching triangles, each covering half of the rectangle's 24 square units: 12 square units.",
+   "question": "Why is the shaded triangle's area half of 6 × 4?",
+   "expected": "It is 12 square units because the diagonal divides the 24-square-unit rectangle into two equal triangles, so each triangle has one-half the rectangle's area.",
+   "write": "“My triangle's area is ___ square units.”\n“It is half of base × height because ___.”",
+   "in_class": "Students work in pairs, one drawing and one checking. The teacher writes “6 × 4 = 24 square units; one diagonal → ?” on the board, then asks, “Why is either triangle 12 rather than 24?” A class answer of 24 shows that students are using the rectangle's full area and have not yet linked the diagonal to two equal halves.",
+   "cites": [
+    "S3#7",
+    "S3#8",
+    "S4#3"
+   ]
+  },
+  "leave_out": [
+   "Formal geometric proof language such as congruence theorems.",
+   "Coordinate-grid derivations of triangle area.",
+   "Areas of parallelograms, trapezoids, circles, and composite shapes.",
+   "Multiple choices of base for the same triangle beyond noting that height must match the chosen base."
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "The central proof move: duplicate and rotate a triangle to build a parallelogram, then use the fact that the original is one of two equal halves; also took the outside-height contrast for an obtuse triangle.",
+    "left": "A full second construction for the obtuse case, because a three-minute foundation lesson needs one main picture and only a quick contrast."
+   },
+   {
+    "source": "S3",
+    "took": "The use of square units, the rectangle cut by a diagonal as a very simple first proof picture, the perpendicular definition of height, and numerical practice with units.",
+    "left": "The extended introduction to area and rectangle formulas, because these are assumed starting knowledge and would crowd out the reason for the one-half."
+   },
+   {
+    "source": "S4",
+    "took": "The direct focus on the question “where does one-half come from?” and the progression from a familiar rectangle-like whole to two congruent triangle halves.",
+    "left": "The preliminary cut-and-shift proof for parallelogram area, because the lesson treats base times height for the completed parallelogram as prior knowledge."
+   }
+  ],
+  "uncited": [
+   "why_it_matters wording",
+   "diagram_ask wording",
+   "the particular 6 cm by 4 cm opening numbers",
+   "the particular 8 cm by 5 cm check question",
+   "the paper-task classroom management details",
+   "leave_out selections"
+  ],
+  "teacher_talk": [
+   "starts by connecting to previous video content casually",
+   "asks rhetorical questions to engage the viewer",
+   "uses conversational and descriptive language for physical manipulations like copying, pasting, flipping, and rotating",
+   "repeats core phrases to reinforce conceptual takeaways",
+   "opens with a friendly greeting and a recap of the previous video",
+   "asks rhetorical questions to guide the viewer's thinking before explaining"
+  ],
+  "source_flows": {
+   "S1": [
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "assessment"
+   ],
+   "S2": [
+    "activation",
+    "demonstration",
+    "application"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "integration",
+    "demonstration",
+    "demonstration",
+    "application",
+    "assessment"
+   ],
+   "S4": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ]
+  },
+  "topic": "Area of a Triangle",
+  "asked": "Area of a triangle",
+  "klass": 7,
+  "sources": [
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Khan Academy: Area of triangles intuition | Algebra I | High School Math | Khan Academy",
+    "url": "https://www.youtube.com/watch?v=rRTXKQpblEc",
+    "note": "English lecture, 5 min"
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "mathantics: Math Antics - Area",
+    "url": "https://www.youtube.com/watch?v=xCdxURXMdFY",
+    "note": "English lecture, 10 min"
+   },
+   {
+    "id": "S4",
+    "kind": "lecture",
+    "title": "Amy Cotten: Formula for Area of a Triangle - Why?",
+    "url": "https://www.youtube.com/watch?v=PHKaqXlki6w",
+    "note": "English lecture, 2 min, automatic captions"
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "0cd2740618783499",
+  "diagram": {
+   "ask": "A base-and-height triangle-area proof diagram: one slanted triangle with a horizontal base labelled b and a dashed perpendicular height labelled h, beside the same triangle rotated and joined to form a parallelogram labelled base b and height h; colour the two congruent triangles differently and mar",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_base_and_height_triang-36bfadb18f/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_base_and_height_triang-36bfadb18f/whole.png",
+   "panels": [
+    "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_base_and_height_triang-36bfadb18f/panel_1.png",
+    "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_base_and_height_triang-36bfadb18f/panel_2.png"
+   ],
+   "panel_boxes": [
+    [
+     2,
+     0,
+     592,
+     568
+    ],
+    [
+     709,
+     0,
+     1278,
+     348
+    ]
+   ],
+   "points": {
+    "area_of_triangle_": {
+     "name": "Area of Triangle =",
+     "box": [
+      0.0456,
+      0.8818,
+      0.2773,
+      0.9415
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   }
+  }
+ }
+}

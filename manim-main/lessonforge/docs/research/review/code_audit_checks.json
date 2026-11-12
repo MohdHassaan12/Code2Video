@@ -1,0 +1,5 @@
+{
+  "unstructured_feedback_returns_unchanged": true,
+  "expected_format_applies_change": true,
+  "scope": "isolated inspected helper, not full pipeline benchmark"
+}

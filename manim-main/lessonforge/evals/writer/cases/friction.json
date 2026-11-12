@@ -1,0 +1,493 @@
+{
+ "name": "friction",
+ "from_lesson": "20261012-191635-3ac7d0",
+ "brief": {
+  "topic": "Friction",
+  "grade": 8,
+  "audience": "Class 8 students",
+  "level": "foundation",
+  "goal": "Explain why a moving object slows down on a surface and what makes friction larger or smaller",
+  "style": "questioner",
+  "language": "hinglish",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "concrete_first"
+ },
+ "card": {
+  "big_idea": {
+   "text": "Friction is a contact force that opposes motion between touching surfaces, so it slows a sliding object; rougher surfaces and surfaces pressed harder together usually produce more friction.",
+   "cites": [
+    "S1#6",
+    "S1#7",
+    "S2#8",
+    "S2#9"
+   ]
+  },
+  "why_it_matters": {
+   "text": "This helps you explain why a bicycle slows, why wet or polished floors can make you slip, and why tyre grooves help a vehicle grip the road.",
+   "cites": [
+    "S1#1",
+    "S1#15",
+    "S2#2",
+    "S2#20"
+   ]
+  },
+  "the_why": {
+   "text": "Surfaces that look smooth have tiny bumps. When two touching surfaces try to slide, their bumps catch and lock against each other, creating a force against the motion; more catching happens on rougher surfaces or when the surfaces are pressed together more firmly.",
+   "cites": [
+    "S1#6",
+    "S2#7",
+    "S2#8",
+    "S2#9"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Explain why a book sliding across a table slows down and stops.",
+    "level": "understand",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Predict which of two surfaces will stop the same sliding object sooner.",
+    "level": "apply",
+    "checked_by": "opening"
+   },
+   {
+    "can": "Relate roughness and how hard surfaces are pressed together to the size of friction.",
+    "level": "analyze",
+    "checked_by": "q3"
+   },
+   {
+    "can": "Describe friction as a force acting opposite to an object's motion.",
+    "level": "understand",
+    "checked_by": "try_it"
+   }
+  ],
+  "picture": {
+   "text": "Start with one book being pushed to the right across a tabletop, with its motion arrow pointing right. Add a friction arrow pointing left, then split the same tabletop into a smooth strip and a rough cloth strip, showing the book travelling farther on the smooth strip and stopping sooner on the rough one. Finally zoom into the book base and each surface: a few small bumps on the smooth strip catch lightly, while many larger bumps on the rough strip interlock; press the book downward to show more bumps catching.",
+   "cites": [
+    "S1#6",
+    "S1#7",
+    "S2#3",
+    "S2#7",
+    "S2#9"
+   ],
+   "standard": "Opposing-friction force-arrow diagram with a magnified view of surface irregular"
+  },
+  "diagram_ask": "A labelled classroom diagram of one book sliding right across a horizontal surface, with a leftward arrow labelled friction and a rightward arrow labelled motion; beneath it, a magnified cutaway of the book base touching the surface, showing small uneven bumps interlocking. Include labels: book, tab",
+  "needs_first": [
+   {
+    "text": "A force is a push or pull, and a force can change the speed of a moving object.",
+    "cites": [
+     "S1#2",
+     "S1#4"
+    ]
+   },
+   {
+    "text": "An arrow can show the direction in which an object moves or a force acts.",
+    "cites": [
+     "S1#6",
+     "S2#3"
+    ]
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "“A moving object stops by itself; no force is acting.”",
+    "why_it_fails": "Its speed is changing, so a force is acting; friction from the touching surfaces acts against its motion.",
+    "cites": [
+     "S1#5",
+     "S1#6"
+    ]
+   },
+   {
+    "mistake": "“Friction points in the same direction as the moving object.”",
+    "why_it_fails": "Friction resists sliding or attempted sliding, so it points opposite to the motion or attempted motion.",
+    "cites": [
+     "S1#6",
+     "S2#3"
+    ]
+   },
+   {
+    "mistake": "“A surface that looks smooth has no friction.”",
+    "why_it_fails": "Even apparently smooth surfaces have tiny irregularities that can catch each other.",
+    "cites": [
+     "S1#6",
+     "S2#7",
+     "S4#4",
+     "S4#5"
+    ]
+   },
+   {
+    "mistake": "“Only roughness matters; pressing two surfaces together does not change friction.”",
+    "why_it_fails": "Pressing them together more closely increases the contact and makes sliding harder.",
+    "cites": [
+     "S2#9",
+     "S4#6"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "You give the same book the same push once across a smooth desk and once across a rough cloth. On which surface will it stop sooner: the desk, the cloth, or exactly the same distance on both?",
+   "guesses": [
+    "It will stop sooner on the rough cloth.",
+    "It will stop at the same distance because it is the same book.",
+    "It will stop sooner on the smooth desk because smooth things are slippery."
+   ],
+   "answer": "It will stop sooner on the rough cloth because the rougher touching surfaces produce greater friction.",
+   "cites": [
+    "S1#5",
+    "S1#7",
+    "S2#6",
+    "S2#8"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the same book and two tracks, one bare and smooth-looking and one covered with rough cloth. Ask the opening question and ask the learner to choose before the book moves.",
+    "cites": [
+     "S1#7",
+     "S2#6"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Place the three possible predictions beside the two tracks, including the idea that smooth-looking means no friction, and pause for a choice.",
+    "cites": [
+     "S1#6",
+     "S2#7",
+     "S4#4"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Animate equal pushes: the book slides farther on the smooth track and stops sooner on the rough cloth. Mark each stopping place.",
+    "cites": [
+     "S1#5",
+     "S1#7",
+     "S2#6"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Zoom into the book base and track. Ask, “Why does the rough track stop it sooner?” Then show more surface bumps catching and answer: because the tiny irregularities of the two surfaces lock together and resist sliding.",
+    "cites": [
+     "S1#6",
+     "S2#7",
+     "S2#8"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Draw one leftward arrow at the contact while the book moves right. Name this opposing contact force friction, and state that it acts opposite to motion.",
+    "cites": [
+     "S1#6",
+     "S1#13",
+     "S2#3"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Return to the smooth track and draw fewer, smaller catches in the magnified view. Explain that it still has friction, but less friction, so the book travels farther.",
+    "cites": [
+     "S1#6",
+     "S1#7",
+     "S2#7"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Put the smooth and rough tracks side by side again. Add a stack of books pressing down on one copy of the sliding book, and ask which needs a bigger push to keep sliding; show that stronger pressing makes more contact and greater friction.",
+    "cites": [
+     "S2#9",
+     "S4#6"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Ask the learner to decide the direction of friction for a book moving left, then to choose which case has the greatest friction: smooth surface, rough surface, or rough surface pressed harder.",
+    "cites": [
+     "S1#6",
+     "S2#3",
+     "S2#8",
+     "S2#9"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "Have the learner test one book on a bare tabletop and on a cloth, predict first, then say why the stopping distances differ.",
+    "cites": [
+     "S1#6",
+     "S1#7"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Show the final picture with motion one way and friction the other. Ask the learner to complete: “A moving object slows on a surface because ..., and friction becomes larger when ...”",
+    "cites": [
+     "S1#6",
+     "S1#7",
+     "S2#9"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "The same book gets the same push on a tile and on a rough cloth. Where will it stop sooner?",
+    "options": [
+     "On the rough cloth",
+     "On the tile, because it looks smoother",
+     "At the same place, because the book is unchanged"
+    ],
+    "answer_index": 0,
+    "explain": "The rough cloth has more surface irregularities catching together, so its friction is greater.",
+    "cites": [
+     "S1#7",
+     "S2#6",
+     "S2#8"
+    ]
+   },
+   {
+    "question": "A book is sliding to the left across a table. Which way does friction on the book act?",
+    "options": [
+     "To the right",
+     "To the left",
+     "Down into the table"
+    ],
+    "answer_index": 0,
+    "explain": "Friction opposes the direction in which the book is sliding.",
+    "cites": [
+     "S1#6",
+     "S2#3"
+    ]
+   },
+   {
+    "question": "Which case has the greatest friction while a book is being slid?",
+    "options": [
+     "A book pressed hard onto a rough cloth",
+     "A book lightly resting on a smooth tile",
+     "A book moving on a surface that looks smooth, so it has no friction"
+    ],
+    "answer_index": 0,
+    "explain": "Roughness increases catching between surfaces, and pressing harder increases the contact between them.",
+    "cites": [
+     "S2#8",
+     "S2#9",
+     "S4#6"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Book track test",
+   "kind": "hands",
+   "materials": [
+    "a notebook or small book",
+    "a cloth or towel",
+    "a smooth tabletop or floor",
+    "a pencil"
+   ],
+   "stands_for": "The book is the moving object; the tabletop and cloth are two contacting surfaces; the pencil mark shows where the book stops.",
+   "predict": "Before you test, predict: will the book travel farther on the bare smooth surface or on the cloth?",
+   "steps": [
+    "Lay the cloth flat beside a bare smooth surface.",
+    "Place the book at the same starting line on the smooth surface and give it a gentle push.",
+    "Mark where it stops with the pencil.",
+    "Start again at the same line on the cloth and give the book a similar gentle push.",
+    "Compare the two stopping places."
+   ],
+   "observe": "The book should usually travel farther on the smoother surface and stop sooner on the cloth.",
+   "question": "Why did the book stop sooner on one surface?",
+   "expected": "It stopped sooner on the cloth because its rougher surface has more tiny irregularities that catch against the book, producing greater friction opposite to the book's motion.",
+   "write": "Say or write: “The book travelled farther on ___. ” Then say or write: “It stopped sooner on ___ because friction was greater there.”",
+   "in_class": "Pairs use one notebook, one cloth, and one desk surface. The teacher writes “Predict: farther on smooth or rough?” and two columns, “smooth distance” and “cloth distance,” on the board. At the end ask, “Why did the cloth usually stop the book sooner?” If students say the book simply ran out of push or that smooth surfaces have no friction, the teacher should revisit friction as an opposing contact force and the magnified bumps.",
+   "cites": [
+    "S1#6",
+    "S1#7",
+    "S2#6",
+    "S2#8"
+   ]
+  },
+  "leave_out": [
+   "Static, sliding, and rolling friction as separate categories.",
+   "Fluid friction in air and water.",
+   "Uses and harms of friction, such as braking, wear, and heat.",
+   "Coefficients of friction, force calculations, and ramp problems."
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "The route from a moving book that stops, to friction opposing its motion, then to roughness and microscopic interlocking; also the comparison of surfaces pressed more closely together.",
+    "left": "The separate friction types, wheels, fluid friction, and the extended useful-versus-harmful discussion, because this short lesson centres on why sliding objects slow and on the two main size factors."
+   },
+   {
+    "source": "S3",
+    "took": "The clear contrast between a bookcase that is hard to start and a moving object resisted in the opposite direction, plus the microscopic bumps as a reason for resistance.",
+    "left": "Equations, normal force notation, free-body diagrams, trigonometry, and ramp calculations, because they are beyond a foundation Class 8 explanation of this idea."
+   },
+   {
+    "source": "S4",
+    "took": "The emphasis that smooth-looking surfaces still have microscopic irregularities and that both roughness and pressing force affect friction.",
+    "left": "The detailed graph of static and sliding friction, control methods, and fluid drag, because the lesson needs one connected picture rather than a chapter survey."
+   }
+  ],
+  "uncited": [],
+  "teacher_talk": [
+   "opens with an energetic greeting and a roadmap of the chapter",
+   "asks frequent check-in questions to prompt the learner",
+   "transitions smoothly between topics using conversational bridge phrases",
+   "uses relatable physical analogies and classroom-style demonstrations described step by step",
+   "conversational and enthusiastic host who uses relatable analogies",
+   "opens with a hook addressing previous episodes"
+  ],
+  "source_flows": {
+   "S1": [
+    "motivation",
+    "activation",
+    "demonstration",
+    "application",
+    "integration"
+   ],
+   "S2": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "application",
+    "integration"
+   ],
+   "S4": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration",
+    "application",
+    "demonstration"
+   ]
+  },
+  "topic": "Friction",
+  "asked": "Friction",
+  "klass": 8,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Curiosity, Class 8, chapter 5: chapter 5",
+    "url": "https://ncert.nic.in/textbook/pdf/hecu105.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Magnet Brains: घर्षण (Friction) - वन शॉट रिवीज़न | कक्षा 8 विज्ञान अध्याय 9 | CBSE 2025-26",
+    "url": "https://www.youtube.com/watch?v=DMh9C16QL2Q",
+    "note": "Hindi lecture, 21 min, automatic captions"
+   },
+   {
+    "id": "S4",
+    "kind": "lecture",
+    "title": "BYJU'S - Class 6, 7 & 8: Friction | Full Chapter Revision under 30 mins | Class 8 Science",
+    "url": "https://www.youtube.com/watch?v=-KnxvssmTWo",
+    "note": "English lecture, 20 min, automatic captions"
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "6cb632276b2ba6bf",
+  "diagram": {
+   "ask": "A demonstration of a spring balance pulling a brick over a wooden floor and then over a piece of sand paper, showing the brick, the spring balance, the wooden floor, the sand paper, and the force reading scale.",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_demonstration_of_a_spr-b2d533937d/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_demonstration_of_a_spr-b2d533937d/whole.png",
+   "points": {
+    "f_lower": {
+     "name": "F₁ (Lower)",
+     "box": [
+      0.813,
+      0.202,
+      0.9453,
+      0.2543
+     ]
+    },
+    "wooden_floor": {
+     "name": "Wooden floor",
+     "box": [
+      0.0934,
+      0.3423,
+      0.2579,
+      0.3799
+     ]
+    },
+    "f_higher": {
+     "name": "F₂ (Higher)",
+     "box": [
+      0.8488,
+      0.7855,
+      0.9898,
+      0.8378
+     ]
+    },
+    "sand_paper": {
+     "name": "Sand paper",
+     "box": [
+      0.0944,
+      0.939,
+      0.2307,
+      0.9868
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   },
+   "shows": "How different surface textures affect the magnitude of the frictional force.",
+   "visual_kind": "demonstration",
+   "holds": {
+    "things": [
+     "gray arrow pointing right, top left",
+     "brown brick on a line, top left",
+     "blue line connecting brick to spring balance, top",
+     "blue spring balance with a red mark, top",
+     "blue circle and arrow pointing right, top right",
+     "gray line under the brick, top",
+     "gray arrow pointing right, bottom left",
+     "brown brick on a line, bottom left",
+     "blue line connecting brick to spring balance, bottom",
+     "blue spring balance with a red mark, bottom",
+     "blue circle and arrow pointing right, bottom right",
+     "gray line under the brick, bottom",
+     "gray textured line under the brick, bottom"
+    ],
+    "print": [
+     "Direction of motion",
+     "Spring balance",
+     "Brick",
+     "Force reading scale",
+     "F₁ (Lower)",
+     "Wooden floor",
+     "Direction of motion",
+     "Spring balance",
+     "Brick",
+     "Force reading scale",
+     "F₂ (Higher)",
+     "Sand paper"
+    ]
+   }
+  }
+ }
+}

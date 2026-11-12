@@ -1,0 +1,474 @@
+{
+ "name": "third_law",
+ "from_lesson": "20261010-083607-bc2147",
+ "brief": {
+  "topic": "Newton's third law of motion",
+  "grade": 9,
+  "audience": "Class 9 students",
+  "level": "standard",
+  "goal": "Understand that forces come in pairs acting on two different objects, and spot the pair in everyday cases",
+  "style": "questioner",
+  "language": "hinglish",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "worked_examples"
+ },
+ "card": {
+  "big_idea": {
+   "text": "Whenever two objects interact, each exerts a force on the other at the same time; the two forces are equal in size, opposite in direction, and act on different objects.",
+   "cites": [
+    "S1#8",
+    "S1#15",
+    "S3#4",
+    "S3#10"
+   ]
+  },
+  "why_it_matters": {
+   "text": "This lets you explain why a kick moves a ball, why a canoe moves forward, and why a released balloon shoots away.",
+   "cites": [
+    "S1#9",
+    "S1#10",
+    "S3#13"
+   ]
+  },
+  "the_why": {
+   "text": "A force is an interaction between two objects: when a foot presses on a ball, the ball presses back on the foot at that same moment. The arrows do not cancel because one arrow belongs on the ball and the other belongs on the foot.",
+   "cites": [
+    "S1#8",
+    "S3#7",
+    "S3#8",
+    "S3#10"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Describe the two forces in an interaction by naming both objects and giving the direction of each force.",
+    "level": "understand",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Tell apart a third-law pair from two opposite forces that both act on one object.",
+    "level": "analyze",
+    "checked_by": "q3"
+   },
+   {
+    "can": "Predict the partner force in an everyday push, such as a foot kicking a ball or air leaving a balloon.",
+    "level": "apply",
+    "checked_by": "try_it"
+   }
+  ],
+  "picture": {
+   "text": "Begin with a foot just touching a ball. Draw one arrow forward on the ball, labelled \"foot pushes ball,\" then draw an equal-length arrow backward on the foot, labelled \"ball pushes foot.\" Colour the ball and foot differently and place each arrow only on the object it acts on. Beside it, add a standing person: gravity downward and ground force upward are both drawn on the person, so they are contrasted as not being a third-law pair.",
+   "cites": [
+    "S1#7",
+    "S1#8",
+    "S3#8",
+    "S3#15"
+   ],
+   "standard": "Separate-object force-arrow diagram (paired free-body-style force sketches): one"
+  },
+  "diagram_ask": "Labelled force-arrow diagram of a foot kicking a football: place the foot on the left touching the ball on the right; show a rightward arrow on the ball labelled \"force of foot on ball\" and an equal-length leftward arrow on the foot labelled \"force of ball on foot\". Use different colours for foot an",
+  "needs_first": [
+   {
+    "text": "Recognise that a force is a push or pull and that an arrow can show its direction.",
+    "cites": [
+     "S1#5",
+     "S1#7"
+    ]
+   },
+   {
+    "text": "Know that a net force on one object can change that object's motion.",
+    "cites": [
+     "S1#4",
+     "S1#6"
+    ]
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "The equal and opposite forces cancel, so neither object can move.",
+    "why_it_fails": "They act on two different objects; forces cancel only when equal opposite forces act on the same object.",
+    "cites": [
+     "S1#11",
+     "S3#7",
+     "S3#8"
+    ]
+   },
+   {
+    "mistake": "The ball pushes the foot only after the foot has pushed the ball.",
+    "why_it_fails": "The two forces are present together for the same interaction, not one after the other.",
+    "cites": [
+     "S1#8",
+     "S3#10",
+     "S3#11"
+    ]
+   },
+   {
+    "mistake": "Because the ball accelerates much more than the foot, the foot's force on the ball must be bigger.",
+    "why_it_fails": "The forces are equal, but the lighter ball has a much larger acceleration for the same force.",
+    "cites": [
+     "S1#12",
+     "S2#5",
+     "S3#5",
+     "S3#6"
+    ]
+   },
+   {
+    "mistake": "Gravity down and the ground's push up on a standing person are a third-law pair.",
+    "why_it_fails": "Both of those forces act on the person, whereas a third-law pair must act on two different objects.",
+    "cites": [
+     "S3#14",
+     "S3#15"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "When your foot kicks a football forward, does the football push on your foot too—and if it does, is its push weaker, equal, or stronger?",
+   "guesses": [
+    "The ball does not push back because it flies away.",
+    "The ball pushes back, but more weakly than the foot pushes it.",
+    "The ball pushes back with an equal force in the opposite direction."
+   ],
+   "answer": "The ball pushes the foot with an equal-sized force in the opposite direction, at the same time.",
+   "cites": [
+    "S1#7",
+    "S1#8",
+    "S3#1",
+    "S3#4"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show an unlabelled foot touching a ball and ask the opening question. Keep the two possible force arrows hidden while the learner commits to a guess.",
+    "cites": [
+     "S1#7",
+     "S3#1"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Place three choices beside the picture: no push back, weaker push back, or equal opposite push back. Ask the learner to choose before any arrows appear.",
+    "cites": [
+     "S2#5",
+     "S3#3",
+     "S3#4"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Draw a forward arrow on the ball as the foot pushes it. Then draw an equal-length backward arrow on the foot as the ball pushes back; make both arrows appear together.",
+    "cites": [
+     "S1#7",
+     "S1#8",
+     "S3#4",
+     "S3#10"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Ask, \"Why do these arrows not make the ball stay still?\" Circle the ball for one moment, then circle the foot, showing that each arrow is on a different object. Answer: because only forces on the same chosen object can combine as its net force.",
+    "cites": [
+     "S1#11",
+     "S3#7",
+     "S3#8",
+     "S4#3"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Write the rule beside the picture: if object A pushes object B, B simultaneously pushes A with an equal force in the opposite direction. Name this Newton's third law; avoid suggesting that one force happens first.",
+    "cites": [
+     "S1#8",
+     "S1#15",
+     "S3#4",
+     "S3#10"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Transform the same two-arrow picture into a paddle and water: the paddle pushes water backward, and water pushes the paddle and canoe forward. Ask which arrow acts on the canoe system.",
+    "cites": [
+     "S1#9"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Put two mini-diagrams side by side. On the left, foot and ball have one arrow on each object: a third-law pair. On the right, gravity and the ground's upward force are both on a standing person: not a third-law pair. Ask which diagram has forces that can balance on one object.",
+    "cites": [
+     "S1#11",
+     "S3#15"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Show a balloon releasing air backward. Ask the learner to complete the missing arrow and sentence: \"The balloon pushes ___ backward, so ___ pushes the balloon ___.\"",
+    "cites": [
+     "S1#10",
+     "S3#13"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "Set a short balloon-on-a-thread test after the explanation: predict the balloon's direction, release it, then explain the two interacting objects and their two opposite forces.",
+    "cites": [
+     "S1#10"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Return to the foot and ball and ask for a two-part statement: \"___ pushes ___; therefore ___ pushes ___.\" Finish by asking why the pair does not cancel.",
+    "cites": [
+     "S1#8",
+     "S3#8"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "A foot kicks a ball forward. Which statement best describes the force of the ball on the foot?",
+    "options": [
+     "It is equal in size, backward, and acts on the foot.",
+     "It is smaller because the ball moves farther.",
+     "It happens only after the foot has finished pushing."
+    ],
+    "answer_index": 0,
+    "explain": "The ball and foot interact simultaneously, so each exerts an equal and opposite force on the other.",
+    "cites": [
+     "S1#8",
+     "S1#12",
+     "S3#4",
+     "S3#10"
+    ]
+   },
+   {
+    "question": "A canoeist pushes water backward with a paddle. Which is the matching third-law force?",
+    "options": [
+     "The water pushes the paddle forward.",
+     "The canoe moves forward because the backward and forward forces cancel on it.",
+     "The paddle's backward push has no partner force because water is not solid."
+    ],
+    "answer_index": 0,
+    "explain": "The two forces are on different objects—water and paddle—so they do not cancel on either one object.",
+    "cites": [
+     "S1#9",
+     "S1#11"
+    ]
+   },
+   {
+    "question": "A person stands still on the floor. Gravity pulls the person down and the floor pushes the person up. Are these two forces a third-law pair?",
+    "options": [
+     "No, because both forces act on the person.",
+     "Yes, because they point in opposite directions.",
+     "Yes, because the person is not moving."
+    ],
+    "answer_index": 0,
+    "explain": "Opposite directions alone are not enough: a third-law pair has one force on each of two interacting objects.",
+    "cites": [
+     "S3#14",
+     "S3#15"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Balloon force-pair release",
+   "kind": "hands",
+   "materials": [
+    "one balloon"
+   ],
+   "stands_for": "The escaping air is one object and the balloon is the other.",
+   "predict": "Before releasing the balloon, predict: if air rushes backward out of the neck, will the balloon move backward, forward, or stay still?",
+   "steps": [
+    "Inflate the balloon and pinch its neck shut.",
+    "Point the neck away from your face and from other people.",
+    "Choose which way you predict the balloon will move.",
+    "Release the neck and watch the balloon move.",
+    "Say which way the air went and which way the balloon went."
+   ],
+   "observe": "Air leaves backward from the balloon, and the balloon moves generally in the opposite direction, although it may wobble and twist.",
+   "question": "Why can the balloon move even though the two forces are equal and opposite?",
+   "expected": "The balloon pushes the escaping air backward, and the air pushes the balloon forward with an equal force; they do not cancel because one force acts on the air and the other acts on the balloon.",
+   "write": "“The balloon pushed the air ______.”\n“Therefore the air pushed the balloon ______, and the forces did not cancel because ______.”",
+   "in_class": "Pairs share one balloon. The board shows: “balloon → air: backward” and “air → balloon: ____.” At the end ask, “Why do equal forces not stop the balloon?” A class answer that says “they cancel” shows that students are placing both forces on the balloon instead of on separate objects.",
+   "cites": [
+    "S1#10",
+    "S1#11",
+    "S3#13"
+   ]
+  },
+  "leave_out": [
+   "Calculating accelerations of unequal-mass objects with F = ma; it explains a related puzzle but is too much for this short conceptual lesson. [S1#12]",
+   "Detailed force diagrams with several forces, friction coefficients, or connected-object systems. [S1#13, S1#14]",
+   "Non-contact examples such as Earth and fruit, magnets, and electric charges; these can extend the same rule later. [S1#11, S1#12]"
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "Use the kicking-a-ball puzzle to confront the mistaken idea that equal forces must cause equal acceleration.",
+    "left": "Leave out numerical mass-and-acceleration calculations because this lesson checks identification of force pairs, not computation."
+   },
+   {
+    "source": "S3",
+    "took": "Use the direct foot-and-ball opening, then make the different-objects test the central way to defeat the cancellation and standing-person mistakes.",
+    "left": "Leave out the extended apple-Earth, fish, rocket, and acceleration calculations to keep one picture and one core test in a three-minute lesson."
+   },
+   {
+    "source": "S4",
+    "took": "Use the idea of considering forces on one chosen object when deciding whether forces can affect that object's motion.",
+    "left": "Leave out the car-wall and hammer-nail examples because the foot-ball picture already shows the same reasoning more simply."
+   }
+  ],
+  "uncited": [],
+  "teacher_talk": [
+   "Conversational and informal Hindi tone, using relatable analogies and rhetorical questions to engage the viewer, interspersed with calls to action for likes and subscriptions.",
+   "opens with a direct, intriguing question about falling objects and everyday bodily experiences",
+   "asks frequent rhetorical and direct questions throughout to simulate a dialogue",
+   "transitions smoothly using conversational phrases like 'but now comes the big question' or 'wait a second, I have a huge problem'",
+   "pauses to prompt the viewer to think before revealing answers",
+   "begins with a casual greeting and sets up the topic by connecting it to prior laws"
+  ],
+  "source_flows": {
+   "S1": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "application",
+    "integration"
+   ],
+   "S2": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ],
+   "S3": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "application",
+    "application",
+    "integration",
+    "application",
+    "assessment"
+   ],
+   "S4": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "assessment"
+   ]
+  },
+  "topic": "Newton's Third Law of Motion",
+  "asked": "Newton's third law of motion",
+  "klass": 9,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Science, Class 9, chapter 6: chapter 6",
+    "url": "https://ncert.nic.in/textbook/pdf/iesc106.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Knowledge Shakha: न्यूटन के तीन नियम आसानी से समझे - Newton's laws of motion - Understand in 3 minutes",
+    "url": "https://www.youtube.com/watch?v=9IpjKjUkHhc",
+    "note": "Hindi lecture, 3 min, automatic captions"
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "Khan Academy: Newton's third law | Physics | Khan Academy",
+    "url": "https://www.youtube.com/watch?v=J8mLQQZeIH8",
+    "note": "English lecture, 10 min"
+   },
+   {
+    "id": "S4",
+    "kind": "lecture",
+    "title": "Professor Dave Explains: Newton's Third Law of Motion: Action and Reaction",
+    "url": "https://www.youtube.com/watch?v=y61_VPKH2B4",
+    "note": "English lecture, 4 min"
+   }
+  ],
+  "problems": [],
+  "skill_version": "e9709f116b",
+  "pack_digest": "e61710dedadeaf4a",
+  "diagram": {
+   "ask": "A standard diagram of a foot touching a ball showing a foot, a ball, an arrow forward on the ball labelled \"foot pushes ball\", and an equal-length arrow backward on the foot labelled \"ball pushes foot\".",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-25cf2033ab/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_standard_diagram_of_a_-25cf2033ab/whole.png",
+   "points": {
+    "action_reaction_pair": {
+     "name": "Action-Reaction Pair",
+     "box": [
+      0.3556,
+      0.0551,
+      0.6445,
+      0.121
+     ]
+    },
+    "ball_pushes_foot": {
+     "name": "ball pushes foot",
+     "box": [
+      0.0142,
+      0.4051,
+      0.2314,
+      0.4889
+     ]
+    },
+    "foot_pushes_ball": {
+     "name": "foot pushes ball",
+     "box": [
+      0.7682,
+      0.4051,
+      0.9855,
+      0.4889
+     ]
+    },
+    "f_reaction": {
+     "name": "F_{reaction}",
+     "box": [
+      0.3226,
+      0.5118,
+      0.4174,
+      0.5862
+     ]
+    },
+    "f_action": {
+     "name": "F_{action}",
+     "box": [
+      0.5891,
+      0.5118,
+      0.6657,
+      0.5862
+     ]
+    },
+    "f_action__f_reaction": {
+     "name": "|F_{action}| = |F_{reaction}|",
+     "box": [
+      0.372,
+      0.8768,
+      0.6276,
+      0.9702
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   },
+   "shows": "Forces come in pairs acting on two different objects in opposite directions.",
+   "visual_kind": "standard diagram"
+  }
+ }
+}

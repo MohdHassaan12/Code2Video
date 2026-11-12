@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P07 · Self-improving repair memory is inert — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">07</div>
+  <div>
+    <h1>Self-improving repair memory is inert</h1>
+    <div class="sub">The system fixes the same classes of failure over and over — and remembers none of it. A full
+    error→fix memory is coded on both the write and read side, and it is switched off.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>07</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-l">L · the loop doesn’t close</span>
+  <span class="chip t2">T2 applied research</span>
+  <span class="chip mat">Maturity: ○ wired but disabled — built-inert (L1)</span>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today</div>
+  <ul>
+    <li><code>app/rag.py</code> (125 lines) implements a ChromaDB store of error→repair pairs:
+      <code>_store_repair_pair</code> is called from <b>five</b> sites in <code>app/render.py</code>;
+      <code>_retrieve_past_fixes</code> feeds the repair prompt from <code>app/codegen.py:172</code>.</li>
+    <li>All of it is behind <code>CHROMADB_ENABLED</code>, default <b>off</b> (<code>rag.py:17</code> early-returns; both
+      collections stay <code>None</code>) — so retrieval returns <code>[]</code> and storage no-ops in every default render.</li>
+    <li>Independently, the read side (“pre-patching a known failure before its first render”) “was dropped in a merge except
+      for the LaTeX path” <span class="src">reference-architecture.md:903-908</span> — the roadmap calls this the only
+      substantive gap left in stage F (gap F3 <span class="src">pipeline-roadmap.md:444-447</span>).</li>
+    <li>The error-fingerprint/resolution index — the thing that would make failures <i>addressable</i> — is the explicitly
+      named reason stage F “is not L3+” <span class="src">pipeline-roadmap.md:400-403</span>.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why this is research-grade</div>
+  <p>The engineering exists; what’s unsolved is whether and how memory actually helps. Three open questions, in rising
+  order of difficulty: <b>(1) Fingerprinting</b> — when are two render failures “the same problem”? Tracebacks vary by line
+  number, scene id, topic; a fingerprint that’s too tight never matches again, too loose retrieves poison.
+  <b>(2) Yield</b> — does retrieval-augmented repair measurably cut rounds-to-converge? Never measured here, and field
+  results on retrieval-for-repair are mixed. <b>(3) Poisoning</b> — a stored “fix” that merely passed accept-if-better once
+  can be wrong in general; memory that learns from its own outputs can entrench a bad pattern. The house rule “never lose a
+  verified artifact” has no analog yet for verified <i>knowledge</i>.</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>Measured: <code>chroma_db/</code> exists on disk; the flag keeps it empty of new pairs in default runs.</li>
+    <li>Measured: <b>185</b> <code>trace_*.json</code> files in <code>debug_sandbox/debug_traces/</code> — full generation
+      traces, the richest failure corpus in the repo, mined by nothing.</li>
+    <li>The recurrence it would attack is documented: the overlap fix-of-fix chain
+      (<a href="p04-repair-convergence.html">P04</a>), and the repeated “selective import satisfies the guard” trap
+      that bit twice <span class="src">CLAUDE.md:110-137</span> — same lesson, re-learned.</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art <span class="tag">citation-check before external use</span></div>
+  <p>Crash dedup/grouping is production-proven (Sentry-style stack fingerprinting) and directly applicable to render
+  failures. Case-based and retrieval-augmented program repair is an active research line with positive-but-noisy results.
+  Experience replay with verification-before-storage is the standard defense against self-poisoning; “only store what
+  stayed correct” as a memory admission gate mirrors this repo’s accept-if-better and is a natural, publishable extension
+  of it.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — cheap → deep</div>
+  <ol>
+    <li><span class="badge solid-green">$0</span> Flip <code>CHROMADB_ENABLED=1</code> on a branch and replay the harness +
+      the three benchmark topics; measure retrieval hit-rate and repair rounds with memory on vs. off. (An A/B this cheap
+      not having been run is itself the maturity finding.)</li>
+    <li><span class="badge solid-green">$0</span> Mine the 185 debug traces into a fingerprint corpus: cluster failures,
+      count recurrences — this decides whether memory is worth the complexity before any new code.</li>
+    <li><span class="badge solid-amber">metered</span> Restore read-side pre-patching beyond LaTeX (the F3 gap), behind the
+      same accept-if-better guard: a pre-patch is kept only if the render passes.</li>
+    <li><span class="badge solid-purple">research</span> Verified memory: admission (store only fixes that survived N later
+      runs), decay (evict fingerprints that stop matching), and provenance (every retrieved fix names the incident that
+      taught it — the CLAUDE.md “record it WITH what taught it” rule, mechanized).</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p>Primary: rounds-to-converge and repair spend with memory on/off across a bulk suite (shares
+  <a href="p04-repair-convergence.html">P04</a>’s metric and needs <a href="p02-state-and-cost.html">P02</a>’s ledger).
+  Guard metric: retrieval precision — a retrieved fix must be rated relevant for the failure it was offered on; poison
+  events (a retrieved fix that made things worse) must be counted, not just losses discarded.</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p04-repair-convergence.html">P04 repair convergence</a> — memory is one of its levers ·
+  <a href="p02-state-and-cost.html">P02 state &amp; cost</a> — run identity and spend make the A/B meaningful ·
+  <a href="p01-quality-score.html">P01 quality score</a> — “did memory help” ultimately needs a quality metric, not just a
+  violation count.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p06-narration-sync.html">← prev: P06 narration sync</a>
+  <a href="p08-grounding-fidelity.html">next: P08 grounding fidelity →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

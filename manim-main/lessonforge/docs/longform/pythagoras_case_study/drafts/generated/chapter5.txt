@@ -1,0 +1,227 @@
+from lesson_runtime import *
+import numpy as np
+
+# ── helpers ──────────────────────────────────────────────────────────────────
+A_VAL = 1.6
+B_VAL = 1.0
+SCALE = 1.05          # uniform scale applied to whole diagram group
+
+def make_diagram(a=A_VAL, b=B_VAL, scale=SCALE):
+    s = a + b
+    # outer square corners (bottom-left origin)
+    O  = np.array([0, 0, 0])
+    P1 = np.array([s, 0, 0])
+    P2 = np.array([s, s, 0])
+    P3 = np.array([0, s, 0])
+    outer = Polygon(O, P1, P2, P3, color=INK, stroke_width=2)
+
+    # four right-triangle corners
+    t_pts = [
+        [O,          np.array([a,0,0]), np.array([0,b,0])],
+        [np.array([a,0,0]), P1,          np.array([s,b,0])],
+        [np.array([s,b,0]), P2,          np.array([b,s,0])],
+        [np.array([0,b,0]), np.array([b,s,0]), P3],
+    ]
+    tri_colors = [TEAL, TEAL, TEAL, TEAL]
+    triangles = VGroup(*[
+        Polygon(*pts, color=INK, fill_color=tri_colors[i], fill_opacity=0.45, stroke_width=1.5)
+        for i, pts in enumerate(t_pts)
+    ])
+
+    # central tilted square
+    c_pts = [np.array([a,0,0]), np.array([s,b,0]), np.array([b,s,0]), np.array([0,b,0])]
+    central = Polygon(*c_pts, color=PINK, fill_color=PINK, fill_opacity=0.25, stroke_width=2)
+
+    grp = VGroup(outer, triangles, central)
+    grp.scale(scale)
+    return grp, outer, triangles, central, a*scale, b*scale, s*scale
+
+def diagram_labels(grp, outer, triangles, central, a_s, b_s, s_s, show_c=True):
+    bl = outer.get_corner(DL)
+    # side labels
+    la = txt("a", 26, TEAL).next_to(bl + RIGHT*a_s*0.5, DOWN, buff=0.18)
+    lb = txt("b", 26, GOLD).next_to(bl + RIGHT*(a_s + b_s*0.5), DOWN, buff=0.18)
+    la2 = txt("a", 26, TEAL).next_to(bl + UP*b_s*0.5, LEFT, buff=0.18)
+    lb2 = txt("b", 26, GOLD).next_to(bl + UP*(b_s + a_s*0.5), LEFT, buff=0.18)
+    lc = txt("c", 26, PINK).move_to(central.get_center())
+    labs = VGroup(la, lb, la2, lb2)
+    if show_c:
+        labs.add(lc)
+    return labs
+
+# ── Chapter 5 ────────────────────────────────────────────────────────────────
+class C05(LessonScene):
+    def construct(self):
+        self.chapter(5)
+
+        # ── shared diagram (built once, lives all 4 beats) ──────────────────
+        grp, outer, triangles, central, a_s, b_s, s_s = make_diagram()
+        diag = VGroup(grp)
+        diag.move_to([-3.2, -0.15, 0])
+        labs = diagram_labels(grp, outer, triangles, central, a_s, b_s, s_s)
+        # shift labs with diag
+        offset = diag.get_center() - grp.get_center()
+        labs.shift(offset)
+
+        # ── BEAT 17 ─────────────────────────────────────────────────────────
+        self.begin("17")
+
+        side_label = eq(r"(a+b)^2", 36, INK).move_to([1.8, 1.85, 0])
+
+        self.cue("Keep the same picture, but replace the numbers",
+                 Create(outer), run_time=1.4)
+        self.cue("The outer square has side a plus b",
+                 AnimationGroup(Create(triangles), Create(central), FadeIn(labs)),
+                 run_time=1.4)
+        self.cue("so its area is the quantity a plus b",
+                 FadeIn(side_label), run_time=1.0)
+
+        # expansion line by line
+        eq1 = eq(r"= a^2 + 2ab + b^2", 36, INK).next_to(side_label, DOWN, buff=0.35, aligned_edge=LEFT)
+        t_a2  = eq(r"a^2",  34, TEAL).move_to([1.8,  0.85, 0])
+        t_2ab = eq(r"2ab",  34, GOLD).move_to([1.8,  0.25, 0])
+        t_b2  = eq(r"b^2",  34, GOLD).move_to([1.8, -0.35, 0])
+
+        self.cue("Multiplying a plus b by itself gives",
+                 Write(eq1), run_time=1.3)
+
+        # colour-coded rectangles inside outer square to match terms
+        bl = outer.get_corner(DL)
+        rect_a2 = Rectangle(width=a_s, height=a_s, color=TEAL,
+                             fill_color=TEAL, fill_opacity=0.18, stroke_width=1.5)
+        rect_a2.move_to(bl + RIGHT*a_s/2 + UP*a_s/2)
+        rect_b2 = Rectangle(width=b_s, height=b_s, color=GOLD,
+                             fill_color=GOLD, fill_opacity=0.18, stroke_width=1.5)
+        rect_b2.move_to(bl + RIGHT*(a_s + b_s/2) + UP*(b_s + a_s + (b_s/2 - b_s)))
+        # place b² at top-right corner
+        rect_b2.move_to(bl + RIGHT*(a_s + b_s/2) + UP*(a_s + b_s/2))
+
+        self.cue("Together those middle terms are two ab",
+                 AnimationGroup(FadeIn(rect_a2), FadeIn(rect_b2)), run_time=1.2)
+
+        panel17 = self.panel_to(
+            eq(r"(a+b)^2", 32, INK),
+            eq(r"= a^2 + 2ab + b^2", 32, INK),
+        )
+        self.cue("This expression counts the whole outer square",
+                 panel17, run_time=1.0)
+        self.finish()
+
+        # ── BEAT 18 ─────────────────────────────────────────────────────────
+        self.begin("18")
+
+        # shade triangles more prominently
+        tri_shade = triangles.copy().set_fill(TEAL, opacity=0.65)
+        tri_label = eq(r"4\times\tfrac{1}{2}ab = 2ab", 30, TEAL).move_to([3.5, 1.3, 0])
+        c2_label  = eq(r"c^2", 34, PINK).move_to(central.get_center() + offset)
+
+        self.cue("Each corner triangle has area one half times a times b",
+                 Transform(triangles, tri_shade), run_time=1.2)
+        self.cue("There are four identical triangles",
+                 FadeIn(tri_label), run_time=1.0)
+        self.cue("The central square has side c and area c squared",
+                 FadeIn(c2_label), run_time=1.0)
+
+        eq_lhs = eq(r"a^2+2ab+b^2", 32, INK).move_to([2.4, -0.5, 0])
+        eq_eq  = eq(r"=", 32, INK).next_to(eq_lhs, RIGHT, buff=0.2)
+        eq_rhs = eq(r"2ab+c^2", 32, INK).next_to(eq_eq, RIGHT, buff=0.2)
+
+        self.cue("Add the pieces: two ab plus c squared",
+                 AnimationGroup(FadeIn(eq_lhs), FadeIn(eq_eq), FadeIn(eq_rhs)),
+                 run_time=1.3)
+
+        panel18 = self.panel_to(
+            eq(r"a^2+2ab+b^2", 30, INK),
+            eq(r"= 2ab + c^2", 30, INK),
+        )
+        self.cue("so the two expressions must be equal",
+                 panel18, run_time=1.0)
+        self.finish()
+
+        # ── BEAT 19 ─────────────────────────────────────────────────────────
+        self.begin("19")
+
+        # full equation displayed
+        full_eq = eq(r"a^2+2ab+b^2 = 2ab+c^2", 34, INK).move_to([3.5, 1.5, 0])
+        self.cue("Set those expressions equal",
+                 AnimationGroup(FadeOut(eq_lhs), FadeOut(eq_eq), FadeOut(eq_rhs),
+                                FadeIn(full_eq)), run_time=1.2)
+
+        # highlight the 2ab terms
+        hi_lhs = eq(r"2ab", 34, GOLD).move_to([3.18, 1.5, 0])
+        hi_rhs = eq(r"2ab", 34, GOLD).move_to([4.62, 1.5, 0])
+        self.cue("Subtract two ab from both sides",
+                 AnimationGroup(FadeIn(hi_lhs), FadeIn(hi_rhs)), run_time=1.1)
+
+        # cross out 2ab terms
+        strike1 = Line(hi_lhs.get_corner(DL), hi_lhs.get_corner(UR), color=PINK, stroke_width=3)
+        strike2 = Line(hi_rhs.get_corner(DL), hi_rhs.get_corner(UR), color=PINK, stroke_width=3)
+        self.cue("Visually, that removes the same total triangle area",
+                 AnimationGroup(Create(strike1), Create(strike2),
+                                FadeOut(tri_shade if tri_shade in self.mobjects else triangles)),
+                 run_time=1.2)
+
+        # final result
+        result = eq(r"a^2 + b^2 = c^2", 44, INK).move_to([3.5, 0.2, 0])
+        box    = SurroundingRectangle(result, color=GOLD, buff=0.18, stroke_width=2.5)
+        check  = txt("✓", 36, TEAL).next_to(box, RIGHT, buff=0.2)
+
+        self.cue("What remains is a squared plus b squared equals c squared",
+                 AnimationGroup(FadeIn(result), Create(box)), run_time=1.3)
+        self.cue("We used arbitrary positive lengths a and b",
+                 FadeIn(check), run_time=0.9)
+
+        panel19 = self.panel_to(
+            eq(r"a^2+b^2 = c^2", 34, GOLD),
+            txt("holds for every\nright triangle", 26, INK),
+        )
+        self.cue("so this conclusion applies to every right triangle",
+                 panel19, run_time=1.0)
+        self.finish()
+
+        # ── BEAT 20 ─────────────────────────────────────────────────────────
+        self.begin("20")
+
+        # restore clean diagram view
+        self.play(FadeOut(hi_lhs), FadeOut(hi_rhs),
+                  FadeOut(strike1), FadeOut(strike2),
+                  FadeOut(full_eq), FadeOut(tri_label),
+                  FadeOut(rect_a2), FadeOut(rect_b2),
+                  FadeOut(side_label), FadeOut(eq1),
+                  run_time=0.9)
+
+        # summary facts
+        f1 = txt("1. Four congruent triangles", 24, INK)
+        f2 = txt("2. Central shape is a square\n   (α + β = 90°)", 24, INK)
+        f3 = txt("3. Same outer area\n   counted two ways", 24, INK)
+        tick = txt("✓", 26, TEAL)
+
+        self.cue("Notice what the proof depended on",
+                 AnimationGroup(FadeIn(f1)), run_time=1.0)
+
+        row1 = VGroup(tick.copy().set_color(TEAL), f1).arrange(RIGHT, buff=0.2)
+        row2 = VGroup(tick.copy().set_color(TEAL), f2).arrange(RIGHT, buff=0.2)
+        row3 = VGroup(tick.copy().set_color(TEAL), f3).arrange(RIGHT, buff=0.2)
+        summary = VGroup(row1, row2, row3).arrange(DOWN, buff=0.3, aligned_edge=LEFT)
+        summary.move_to([3.5, 0.7, 0])
+
+        self.cue("Four congruent triangles, a square outside",
+                 FadeIn(row1), run_time=1.0)
+        self.cue("We justified the central square using the right angle",
+                 FadeIn(row2), run_time=1.2)
+        self.cue("Then we counted the same region twice",
+                 FadeIn(row3), run_time=1.0)
+
+        final_eq = eq(r"a^2 + b^2 = c^2", 40, GOLD).move_to([3.5, -1.3, 0])
+        final_box = SurroundingRectangle(final_eq, color=GOLD, buff=0.18, stroke_width=2.5)
+
+        self.cue("When you remember the formula, try to remember this picture",
+                 AnimationGroup(FadeIn(final_eq), Create(final_box)), run_time=1.2)
+
+        panel20 = self.panel_to(
+            txt("Area conserved\n→ proof complete", 26, TEAL),
+        )
+        self.cue("and the reason the triangle areas cancel",
+                 panel20, run_time=1.0)
+        self.finish()
+        self.done()

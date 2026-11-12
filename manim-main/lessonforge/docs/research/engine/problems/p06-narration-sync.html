@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P06 · Narration–animation sync by construction — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">06</div>
+  <div>
+    <h1>Narration–animation sync by construction</h1>
+    <div class="sub">The voice and the picture share a scene but not a timeline. Entrances fire against whole-cue audio;
+    once they finish, the rest of the beat is dead air. There is no IR where words and animations meet.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>06</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-s">S · code owns structure — but structure isn’t meaning</span>
+  <span class="chip t2">T2 applied research</span>
+  <span class="chip mat">Maturity: L1 — approximate by construction</span>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today</div>
+  <ul>
+    <li>Each narration cue is synthesized as one audio block (<code>UniversalTTSService</code> in <code>viz_helpers.py</code>,
+      riding manim-voiceover); the transpiler plays that cue’s animation events against it.</li>
+    <li>Timing on the animation side is content-aware but audio-blind: the <code>_TIMING</code> map
+      (<code>transpiler.py:122-141</code>) assigns durations by element type — it never sees where words fall.</li>
+    <li>The roadmap’s own diagnosis: “Sync is approximate: entrances play against whole-cue audio … the rest of each beat is
+      still dead air until per-element beats land” <span class="src">pipeline-roadmap.md:172-174</span>. Per-element narration
+      beats are open roadmap priority #11 <span class="src">pipeline-roadmap.md:658</span>.</li>
+    <li>A residual language-contract cousin lives here too: a model writing romanized Hinglish directly bypasses the
+      transliteration pass — “no deterministic backstop” for spoken double-speak
+      <span class="src">pipeline-roadmap.md:149-152</span>.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why this is research-grade</div>
+  <p>“When the narrator says <i>point B</i>, point B should appear” is the entire visual grammar of the 3Blue1Brown genre —
+  and it is currently unexpressible in the Storyboard IR. Cues bind narration to a <i>scene</i>; nothing binds a word to an
+  <i>event</i>. Building that binding deterministically is genuinely hard here for three reasons: word-level timestamps must
+  come from the TTS or an aligner (and this pipeline speaks code-switched Hinglish, where alignment tooling is weakest);
+  re-synthesis to fix timing is expensive (TTS is ~85% of metered cost <span class="src">pipeline-roadmap.md:168</span>, so
+  timing must adapt animation to audio, not the reverse); and pacing itself is pedagogy — the 90-wpm substring bug
+  (<code>"grade 1" in "grade 11"</code>, <code>ce/planner_agent.py:42-53</code>) shipped crawling narration to teenagers and
+  nothing measured it.</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>Sidecars record <code>animation_beats</code> from 1 to 35 per video (measured) — the beat structure exists; its
+      alignment to speech is unmeasured anywhere.</li>
+    <li>The shared TTS cache (<code>test_tts_shared_cache.py</code>, 10/10) makes repair re-renders bill zero TTS — proof the
+      repo already engineers around audio cost; sync experiments need the same discipline.</li>
+    <li>Dead air is visible to Vision QA as “dead frames” (<a href="p03-vision-qa.html">P03</a>) — two problems, one symptom,
+      neither owning it.</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art <span class="tag">citation-check before external use</span></div>
+  <p>Forced alignment is mature for monolingual speech (aeneas, WhisperX-style timestamping); manim-voiceover itself ships a
+  bookmark API — SSML-like markers in narration that trigger animations mid-cue — which is the genre-standard solution and
+  already in this dependency tree. Code-switched (Hinglish) alignment is the weak edge: ASR-based aligners degrade on
+  romanized mixed-script text, and that degradation is exactly where this system lives. Pacing-for-comprehension has
+  learning-science grounding (segmenting/modality principles) but no computable target.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — cheap → deep</div>
+  <ol>
+    <li><span class="badge solid-green">$0</span> Bookmarks on the existing tier: let the storyboard mark
+      <code>&lt;bookmark&gt;</code> points in narration (schema field + <code>--regen</code>), transpiler waits on them —
+      manim-voiceover already supports this; the work is IR plumbing and gates.</li>
+    <li><span class="badge solid-green">$0</span> Measure dead air deterministically: audio-activity envelope vs. event
+      timeline from the script — a per-video <code>dead_air_seconds</code> sidecar field (new health counter ⇒ verify it reads
+      ~0 on a known-good run first, per the <code>voice_degraded</code> lesson).</li>
+    <li><span class="badge solid-amber">metered</span> Word-timestamp alignment pass on synthesized audio; compile an
+      Animation-IR schedule that distributes events across the cue instead of front-loading them.</li>
+    <li><span class="badge solid-purple">research</span> Code-switched alignment quality, and a pacing model per grade band —
+      what should the words-per-minute and event density <i>be</i>, validated against comprehension, not vibes.</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p><code>dead_air_seconds</code> trend across the video corpus; bookmark-hit accuracy (did the event fire within ±300ms of
+  its word) once alignment exists; and a human A/B — synced vs. front-loaded versions of the same board — to confirm the
+  effort buys perceived quality (feeds <a href="p01-quality-score.html">P01</a>’s rubric).</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p05-semantic-composition.html">P05 composition</a> — same bridge pattern in space ·
+  <a href="p03-vision-qa.html">P03 perception</a> — currently blames dead air on frames ·
+  <a href="p02-state-and-cost.html">P02 cost</a> — alignment experiments ride on TTS-cache discipline.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p05-semantic-composition.html">← prev: P05 semantic composition</a>
+  <a href="p07-repair-memory.html">next: P07 repair memory →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

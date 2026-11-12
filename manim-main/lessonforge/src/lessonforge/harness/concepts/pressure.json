@@ -1,0 +1,205 @@
+{
+ "id": "pressure",
+ "names": [
+  "pressure",
+  "force and pressure",
+  "what is pressure",
+  "pressure force per area",
+  "pressure and area",
+  "why is a knife sharp",
+  "why school bags have wide straps",
+  "thrust and pressure"
+ ],
+ "subject": "science",
+ "classes": [
+  8,
+  9
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "drawing",
+  "figure": null,
+  "asks": [
+   "A drawing of a brick resting on loose sand on its largest face, and beside it the same brick standing on its smallest end, showing a shallow dent and a deep dent.",
+   "A drawing of two nails pushed into soft clay by the same weight, one resting on its point and one on its flat head, with the dents they make."
+  ],
+  "why": "The same brick making a shallow dent one way and a deep dent the other shows that area, not weight, made the difference."
+ },
+ "card": {
+  "big_idea": {
+   "text": "Pressure is how much force presses on each bit of area: the same force on a smaller area gives a larger pressure.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Predict which way of placing an object presses harder on the ground",
+    "level": "apply",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Explain why the same weight sinks deeper on a small area",
+    "level": "understand",
+    "checked_by": "try_it"
+   },
+   {
+    "can": "Explain why everyday things are made wide or sharp",
+    "level": "understand",
+    "checked_by": "q1"
+   }
+  ],
+  "why_it_matters": {
+   "text": "It explains why a needle has a point, why school bags have wide straps and why a tractor has broad tyres.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "The force is shared out over the area it presses on, so on a smaller area each small piece of the surface carries a bigger share of the force, and it sinks or cuts in more.",
+   "cites": []
+  },
+  "picture": {
+   "text": "A brick lying flat on loose sand, its weight shared over its large face: a shallow dent. The same brick is turned to stand on its small end: the same weight now shared by a quarter of the area, and a deep dent. Small equal arrows spread over each face show each square of sand getting its share.",
+   "standard": "brick on sand placed on different faces",
+   "cites": []
+  },
+  "diagram_ask": "A drawing of a brick resting on loose sand on its largest face, and beside it the same brick standing on its smallest end, showing a shallow dent and a deep dent.",
+  "needs_first": [
+   {
+    "text": "A force is a push or a pull, and weight is a force.",
+    "cites": []
+   },
+   {
+    "text": "Area is how much surface something covers.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Thinking a heavier thing always presses harder, whatever its area.",
+    "why_it_fails": "A heavy elephant on broad feet can press less on each bit of ground than a thin heel, because pressure depends on area too.",
+    "cites": []
+   },
+   {
+    "mistake": "Thinking pressure and force are the same thing.",
+    "why_it_fails": "The brick's force, its weight, is the same on every face, yet the dents differ, so pressure is force shared over area.",
+    "cites": []
+   },
+   {
+    "mistake": "Thinking a bigger area gives a bigger pressure because more is touching.",
+    "why_it_fails": "Spreading the same force over more area gives each bit less, which is why the flat brick makes the shallowest dent.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "The same brick is put on soft sand, once lying flat and once standing on its small end. Which way does it sink deeper, or are they the same?",
+   "guesses": [
+    "Lying flat, because more brick touches",
+    "The same, the brick weighs the same",
+    "Standing on its end"
+   ],
+   "answer": "Standing on its end: the same weight is shared over a smaller area, so the pressure is greater.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the brick on sand, flat and on its end, and ask which way sinks deeper. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Lift both: the flat brick left a shallow dent, the brick on its end a deep one.",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Ask: the brick weighs the same, so what changed? The area: its weight is shared over fewer squares of sand, so each square gets a bigger share.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name it pressure: the force on each unit of area, force divided by area.",
+    "cites": []
+   },
+   {
+    "move": "example",
+    "what": "The end has a quarter of the area of the large face, so the pressure on the sand is four times as much.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "A needle's point and a thumb's tip: the same push hurts on the point because the area is tiny.",
+    "cites": []
+   },
+   {
+    "move": "your_turn",
+    "what": "The learner explains why a school bag has wide straps before it is shown.",
+    "cites": []
+   },
+   {
+    "move": "try_it",
+    "what": "Set the task: a book on a tray of flour, flat and on its edge.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner says why a small area gives a big pressure.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "Why are the straps of a school bag made wide?",
+    "options": [
+     "To spread the weight over more area, so less pressure on the shoulders",
+     "To make the bag lighter",
+     "So the straps press harder and hold better"
+    ],
+    "answer_index": 0,
+    "explain": "The weight is the same, but spread over a wide strap each bit of shoulder carries less of it.",
+    "cites": []
+   },
+   {
+    "question": "A brick can rest on its largest face or its smallest end. Which way does it press hardest on the ground?",
+    "options": [
+     "On its smallest end",
+     "On its largest face, because more of it touches",
+     "The same, because the brick weighs the same"
+    ],
+    "answer_index": 0,
+    "explain": "Its weight is the same both ways, but on the small end it is shared over less area, so the pressure is greatest.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "A book in flour",
+   "kind": "hands",
+   "materials": [
+    "tray",
+    "flour",
+    "a thick book"
+   ],
+   "stands_for": "The flour is the soft ground; the book's weight is the force; its cover and its spine are a large and a small area.",
+   "predict": "Will the book make a deeper mark lying flat on its cover or standing on its spine?",
+   "steps": [
+    "Spread flour evenly in the tray and smooth the top.",
+    "Gently lay the book flat on its cover, then lift it straight up.",
+    "Gently stand the same book on its spine on another part of the flour, then lift it straight up.",
+    "Compare how deep the two marks are."
+   ],
+   "observe": "The mark from the book standing on its spine is much deeper than the mark from the book lying flat.",
+   "question": "Why does the same book sink deeper standing on its spine?",
+   "expected": "Because its weight is the same but the spine's area is much smaller, so each bit of flour carries more of the force and the pressure is greater.",
+   "write": "The same force on a smaller area makes a bigger pressure. Pressure is force shared over area.",
+   "in_class": "Pairs, one tray of flour or sand per two pairs. The teacher draws the book flat and on its spine on the board, with the weight arrow the same on both. Ask: the weight did not change, so what did? A class that says the standing book is heavier still thinks pressure is the same as weight.",
+   "cites": []
+  },
+  "leave_out": [
+   "pressure in liquids and gases",
+   "atmospheric pressure",
+   "units such as pascal in calculation"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

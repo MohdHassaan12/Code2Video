@@ -1,0 +1,14 @@
+# The viewer image (lessonforge/deploy/Dockerfile, built from this root by render.yaml) needs only these.
+# Everything else stays out of the build context: the workspace, lessons, keys (.env), node_modules.
+*
+!lessonforge/pyproject.toml
+!lessonforge/README.md
+!lessonforge/src
+!lessonforge/clients/lessonforge-app
+lessonforge/clients/lessonforge-app/node_modules
+lessonforge/clients/lessonforge-app/dist
+lessonforge/clients/lessonforge-app/.expo
+**/__pycache__
+**/*.pyc
+**/.env
+**/.env.*

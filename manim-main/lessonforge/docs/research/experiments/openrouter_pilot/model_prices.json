@@ -1,0 +1,395 @@
+{
+  "retrieved_at": "2026-10-06T16:55:13.963116+00:00",
+  "source": "https://openrouter.ai/api/v1/models",
+  "models": [
+    {
+      "id": "anthropic/claude-sonnet-4.6",
+      "canonical_slug": "anthropic/claude-4.6-sonnet-20260217",
+      "hugging_face_id": "",
+      "name": "Anthropic: Claude Sonnet 4.6",
+      "created": 1771342990,
+      "description": "Sonnet 4.6 is Anthropic's most capable Sonnet-class model yet, with frontier performance across coding, agents, and professional work. It excels at iterative development, complex codebase navigation, end-to-end project management with...",
+      "context_length": 1000000,
+      "architecture": {
+        "modality": "text+image+file->text",
+        "input_modalities": [
+          "text",
+          "image",
+          "file"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "tokenizer": "Claude",
+        "instruct_type": null
+      },
+      "pricing": {
+        "prompt": "0.000003",
+        "completion": "0.000015",
+        "web_search": "0.01",
+        "input_cache_read": "0.0000003",
+        "input_cache_write": "0.00000375",
+        "input_cache_write_1h": "0.000006"
+      },
+      "top_provider": {
+        "context_length": 1000000,
+        "max_completion_tokens": 128000,
+        "is_moderated": true
+      },
+      "per_request_limits": null,
+      "supported_parameters": [
+        "include_reasoning",
+        "max_completion_tokens",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "stop",
+        "structured_outputs",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "top_k",
+        "top_p",
+        "verbosity"
+      ],
+      "default_parameters": {},
+      "supported_voices": null,
+      "knowledge_cutoff": null,
+      "expiration_date": null,
+      "links": {
+        "details": "/api/v1/models/anthropic/claude-4.6-sonnet-20260217/endpoints"
+      },
+      "benchmarks": {
+        "design_arena": [
+          {
+            "arena": "agents",
+            "category": "agenticgamedev",
+            "elo": 1177,
+            "win_rate": 52.2,
+            "rank": 16
+          },
+          {
+            "arena": "agents",
+            "category": "androidnative",
+            "elo": 1211,
+            "win_rate": 62,
+            "rank": 13
+          },
+          {
+            "arena": "agents",
+            "category": "fullstack",
+            "elo": 1211,
+            "win_rate": 64.3,
+            "rank": 14
+          },
+          {
+            "arena": "agents",
+            "category": "godotgamedev",
+            "elo": 1226,
+            "win_rate": 60.6,
+            "rank": 12
+          },
+          {
+            "arena": "agents",
+            "category": "mobileapps",
+            "elo": 1209,
+            "win_rate": 63.6,
+            "rank": 14
+          },
+          {
+            "arena": "agents",
+            "category": "webapps",
+            "elo": 1183,
+            "win_rate": 57,
+            "rank": 23
+          },
+          {
+            "arena": "models",
+            "category": "3d",
+            "elo": 1242,
+            "win_rate": 57.6,
+            "rank": 31
+          },
+          {
+            "arena": "models",
+            "category": "asciiart",
+            "elo": 1246,
+            "win_rate": 60.1,
+            "rank": 18
+          },
+          {
+            "arena": "models",
+            "category": "codecategories",
+            "elo": 1280,
+            "win_rate": 59.4,
+            "rank": 20
+          },
+          {
+            "arena": "models",
+            "category": "dataviz",
+            "elo": 1285,
+            "win_rate": 58.2,
+            "rank": 16
+          },
+          {
+            "arena": "models",
+            "category": "gamedev",
+            "elo": 1272,
+            "win_rate": 58.8,
+            "rank": 28
+          },
+          {
+            "arena": "models",
+            "category": "svg",
+            "elo": 1196,
+            "win_rate": 58.7,
+            "rank": 24
+          },
+          {
+            "arena": "models",
+            "category": "uicomponent",
+            "elo": 1278,
+            "win_rate": 58.3,
+            "rank": 26
+          },
+          {
+            "arena": "models",
+            "category": "website",
+            "elo": 1291,
+            "win_rate": 60,
+            "rank": 16
+          }
+        ],
+        "artificial_analysis": {
+          "intelligence_index": 30.1,
+          "coding_index": 63,
+          "agentic_index": 31.8
+        }
+      },
+      "reasoning": {
+        "mandatory": false,
+        "supported_efforts": [
+          "max",
+          "high",
+          "medium",
+          "low"
+        ],
+        "default_effort": "medium"
+      }
+    },
+    {
+      "id": "google/gemini-2.5-flash",
+      "canonical_slug": "google/gemini-2.5-flash",
+      "hugging_face_id": "",
+      "name": "Google: Gemini 2.5 Flash",
+      "created": 1750172488,
+      "description": "Gemini 2.5 Flash is Google's state-of-the-art workhorse model, specifically designed for advanced reasoning, coding, mathematics, and scientific tasks. It includes built-in \"thinking\" capabilities, enabling it to provide responses with greater...",
+      "context_length": 1048576,
+      "architecture": {
+        "modality": "text+image+file+audio+video->text",
+        "input_modalities": [
+          "file",
+          "image",
+          "text",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "tokenizer": "Gemini",
+        "instruct_type": null
+      },
+      "pricing": {
+        "prompt": "0.0000003",
+        "completion": "0.0000025",
+        "image": "0.0000003",
+        "audio": "0.000001",
+        "input_audio_cache": "0.0000001",
+        "web_search": "0.014",
+        "internal_reasoning": "0.0000025",
+        "input_cache_read": "0.00000003",
+        "input_cache_write": "0.0000000833333333333333"
+      },
+      "top_provider": {
+        "context_length": 1048576,
+        "max_completion_tokens": 65535,
+        "is_moderated": false
+      },
+      "per_request_limits": null,
+      "supported_parameters": [
+        "include_reasoning",
+        "max_tokens",
+        "reasoning",
+        "response_format",
+        "seed",
+        "stop",
+        "structured_outputs",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "top_p"
+      ],
+      "default_parameters": {
+        "temperature": null,
+        "top_p": null,
+        "top_k": null,
+        "frequency_penalty": null,
+        "presence_penalty": null,
+        "repetition_penalty": null
+      },
+      "supported_voices": null,
+      "knowledge_cutoff": "2025-01-31",
+      "expiration_date": "2026-10-20",
+      "links": {
+        "details": "/api/v1/models/google/gemini-2.5-flash/endpoints"
+      },
+      "benchmarks": {
+        "design_arena": [
+          {
+            "arena": "models",
+            "category": "3d",
+            "elo": 1079,
+            "win_rate": 47.4,
+            "rank": 91
+          },
+          {
+            "arena": "models",
+            "category": "codecategories",
+            "elo": 1108,
+            "win_rate": 46.9,
+            "rank": 92
+          },
+          {
+            "arena": "models",
+            "category": "dataviz",
+            "elo": 1142,
+            "win_rate": 49.1,
+            "rank": 80
+          },
+          {
+            "arena": "models",
+            "category": "gamedev",
+            "elo": 1078,
+            "win_rate": 44.3,
+            "rank": 96
+          },
+          {
+            "arena": "models",
+            "category": "uicomponent",
+            "elo": 1098,
+            "win_rate": 48.9,
+            "rank": 90
+          },
+          {
+            "arena": "models",
+            "category": "website",
+            "elo": 1122,
+            "win_rate": 47.1,
+            "rank": 93
+          },
+          {
+            "arena": "models",
+            "category": "svg",
+            "elo": 1019,
+            "win_rate": 43.1,
+            "rank": 80
+          }
+        ],
+        "artificial_analysis": {
+          "intelligence_index": 15.5,
+          "coding_index": null,
+          "agentic_index": null
+        }
+      },
+      "reasoning": {
+        "mandatory": false
+      }
+    },
+    {
+      "id": "qwen/qwen3-coder-30b-a3b-instruct",
+      "canonical_slug": "qwen/qwen3-coder-30b-a3b-instruct",
+      "hugging_face_id": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+      "name": "Qwen: Qwen3 Coder 30B A3B Instruct",
+      "created": 1753972379,
+      "description": "Qwen3-Coder-30B-A3B-Instruct is a 30.5B parameter Mixture-of-Experts (MoE) model with 128 experts (8 active per forward pass), designed for advanced code generation, repository-scale understanding, and agentic tool use. Built on the...",
+      "context_length": 262144,
+      "architecture": {
+        "modality": "text->text",
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "tokenizer": "Qwen3",
+        "instruct_type": null
+      },
+      "pricing": {
+        "prompt": "0.00000007",
+        "completion": "0.00000028"
+      },
+      "top_provider": {
+        "context_length": 262144,
+        "max_completion_tokens": 235929,
+        "is_moderated": false
+      },
+      "per_request_limits": null,
+      "supported_parameters": [
+        "frequency_penalty",
+        "logprobs",
+        "max_tokens",
+        "presence_penalty",
+        "repetition_penalty",
+        "response_format",
+        "seed",
+        "stop",
+        "structured_outputs",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "top_k",
+        "top_logprobs",
+        "top_p"
+      ],
+      "default_parameters": {},
+      "supported_voices": null,
+      "knowledge_cutoff": "2025-06-30",
+      "expiration_date": null,
+      "links": {
+        "details": "/api/v1/models/qwen/qwen3-coder-30b-a3b-instruct/endpoints"
+      },
+      "benchmarks": {
+        "design_arena": [
+          {
+            "arena": "models",
+            "category": "dataviz",
+            "elo": 1091,
+            "win_rate": 54.7,
+            "rank": 96
+          },
+          {
+            "arena": "models",
+            "category": "uicomponent",
+            "elo": 1053,
+            "win_rate": 54.1,
+            "rank": 97
+          },
+          {
+            "arena": "models",
+            "category": "website",
+            "elo": 1094,
+            "win_rate": 57.1,
+            "rank": 100
+          }
+        ],
+        "artificial_analysis": {
+          "intelligence_index": 9.6,
+          "coding_index": null,
+          "agentic_index": null
+        }
+      }
+    }
+  ]
+}

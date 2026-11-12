@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bulk Video Generation — STEM Animation Lab</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --border: #30363d;
+    --text: #e6edf3; --dim: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --amber: #d29922; --purple: #bc8cff; --red: #f85149;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, sans-serif; }
+  header {
+    position: sticky; top: 0; z-index: 5; background: rgba(13,17,23,.92);
+    backdrop-filter: blur(6px); border-bottom: 1px solid var(--border);
+    padding: 14px 22px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  header h1 { font-size: 18px; font-weight: 600; }
+  header .sub { color: var(--dim); font-size: 13px; }
+  header a { color: var(--accent); font-size: 13px; margin-left: auto; text-decoration: none; }
+  main { max-width: 980px; margin: 0 auto; padding: 20px 22px 60px; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; margin-top: 18px;
+  }
+  .panel h2 { font-size: 15px; margin-bottom: 12px; }
+  textarea, select, input[type=text], input[type=number] {
+    background: #0d1117; color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 9px; font: 14px/1.4 system-ui, sans-serif; width: 100%;
+  }
+  textarea { min-height: 110px; font-family: ui-monospace, monospace; resize: vertical; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 14px; margin-top: 12px; }
+  .grid label, .checks label { font-size: 12px; color: var(--dim); display: block; margin-bottom: 3px; }
+  .checks { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
+  .checks label { display: flex; gap: 6px; align-items: center; margin: 0; font-size: 13px; color: var(--text); }
+  .actions { margin-top: 14px; display: flex; gap: 10px; align-items: center; }
+  button {
+    background: #1c2a3a; color: var(--text); border: 1px solid var(--accent);
+    border-radius: 6px; padding: 7px 18px; font-size: 14px; cursor: pointer;
+  }
+  button.secondary { background: var(--panel); border-color: var(--border); color: var(--dim); }
+  button:disabled { opacity: .5; cursor: wait; }
+  #startMsg { font-size: 13px; color: var(--dim); }
+  .run { margin-top: 14px; }
+  .runHead { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; cursor: pointer; }
+  .runHead .name { font-weight: 600; font-size: 14px; }
+  .runHead .stamp { color: var(--dim); font-size: 12px; }
+  .runHead .counts { margin-left: auto; font-size: 13px; color: var(--dim); }
+  .badge {
+    font-size: 11px; padding: 1px 9px; border-radius: 10px; border: 1px solid;
+    text-transform: uppercase; letter-spacing: .05em; flex: none;
+  }
+  .badge.active  { color: var(--amber);  border-color: var(--amber); }
+  .badge.done    { color: var(--green);  border-color: var(--green); }
+  .badge.failed  { color: var(--red);    border-color: var(--red); }
+  .badge.pending { color: var(--dim);    border-color: var(--border); }
+  .badge.stage   { color: var(--accent); border-color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  th { text-align: left; color: var(--dim); font-weight: 500; padding: 4px 8px; border-bottom: 1px solid var(--border); }
+  td { padding: 6px 8px; border-bottom: 1px solid #21262d; vertical-align: top; }
+  td a { color: var(--accent); text-decoration: none; }
+  .err { color: var(--red); font-size: 12px; white-space: pre-wrap; word-break: break-word; }
+  .spinner {
+    width: 12px; height: 12px; border: 2px solid var(--amber); border-top-color: transparent;
+    border-radius: 50%; animation: spin .9s linear infinite; display: inline-block; vertical-align: -2px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Bulk Video Generation</h1>
+  <span class="sub">one topic per line → storyboard → code → render, resumable</span>
+  <a href="/studio">✦ Studio</a>
+  <a href="/timeline">Render timeline →</a>
+</header>
+<main>
+  <div class="panel">
+    <h2>New bulk run</h2>
+    <label style="font-size:12px;color:var(--dim)">Topics (one per line)</label>
+    <textarea id="topics" placeholder="Photosynthesis
+Newton's Second Law
+Angle of Depression"></textarea>
+    <div class="grid">
+      <div><label>Language</label><select id="language">
+        <option value="en-IN">English (en-IN)</option>
+        <option value="hi-IN">Hindi (hi-IN)</option>
+        <option value="bn-IN">Bengali</option><option value="ta-IN">Tamil</option>
+        <option value="te-IN">Telugu</option><option value="kn-IN">Kannada</option>
+        <option value="ml-IN">Malayalam</option><option value="mr-IN">Marathi</option>
+        <option value="gu-IN">Gujarati</option><option value="pa-IN">Punjabi</option>
+        <option value="od-IN">Odia</option>
+      </select></div>
+      <div><label>Narration persona</label><select id="persona">
+        <option value="en">English narration (en)</option>
+        <option value="hybrid">Code-mixed / Hinglish (hybrid)</option>
+        <option value="native">Full native language (native)</option>
+      </select></div>
+      <div><label>Technical terms</label><select id="techTerms">
+        <option value="english">English only (never re-said natively)</option>
+        <option value="bilingual">Bilingual (native once, first mention)</option>
+        <option value="native">Native (translated)</option>
+      </select></div>
+      <div><label>Speaker</label><input type="text" id="speaker" value="shubh"></div>
+      <div><label>Style</label><select id="style">
+        <option>3blue1brown/minimalist/neon</option>
+        <option>chalkboard/pastel</option>
+        <option>powerpoint/clean</option>
+        <option>manim/classic</option>
+      </select></div>
+      <div><label>Quality</label><select id="quality">
+        <option value="l">Low (fast)</option><option value="h">HD (1080p)</option>
+      </select></div>
+      <div><label>Aspect ratio</label><select id="aspect">
+        <option value="widescreen">Widescreen 16:9</option>
+        <option value="vertical">Vertical 9:16</option>
+      </select></div>
+      <div><label>Grade</label><input type="text" id="grade" value="9"></div>
+      <div><label>Subject</label><input type="text" id="subject" value="Science"></div>
+      <div><label>Parallel topics</label><input type="number" id="parallel" value="2" min="1" max="4"></div>
+      <div><label>Repair rounds</label><input type="number" id="repairRounds" value="2" min="1" max="5"></div>
+    </div>
+    <div class="checks">
+      <label><input type="checkbox" id="overlapRepair" checked> Overlap repair loop</label>
+      <label><input type="checkbox" id="parallelRender" checked> Parallel scene render</label>
+      <label><input type="checkbox" id="layoutStrict"> Strict layout (fail on violations)</label>
+    </div>
+    <div class="actions">
+      <button id="startBtn">▶ Start bulk run</button>
+      <button id="dryBtn" class="secondary">Dry run (plan only)</button>
+      <span id="startMsg"></span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Runs</h2>
+    <div id="runs"><span class="sub" style="color:var(--dim)">Loading…</span></div>
+  </div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const expanded = new Set();
+
+function settingsFromForm() {
+  return {
+    language: $("language").value,
+    persona: $("persona").value,
+    tech_terms: $("techTerms").value,
+    speaker: $("speaker").value.trim() || "shubh",
+    style: $("style").value,
+    quality: $("quality").value,
+    aspect_ratio: $("aspect").value,
+    grade: $("grade").value.trim() || "9",
+    subject: $("subject").value.trim() || "Science",
+    parallel: parseInt($("parallel").value) || 2,
+    env_overrides: {
+      OVERLAP_REPAIR: $("overlapRepair").checked ? "1" : "0",
+      OVERLAP_REPAIR_ROUNDS: String(parseInt($("repairRounds").value) || 2),
+      LAYOUT_STRICT: $("layoutStrict").checked ? "1" : "0",
+      PARALLEL_RENDER: $("parallelRender").checked ? "1" : "0",
+    },
+  };
+}
+
+async function start(dryRun) {
+  const topics = $("topics").value.split("\n").map(s => s.trim()).filter(Boolean);
+  if (!topics.length) { $("startMsg").textContent = "Enter at least one topic."; return; }
+  $("startBtn").disabled = $("dryBtn").disabled = true;
+  $("startMsg").textContent = dryRun ? "Planning…" : "Starting…";
+  try {
+    const r = await fetch("/api/bulk/start", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({topics, settings: settingsFromForm(), dry_run: dryRun}),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.detail || r.statusText);
+    if (dryRun) {
+      $("startMsg").textContent =
+        `Plan: ${data.topics_total} topic(s) would run as ${data.run_id} — nothing spent.`;
+    } else {
+      $("startMsg").textContent = `Started ${data.run_id} (${data.topics_total} topics).`;
+      expanded.add(data.run_id);
+    }
+    refreshRuns();
+  } catch (e) {
+    $("startMsg").textContent = "Error: " + e.message;
+  } finally {
+    $("startBtn").disabled = $("dryBtn").disabled = false;
+  }
+}
+$("startBtn").onclick = () => start(false);
+$("dryBtn").onclick = () => start(true);
+
+function badge(status) {
+  const cls = {done: "done", failed: "failed", pending: "pending"}[status] || "stage";
+  const spin = ["storyboard", "codegen", "render"].includes(status) ? '<span class="spinner"></span> ' : "";
+  return `${spin}<span class="badge ${cls}">${status}</span>`;
+}
+
+async function renderRunDetail(runId, container) {
+  const r = await fetch(`/api/bulk/status/${runId}`);
+  if (!r.ok) return;
+  const m = await r.json();
+  const rows = m.rows.map(row => `
+    <tr>
+      <td>${row.topic}</td>
+      <td>${badge(row.status)}</td>
+      <td>${row.video_url ? `<a href="${row.video_url}" target="_blank">▶ video</a>` : "—"}</td>
+      <td>${row.seconds != null ? row.seconds + "s" : "—"}</td>
+      <td>${row.error ? `<div class="err">${row.error.slice(0, 300)}</div>` : ""}</td>
+    </tr>`).join("");
+  const failed = m.rows.some(row => row.status === "failed");
+  container.innerHTML = `
+    <table>
+      <tr><th>Topic</th><th>Status</th><th>Output</th><th>Took</th><th>Error</th></tr>
+      ${rows}
+    </table>
+    ${failed && !m.active ? `<div class="actions"><button onclick="retryRun('${runId}')">↻ Retry failed</button></div>` : ""}`;
+}
+
+async function retryRun(runId) {
+  await fetch(`/api/bulk/retry/${runId}`, {method: "POST"});
+  refreshRuns();
+}
+
+async function refreshRuns() {
+  const r = await fetch("/api/bulk/runs");
+  if (!r.ok) return;
+  const {runs} = await r.json();
+  const host = $("runs");
+  if (!runs.length) { host.innerHTML = '<span style="color:var(--dim)">No bulk runs yet.</span>'; return; }
+  host.innerHTML = "";
+  for (const run of runs) {
+    const div = document.createElement("div");
+    div.className = "run";
+    const s = run.settings || {};
+    div.innerHTML = `
+      <div class="runHead">
+        ${run.active ? '<span class="spinner"></span>' : ""}
+        <span class="name">${run.run_id}</span>
+        ${run.active ? '<span class="badge active">running</span>'
+          : run.failed ? '<span class="badge failed">' + run.failed + " failed</span>"
+          : '<span class="badge done">done</span>'}
+        <span class="stamp">${s.language || ""} · ${s.persona || ""} · q=${s.quality || ""}</span>
+        <span class="counts">${run.done}/${run.topics_total} done</span>
+      </div>
+      <div class="detail"></div>`;
+    const detail = div.querySelector(".detail");
+    div.querySelector(".runHead").onclick = () => {
+      if (expanded.has(run.run_id)) { expanded.delete(run.run_id); detail.innerHTML = ""; }
+      else { expanded.add(run.run_id); renderRunDetail(run.run_id, detail); }
+    };
+    if (expanded.has(run.run_id)) renderRunDetail(run.run_id, detail);
+    host.appendChild(div);
+  }
+}
+
+refreshRuns();
+setInterval(async () => {
+  const r = await fetch("/api/bulk/runs").then(x => x.ok ? x.json() : null).catch(() => null);
+  if (r && r.runs.some(run => run.active)) refreshRuns();
+}, 3000);
+</script>
+</body>
+</html>

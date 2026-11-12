@@ -1,0 +1,478 @@
+{
+ "name": "magnets",
+ "from_lesson": "20261012-154813-a46b73",
+ "brief": {
+  "topic": "Magnets: poles, attraction and repulsion",
+  "grade": 6,
+  "audience": "Class 6 students",
+  "level": "foundation",
+  "goal": "Find the two poles of a magnet and predict when two magnets pull together or push apart",
+  "style": "storyteller",
+  "language": "hinglish",
+  "duration_minutes": 3,
+  "card": true,
+  "framework": "concrete_first"
+ },
+ "card": {
+  "big_idea": {
+   "text": "A magnet has two pole ends: unlike poles pull together, while like poles push apart.",
+   "cites": [
+    "S1#5",
+    "S1#9",
+    "S1#13"
+   ]
+  },
+  "why_it_matters": {
+   "text": "You can use the push or pull between labelled magnet ends to work out how magnets will move before they touch.",
+   "cites": [
+    "S1#8",
+    "S1#9",
+    "S3#2",
+    "S3#3"
+   ]
+  },
+  "the_why": {
+   "text": "Iron filings collect mainly at a bar magnet's two ends, showing the special regions called poles. When facing ends are unlike, the magnets move toward one another; when they are alike, they move apart.",
+   "cites": [
+    "S1#4",
+    "S1#5",
+    "S1#9"
+   ]
+  },
+  "objectives": [
+   {
+    "can": "Locate the two pole regions of a bar magnet from where iron filings gather.",
+    "level": "apply",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Predict whether two labelled magnet ends will pull together or push apart.",
+    "level": "apply",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Tell apart a permanent magnet from an iron bar by using repulsion as evidence.",
+    "level": "analyze",
+    "checked_by": "q3"
+   },
+   {
+    "can": "Explain the attraction-or-repulsion prediction using whether the facing poles are alike or unlike.",
+    "level": "understand",
+    "checked_by": "try_it"
+   }
+  ],
+  "picture": {
+   "text": "Start with one horizontal bar magnet under a sheet of paper, with a small scatter of iron filings. The filings gather densely at the two ends and scarcely in the middle; label the ends N and S. Keep this same bar magnet on pencil rollers, then slide a second labelled bar magnet toward its right end: first show S facing N with inward arrows, then show N facing N with outward arrows.",
+   "cites": [
+    "S1#4",
+    "S1#5",
+    "S1#8",
+    "S1#9",
+    "S3#2",
+    "S3#3"
+   ],
+   "standard": "Iron-filings pole demonstration followed by two bar magnets on rolling pencils"
+  },
+  "diagram_ask": "A labelled classroom demonstration in two connected panels: at left, a horizontal bar magnet beneath a paper sheet with iron filings clustered at its two ends, labels N and S and a sparse middle; at right, the same labelled bar magnet resting across five round pencils, with a second bar magnet appro",
+  "needs_first": [
+   {
+    "text": "Recognise the two ends and the middle of a bar-shaped object.",
+    "cites": []
+   },
+   {
+    "text": "Understand that an arrow can show an object's direction of movement.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Iron filings stick equally all along a bar magnet.",
+    "why_it_fails": "The filings gather most densely near the two ends, not uniformly along the magnet.",
+    "cites": [
+     "S1#4",
+     "S2#2"
+    ]
+   },
+   {
+    "mistake": "Any two magnets will always attract.",
+    "why_it_fails": "Only unlike facing poles attract; two North poles or two South poles repel.",
+    "cites": [
+     "S1#9",
+     "S1#13",
+     "S3#1",
+     "S3#3"
+    ]
+   },
+   {
+    "mistake": "If an iron bar is attracted to a magnet, it must itself be a permanent magnet.",
+    "why_it_fails": "Both ends of an iron bar are attracted to either pole, whereas repulsion is the useful evidence that the other object is a magnet.",
+    "cites": [
+     "S1#9"
+    ]
+   },
+   {
+    "mistake": "A magnet can be broken to leave one North pole alone or one South pole alone.",
+    "why_it_fails": "Each smaller piece still has both a North pole and a South pole.",
+    "cites": [
+     "S1#5",
+     "S1#14",
+     "S2#2"
+    ]
+   }
+  ],
+  "opening_question": {
+   "question": "Two bar magnets are brought close end to end. Will they always pull together, or could they sometimes push apart? Commit to a guess.",
+   "guesses": [
+    "They will always pull together.",
+    "They might push apart when the same kinds of ends face.",
+    "They will do nothing until they touch."
+   ],
+   "answer": "They pull together when unlike poles face and push apart when like poles face.",
+   "cites": [
+    "S1#8",
+    "S1#9",
+    "S3#1",
+    "S3#3"
+   ]
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show two unlabelled-looking coloured bar magnets approaching end to end and ask whether every pair must pull together or whether one arrangement could push apart.",
+    "cites": [
+     "S3#1"
+    ]
+   },
+   {
+    "move": "guess",
+    "what": "Pause beside three possible motions—together, apart, or no movement—so the learner chooses before seeing the test.",
+    "cites": [
+     "S1#8",
+     "S3#2"
+    ]
+   },
+   {
+    "move": "see",
+    "what": "Sprinkle and tap iron filings above one bar magnet. Animate many filings gathering at each end and only a few at the middle; ask where the magnet seems strongest.",
+    "cites": [
+     "S1#4",
+     "S2#2"
+    ]
+   },
+   {
+    "move": "why",
+    "what": "Ask why the ends deserve attention rather than the middle; answer that the filings crowd at the ends, so these are the special interaction regions.",
+    "cites": [
+     "S1#4",
+     "S1#5"
+    ]
+   },
+   {
+    "move": "name",
+    "what": "Add N to one crowded end and S to the other, naming these two ends poles. Briefly show a snapped bar becoming two smaller N–S magnets to break the single-pole idea.",
+    "cites": [
+     "S1#5",
+     "S2#2"
+    ]
+   },
+   {
+    "move": "example",
+    "what": "Place magnet A across pencil rollers. Bring magnet B's S end toward A's N end; ask for a prediction, then animate A rolling toward B without touching it.",
+    "cites": [
+     "S1#8",
+     "S1#9",
+     "S3#2",
+     "S3#3"
+    ]
+   },
+   {
+    "move": "contrast",
+    "what": "Keep magnet A and the pencils unchanged, but turn magnet B so N faces N. Ask what changes, then animate A rolling away. State the side-by-side rule: unlike poles attract; like poles repel.",
+    "cites": [
+     "S1#9",
+     "S1#13",
+     "S3#3"
+    ]
+   },
+   {
+    "move": "your_turn",
+    "what": "Give three facing-end pairs—S–N, N–N, and S–S—and ask the learner to decide pull or push, including an iron-bar case that tests the idea that attraction alone proves a magnet.",
+    "cites": [
+     "S1#9",
+     "S1#14"
+    ]
+   },
+   {
+    "move": "try_it",
+    "what": "The learner uses paper pole cards to predict and sort pull and push pairings, then says the reason aloud.",
+    "cites": [
+     "S1#13",
+     "S1#14"
+    ]
+   },
+   {
+    "move": "say_back",
+    "what": "Return to the opening magnets and ask the learner to complete: “I look at the two facing poles; if they are ___, the magnets ___.”",
+    "cites": [
+     "S1#13"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "question": "After iron filings are sprinkled above a bar magnet, where should most of them collect?",
+    "options": [
+     "At the two ends",
+     "Evenly all along the magnet",
+     "Only at the middle"
+    ],
+    "answer_index": 0,
+    "explain": "The filings gather most at the ends, showing where the magnet's poles are.",
+    "cites": [
+     "S1#4",
+     "S1#5",
+     "S2#2"
+    ]
+   },
+   {
+    "question": "Magnet A has its N end facing magnet B's N end. What should magnet A do on its pencil rollers?",
+    "options": [
+     "Roll away from magnet B",
+     "Roll toward magnet B",
+     "Stay still because magnets act only after touching"
+    ],
+    "answer_index": 0,
+    "explain": "N and N are like poles, and like poles repel.",
+    "cites": [
+     "S1#9",
+     "S1#13",
+     "S3#3"
+    ]
+   },
+   {
+    "question": "A bar magnet attracts both ends of an unmarked metal bar. What can you decide from that observation?",
+    "options": [
+     "It might be an iron bar, so attraction alone does not prove it is a magnet",
+     "It must be a magnet because it is attracted",
+     "It has only a North pole"
+    ],
+    "answer_index": 0,
+    "explain": "Iron is attracted by either pole; observing repulsion is what identifies another magnet.",
+    "cites": [
+     "S1#9"
+    ]
+   }
+  ],
+  "try_it": {
+   "title": "Pole-pair prediction cards",
+   "kind": "paper",
+   "materials": [
+    "paper",
+    "pencil",
+    "scissors"
+   ],
+   "stands_for": "Each paper strip is one bar magnet; its two labelled ends stand for its North and South poles.",
+   "predict": "Before moving the strips, predict: if N faces N, will the pair pull or push?",
+   "steps": [
+    "Cut two narrow paper strips.",
+    "Write N at one end and S at the other end of each strip.",
+    "Place the strips so N faces N, and write PULL or PUSH before changing them.",
+    "Turn one strip so N faces S, and write PULL or PUSH.",
+    "Say the reason for both predictions aloud."
+   ],
+   "observe": "Your completed pairings show N–N and S–S as PUSH, while N–S and S–N are PULL.",
+   "question": "Why does turning one paper magnet change a push prediction into a pull prediction?",
+   "expected": "Turning one strip changes the facing pair from like poles to unlike poles. Real magnets with like poles repel, so N facing N would push; real magnets with unlike poles attract, so N facing S would pull.",
+   "write": "“N facing N gives a push because the poles are alike.”\n“N facing S gives a pull because the poles are unlike.”",
+   "in_class": "Pairs make two labelled paper strips. The teacher writes “N–N ___; N–S ___; S–S ___” on the board. Ask, “Which facing pair would push, and why?” A class that writes PULL for N–N is treating all magnets as always attracting.",
+   "cites": [
+    "S1#9",
+    "S1#13",
+    "S1#14",
+    "S3#3"
+   ]
+  },
+  "leave_out": [
+   "Magnetic and non-magnetic materials, except for the brief iron-bar contrast used to show why attraction alone is not proof of a magnet.",
+   "A freely suspended magnet, Earth’s magnetic behaviour, and compass navigation.",
+   "Magnetic effects through wood, plastic, or glass.",
+   "Atomic, electron, and quantum explanations of magnetism.",
+   "How to make, store, or maintain magnets."
+  ],
+  "from_lectures": [
+   {
+    "source": "S2",
+    "took": "Use the iron-filings or nails observation to make the two ends visible before naming them poles, then use a short prediction check.",
+    "left": "Compass direction, barriers, and broad material classification are omitted because the lesson focuses tightly on poles and pair interactions."
+   },
+   {
+    "source": "S3",
+    "took": "Use the central contrast of two bar magnets on pencil rollers: one unlike-pole pair moves together and one like-pole pair moves apart.",
+    "left": "The compass and barrier extension are omitted so there is time for the learner to predict both contrasting cases and explain the rule."
+   },
+   {
+    "source": "S4",
+    "took": "Keep the productive opening puzzle that magnets may either pull or push, rather than treating magnetism as only attraction.",
+    "left": "The quantum account of electrons, wave functions, and virtual photons is far beyond a foundation Class 6 lesson and does not help this lesson's observable pole predictions."
+   }
+  ],
+  "uncited": [
+   "needs_first[0]: Recognise the two ends and the middle of a bar-shaped object.",
+   "needs_first[1]: Understand that an arrow can show an object's direction of movement.",
+   "diagram_ask: The precise layout and label list are original production instructions assembled from the cited classroom demonstrations."
+  ],
+  "teacher_talk": [
+   "addresses the audience directly as children and sets an engaging, inquisitive tone",
+   "asks open-ended and rhetorical questions to spark curiosity before explaining concepts",
+   "transitions smoothly from theoretical definitions to live demonstrations and experiments",
+   "follows up questions with encouraging affirmations before revealing answers",
+   "opens with a conversational rhetorical question addressing everyday experiences",
+   "uses enthusiastic and inviting language to frame science as an adventure"
+  ],
+  "source_flows": {
+   "S1": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration",
+    "assessment"
+   ],
+   "S2": [
+    "motivation",
+    "demonstration",
+    "demonstration",
+    "assessment"
+   ],
+   "S3": [
+    "motivation",
+    "activation",
+    "demonstration",
+    "application",
+    "integration",
+    "integration"
+   ],
+   "S4": [
+    "motivation",
+    "activation",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "demonstration",
+    "integration"
+   ]
+  },
+  "topic": "Magnets: Poles, Attraction and Repulsion",
+  "asked": "Magnets: poles, attraction and repulsion",
+  "klass": 6,
+  "sources": [
+   {
+    "id": "S1",
+    "kind": "textbook",
+    "title": "NCERT Curiosity, Class 6, chapter 4: chapter 4",
+    "url": "https://ncert.nic.in/textbook/pdf/fecu104.pdf",
+    "note": ""
+   },
+   {
+    "id": "S2",
+    "kind": "lecture",
+    "title": "Study window: Class 6 Science Chapter 4 – Getting to Know Magnets | NCERT Class 6 Science | Exploring Magnets",
+    "url": "https://www.youtube.com/watch?v=iNqOexCUEuQ",
+    "note": "English lecture, 5 min, automatic captions"
+   },
+   {
+    "id": "S3",
+    "kind": "lecture",
+    "title": "Toppscholars: Class 6 Science  | Attraction and Repulsion Between Magnets - Fun With Magnets",
+    "url": "https://www.youtube.com/watch?v=gKY1KJUp1Fc",
+    "note": "English lecture, 5 min, automatic captions"
+   }
+  ],
+  "problems": [
+   "the task's 'expected' gives an answer without its reason"
+  ],
+  "skill_version": "e9709f116b",
+  "pack_digest": "4b542a3715de0a37",
+  "diagram": {
+   "ask": "A labelled classroom demonstration in two connected panels: at left, a horizontal bar magnet beneath a paper sheet with iron filings clustered at its two ends, labels N and S and a sparse middle; at right, the same labelled bar magnet resting across five round pencils, with a second bar magnet appro",
+   "manifest": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_labelled_classroom_dem-8b6357fb8c/manifest.json",
+   "parts": [],
+   "names": {},
+   "credit": "",
+   "style": "pointers",
+   "shown": "whole",
+   "file": "/home/mani/manim/lessonforge/lessonforge_workspace/library/diagrams/a_labelled_classroom_dem-8b6357fb8c/whole.png",
+   "points": {
+    "a_iron_filings": {
+     "name": "(a) Iron filings",
+     "box": [
+      0.0076,
+      0.0591,
+      0.0837,
+      0.1654
+     ]
+    },
+    "paper_sheet": {
+     "name": "Paper sheet",
+     "box": [
+      0.3671,
+      0.1711,
+      0.4524,
+      0.2245
+     ]
+    },
+    "motion": {
+     "name": "Motion",
+     "box": [
+      0.6737,
+      0.4691,
+      0.7238,
+      0.5114
+     ]
+    },
+    "pencils": {
+     "name": "Pencils",
+     "box": [
+      0.5538,
+      0.9182,
+      0.603,
+      0.9605
+     ]
+    }
+   },
+   "judged": {
+    "ok": true,
+    "shows": true,
+    "readable": true,
+    "problems": [],
+    "judge": "3ee5f13189"
+   },
+   "holds": {
+    "things": [
+     "a paper sheet with iron filings on it",
+     "a dashed rectangle on the paper sheet",
+     "a bar magnet under the paper sheet",
+     "a bar magnet on top of four pencils",
+     "a bar magnet to the right of the pencils",
+     "an arrow pointing left between the two bar magnets",
+     "a hand holding the rightmost bar magnet"
+    ],
+    "print": [
+     "(a)",
+     "Iron filings",
+     "N",
+     "S",
+     "Bar magnet",
+     "(b)",
+     "Paper sheet",
+     "Bar magnet",
+     "Motion",
+     "N",
+     "S",
+     "Pencils"
+    ]
+   }
+  }
+ }
+}

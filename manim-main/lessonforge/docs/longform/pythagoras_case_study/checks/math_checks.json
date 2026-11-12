@@ -1,0 +1,50 @@
+{
+  "symbolic_area_identity": true,
+  "independent_geometry_trials": [
+    {
+      "a": 3,
+      "b": 4,
+      "central_area": 25.0,
+      "all_corners_right": true,
+      "area_partition_valid": true
+    },
+    {
+      "a": 1,
+      "b": 1,
+      "central_area": 2.0,
+      "all_corners_right": true,
+      "area_partition_valid": true
+    },
+    {
+      "a": 0.7,
+      "b": 2.3,
+      "central_area": 5.78,
+      "all_corners_right": true,
+      "area_partition_valid": true
+    },
+    {
+      "a": 8,
+      "b": 15,
+      "central_area": 289.0,
+      "all_corners_right": true,
+      "area_partition_valid": true
+    },
+    {
+      "a": 12,
+      "b": 5,
+      "central_area": 169.0,
+      "all_corners_right": true,
+      "area_partition_valid": true
+    }
+  ],
+  "answers": {
+    "opening_diagonal": 5.0,
+    "worked_rectangle": 10.0,
+    "worked_ladder": 12.0,
+    "practice_1": 13.0,
+    "practice_2": 8.0,
+    "practice_3_exact": "sqrt(2)",
+    "coordinate_distance": 5.0
+  },
+  "limitation": "Checks mathematical construction and answers, not whether every rendered polygon uses these coordinates."
+}

@@ -1,0 +1,131 @@
+from manim import *
+import numpy as np
+
+class SlopeInterceptDemo(Scene):
+    def construct(self):
+        # Setup canvas and axes
+        axes = Axes(
+            x_range=[-3, 3, 1],
+            y_range=[-3, 5, 1],
+            axis_config={"color": WHITE},
+            tips=False,
+        )
+        axes_labels = axes.get_axis_labels(x_label="x", y_label="y")
+        
+        # Create equation display
+        eq = MathTex("y = mx + b", font_size=24)
+        eq.to_corner(UR)
+        eq.shift(LEFT * 0.5)
+        
+        # Create explanation text
+        explanation = VGroup()
+        explanation.to_corner(DR)
+        explanation.shift(UP * 0.5)
+        
+        # Stage A: Fix m=1, vary b
+        self.play(Create(axes), run_time=1)
+        self.play(Write(axes_labels), run_time=1)
+        self.wait(0.5)
+        
+        # Initial line y = x + 1
+        line1 = axes.plot(lambda x: x + 1, color=YELLOW)
+        self.play(Create(line1), run_time=1)
+        
+        # Mark point (0,1)
+        dot = Dot(point=axes.c2p(0, 1), color=RED)
+        self.play(FadeIn(dot), run_time=0.5)
+        
+        # Show equation and explanation
+        self.play(Write(eq), run_time=0.5)
+        exp_text = Text("Initial line: y = x + 1", font_size=22)
+        exp_text.next_to(eq, DOWN, buff=0.2)
+        self.play(Write(exp_text), run_time=0.5)
+        explanation.add(exp_text)
+        self.wait(1.5)
+        
+        # Animate b changing from 1 to 2
+        b_tracker = ValueTracker(1)
+        line_moving = always_redraw(
+            lambda: axes.plot(lambda x: x + b_tracker.get_value(), color=YELLOW)
+        )
+        self.play(ReplacementTransform(line1, line_moving), run_time=1)
+        
+        # Show new equation
+        new_eq = MathTex("y = x + 2", font_size=24)
+        new_eq.to_corner(UR)
+        new_eq.shift(LEFT * 0.5)
+        self.play(Transform(eq, new_eq), run_time=0.5)
+        
+        # Update explanation
+        self.play(Transform(explanation[0], Text("Changing b to 2", font_size=22)), run_time=0.5)
+        self.wait(1.5)
+        
+        # Show slope calculation
+        rise_run = always_redraw(
+            lambda: self.create_slope_triangle(axes, 0, 1, 1, 2, YELLOW)
+        )
+        self.play(Create(rise_run), run_time=0.5)
+        self.wait(1.5)
+        
+        # Move b back to 1
+        self.play(b_tracker.animate.set_value(1), run_time=1)
+        self.play(Transform(explanation[0], Text("Back to y = x + 1", font_size=22)), run_time=0.5)
+        self.wait(1.5)
+        
+        # Clear slope triangle
+        self.play(FadeOut(rise_run), run_time=0.5)
+        
+        # Stage B: Fix b=1, vary m
+        # Reset equation
+        reset_eq = MathTex("y = x + 1", font_size=24)
+        reset_eq.to_corner(UR)
+        reset_eq.shift(LEFT * 0.5)
+        self.play(Transform(eq, reset_eq), run_time=0.5)
+        self.play(Transform(explanation[0], Text("Now changing m", font_size=22)), run_time=0.5)
+        self.wait(1.5)
+        
+        # Animate m changing from 1 to -1
+        m_tracker = ValueTracker(1)
+        line_moving2 = always_redraw(
+            lambda: axes.plot(lambda x: m_tracker.get_value() * x + 1, color=YELLOW)
+        )
+        self.play(ReplacementTransform(line_moving, line_moving2), run_time=1)
+        
+        # Show slope triangle for m = -1
+        self.play(Write(Text("Slope = -1", font_size=22).next_to(eq, DOWN, buff=0.2)), run_time=0.5)
+        self.wait(1.5)
+        
+        # Show rise/run triangle for m = -1
+        rise_run2 = always_redraw(
+            lambda: self.create_slope_triangle(axes, 0, 1, 1, -1, YELLOW)
+        )
+        self.play(Create(rise_run2), run_time=0.5)
+        self.wait(1.5)
+        
+        # Move m back to 1
+        self.play(m_tracker.animate.set_value(1), run_time=1)
+        self.play(FadeOut(rise_run2), run_time=0.5)
+        self.wait(1.5)
+        
+        # Final state
+        self.play(Transform(explanation[0], Text("Final result", font_size=22)), run_time=0.5)
+        self.wait(1.5)
+        
+        # Keep final state
+        self.play(FadeOut(explanation), run_time=0.5)
+        self.wait(1.5)
+    
+    def create_slope_triangle(self, axes, x1, y1, x2, y2, color):
+        # Create a right triangle showing rise/run
+        p1 = axes.c2p(x1, y1)
+        p2 = axes.c2p(x2, y1)
+        p3 = axes.c2p(x2, y2)
+        
+        # Horizontal leg
+        h_line = Line(p1, p2, color=color)
+        # Vertical leg
+        v_line = Line(p2, p3, color=color)
+        # Hypotenuse
+        hyp = Line(p1, p3, color=color)
+        
+        return VGroup(h_line, v_line, hyp)

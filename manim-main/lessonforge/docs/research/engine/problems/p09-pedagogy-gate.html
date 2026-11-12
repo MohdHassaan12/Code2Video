@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P09 · Pedagogy compiles unverified — Research Problems</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">09</div>
+  <div>
+    <h1>Pedagogy compiles unverified</h1>
+    <div class="sub">The compiler thesis has a stated boundary, and this is it: “a pedagogically weak learning plan
+    compiles into a pedagogically weak video, flawlessly.” No gate anywhere scores whether the explanation teaches.</div>
+  </div>
+  <div class="crumb"><a href="index.html">problems</a> / <b>09</b></div>
+</div>
+<div class="chips" style="margin-bottom:18px">
+  <span class="chip bucket-c">C · models own content — and content is ungated</span>
+  <span class="chip t3">T3 open / frontier</span>
+  <span class="chip mat">Maturity: L0 — no pedagogy gate exists</span>
+</div>
+
+<div class="panel slate">
+  <div class="ptitle"><span class="ico">⚙️</span> Mechanics today</div>
+  <ul>
+    <li>Pedagogy is planned once, up front: <code>ce/planner_agent.py</code> produces a PARTS plan
+      (<code>generate_pedagogical_plan:81</code>), sizes scenes (<code>determine_scene_count:56</code>, floor
+      <code>MIN_LESSON_SCENES=4</code>), and sets pace (<code>narration_wpm:42</code>).</li>
+    <li>Everything downstream verifies <i>form</i>: storyboard gates check truncation/shape/language; the probe checks
+      geometry; Vision QA checks pixels. The teaching itself passes through ungated — the repo states the limitation
+      verbatim <span class="src">chapter-4-architecture.md:371-382</span>.</li>
+    <li>Pedagogical constants are load-bearing and silent: the 90-wpm early-primary pace was mis-applied to Grades 10–12 by
+      a substring bug (<code>"grade 1" in "grade 11"</code>, <code>ce/planner_agent.py:42-53</code>) — a pedagogy defect that
+      no gate could even have named.</li>
+  </ul>
+</div>
+
+<div class="panel red">
+  <div class="ptitle"><span class="ico">🕳️</span> The gap — why this is T3</div>
+  <p>Every other gate in this system rests on a computable ground truth: coordinates, schemas, scripts. Pedagogy’s ground
+  truth — <b>did a learner understand</b> — is unobservable at build time and expensive to observe at all. Proxies exist
+  (rubrics, LLM judges, expert review) but none is validated for generated Hinglish STEM explainers, and a bad proxy is
+  worse than none: it would tune the pipeline toward <i>plausible-sounding</i> teaching, the precise failure the
+  architecture was built to escape. This is the hardest problem on the site, and the top of the funnel: a perfect pipeline
+  below a weak plan ships polished mediocrity at scale.</p>
+</div>
+
+<div class="panel orange">
+  <div class="ptitle"><span class="ico">📎</span> Evidence</div>
+  <ul>
+    <li>The shipped catalogue’s worst content failure was pedagogical, not technical: the 23.7s Dalton video that “never
+      actually states the law” <span class="src">pipeline-roadmap.md:708</span> — caught by a human, fixed by a scene-count
+      floor, generalized by nothing.</li>
+    <li>The scene floor itself (<code>MIN_LESSON_SCENES=4</code>) is the only pedagogy “gate” in the codebase — a structural
+      proxy installed after that incident <span class="src">pipeline-roadmap.md:91-94</span>.</li>
+    <li>Stage B’s grade note concedes it: “still no full review gate, so not L2.5” <span class="src">pipeline-roadmap.md:72</span>.</li>
+  </ul>
+</div>
+
+<div class="panel blue">
+  <div class="ptitle"><span class="ico">📚</span> Prior art <span class="tag">citation-check before external use</span></div>
+  <p>Multimedia-learning research (Mayer: coherence, signaling, segmenting, modality, redundancy) supplies
+  <i>checkable</i> principles — several are structural enough to lint (redundant on-screen text vs. narration; unsignaled
+  topic shifts). Intelligent-tutoring-systems literature has decades of evaluation methodology, almost all of it requiring
+  learners. LLM-judge scoring of explanations is young and unvalidated for pedagogy; small-N comprehension studies
+  (quiz-after-video) are the honest instrument and the expensive one.</p>
+</div>
+
+<div class="panel green">
+  <div class="ptitle"><span class="ico">🪜</span> Solution sketch — cheap → deep</div>
+  <ol>
+    <li><span class="badge solid-green">$0</span> Deterministic pedagogy lint on the Storyboard IR: states-the-definition
+      (the Dalton lesson, generalized — the target concept’s name must appear in narration), term-introduced-before-used,
+      one-new-idea-per-scene, narration/on-screen redundancy check. Each rule is a gate in the existing
+      <code>storyboard_shape_problems</code> pattern.</li>
+    <li><span class="badge solid-amber">metered</span> Rubric judge as <i>advisor</i> (never gate yet): score PARTS plans and
+      storyboards on Mayer-derived dimensions; log scores to the sidecar; watch whether they correlate with anything
+      (human preference, re-watch, P01’s ratings) before trusting them.</li>
+    <li><span class="badge solid-purple">research</span> Validation: a small quiz-based comprehension study over generated
+      videos — does any build-time score predict learning? Only a proxy that survives this earns gate status.</li>
+    <li><span class="badge solid-purple">research</span> Closing the biggest loop: learner outcomes flowing back into
+      planner prompts and pacing models — the educational version of the repair loop, currently ◇ everywhere.</li>
+  </ol>
+</div>
+
+<div class="panel teal">
+  <div class="ptitle"><span class="ico">📏</span> How we’d measure it</div>
+  <p>Lint-rule hit-rates on the existing storyboard cache (10 boards, measured, sit in
+  <code>.storyboard_cache/</code> ready to be linted today); advisor-score vs. human-rating correlation on the video corpus;
+  and ultimately quiz-delta per video — acknowledging that last one is a study, not a script.</p>
+</div>
+
+<div class="panel purple">
+  <div class="ptitle"><span class="ico">🔗</span> Related problems</div>
+  <p><a href="p01-quality-score.html">P01 quality score</a> — pedagogy is its deepest dimension ·
+  <a href="p08-grounding-fidelity.html">P08 fidelity</a> — shares the invention-vs-error boundary ·
+  <a href="p05-semantic-composition.html">P05 composition</a> — visual pedagogy (signaling, contiguity) is enforced there
+  if anywhere.</p>
+</div>
+
+<div class="nav">
+  <a href="index.html">← index</a>
+  <span class="spacefill"></span>
+  <a href="p08-grounding-fidelity.html">← prev: P08 grounding fidelity</a>
+  <a href="p10-camera-and-verifier.html">next: P10 verifier ceiling →</a>
+</div>
+<footer>Research problems · GyanSetu Concept Explorer · sources cited inline; “measured” = observed 2026-07-27.</footer>
+</body>
+</html>

@@ -1,0 +1,99 @@
+{
+  "title": "Why like terms combine",
+  "language": "en-US",
+  "thesis": "Like terms add because they count the same thing: two tiles of area x² and three more make five tiles of area x².",
+  "prerequisites": [
+    "Area of a square is side times side",
+    "Meaning of a coefficient"
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "title": "LIKE TERMS",
+      "learning_goal": "Explain 2x² + 3x² = 5x² with area tiles and the distributive law.",
+      "beats": [
+        {
+          "id": "01",
+          "narration": "Why does two x squared plus three x squared equal five x squared? Let's make the symbols visible.",
+          "visual": "Show the question 2x² + 3x² = 5x² as symbols waiting to be explained.",
+          "board_text": "Why does 2x² + 3x² = 5x²?",
+          "equation": "2x^2 + 3x^2 = 5x^2",
+          "thinking_pause_seconds": 0,
+          "check": ""
+        },
+        {
+          "id": "02",
+          "narration": "Take a square with side length x, where x is positive. Its area is x squared.",
+          "visual": "Draw one square of side x and label its area x².",
+          "board_text": "One tile: area x²",
+          "equation": "A = x^2",
+          "thinking_pause_seconds": 0,
+          "check": ""
+        },
+        {
+          "id": "03",
+          "narration": "Here are two such squares, and three more. Every tile has exactly the same area: x squared.",
+          "visual": "Lay out a group of two identical tiles and a group of three more.",
+          "board_text": "2 tiles and 3 tiles",
+          "equation": "2x^2 \\quad 3x^2",
+          "thinking_pause_seconds": 0,
+          "check": ""
+        },
+        {
+          "id": "04",
+          "narration": "Bring them together. Count five identical tiles. We changed how many we collected, not the area of each tile.",
+          "visual": "Slide the two groups together and count five identical tiles.",
+          "board_text": "5 identical tiles",
+          "equation": "5x^2",
+          "thinking_pause_seconds": 0,
+          "check": ""
+        },
+        {
+          "id": "05",
+          "narration": "So, two x squared plus three x squared is two plus three, times x squared. That is five x squared.",
+          "visual": "Rewrite the sum as (2 + 3)·x², then 5x².",
+          "board_text": "Collect the coefficients",
+          "equation": "2x^2 + 3x^2 = (2+3)x^2 = 5x^2",
+          "thinking_pause_seconds": 0,
+          "check": ""
+        },
+        {
+          "id": "06",
+          "narration": "This is the distributive law. Add the coefficients, and keep the shared variable part unchanged. The identity holds for every real x.",
+          "visual": "State the rule: add the coefficients, keep the shared variable part.",
+          "board_text": "Distributive law",
+          "equation": "ax^2 + bx^2 = (a+b)x^2",
+          "thinking_pause_seconds": 0,
+          "check": ""
+        },
+        {
+          "id": "07",
+          "narration": "Addition keeps these terms as x squared. Multiplying x squared by x squared is different: that gives x to the fourth.",
+          "visual": "Contrast adding x² + x² with multiplying x² · x² = x⁴.",
+          "board_text": "Adding is not multiplying",
+          "equation": "x^2 \\cdot x^2 = x^4",
+          "thinking_pause_seconds": 0,
+          "check": ""
+        },
+        {
+          "id": "08",
+          "narration": "Your turn. What is four x squared plus two x squared? Explain what changes, and what stays the same.",
+          "visual": "Pose 4x² + 2x² and hold for the viewer to answer.",
+          "board_text": "Your turn",
+          "equation": "4x^2 + 2x^2 = \\; ?",
+          "thinking_pause_seconds": 3.2,
+          "check": ""
+        },
+        {
+          "id": "09",
+          "narration": "Six x squared. Four plus two gives six; x squared stays unchanged. Like terms combine because their variable parts match.",
+          "visual": "Reveal 6x² and restate why like terms combine.",
+          "board_text": "Like terms combine",
+          "equation": "4x^2 + 2x^2 = 6x^2",
+          "thinking_pause_seconds": 0,
+          "check": ""
+        }
+      ]
+    }
+  ]
+}

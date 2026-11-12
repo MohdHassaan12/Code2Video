@@ -1,0 +1,496 @@
+{
+  "title": "Why the Pythagorean Theorem Works",
+  "eyebrow": "The geometry of a shortcut",
+  "language": "en-US",
+  "thesis": "The Pythagorean theorem is not a magic formula but a provable fact about area: the square built on the longest side of a right triangle always contains exactly as much area as the two squares built on the shorter sides combined, and understanding why that is true lets you find any unknown side with confidence.",
+  "prerequisites": [
+    "Ability to solve one-step equations such as x squared equals 25",
+    "Knowledge that the area of a square equals side times side",
+    "Knowledge that the area of a triangle equals half base times height",
+    "Familiarity with square roots as the reverse of squaring",
+    "Recognition of right angles and the standard right-angle mark"
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "title": "THE SHORTCUT",
+      "learning_goal": "Identify the right triangle formed by a two-leg route and its diagonal, estimate the diagonal sensibly, and articulate why squaring will matter.",
+      "beats": [
+        {
+          "id": "01",
+          "narration": "Picture a rectangular warehouse floor. A robot starts at the bottom-left corner and needs to reach the top-right corner. It could travel four metres east, then three metres north. That route covers seven metres. But the robot can also drive straight across the diagonal. How long is that shortcut? By the end, you will be able to calculate it and explain why the calculation works.",
+          "visual": "Construct the rectangular floor. Move a robot dot east and north along colored legs; reveal the diagonal and the question about its length.",
+          "board_text": "Route = 4 + 3 = 7 m",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer sees two distinct paths: the seven-metre route along two edges versus the unknown diagonal."
+        },
+        {
+          "id": "02",
+          "narration": "Look at those three line segments: the four-metre bottom, the three-metre side, and the diagonal. Together they form a triangle. Where the two legs meet, the corner is a right angle, because the floor is rectangular. The little corner mark tells us it is exactly ninety degrees. Keep watching that mark. It is the condition that makes the relationship we are about to discover possible.",
+          "visual": "Remove the floor fill while retaining the three sides. Add and highlight the right-angle marker; name the right triangle.",
+          "board_text": "Right angle at corner",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer identifies the right angle as the corner between the two known legs, not at either end of the diagonal."
+        },
+        {
+          "id": "03",
+          "narration": "Before calculating, estimate. The diagonal is longer than either leg, so it is more than four metres. But the straight path is shorter than the bent, seven-metre route between the same endpoints. Our answer must lie between four and seven. We do not know it yet, but we already know something useful. An estimate gives us a way to challenge an answer instead of trusting every number a calculation produces.",
+          "visual": "Keep the triangle visible. Show 4 < c < 7, highlight the diagonal and compare it with the bent route.",
+          "board_text": "4 < diagonal < 7",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can state a reasonable range for the diagonal before any formula is applied."
+        },
+        {
+          "id": "04",
+          "narration": "Why would anyone think to square the side lengths? Adding four and three gives seven, the route along the walls. Multiplying gives twelve, but that is not the length of the diagonal either. Squaring has a geometric meaning: it turns a side length into the area of a square. So here is our real question. How could comparing areas help us discover a length? Let us build those areas and see.",
+          "visual": "Change the equation panel from the route sum to squaring as area. Construct a small square as the visual bridge into the next chapter.",
+          "board_text": "Why squares?",
+          "equation": "4^2 + 3^2 = ?",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer understands that squaring is not obvious and that the lesson will justify it through area reasoning."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "LENGTH BECOMES AREA",
+      "learning_goal": "Construct the three outward squares accurately, compute their areas numerically, and distinguish between a side length and an area.",
+      "beats": [
+        {
+          "id": "05",
+          "narration": "Let us build a square on each side of our triangle. On the four-metre teal leg, we grow a square outward. Its area is four times four, which is sixteen square metres. On the three-metre gold leg, we grow another square outward. Its area is three times three, which is nine square metres. These are real geometric squares with real area — not just numbers floating in space. Each little unit cell inside those squares represents one square metre of actual floor.",
+          "visual": "Build a four-by-four teal grid square below the horizontal leg and a three-by-three gold grid square beside the vertical leg. Label their areas 16 and 9.",
+          "board_text": "a² = 16,  b² = 9",
+          "equation": "a^2 = 4^2 = 16 \\quad b^2 = 3^2 = 9",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer sees that squaring a length produces an area measured in square units, not a longer length."
+        },
+        {
+          "id": "06",
+          "narration": "Now add those two areas together. Sixteen plus nine equals twenty-five square metres. The claim of the Pythagorean theorem is that the square built on the diagonal — the pink side — also has an area of exactly twenty-five square metres. If that is true, then the diagonal's length must be the number whose square is twenty-five. The square root of twenty-five is five. So the diagonal is five metres. Notice: the area is twenty-five square metres, but the length is five metres. Those are different things with different units.",
+          "visual": "Build the true rotated five-by-five square on the diagonal. Show 16+9=25, then distinguish c squared in square metres from c in metres.",
+          "board_text": "16 + 9 = 25,  c = 5 m",
+          "equation": "c^2 = a^2 + b^2 = 16 + 9 = 25 \\quad c = \\sqrt{25} = 5",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can distinguish the area of the square (25 square metres) from the side length of the square (5 metres)."
+        },
+        {
+          "id": "07",
+          "narration": "Five lies between four and seven, so the answer passes our estimate. Now call the teal leg a, the gold leg b, and the pink diagonal c. The relationship is c squared equals a squared plus b squared. Here, twenty-five equals sixteen plus nine. But checking one example is evidence, not a proof. We still need to explain why this must work for every right triangle, including triangles with entirely different lengths.",
+          "visual": "Replace numerical area labels with a squared, b squared and c squared. Show the general formula, then the warning that an example is not a proof.",
+          "board_text": "c² = a² + b²",
+          "equation": "c^2 = a^2 + b^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can state the formula and recognise that a single numerical example is not a general proof."
+        },
+        {
+          "id": "08",
+          "narration": "A proof must work for any positive lengths a and b. The claim is that the square on the hypotenuse has exactly the same area as both leg squares together. That is stronger than checking a few examples with a ruler or calculator. We will build an argument that does not depend on our chosen numbers. First, though, let us make sure we can identify the sides even when the triangle changes position.",
+          "visual": "Retain the three squares. Highlight them together and ask what area relationship remains true for arbitrary positive a and b.",
+          "board_text": "Proof needed for all a, b",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer understands the distinction between a specific numerical check and a general algebraic proof."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "IDENTIFY THE RIGHT SIDE",
+      "learning_goal": "Reliably identify the hypotenuse as the side opposite the right angle regardless of triangle orientation, and understand why the right angle is essential.",
+      "beats": [
+        {
+          "id": "09",
+          "narration": "Find the right-angle mark. The side opposite that corner is the hypotenuse: neither of its endpoints is the right-angle corner. In a right triangle it is also the longest side. We colour it pink. The two legs that meet at the right angle are teal and gold. These names describe relationships inside the triangle. They do not mean bottom side, vertical side, or whichever side happens to have an unknown label.",
+          "visual": "Identify the right angle and highlight the opposite pink side. Keep the legs colored teal and gold.",
+          "board_text": "c is opposite the right angle",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can point to the hypotenuse in any orientation by locating the right-angle mark first."
+        },
+        {
+          "id": "10",
+          "narration": "Watch the whole triangle rotate until the pink hypotenuse is at the bottom. The right-angle mark has moved to the top, but the triangle has not changed size or shape. Pink is still opposite the right angle, so it is still the hypotenuse. The formula remains c squared equals a squared plus b squared. Turning the page cannot change which side belongs on its own in that equation.",
+          "visual": "Rotate the full triangle through the exact angle that puts its hypotenuse horizontally below its right-angle vertex. Restore upright label orientation and retain the formula.",
+          "board_text": "Rotation changes nothing",
+          "equation": "c^2 = a^2 + b^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer confirms that the hypotenuse identity is preserved under rotation and is not determined by position on the page."
+        },
+        {
+          "id": "11",
+          "narration": "Now keep the three-metre and four-metre legs fixed, but change the angle between them. Open the angle beyond ninety degrees: the opposite side becomes longer than five. Close it below ninety: that side becomes shorter than five. The same two lengths can produce different third sides. Three and four give five only when they meet at a right angle. That is why we check the angle before using the theorem.",
+          "visual": "Keep both leg lengths fixed while sweeping their included angle from 90 to 120 to 60 and back to 90 degrees. Move the opposite side with the endpoint and change the qualitative comparison.",
+          "board_text": "Right angle required",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer understands that the formula c² = a² + b² applies only when the angle between legs a and b is exactly 90 degrees."
+        },
+        {
+          "id": "12",
+          "narration": "Return the corner to ninety degrees. We have teal leg a, gold leg b, and pink hypotenuse c again. Notice that a plus b does not equal c. The sum three plus four measures the bent route, which is seven. The straight diagonal is five. The theorem combines the squares of the legs, then takes a square root. It is a different operation because we are measuring a different path.",
+          "visual": "Retain the right triangle. Contrast a+b with c and display the square-root formula.",
+          "board_text": "a + b ≠ c",
+          "equation": "a + b \\neq c \\quad \\text{but} \\quad c^2 = a^2 + b^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can explain why adding the legs gives the route length, not the diagonal length."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "BUILD A PROOF",
+      "learning_goal": "Construct the outer-square diagram with four congruent right triangles and justify that the central quadrilateral is a square with side c.",
+      "beats": [
+        {
+          "id": "13",
+          "narration": "Let us build the proof. Take a right triangle with legs a and b and hypotenuse c. Make four identical copies. Place one in each corner of an outer square, with its right angle at that corner. Around each outer edge, a leg of length a meets a leg of length b. So the outer side is a plus b. The four hypotenuses enclose a shape in the centre.",
+          "visual": "Place four congruent triangles at the corners of a common outer square. Label the outer side a+b and outline the actual central square.",
+          "board_text": "Outer square side = a + b",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer sees that four congruent right triangles fit inside the outer square with their hypotenuses forming the boundary of a central region."
+        },
+        {
+          "id": "14",
+          "narration": "Is that central shape really a square? Looking like a square is not enough. Each of its four sides is the hypotenuse of an identical triangle, so all four sides have length c. But equal sides alone could make a slanted rhombus. We also need right angles. Focus on one central corner. Two acute triangle angles sit beside it along a straight outer edge. Call those acute angles alpha and beta.",
+          "visual": "Highlight its equal sides. Add alpha and beta arcs beside one central corner along the straight outer edge.",
+          "board_text": "All sides = c; check corners",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer understands that equal side lengths make a rhombus, but a square requires right angles at the corners."
+        },
+        {
+          "id": "15",
+          "narration": "The angles inside a triangle total one hundred and eighty degrees. Our triangle already has a ninety-degree angle, so alpha and beta together total ninety degrees. At the central corner, alpha, the central angle, and beta lie along a straight line. The central angle is therefore one hundred and eighty minus alpha minus beta: ninety degrees. The same reasoning works at all four corners. Equal sides and right angles make the central shape a square.",
+          "visual": "Show the triangle angle sum, then alpha+theta+beta=180 degrees. Deduce theta=90 degrees and mark all four central right angles.",
+          "board_text": "α + β = 90°  →  corners are right angles",
+          "equation": "\\theta=180^\\circ-(\\alpha+\\beta)=90^\\circ",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can justify that the central quadrilateral is a square by using the angle-sum property of the right triangle."
+        },
+        {
+          "id": "16",
+          "narration": "Check our three-four-five example. The outer side is seven, so its area is forty-nine. Each triangle has area one half times three times four, which is six. Four triangles occupy twenty-four square units. The space remaining is forty-nine minus twenty-four, or twenty-five. That is the central square's area, and its side is five. Now we will repeat this calculation with letters, so the argument covers every right triangle.",
+          "visual": "Use the same diagram to count 49 outer square units, 24 triangle units and 25 central square units.",
+          "board_text": "49 − 24 = 25 = 5²",
+          "equation": "(a+b)^2 - 4 \\cdot \\tfrac{1}{2}ab = c^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can verify the numerical case and see how the subtraction structure will generalise."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "COUNT THE SAME AREA TWICE",
+      "learning_goal": "Complete the algebraic proof by expanding the outer square, equating two expressions for the same area, and cancelling triangle areas to obtain a² + b² = c².",
+      "beats": [
+        {
+          "id": "17",
+          "narration": "Keep the same picture, but replace the numbers with a and b. The outer square has side a plus b, so its area is the quantity a plus b, all squared. Multiplying a plus b by itself gives a squared, plus ab, plus another ab, plus b squared. Together those middle terms are two ab. This expression counts the whole outer square. We will now count that same area using its pieces.",
+          "visual": "Reuse the same proof construction. Progressively expand (a+b) squared to a squared+ab+ab+b squared, then combine the middle terms.",
+          "board_text": "(a + b)² = a² + 2ab + b²",
+          "equation": "(a+b)^2 = a^2 + 2ab + b^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can expand the binomial square and connect each term to a rectangular region in the diagram."
+        },
+        {
+          "id": "18",
+          "narration": "Each corner triangle has area one half times a times b. There are four identical triangles, so together their area is two ab. The central square has side c and area c squared. Add the pieces: two ab plus c squared. This is the very same outer square we counted a moment ago. Its area cannot depend on which counting method we choose, so the two expressions must be equal.",
+          "visual": "Highlight one triangle and then all four. Label the central area c squared and compare the two expressions for the outer area.",
+          "board_text": "Same area: a² + 2ab + b² = 2ab + c²",
+          "equation": "a^2 + 2ab + b^2 = 2ab + c^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer sees that both expressions describe the total outer square area and must therefore be equal."
+        },
+        {
+          "id": "19",
+          "narration": "Set those expressions equal. A squared plus two ab plus b squared equals two ab plus c squared. Subtract two ab from both sides. Visually, that removes the same total triangle area from each count. What remains is a squared plus b squared equals c squared. That is the theorem. We used arbitrary positive lengths a and b, so this conclusion applies to every right triangle, not just our numerical example.",
+          "visual": "Subtract 2ab in the equation panel while fading the filled triangle regions. Retain the central square and the resulting area identity.",
+          "board_text": "Cancel 2ab → a² + b² = c²",
+          "equation": "a^2 + b^2 = c^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can describe the cancellation step and explain why the result holds for arbitrary positive values of a and b."
+        },
+        {
+          "id": "20",
+          "narration": "Notice what the proof depended on. Four congruent triangles, a square outside, and a square in the centre. We justified the central square using the right angle in the original triangle. Then we counted the same region twice. No measurement or lucky choice of numbers made the equation true. The algebra records an area comparison. When you remember the formula, try to remember this picture and the reason the triangle areas cancel.",
+          "visual": "Restore triangle fills, highlight the outer and central squares and recap the facts supporting the proof.",
+          "board_text": "Area conserved → proof complete",
+          "equation": "a^2 + b^2 = c^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can articulate the three logical steps that make the proof valid for all right triangles."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "WORKED PROBLEM ONE",
+      "learning_goal": "Apply the theorem to find the hypotenuse of a six-by-eight rectangle, check plausibility, and avoid the common errors of stopping at c squared or adding the legs.",
+      "beats": [
+        {
+          "id": "21",
+          "narration": "Let us use the theorem to solve a real problem. A rectangular room is six metres wide and eight metres long. You want to know the length of the diagonal — the straight line from one corner to the opposite corner. First, sketch the rectangle and draw the diagonal. That diagonal is the hypotenuse of a right triangle whose legs are six metres and eight metres. Label the legs a equals six and b equals eight, and call the diagonal c. We want to find c.",
+          "visual": "Draw a scaled 6-by-8 rectangle and its diagonal. Identify the right angle, known legs and unknown hypotenuse.",
+          "board_text": "a = 6, b = 8, find c",
+          "equation": "c^2 = 6^2 + 8^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can identify the legs and hypotenuse in a rectangle diagonal problem."
+        },
+        {
+          "id": "22",
+          "narration": "Apply the formula. C squared equals a squared plus b squared. That is six squared plus eight squared. Six squared is thirty-six, and eight squared is sixty-four. Thirty-six plus sixty-four equals one hundred. So c squared equals one hundred. Now take the square root of both sides. The square root of one hundred is ten. Therefore c equals ten metres. Notice that we are taking the positive square root because a length cannot be negative. The diagonal is ten metres.",
+          "visual": "Progressively substitute 36 and 64, obtain 100, then take the positive square root. Update the diagonal label to 10 metres.",
+          "board_text": "c² = 100  →  c = 10 m",
+          "equation": "c = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = 10",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can execute the full calculation and correctly take the positive square root at the final step."
+        },
+        {
+          "id": "23",
+          "narration": "Does ten metres make sense? The diagonal must be longer than eight, the longer leg. It must also be shorter than the fourteen-metre route along both walls. Ten satisfies both checks. These bounds do not prove the answer is exactly ten, but they would reject fifteen immediately. The equation gives the answer; the picture helps us decide whether that answer is sensible. Both forms of reasoning belong in a complete solution.",
+          "visual": "Keep the rectangle and highlight its diagonal and two-leg route while showing 8 < 10 < 14.",
+          "board_text": "8 < 10 < 14 ✓",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can apply the plausibility check to verify that the answer lies between the longer leg and the sum of both legs."
+        },
+        {
+          "id": "24",
+          "narration": "Watch for two different mistakes. Stopping at c squared equals one hundred does not give a length of one hundred metres. One hundred describes the square's area; taking its square root gives a side of ten metres. Area uses square metres, while length uses metres. The other mistake is adding six and eight directly. Fourteen measures the bent route. To find the diagonal, square the legs, add their squares, and take the positive root.",
+          "visual": "Contrast 100 square metres with 10 metres. Show that 14 metres describes the bent route, then return to the correct root calculation.",
+          "board_text": "c ≠ 100,  c ≠ 14",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can identify and explain both common errors: confusing area with length, and adding legs instead of using the formula."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "WORKED PROBLEM TWO",
+      "learning_goal": "Rearrange the theorem to find a leg when the hypotenuse and one leg are known, and recognise the subtraction structure.",
+      "beats": [
+        {
+          "id": "25",
+          "narration": "Now the unknown is a leg. In an idealized diagram, a thirteen-metre ladder reaches a vertical wall, with its foot five metres from the wall. How high does it reach? The wall and ground form the right angle. The ladder is opposite that angle, so thirteen is the hypotenuse. Label the vertical height h. Before calculating, notice that h must be less than thirteen. A vertical leg cannot be longer than the hypotenuse.",
+          "visual": "Draw a scaled ladder, rungs, ground and vertical wall. Identify the 13-metre hypotenuse, 5-metre base and unknown height.",
+          "board_text": "Hypotenuse = 13, leg = 5, find h",
+          "equation": "h^2 + 5^2 = 13^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer correctly identifies the ladder as the hypotenuse and sets up the equation with the unknown leg h."
+        },
+        {
+          "id": "26",
+          "narration": "Write the formula with the known values. H squared plus five squared equals thirteen squared. Five squared is twenty-five, and thirteen squared is one hundred and sixty-nine. So h squared plus twenty-five equals one hundred and sixty-nine. To isolate h squared, subtract twenty-five from both sides. H squared equals one hundred and sixty-nine minus twenty-five, which is one hundred and forty-four. Now take the square root. The square root of one hundred and forty-four is twelve. So h equals twelve metres.",
+          "visual": "Step through h squared+25=169, subtract 25 and take the root of144. Update the vertical label to12 metres.",
+          "board_text": "h² = 169 − 25 = 144  →  h = 12 m",
+          "equation": "h^2 = 13^2 - 5^2 = 169 - 25 = 144 \\quad h = 12",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can rearrange the theorem to isolate an unknown leg by subtracting the known squared leg from the squared hypotenuse."
+        },
+        {
+          "id": "27",
+          "narration": "Check twelve by substitution. Twelve squared plus five squared is one hundred and forty-four plus twenty-five, or one hundred and sixty-nine. That equals thirteen squared. Twelve is also less than the hypotenuse, so the answer fits the picture. Finding a leg means subtracting its partner's square from the hypotenuse's square. Finding the hypotenuse means adding the two leg squares. Identify the sides first; then let the equation tell you which operation is needed.",
+          "visual": "Check the numerical equation and compare formulas for a missing leg and a missing hypotenuse.",
+          "board_text": "Verify: 144 + 25 = 169 ✓",
+          "equation": "12^2 + 5^2 = 144 + 25 = 169 = 13^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can distinguish the add-to-find-hypotenuse structure from the subtract-to-find-leg structure."
+        },
+        {
+          "id": "28",
+          "narration": "What if someone adds thirteen squared and five squared? They get one hundred and ninety-four, whose square root is about thirteen point nine. That would make the height longer than the entire ladder. The diagram immediately exposes the mistake. The unknown is a leg, so it does not belong alone as the hypotenuse in the equation. Correcting that identification is more useful than simply saying to remember subtraction for this example.",
+          "visual": "Show the incorrect sum and its impossible height greater than13. Highlight the unknown leg and restore the correct equation.",
+          "board_text": "h cannot exceed 13 m",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can use geometric reasoning to identify that adding the hypotenuse square to a leg square produces an impossible result."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "BEYOND WHOLE NUMBERS",
+      "learning_goal": "Apply the theorem to produce irrational results and to find distances between coordinate points, reinforcing that the formula is not limited to whole-number triples.",
+      "beats": [
+        {
+          "id": "29",
+          "narration": "Not every diagonal has a whole-number length. Take a square whose side is one metre. Its diagonal forms a right triangle with two one-metre legs. C squared is one plus one, or two. So c is the square root of two metres. Approximately, that is one point four one four metres. The exact square root has a decimal expansion that never ends or repeats. The radical gives an exact length; a rounded decimal gives an approximation.",
+          "visual": "Draw a unit square and diagonal. Calculate square root of2 and distinguish exact radical notation from the rounded approximation.",
+          "board_text": "c = √2 (exact)",
+          "equation": "c = \\sqrt{1^2 + 1^2} = \\sqrt{2} \\approx 1.414",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer accepts that the exact answer can be an irrational number and distinguishes the exact form from a decimal approximation."
+        },
+        {
+          "id": "30",
+          "narration": "Place two points on a coordinate grid: one comma one, and five comma four. Their horizontal difference is five minus one, or four. Their vertical difference is four minus one, or three. Draw those two perpendicular differences as the legs of a triangle. The distance between the points is its hypotenuse. Four squared plus three squared is twenty-five, so the straight-line distance is five units. The coordinates have given us the legs.",
+          "visual": "Plot (1,1) and (5,4) on equal-unit axes. Construct horizontal and vertical differences, then the diagonal and its length5.",
+          "board_text": "Distance = √(Δx² + Δy²) = 5",
+          "equation": "c = \\sqrt{(5-1)^2 + (4-1)^2} = \\sqrt{16+9} = 5",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can extract the horizontal and vertical differences as the legs of a right triangle and apply the theorem."
+        },
+        {
+          "id": "31",
+          "narration": "Slide both points three units to the right. They are now four comma one, and eight comma four. The horizontal difference is eight minus four, still four. The vertical difference is four minus one, still three. The triangle has moved without changing shape or size, so its hypotenuse is still five. Distance depends on the difference between positions. Moving both endpoints together does not change the gap between them.",
+          "visual": "Translate both endpoints and their triangle three units right. Update points to(4,1),(8,4), recompute differences and retain distance5.",
+          "board_text": "Translation preserves distance",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer understands that the theorem measures the straight-line displacement between two points, independent of their absolute positions."
+        },
+        {
+          "id": "32",
+          "narration": "A coordinate grid quietly supplies the right angle: its horizontal and vertical directions are perpendicular and use the same length units. That lets us turn coordinate differences into a right triangle. We can then calculate the straight-line separation, whether the answer is a whole number or an exact square root. We are not calculating every possible route between the points. We are calculating the direct gap across a flat plane.",
+          "visual": "Keep the coordinate triangle visible; highlight the perpendicular components and distinguish the direct diagonal from the two-leg route.",
+          "board_text": "Right angle: the common thread",
+          "equation": "a^2 + b^2 = c^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can identify the source of the right angle in each application context."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "YOUR TURN",
+      "learning_goal": "Independently apply the theorem to find a hypotenuse, find a leg, and reason about an irrational result, with thinking time before each answer is revealed.",
+      "beats": [
+        {
+          "id": "33",
+          "narration": "Time to try one yourself. A right triangle has legs of five metres and twelve metres. What is the length of the hypotenuse? Set up the equation: c squared equals five squared plus twelve squared. Work it out. You have eight seconds before I continue. What is c?",
+          "visual": "Display a correctly scaled 5-by-12 right triangle and the unanswered equation. An eight-second progress line gives thinking time without showing the answer.",
+          "board_text": "c² = 5² + 12²",
+          "equation": "c^2 = 5^2 + 12^2",
+          "thinking_pause_seconds": 8,
+          "check": "Viewer attempts the calculation independently before the answer is revealed."
+        },
+        {
+          "id": "34",
+          "narration": "Five squared is twenty-five, twelve squared is one hundred and forty-four, and twenty-five plus one hundred and forty-four is one hundred and sixty-nine. The square root of one hundred and sixty-nine is thirteen. So c equals thirteen metres. Now a second question. A right triangle has a hypotenuse of ten metres and one leg of six metres. What is the other leg? Set up the equation: leg squared plus six squared equals ten squared. You have eight seconds.",
+          "visual": "Reveal13 with its calculation. Replace the diagram with a6-8-10 triangle labeled with unknown leg h; show its equation and an eight-second thinking interval.",
+          "board_text": "c = 13 m  |  h² + 6² = 10²",
+          "equation": "c = \\sqrt{169} = 13 \\quad h^2 + 6^2 = 10^2",
+          "thinking_pause_seconds": 8,
+          "check": "Viewer correctly identifies the subtraction structure needed to find the unknown leg."
+        },
+        {
+          "id": "35",
+          "narration": "H squared plus thirty-six equals one hundred. Subtract thirty-six to get sixty-four, then take the positive square root: h is eight metres. Now a reasoning question. A square has sides of one metre. A student says its diagonal is two metres, because one plus one equals two. Another says the diagonal is the square root of two metres. Which student is correct? Use the areas of squares to justify your choice. Think for eight seconds.",
+          "visual": "Reveal8, then replace the triangle with a unit square. Present2 and square root of2 as neutral candidates, followed by eight seconds of thinking.",
+          "board_text": "h = 8 m  |  diagonal = 2 or √2?",
+          "equation": "h = \\sqrt{64} = 8",
+          "thinking_pause_seconds": 8,
+          "check": "Viewer reasons from area rather than guessing, connecting the area of the square on the diagonal to the side length."
+        },
+        {
+          "id": "36",
+          "narration": "The diagonal is the square root of two metres. The squares on the two legs each have area one square metre, so the square on the diagonal must have area two. Its side is therefore the square root of two. If that side were two metres, its square would have area four, which contradicts our area relationship. The length two measures the bent route along two edges, not the diagonal across the square.",
+          "visual": "Reveal square root of2. Use the equation panel to compare areas2 and4, then highlight the two-edge route and the shorter diagonal.",
+          "board_text": "c² = 2  →  c = √2, not 2",
+          "equation": "c^2 = 1^2 + 1^2 = 2 \\quad c = \\sqrt{2} \\neq 2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can use the area of the square on the hypotenuse to justify why the diagonal is √2 and not 2."
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "RETURN TO THE QUESTION",
+      "learning_goal": "Resolve the opening robot problem, articulate the full chain of reasoning from area conservation to diagonal length, and explain why adding legs fails.",
+      "beats": [
+        {
+          "id": "37",
+          "narration": "Return to our robot. Four metres east and three metres north form the two legs. Their squares have areas sixteen and nine, totalling twenty-five. So the diagonal's square has area twenty-five and its side is five metres. Let the robot take that straight path now. It travels five metres instead of seven, saving two metres. We have answered the opening question, and we can explain the answer rather than just announcing it.",
+          "visual": "Return to the original robot triangle. Calculate5 and move the dot along the diagonal; show the two-metre saving.",
+          "board_text": "c = 5 m  (route was 7 m)",
+          "equation": "c = \\sqrt{4^2 + 3^2} = \\sqrt{25} = 5",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer connects the final answer back to the opening question and appreciates the two-metre difference."
+        },
+        {
+          "id": "38",
+          "narration": "Remember the connection. The leg lengths define two square areas. Our proof shows that their sum equals the area of the hypotenuse square. We established that by counting one outer square in two ways and subtracting the same triangle areas. Finally, a square root converts the resulting area back into a length. The geometry explains the equation, and the equation lets us calculate a distance that would be difficult to measure directly.",
+          "visual": "Rebuild the three outward squares and their numerical area labels. Connect the proven area identity to the square-root length formula.",
+          "board_text": "Area conserved: 16 + 9 = 25",
+          "equation": "a^2 + b^2 = c^2 \\quad (16 + 9 = 25)",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can narrate the area-conservation argument from memory without referring to specific numbers."
+        },
+        {
+          "id": "39",
+          "narration": "Before using the theorem, check for a right angle and identify the side opposite it. That is the hypotenuse. Square the known lengths, then add or subtract according to which side is missing. Take the positive square root and state the length unit. Check the result against the picture: a hypotenuse exceeds either leg but is shorter than their sum; an unknown leg must be shorter than the known hypotenuse. Every check has a geometric reason.",
+          "visual": "Keep the squares visible while progressing through the right-angle, hypotenuse, calculation, units and plausibility checks.",
+          "board_text": "Six-step checklist",
+          "equation": "",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can reproduce the six-step checklist and explain the purpose of each step."
+        },
+        {
+          "id": "40",
+          "narration": "Try explaining one final idea in your own words: why does four plus three not give the diagonal? It measures a route with a turn. The diagonal crosses directly between the same endpoints. To find its length, we compare square areas instead. The square on the hypotenuse equals the two leg squares together because a right triangle lets us build two equal counts of the same area. Taking the square root turns that area relationship into the length of our shortcut.",
+          "visual": "Contrast the bent route with the direct diagonal. Highlight the three square areas and end on the area identity and its explanation.",
+          "board_text": "Route ≠ diagonal; area explains why",
+          "equation": "a^2 + b^2 = c^2",
+          "thinking_pause_seconds": 0,
+          "check": "Viewer can explain in their own words why adding the legs gives the route length and why the theorem gives the diagonal length, grounding the answer in the area-conservation proof."
+        }
+      ]
+    }
+  ],
+  "worked_answers": [
+    {
+      "problem": "A rectangular room is 6 metres wide and 8 metres long. Find the length of the diagonal.",
+      "solution_steps": [
+        "Identify the right triangle: legs a = 6 m and b = 8 m, hypotenuse c = diagonal.",
+        "Apply the theorem: c squared equals 6 squared plus 8 squared.",
+        "Evaluate: 6 squared equals 36, 8 squared equals 64.",
+        "Add: 36 plus 64 equals 100. So c squared equals 100.",
+        "Take the positive square root: c equals the square root of 100 equals 10 metres.",
+        "Plausibility check: 10 is greater than 8 (longer leg) and less than 14 (sum of legs). Answer is reasonable."
+      ],
+      "answer": "c = 10 metres",
+      "common_errors": [
+        "Writing c = 100 m (confusing area with length; 100 is square metres, not metres).",
+        "Writing c = 6 + 8 = 14 m (adding legs gives route length, not diagonal)."
+      ]
+    },
+    {
+      "problem": "A ladder 13 metres long leans against a vertical wall. Its foot is 5 metres from the base of the wall. How high up the wall does the ladder reach?",
+      "solution_steps": [
+        "Identify the right triangle: the wall and ground meet at a right angle. The ladder is the hypotenuse (13 m). One leg is the ground distance (5 m). The unknown leg is the height h.",
+        "Apply the theorem: h squared plus 5 squared equals 13 squared.",
+        "Evaluate: 5 squared equals 25, 13 squared equals 169.",
+        "Rearrange: h squared equals 169 minus 25 equals 144.",
+        "Take the positive square root: h equals the square root of 144 equals 12 metres.",
+        "Plausibility check: 12 is less than 13 (the hypotenuse). Correct — a leg must be shorter than the hypotenuse."
+      ],
+      "answer": "h = 12 metres",
+      "common_errors": [
+        "Adding instead of subtracting: 13 squared plus 5 squared gives 194, and the square root is about 13.9 m, which is longer than the ladder — geometrically impossible.",
+        "Treating the ladder as a leg rather than the hypotenuse."
+      ]
+    }
+  ],
+  "practice_answers": [
+    {
+      "problem": "A right triangle has legs of 5 metres and 12 metres. Find the hypotenuse.",
+      "answer": "c = square root of (25 + 144) = square root of 169 = 13 metres",
+      "key_step": "c squared equals 5 squared plus 12 squared equals 25 plus 144 equals 169; c equals 13."
+    },
+    {
+      "problem": "A right triangle has a hypotenuse of 10 metres and one leg of 6 metres. Find the other leg.",
+      "answer": "h = square root of (100 minus 36) = square root of 64 = 8 metres",
+      "key_step": "h squared equals 10 squared minus 6 squared equals 100 minus 36 equals 64; h equals 8."
+    },
+    {
+      "problem": "A unit square has side length 1. Is its diagonal equal to 2 or to the square root of 2? Justify using area.",
+      "answer": "The diagonal equals the square root of 2.",
+      "justification": "The square built on the diagonal has area c squared equals 1 squared plus 1 squared equals 2 square units. Therefore c equals the square root of 2, which is approximately 1.414. If the diagonal were 2, the square on it would have area 4 square units, but the theorem requires area 2. The value 2 is the sum of the two legs — the route length — not the diagonal."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Code2Video",
+    "url": "https://github.com/showlab/Code2Video.git",
+    "commit": "1142d8e14cdc2806df85aedb0fbb5dca474caa0f"
+  },
+  {
+    "name": "Manimator",
+    "url": "https://github.com/HyperCluster-Tech/manimator.git",
+    "commit": "928b8b2331791bd46f1ad14676893be7528309d8"
+  },
+  {
+    "name": "TheoremExplainAgent",
+    "url": "https://github.com/TIGER-AI-Lab/TheoremExplainAgent.git",
+    "commit": "e9ece5db7756b6ded8a812eceeb936cfd02aae21"
+  },
+  {
+    "name": "EduVisAgent",
+    "url": "https://github.com/aiming-lab/EduVisAgent.git",
+    "commit": "1293f3535336b34c5358562d56e2168773d92498"
+  }
+]

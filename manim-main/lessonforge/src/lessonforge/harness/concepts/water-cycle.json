@@ -1,0 +1,206 @@
+{
+ "id": "water-cycle",
+ "names": [
+  "water cycle",
+  "the water cycle",
+  "hydrological cycle",
+  "how rain is formed",
+  "how is rain formed",
+  "evaporation and condensation",
+  "how clouds form",
+  "where does rain come from"
+ ],
+ "subject": "science",
+ "classes": [
+  5,
+  9
+ ],
+ "status": "proven",
+ "picture": {
+  "prefer": "drawing",
+  "figure": null,
+  "asks": [
+   "A standard diagram of the water cycle, showing the sun, the sea, arrows of water vapour rising, clouds over hills, rain falling and a river flowing back to the sea.",
+   "A drawing of a steel tumbler filled with ice and water, with drops of water forming on its outside, and beside it a dry tumbler of plain water."
+  ],
+  "why": "One loop of arrows from sea to cloud to rain to river shows that the same water keeps going round."
+ },
+ "card": {
+  "big_idea": {
+   "text": "The same water goes round and round: the sun's heat turns it into vapour, the vapour cools high up into clouds, falls as rain, and flows back to the sea.",
+   "cites": []
+  },
+  "objectives": [
+   {
+    "can": "Describe where the water goes at each stage of the water cycle",
+    "level": "understand",
+    "checked_by": "q1"
+   },
+   {
+    "can": "Explain why clouds form high up and not near the ground",
+    "level": "understand",
+    "checked_by": "q2"
+   },
+   {
+    "can": "Predict what will form on the outside of a cold tumbler and say why",
+    "level": "apply",
+    "checked_by": "try_it"
+   }
+  ],
+  "why_it_matters": {
+   "text": "The rain that fills our wells, rivers and fields is sea water that the sun has lifted and the wind has carried.",
+   "cites": []
+  },
+  "the_why": {
+   "text": "Heat makes water evaporate into invisible vapour that rises with warm air; high up the air is colder, so the vapour cools and turns back into tiny drops that make clouds, and when the drops join and become heavy they fall as rain.",
+   "cites": []
+  },
+  "picture": {
+   "text": "The sea under the sun. Arrows of vapour rise from the water, then turn into a cloud as they reach the cold air over the hills. The cloud grows darker, rain falls on the hills, and a river carries the water downhill back to the sea, closing the loop.",
+   "standard": "water cycle diagram",
+   "cites": []
+  },
+  "diagram_ask": "A standard diagram of the water cycle, showing the sun, the sea, arrows of water vapour rising, clouds over hills, rain falling and a river flowing back to the sea.",
+  "needs_first": [
+   {
+    "text": "Water can be a solid, a liquid or a gas.",
+    "cites": []
+   },
+   {
+    "text": "Heating turns water into vapour; cooling turns vapour into water.",
+    "cites": []
+   }
+  ],
+  "mistakes": [
+   {
+    "mistake": "Clouds are made of water vapour or smoke.",
+    "why_it_fails": "Water vapour is invisible; a cloud is visible because it is made of tiny drops of liquid water or ice.",
+    "cites": []
+   },
+   {
+    "mistake": "When water dries up it is gone for ever.",
+    "why_it_fails": "Drying water becomes vapour in the air, and the same water comes back down as rain.",
+    "cites": []
+   },
+   {
+    "mistake": "Water evaporates only when it boils.",
+    "why_it_fails": "Water evaporates at any temperature from its surface, which is why clothes dry in the sun without boiling.",
+    "cites": []
+   }
+  ],
+  "opening_question": {
+   "question": "Wet clothes on a line dry by the afternoon. Where did the water in them go?",
+   "guesses": [
+    "It disappeared",
+    "It went into the ground",
+    "It went into the air"
+   ],
+   "answer": "Into the air as invisible water vapour, which later becomes clouds and rain.",
+   "cites": []
+  },
+  "route": [
+   {
+    "move": "question",
+    "what": "Show the sea under the sun and ask where the water goes when wet clothes dry. Ask for a guess.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "Draw vapour arrows rising from the sea: heat makes water evaporate into the air, where we cannot see it.",
+    "cites": []
+   },
+   {
+    "move": "why",
+    "what": "Ask: why does a cloud form high up and not near the ground? Because the air high up is colder, and cold vapour turns into tiny drops.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "The drops gather into a cloud over the hills; they join into bigger drops, become heavy and fall as rain.",
+    "cites": []
+   },
+   {
+    "move": "see",
+    "what": "The rain runs down the hills into a river and back to the sea, closing the loop.",
+    "cites": []
+   },
+   {
+    "move": "name",
+    "what": "Name each step: evaporation, condensation, rain (precipitation); the whole loop is the water cycle.",
+    "cites": []
+   },
+   {
+    "move": "contrast",
+    "what": "Steam from a kettle you can see is already tiny drops, like a cloud; the gap just above the spout, where you see nothing, is the vapour.",
+    "cites": []
+   },
+   {
+    "move": "try_it",
+    "what": "Set the task: ice water in a steel tumbler and a dry tumbler beside it.",
+    "cites": []
+   },
+   {
+    "move": "say_back",
+    "what": "The learner tells the journey of one drop of sea water back to the sea.",
+    "cites": []
+   }
+  ],
+  "questions": [
+   {
+    "question": "Puddles on a road dry up after the rain stops. Where does the water go?",
+    "options": [
+     "Into the air as water vapour",
+     "It is gone for ever",
+     "It boils away in the sun"
+    ],
+    "answer_index": 0,
+    "explain": "Water evaporates from the surface into the air without boiling, and comes back later as rain.",
+    "cites": []
+   },
+   {
+    "question": "Why do clouds form high above the ground?",
+    "options": [
+     "Because the air high up is colder, so vapour turns into tiny drops",
+     "Because smoke from the ground rises and collects",
+     "Because water vapour itself is white and can be seen"
+    ],
+    "answer_index": 0,
+    "explain": "Cooling turns invisible vapour back into liquid drops, and the air is colder higher up.",
+    "cites": []
+   }
+  ],
+  "try_it": {
+   "title": "A cloud on a tumbler",
+   "kind": "hands",
+   "materials": [
+    "two steel tumblers",
+    "ice",
+    "water",
+    "cloth"
+   ],
+   "stands_for": "The cold tumbler is the cold air high up; the air in the room holds the water vapour.",
+   "predict": "After five minutes, will the outside of the ice tumbler stay dry or get wet?",
+   "steps": [
+    "Put ice and water into one tumbler and only plain tap water into the other.",
+    "Wipe the outside of both tumblers dry with the cloth.",
+    "Leave them on a table for five minutes.",
+    "Run a finger down the outside of each tumbler."
+   ],
+   "observe": "Drops of water form on the outside of the ice tumbler; the other tumbler stays dry.",
+   "question": "Where did the water on the outside of the cold tumbler come from, and why only there?",
+   "expected": "From water vapour in the air, because the cold surface cools the vapour and it turns back into liquid drops, just as vapour cools into clouds high up.",
+   "write": "Water vapour in the air turns into drops when it is cooled. Clouds form this way in the cold air high up.",
+   "in_class": "Pairs, each with a cold and a plain tumbler. The teacher draws the water cycle loop on the board with the condensation arrow empty. Ask: where did the drops come from? A class that says the water leaked through the steel has not yet seen that the air holds vapour.",
+   "cites": []
+  },
+  "leave_out": [
+   "transpiration from plants in detail",
+   "groundwater and aquifers",
+   "snow, hail and the kinds of clouds"
+  ],
+  "from_lectures": [],
+  "uncited": [
+   "all lines: curated by hand from standard NCERT teaching"
+  ]
+ }
+}

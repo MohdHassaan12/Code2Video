@@ -1,0 +1,10 @@
+[
+ {"name": "projectile", "describe": "A ball is thrown from the ground at an angle and follows a curved path, rising, slowing at the top and falling back to the ground, with its path left behind as a faint trail."},
+ {"name": "pendulum", "describe": "A pendulum bob hangs from a fixed point on a string and swings from left to right and back, the angle shrinking a little each swing."},
+ {"name": "sine_circle", "describe": "A point goes once round a circle on the left while its height is traced to the right as a growing sine wave."},
+ {"name": "square_numbers", "describe": "First one block appears, then a row and a column of blocks are added to make a 2 by 2 square, then another row and column make a 3 by 3 square."},
+ {"name": "fraction_bar", "describe": "A bar is cut into four equal parts and three of the parts fill with colour one after another, with the label 3/4 under the bar."},
+ {"name": "orbit", "describe": "The Earth moves round the Sun on a circular orbit while the Moon goes round the Earth on a small circle."},
+ {"name": "water_cycle", "describe": "First water rises as vapour from the sea, then it gathers into a cloud, then rain falls from the cloud back onto the land and the sea."},
+ {"name": "number_line_jumps", "describe": "On a number line from 0 to 10 a frog starts at 2 and makes three jumps of 2, landing on 4, 6 and 8."}
+]

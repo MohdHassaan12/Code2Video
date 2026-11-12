@@ -1,0 +1,225 @@
+{
+  "id": "adding-fractions-unlike-denominators",
+  "names": [
+    "adding fractions with unlike denominators",
+    "adding unlike fractions",
+    "addition of unlike fractions",
+    "adding fractions with different denominators",
+    "add fractions different denominators",
+    "unlike fractions"
+  ],
+  "subject": "maths",
+  "classes": [
+    5,
+    7
+  ],
+  "status": "proven",
+  "picture": {
+    "prefer": "figure",
+    "figure": {
+      "kind": "bars",
+      "parts": [
+        {
+          "label": "1/2",
+          "n": 1,
+          "d": 2,
+          "role": "given"
+        },
+        {
+          "label": "1/3",
+          "n": 1,
+          "d": 3,
+          "role": "given"
+        },
+        {
+          "label": "3/6 + 2/6",
+          "n": 5,
+          "d": 6,
+          "role": "result"
+        }
+      ]
+    },
+    "asks": [
+      "A labelled diagram of three equal strips, one cut into halves with one half shaded, one cut into thirds with one third shaded, and one cut into sixths.",
+      "A drawing of two equal paper strips lying one under the other, the first folded into halves and the second into thirds, both marked again into six equal parts."
+    ],
+    "why": "Strips of the same length make it plain that halves and thirds are pieces of different sizes, and that sixths are a size both can be cut into."
+  },
+  "card": {
+    "big_idea": {
+      "text": "To add fractions with different denominators, first cut both into pieces of the same size, then count the pieces.",
+      "cites": []
+    },
+    "objectives": [
+      {
+        "can": "Add two fractions with different denominators by changing them to the same denominator",
+        "level": "apply",
+        "checked_by": "q1"
+      },
+      {
+        "can": "Explain why the numerators and denominators cannot simply be added",
+        "level": "understand",
+        "checked_by": "try_it"
+      },
+      {
+        "can": "Judge whether an answer to a fraction sum is sensible",
+        "level": "evaluate",
+        "checked_by": "q2"
+      }
+    ],
+    "why_it_matters": {
+      "text": "Half a cup of milk and a third of a cup of water, or half a roti and a third of another, are amounts you put together every day.",
+      "cites": []
+    },
+    "the_why": {
+      "text": "Halves and thirds are pieces of different sizes, so they cannot be counted together; cutting each half into three and each third into two turns both into sixths, pieces of one size, which can be counted.",
+      "cites": []
+    },
+    "picture": {
+      "text": "Two equal strips: one with a half shaded, one with a third shaded. Both strips are then cut into six equal parts: the half becomes 3 sixths and the third 2 sixths. The shaded parts slide onto a third strip, filling 5 of its 6 parts.",
+      "standard": "fraction strips (bar model)",
+      "cites": []
+    },
+    "diagram_ask": "A labelled diagram of three equal strips, one cut into halves with one half shaded, one cut into thirds with one third shaded, and one cut into sixths.",
+    "needs_first": [
+      {
+        "text": "What the top and bottom numbers of a fraction mean.",
+        "cites": []
+      },
+      {
+        "text": "Equivalent fractions: 1/2 is the same amount as 3/6.",
+        "cites": []
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Adding tops and bottoms: 1/2 + 1/3 = 2/5.",
+        "why_it_fails": "2/5 is less than 1/2 alone, so it cannot be a half with something more added; the bottom number names the size of the pieces and is not added.",
+        "cites": []
+      },
+      {
+        "mistake": "Changing the bottom number without changing the top: 1/2 becomes 1/6.",
+        "why_it_fails": "1/6 is a much smaller amount than 1/2; when each piece is cut into three, the number of shaded pieces must also become three times as many.",
+        "cites": []
+      },
+      {
+        "mistake": "Adding the bottom numbers and keeping the top: 1/2 + 1/3 = 1/5.",
+        "why_it_fails": "Fifths are smaller pieces than either halves or thirds, so 1/5 is less than either of the fractions being added.",
+        "cites": []
+      }
+    ],
+    "opening_question": {
+      "question": "You eat half a roti and then a third of another roti of the same size. Have you eaten more or less than one whole roti, and how much?",
+      "guesses": [
+        "2/5 of a roti",
+        "More than one roti",
+        "A bit less than one roti"
+      ],
+      "answer": "5/6 of a roti: a little less than one whole.",
+      "cites": []
+    },
+    "route": [
+      {
+        "move": "question",
+        "what": "Show the half strip and the third strip and ask how much they make together. Ask for a guess.",
+        "cites": []
+      },
+      {
+        "move": "contrast",
+        "what": "Try 2/5: put 2/5 of a strip next to the half strip. It is shorter than the half alone, so it cannot be right.",
+        "cites": []
+      },
+      {
+        "move": "see",
+        "what": "Ask: why can we not just count the pieces? Because one half and one third are pieces of different sizes.",
+        "cites": []
+      },
+      {
+        "move": "why",
+        "what": "Cut each half into three and each third into two: both strips are now in sixths. The half is 3 sixths and the third is 2 sixths.",
+        "cites": []
+      },
+      {
+        "move": "see",
+        "what": "Slide the shaded sixths onto one strip: 3 + 2 = 5 of 6 parts are shaded.",
+        "cites": []
+      },
+      {
+        "move": "name",
+        "what": "Name it: make the denominators the same (a common denominator), then add the numerators: 3/6 + 2/6 = 5/6.",
+        "cites": []
+      },
+      {
+        "move": "example",
+        "what": "1/4 + 1/2: cut the half into two quarters, so 1/4 + 2/4 = 3/4.",
+        "cites": []
+      },
+      {
+        "move": "your_turn",
+        "what": "2/3 + 1/4: the learner cuts both into twelfths and finds 8/12 + 3/12 = 11/12 before it is shown.",
+        "cites": []
+      },
+      {
+        "move": "say_back",
+        "what": "The learner says why the pieces must be the same size before they are added.",
+        "cites": []
+      }
+    ],
+    "questions": [
+      {
+        "question": "What is 1/2 + 1/3?",
+        "options": [
+          "5/6",
+          "2/5",
+          "1/5"
+        ],
+        "answer_index": 0,
+        "explain": "A half is 3 sixths and a third is 2 sixths, so together they make 5 sixths.",
+        "cites": []
+      },
+      {
+        "question": "Riya says 1/4 + 1/2 = 2/6. Is that sensible?",
+        "options": [
+          "No: 2/6 is less than 1/2 alone, and the answer is 3/4",
+          "Yes: 1 + 1 = 2 and 4 + 2 = 6",
+          "No: the answer is 1/6, because 1/2 becomes 1/4"
+        ],
+        "answer_index": 0,
+        "explain": "Adding more to a half must give more than a half; with quarters, 1/4 + 2/4 = 3/4.",
+        "cites": []
+      }
+    ],
+    "try_it": {
+      "title": "Strips in sixths",
+      "kind": "hands",
+      "materials": [
+        "two strips of paper 12 cm long",
+        "pencil",
+        "ruler"
+      ],
+      "stands_for": "Each 12 cm strip is one whole; a mark every 2 cm cuts it into sixths.",
+      "predict": "Will one half and one third together cover more than the whole strip, exactly the whole, or less?",
+      "steps": [
+        "On the first strip shade one half (6 cm); on the second shade one third (4 cm).",
+        "Mark both strips every 2 cm so each is cut into six equal parts.",
+        "Count the shaded sixths on each strip.",
+        "Lay the strips end to end so the shaded parts touch and measure the shaded length."
+      ],
+      "observe": "The half is 3 sixths and the third is 2 sixths; together the shaded parts are 10 cm, 5 sixths of one strip, a little less than the whole.",
+      "question": "Why did you mark both strips in sixths before adding?",
+      "expected": "Because a half and a third are pieces of different sizes, and only pieces of the same size can be counted together; sixths fit exactly into both, so 3 sixths and 2 sixths make 5 sixths.",
+      "write": "Before adding fractions, make the pieces the same size. 1/2 + 1/3 = 3/6 + 2/6 = 5/6.",
+      "in_class": "Pairs, each with two 12 cm strips. The teacher draws two strips on the board, one in halves and one in thirds, and asks the class to mark the sixths. Ask: is 1/2 + 1/3 more or less than one whole? A class that says 2/5 is still adding tops and bottoms.",
+      "cites": []
+    },
+    "leave_out": [
+      "finding the LCM by prime factors",
+      "adding mixed numbers",
+      "subtracting fractions"
+    ],
+    "from_lectures": [],
+    "uncited": [
+      "all lines: curated by hand from standard NCERT teaching"
+    ]
+  }
+}

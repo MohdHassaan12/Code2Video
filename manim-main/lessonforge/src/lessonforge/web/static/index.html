@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEM Concept Explorer & Animation Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=20260721d">
+</head>
+<body>
+    <!-- Background visual mesh -->
+    <div class="stars"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">▲</div>
+                <div class="logo-text">
+                    <h1>STEM Lab</h1>
+                    <span>Storyboard & Video Generator</span>
+                </div>
+            </div>
+
+            <nav style="display:flex;gap:14px;margin:2px 4px 14px;font-size:12.5px">
+                <a href="/studio" style="color:#58c4dd;text-decoration:none;font-weight:600">✦ Studio (new)</a>
+                <a href="/timeline" style="color:#8b949e;text-decoration:none">Timeline</a>
+                <a href="/bulk" style="color:#8b949e;text-decoration:none">Bulk</a>
+            </nav>
+
+            <!-- API Configuration -->
+            <div class="card settings-card">
+                <div class="card-header">
+                    <h3>API Settings</h3>
+                    <button class="btn-icon" id="btn-toggle-api" title="Toggle Visibility">⚙</button>
+                </div>
+                <div class="card-body" id="api-settings-body">
+                    <div class="form-group">
+                        <label for="api-key-input">Gemini API Key</label>
+                        <input type="password" id="api-key-input" placeholder="Enter API Key (or server .env)" autocomplete="off">
+                        <span class="help-text">Saved locally in your browser.</span>
+                    </div>
+                    <details style="margin-top:10px">
+                        <summary style="cursor:pointer;font-size:12.5px;color:#8b949e">Model routing — which LLM runs each stage</summary>
+                        <div id="model-panel" style="margin-top:10px"></div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- Mode Selector -->
+            <div class="mode-tabs">
+                <button class="mode-tab active" data-mode="creator">Content Creator</button>
+                <button class="mode-tab" data-mode="student">Student Portal</button>
+            </div>
+
+            <!-- Core Controls Form -->
+            <div class="card controls-card">
+                <div class="card-body">
+                    <!-- Common Topic Input -->
+                    <div class="form-group">
+                        <label for="topic-input">STEM Topic / Concept</label>
+                        <input type="text" id="topic-input" placeholder="e.g. Pythogorean Theorem, Gravitation, Splicing" value="Pythagorean Theorem">
+                    </div>
+
+                    <!-- Optional YouTube URL -->
+                    <div class="form-group">
+                        <label for="youtube-url-input">Reference YouTube URL (Optional)</label>
+                        <input type="text" id="youtube-url-input" placeholder="e.g. https://www.youtube.com/watch?v=...">
+                        <span class="help-text" style="font-size: 11px; color: #a3a3a3; margin-top: 4px; display: block;">Paste a specific video to use its transcript instead of searching.</span>
+                    </div>
+
+                    <!-- Style Profile Selector -->
+                    <div class="form-group">
+                        <label for="style-select">Style Profile</label>
+                        <select id="style-select">
+                            <option value="3blue1brown/minimalist/neon">3Blue1Brown Neon (Cyan/Indigo)</option>
+                            <option value="chalkboard/chalk/pastel">Chalkboard Pastel (Green/Yellow)</option>
+                            <option value="cyberpunk/retrowave/orange">Cyberpunk Retrowave (Purple/Orange)</option>
+                            <option value="minimalist/dark/mono">Minimalist Monochrome (White/Gray)</option>
+                            <option value="powerpoint/clean">PowerPoint Clean (White/Dark Charcoal)</option>
+                        </select>
+                    </div>
+
+                    <!-- Language Persona Selector -->
+                    <div class="form-group">
+                        <label for="persona-select">Language Persona</label>
+                        <select id="persona-select">
+                            <option value="hybrid">Hybrid — Hinglish/code-mix voice, English on-screen</option>
+                            <option value="native">Native — full target-language voice &amp; on-screen</option>
+                            <option value="en">English — English voice &amp; on-screen</option>
+                        </select>
+                    </div>
+
+                    <!-- Narration Technical-Terms Policy -->
+                    <div class="form-group">
+                        <label for="tech-terms-select">Technical Terms in Narration</label>
+                        <select id="tech-terms-select">
+                            <option value="english">English only — never re-said in native language</option>
+                            <option value="bilingual">Bilingual — native equivalent once, at first mention</option>
+                            <option value="native">Native — technical terms translated</option>
+                        </select>
+                    </div>
+
+                    <!-- Voiceover Language Selector -->
+                    <div class="form-group">
+                        <label for="language-select">Voiceover Language</label>
+                        <select id="language-select">
+                            <option value="hi-IN">Hindi (hi-IN)</option>
+                            <option value="en-IN">English (en-IN)</option>
+                            <option value="bn-IN">Bengali (bn-IN)</option>
+                            <option value="ta-IN">Tamil (ta-IN)</option>
+                            <option value="te-IN">Telugu (te-IN)</option>
+                            <option value="kn-IN">Kannada (kn-IN)</option>
+                            <option value="ml-IN">Malayalam (ml-IN)</option>
+                            <option value="mr-IN">Marathi (mr-IN)</option>
+                            <option value="gu-IN">Gujarati (gu-IN)</option>
+                            <option value="pa-IN">Punjabi (pa-IN)</option>
+                            <option value="od-IN">Odia (od-IN)</option>
+                        </select>
+                    </div>
+
+                    <!-- TTS Provider Selector -->
+                    <div class="form-group">
+                        <label for="tts-provider-select">TTS Provider</label>
+                        <select id="tts-provider-select">
+                            <option value="sarvam">Sarvam AI (Flash)</option>
+                            <option value="gemini">Google Gemini 3.1 Flash TTS</option>
+                            <option value="edge">Edge TTS (Free)</option>
+                            <option value="local">Local (Kokoro)</option>
+                        </select>
+                    </div>
+
+                    <!-- Voice Narrator Selector (populated from language + provider) -->
+                    <div class="form-group">
+                        <label for="speaker-select">Voice Narrator</label>
+                        <select id="speaker-select"></select>
+                    </div>
+
+                    <!-- Canvas Background Selector -->
+                    <div class="form-group">
+                        <label for="background-select">Canvas Background</label>
+                        <select id="background-select">
+                            <option value="default">Default Dark Canvas</option>
+                            <option value="white_canvas">Default White Canvas</option>
+                            <option value="chalkboard.jpg">Chalkboard Texture</option>
+                            <option value="space.jpg">Starry Space</option>
+                            <option value="notebook_paper.jpg">Notebook Lined Paper</option>
+                            <option value="blueprint.jpg">Blueprint Grid</option>
+                        </select>
+                    </div>
+
+                    <!-- Render Quality Selector -->
+                    <div class="form-group">
+                        <label for="quality-select">Render Quality</label>
+                        <select id="quality-select">
+                            <option value="l">Low (480p, 15fps) - Fast render</option>
+                            <option value="m">Medium (720p, 30fps) - Balanced</option>
+                            <option value="h">High (1080p, 60fps) - Slow render</option>
+                        </select>
+                    </div>
+
+                    <!-- Aspect Ratio Selector -->
+                    <div class="form-group">
+                        <label for="aspect-select">Aspect Ratio</label>
+                        <select id="aspect-select">
+                            <option value="widescreen">Widescreen (16:9)</option>
+                            <option value="vertical">Vertical (9:16 - Portrait)</option>
+                        </select>
+                    </div>
+
+                    <!-- Student-Specific Inputs (hidden by default) -->
+                    <div id="student-only-inputs" class="hidden-field">
+                        <div class="form-group">
+                            <label for="interest-input">Student's Personal Interest</label>
+                            <input type="text" id="interest-input" placeholder="e.g. Minecraft, Basketball, Baking, Gaming">
+                        </div>
+                        <div class="interest-tags">
+                            <span class="interest-tag" data-val="Minecraft">Minecraft</span>
+                            <span class="interest-tag" data-val="Basketball">Basketball</span>
+                            <span class="interest-tag" data-val="Anime">Anime</span>
+                            <span class="interest-tag" data-val="Cooking">Cooking</span>
+                            <span class="interest-tag" data-val="Space travel">Space</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button class="btn btn-primary" id="btn-generate">
+                        <span class="btn-text">Generate Storyboard</span>
+                        <span class="btn-loader hidden"></span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Display Panel -->
+        <main class="main-panel">
+            <header class="panel-header">
+                <div class="tab-menu" id="main-tabs">
+                    <button class="tab-btn active" data-tab="slides-view" id="tab-slides-btn">Educational Slides</button>
+                    <button class="tab-btn" data-tab="json-view">Storyboard JSON</button>
+                    <button class="tab-btn" data-tab="code-view">Manim Code</button>
+                    <button class="tab-btn" data-tab="video-view">Compiled Video</button>
+                </div>
+            </header>
+
+            <div class="panel-content">
+                <!-- Tab: Slides View -->
+                <div class="tab-pane active" id="slides-view">
+                    <div class="no-data" id="slides-empty">
+                        <div class="no-data-icon">📚</div>
+                        <h3>No slide deck generated yet</h3>
+                        <p>Switch to "Student Portal" mode, fill in a topic and student interest, then click "Generate".</p>
+                    </div>
+                    
+                    <div class="slides-container hidden" id="slides-deck">
+                        <div class="slides-carousel">
+                            <button class="carousel-nav prev" id="slide-prev">◀</button>
+                            <div class="slide-card-wrapper" id="current-slide-container">
+                                <!-- Dynamic slide card injects here -->
+                            </div>
+                            <button class="carousel-nav next" id="slide-next">▶</button>
+                        </div>
+                        <div class="carousel-dots" id="slide-dots"></div>
+                    </div>
+                </div>
+
+                <!-- Tab: JSON Storyboard View -->
+                <div class="tab-pane" id="json-view">
+                    <div class="no-data" id="json-empty">
+                        <div class="no-data-icon">{}</div>
+                        <h3>No storyboard generated yet</h3>
+                        <p>Fill out the control panel on the left and click "Generate".</p>
+                    </div>
+                    <div class="code-container hidden" id="json-box">
+                        <div class="code-header">
+                            <span>storyboard_schema.json</span>
+                            <button class="btn-copy" data-target="json-code">Copy JSON</button>
+                        </div>
+                        <pre><code id="json-code" class="language-json"></code></pre>
+                    </div>
+                    <!-- Pre-flight Asset Resolution Panel -->
+                    <div id="preflight-panel" class="hidden" style="margin-top:12px;border:1px solid #3b82f6;border-radius:8px;overflow:hidden;">
+                        <div id="preflight-header" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:#1e3a5f33;cursor:pointer;user-select:none;">
+                            <span style="font-size:15px;">🔍</span>
+                            <span id="preflight-summary" style="font-weight:600;color:#60a5fa;font-size:13px;"></span>
+                            <span style="margin-left:auto;color:#60a5fa;font-size:11px;" id="preflight-toggle-label">▼ show</span>
+                        </div>
+                        <div id="preflight-body" style="display:none;padding:12px 14px;background:#1c1917;border-top:1px solid #1e3a8a;">
+                            <p style="font-size:11px;color:#737373;margin:0 0 8px;">
+                                svg_icon and chemical_molecule assets probed before codegen.
+                                <strong style="color:#f59e0b;">⚠️ Fallback</strong> = will render as a native Manim shape instead.
+                                Edit the keyword and click Re-test to fix.
+                            </p>
+                            <table style="width:100%;border-collapse:collapse;font-size:12px;color:#d4d4d4;">
+                                <thead>
+                                    <tr style="color:#a3a3a3;text-align:left;border-bottom:1px solid #3a3a3a;">
+                                        <th style="padding:4px 8px;">Scene</th>
+                                        <th style="padding:4px 8px;">Type</th>
+                                        <th style="padding:4px 8px;">Keyword / Fix</th>
+                                        <th style="padding:4px 8px;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="preflight-rows"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="non-manim-panel" class="hidden" style="margin-top:12px;border:1px solid #f59e0b;border-radius:8px;overflow:hidden;">
+                        <div id="non-manim-header" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:#78350f22;cursor:pointer;user-select:none;">
+                            <span style="font-size:16px;">⚠️</span>
+                            <span id="non-manim-count" style="font-weight:600;color:#fbbf24;font-size:13px;"></span>
+                            <span style="margin-left:auto;color:#fbbf24;font-size:11px;" id="non-manim-toggle-label">▼ show</span>
+                        </div>
+                        <div id="non-manim-body" style="display:none;padding:12px 14px;background:#1c1917;border-top:1px solid #78350f;">
+                            <table style="width:100%;border-collapse:collapse;font-size:12px;color:#d4d4d4;">
+                                <thead>
+                                    <tr style="color:#a3a3a3;text-align:left;border-bottom:1px solid #3a3a3a;">
+                                        <th style="padding:4px 8px;">Scene</th>
+                                        <th style="padding:4px 8px;">Type</th>
+                                        <th style="padding:4px 8px;">Description</th>
+                                        <th style="padding:4px 8px;">Suggestion</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="non-manim-rows"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Consolidated Asset Issues Panel -->
+                    <div id="issues-panel" class="hidden" style="margin-top:12px;border:1px solid #ef4444;border-radius:8px;overflow:hidden;">
+                        <div id="issues-header" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:#450a0a22;cursor:pointer;user-select:none;">
+                            <span style="font-size:15px;">📋</span>
+                            <span id="issues-summary" style="font-weight:600;color:#f87171;font-size:13px;"></span>
+                            <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
+                                <button id="btn-copy-issues-json" style="background:#292524;border:1px solid #44403c;color:#d4d4d4;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;">Copy JSON</button>
+                                <button id="btn-copy-issues-checklist" style="background:#292524;border:1px solid #44403c;color:#d4d4d4;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;">Copy Checklist</button>
+                                <span style="color:#f87171;font-size:11px;margin-left:4px;" id="issues-toggle-label">▼ show</span>
+                            </div>
+                        </div>
+                        <div id="issues-body" style="display:none;padding:12px 14px;background:#1c1917;border-top:1px solid #7f1d1d;">
+                            <table style="width:100%;border-collapse:collapse;font-size:12px;color:#d4d4d4;">
+                                <thead>
+                                    <tr style="color:#a3a3a3;text-align:left;border-bottom:1px solid #3a3a3a;">
+                                        <th style="padding:4px 8px;">Scene</th>
+                                        <th style="padding:4px 8px;">Tier</th>
+                                        <th style="padding:4px 8px;">Type</th>
+                                        <th style="padding:4px 8px;">Description</th>
+                                        <th style="padding:4px 8px;">Action needed</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="issues-rows"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Manim Python Code View -->
+                <div class="tab-pane" id="code-view">
+                    <div class="no-data" id="code-empty">
+                        <div class="no-data-icon">🐍</div>
+                        <h3>No Python script generated yet</h3>
+                        <p>Python code is generated automatically when rendering animations.</p>
+                    </div>
+                    <div class="code-container hidden" id="code-box">
+                        <div class="code-header">
+                            <span>scene_render.py</span>
+                            <div class="code-header-actions">
+                                <button class="btn-copy" data-target="python-code">Copy Code</button>
+                                <button class="btn btn-secondary" id="btn-compile-custom">Compile Script</button>
+                            </div>
+                        </div>
+                        <textarea id="python-code" class="code-textarea" spellcheck="false"></textarea>
+                    </div>
+                </div>
+
+                <!-- Tab: Compiled Video View -->
+                <div class="tab-pane" id="video-view">
+                    <div class="no-data" id="video-empty">
+                        <div class="no-data-icon">🎬</div>
+                        <h3>No video rendered yet</h3>
+                        <p>Generate a concept or custom slide, and compile it to view the MP4 output.</p>
+                    </div>
+                    <div class="video-container hidden" id="video-box">
+                        <div class="video-wrapper">
+                            <video id="manim-video" controls>
+                                <source src="" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Build Console (Bottom pane) -->
+            <footer class="console-pane">
+                <div class="console-header">
+                    <span>Render Execution Logs</span>
+                    <button class="btn-clear-console" id="btn-clear-logs">Clear Logs</button>
+                </div>
+                <div class="console-body" id="console-logs">
+                    <div class="console-line system">[System]: Console initialized. Waiting for build task...</div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+    
+    <!-- Client Application Script -->
+    <script src="/static/model-panel.js?v=1"></script>
+    <script src="/static/app.js?v=20260721"></script>
+    <script>mountModelPanel(document.getElementById('model-panel'));</script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+```json
+{
+  "title": "Lines in Disguise: Understanding y = mx + b Through a Living Graph",
+  "prerequisites": [
+    "Plotting points using (x, y) coordinates on a Cartesian plane",
+    "Basic arithmetic with negative numbers",
+    "Solving simple one-variable equations like 2x + 3 = 7"
+  ],
+  "notation": {
+    "m": { "color": "#E63946", "meaning": "slope — the rate at which y changes per unit change in x" },
+    "b": { "color": "#2A9D8F", "meaning": "y-intercept — the value of y when x equals zero" },
+    "delta_y": { "color": "#E76F51", "meaning": "vertical change between two points on the line" },
+    "delta_x": { "color": "#457B9D", "meaning": "horizontal change between the same two points" },
+    "line": { "color": "#6A0572", "meaning": "the graph of y = mx + b" }
+  },
+  "opening_narration": "Alright, let's start with something you already know how to do — plot a point. You've done it a hundred times. You take an x-value, a y-value, put a dot on the grid. Simple. But here's the thing: what if I told you that a single equation — just five symbols, y equals m x plus b — secretly describes every straight line you can draw on a flat surface, except one weird edge case we'll get to later? That's not an exaggeration. Every ramp, every ski slope, every graph of a phone bill charging a flat fee plus a per-minute rate — all of them live inside that one equation.\n\nNow, before I throw the formula at you and say 'memorise this', I want us to actually build it together. Because here's what I've noticed: a lot of people can write y equals mx plus b from memory, but if you ask them why b is where it is, or what would happen if m got bigger, they go quiet. And that's not their fault — it's because the equation got handed to them without the story behind it.\n\nSo here's the story. Imagine you're walking along a straight path on a hillside. You take one step to the right — that's your change in x, what we'll call delta x. And as you do, you either go up, go down, or stay flat — that's your change in y, delta x. The ratio of those two changes, delta y divided by delta x, tells you how steep your path is and which direction it tilts. That ratio is m, the slope. Notice I said ratio — it's not just how big the numbers are, it's how they relate to each other.\n\nAnd b? That's even simpler. It's just asking: when x is zero — when you're standing right at the starting post — how high up are you? That height is b, the y-intercept.\n\nHere's what I want you to hold onto as we go through this lesson: m and b are independent. Changing one doesn't force the other to change. That independence is actually the whole power of the equation. We're going to watch what happens on a real graph when we tweak m, then tweak b, and you're going to predict what happens before I show you. Getting it wrong is fine — that's actually where the learning happens.\n\nReady? Let's put a line on that graph.",
+  "sections": [
+    {
+      "id": "S1",
+      "duration_seconds": 90,
+      "purpose": "Anchor the lesson in a concrete scenario and introduce the running graph",
+      "new_inference": "A straight line on a graph represents a constant relationship between x and y; every point on the line satisfies the same equation",
+      "prior_dependency": "Plotting (x, y) coordinates",
+      "visual_start_state": "Blank Cartesian grid, axes labelled x and y, range x: -6 to 6, y: -8 to 8, grid lines every 1 unit",
+      "visual_actions": [
+        "Plot three points: (-2, -1), (0, 3), (2, 7) as purple dots",
+        "Draw a straight purple line through all three points extending to edges of grid",
+        "Label the line 'our running line' in purple"
+      ],
+      "visual_end_state": "Grid with one purple line through (-2,-1), (0,3), (2,7); three dots visible; axes labelled",
+      "transition_words": "So here's our starting line — three points, one straight path. Keep your eye on it because this same graph is going to evolve with us for the whole lesson."
+    },
+    {
+      "id": "S2",
+      "duration_seconds": 120,
+      "purpose": "Define slope as delta y over delta x using the running line; build the concept from measurement, not formula",
+      "new_inference": "Slope m = delta_y / delta_x measures the consistent rate of vertical change per horizontal unit; it is the same no matter which two points on the line you choose",
+      "prior_dependency": "S1 — the running line exists; arithmetic with signed numbers",
+      "visual_start_state": "Grid with purple running line and three labelled dots from S1",
+      "visual_actions": [
+        "Highlight points (0,3) and (2,7) with orange rings",
+        "Draw a horizontal orange arrow from (0,3) to (2,3), label it 'Δx = 2' in blue (#457B9D)",
+        "Draw a vertical orange arrow from (2,3) to (2,7), label it 'Δy = 4' in orange (#E76F51)",
+        "Show calculation box: 'm = Δy/Δx = 4/2 = 2' in red (#E63946)",
+        "Repeat with points (-2,-1) and (0,3): draw Δx=2 arrow, Δy=4 arrow, show same result m=2",
+        "Add red label 'm = 2' next to the line"
+      ],
+      "visual_end_state": "Running line with two sets of rise-run triangles shown; red label m=2 beside line; calculation box visible",
+      "transition_words": "Notice we got the same answer both times — that's not a coincidence. For a straight line, the ratio is always the same. That's actually what makes it straight."
+    },
+    {
+      "id": "S3",
+      "duration_seconds": 100,
+      "purpose": "Define b as the y-intercept and connect it to the equation; prediction pause included",
+      "new_inference": "b is the y-coordinate of the point where the line crosses the x=0 axis; it is read directly from the graph and appears as the constant term in y = mx + b",
+      "prior_dependency": "S2 — m is defined; S1 — the line is plotted",
+      "visual_start_state": "Running line with m=2 label; three original dots visible",
+      "visual_actions": [
+        "Pulse the point (0,3) with a teal glow (#2A9D8F)",
+        "Add teal vertical dashed line from (0,0) to (0,3) labelled 'b = 3' in teal",
+        "Display equation box: 'y = 2x + 3' with m=2 in red, b=3 in teal",
+        "PAUSE MARKER: 'Before I continue — if x = 1, what does the equation predict for y? Work it out.'",
+        "After pause: show substitution y = 2(1) + 3 = 5, plot point (1,5) in purple on line"
+      ],
+      "visual_end_state": "Running line; teal b=3 marker at y-axis; equation y=2x+3 displayed with colour-coded m and b; point (1,5) plotted",
+      "transition_words": "Good — the equation and the graph are telling the same story. Now let's see what happens when we start changing things."
+    },
+    {
+      "id": "S4",
+      "duration_seconds": 130,
+      "purpose": "Show effect of changing b with m fixed — vertical translation; prediction pause; explain why geometrically",
+      "new_inference": "Increasing b shifts the entire line upward by the same amount without rotating it; decreasing b shifts it downward; the slope (tilt) is unchanged because m is unchanged",
+      "prior_dependency": "S3 — b is defined; S2 — m is defined",
+      "visual_start_state": "Running line y=2x+3 with colour-coded equation; teal b marker",
+      "visual_actions": [
+        "PAUSE MARKER: 'I'm going to change b from 3 to 6, keeping m=2. Predict: does the line tilt, shift up, shift down, or something else?'",
+        "Animate line sliding upward to y=2x+6; original line fades to dashed purple ghost",
+        "Update teal b marker to b=6 at (0,6)",
+        "Update equation box to y=2x+6",
+        "Draw a vertical double-headed arrow between the two lines at x=3, label '+3 units up'",
+        "Then animate line sliding to y=2x-2; update b marker to b=-2 at (0,-2); update equation",
+        "Draw vertical arrow labelled '-5 units down' between y=2x+3 ghost and new line",
+        "Return line to y=2x+3; restore original state"
+      ],
+      "visual_end_state": "Running line restored to y=2x+3; ghost lines faded; equation y=2x+3 displayed; note 'changing b = vertical slide' visible",
+      "transition_words": "The line slid — it didn't spin. That's the key word: translate. Now let's spin it."
+    },
+    {
+      "id": "S5",
+      "duration_seconds": 150,
+      "purpose": "Show effect of changing m with b fixed — pivoting about (0,b); address the misconception about larger m always meaning steeper",
+      "new_inference": "Changing m rotates the line around the fixed point (0,b); a more positive m tilts the line more steeply upward left-to-right; a negative m tilts it downward; comparing steepness requires comparing |m|, not signed m",
+      "prior_dependency": "S4 — translation understood; S3 — b defined",
+      "visual_start_state": "Running line y=2x+3; equation displayed; teal b=3 marker at origin",
+      "visual_actions": [
+        "PAUSE MARKER: 'Now I keep b=3 and change m from 2 to 5. Predict: does the line slide, pivot, or both?'",
+        "Animate line pivoting around (0,3) to slope m=5; original line fades to dashed ghost",
+        "Update equation to y=5x+3 with m=5 in red",
+        "Add annotation: 'steeper rise — m went from 2 to 5'",
+        "Animate pivot to m=1; update equation y=1x+3; annotation 'shallower'",
+        "Animate pivot to m=-3; update equation y=-3x+3; annotation 'falls left to right'",
+        "Draw rise-run triangle for m=-3: Δx=1, Δy=-3 with signed arrows",
+        "Show side-by-side: m=5 line vs m=-3 line; label |m|=5 and |m|=3; note 'm=5 line is steeper than m=-3 line because |5|>|3|'",
+        "Return to y=2x+3"
+      ],
+      "visual_end_state": "Running line y=2x+3 restored; ghost lines faded; annotation 'changing m = pivot around (0,b)' visible; steepness note visible",
+      "transition_words": "So the pivot point is always (0, b) — the intercept acts like a hinge. And steepness is about the size of m, not its sign."
+    },
+    {
+      "id": "S6",
+      "duration_seconds": 90,
+      "purpose": "Cover special cases: m=0 gives horizontal line; vertical lines x=c cannot be written as y=mx+b",
+      "new_inference": "When m=0, delta_y=0 for any delta_x, so y never changes — the line is horizontal; a vertical line has undefined slope because delta_x=0 and division by zero is undefined, placing it outside y=mx+b",
+      "prior_dependency": "S5 — pivoting understood; S2 — slope as ratio",
+      "visual_start_state": "Running line y=2x+3; equation displayed",
+      "visual_actions": [
+        "Animate pivot to m=0; line becomes horizontal through (0,3)",
+        "Update equation to y=0x+3 = y=3; label 'horizontal line: m=0'",
+        "Show rise-run triangle with Δy=0, Δx=2; calculation 0/2=0",
+        "Draw a separate vertical dashed grey line at x=4 on the grid",
+        "Label it 'x = 4' in grey",
+        "Show attempted calculation: 'Δx=0, so Δy/Δx = ?/0 — undefined!'",
+        "Add red cross over y=mx+b for vertical line; label 'vertical lines need x=c, not y=mx+b'",
+        "Remove vertical line; restore y=2x+3"
+      ],
+      "visual_end_state": "Running line y=2x+3 restored; small annotation box: 'm=0 → horizontal; vertical → undefined slope, use x=c'",
+      "transition_words": "Vertical lines are the one case our equation can't handle — and now you know exactly why. Let's put everything together with two worked problems."
+    },
+    {
+      "id": "S7",
+      "duration_seconds": 150,
+      "purpose": "Worked problem 1 — read m and b from a graph; worked problem 2 — write equation from two points",
+      "new_inference": "To find m from a graph, identify two clear lattice points and compute Δy/Δx; to find b, read the y-intercept directly; these two values fully determine the equation",
+      "prior_dependency": "S2, S3, S5 — all core definitions",
+      "visual_start_state": "Running line y=2x+3 visible but dimmed; new problem graph appears in inset box",
+      "visual_actions": [
+        "PROBLEM 1: Draw new line through (0,-1) and (3,5) in a clean inset grid",
+        "Label points; draw Δx=3 blue arrow, Δy=6 orange arrow",
+        "Show: m = 6/3 = 2 in red; b = -1 in teal at y-axis",
+        "Write equation: y = 2x + (-1) = y = 2x - 1",
+        "PROBLEM 2: Show two points only: (1, 4) and (3, 10) — no line drawn yet",
+        "Step 1: Δy = 10-4 = 6, Δx = 3-1 = 2, m = 6/2 = 3 in red",
+        "Step 2: substitute one point into y=3x+b: 4 = 3(1)+b → b=1 in teal",
+        "Step 3: write y=3x+1; draw line through both points in purple",
+        "Verify: plug in (3,10): y=3(3)+1=10 ✓"
+      ],
+      "visual_end_state": "Two inset problem graphs visible with full worked solutions annotated; running line y=2x+3 still dimmed in background",
+      "transition_words": "Two problems down. Now it's your turn — three problems, no hints, just you and the equation."
+    },
+    {
+      "id": "S8",
+      "duration_seconds": 100,
+      "purpose": "Independent practice — present three problems; students work without guidance",
+      "new_inference": "Application of all prior concepts: reading intercepts, computing slope, writing equations",
+      "prior_dependency": "S7 — worked examples completed",
+      "visual_start_state": "Clean grid; worked problem insets fade out",
+      "visual_actions": [
+        "Display Problem A: 'A line passes through (0, 2) and (4, 6). Write its equation.'",
+        "Display Problem B: 'A line has equation y = -2x + 5. What is its slope? What is its y-intercept? Does it rise or fall left to right?'",
+        "Display Problem C: 'Two lines: Line 1 has m = 4, Line 2 has m = -7. Which is steeper? Explain.'",
+        "Show 60-second countdown timer graphic",
+        "After timer: reveal answers panel (see independent_problems section)"
+      ],
+      "visual_end_state": "Three problems displayed with answer panel revealed; running line y=2x+3 restored in background",
+      "transition_words": "Check your answers against the panel — if you got Problem C wrong, go back to the steepness note from Section 5."
+    },
+    {
+      "id": "S9",
+      "duration_seconds": 100,
+      "purpose": "Misconception checks — address three common errors explicitly with graph evidence",
+      "new_inference": "Misconceptions corrected: (1) b is not the x-intercept; (2) a more negative m is not always steeper than a small positive m; (3) two different lines can share the same m or same b independently",
+      "prior_dependency": "All prior sections",
+      "visual_start_state": "Running line y=2x+3; equation displayed",
+      "visual_actions": [
+        "MISCONCEPTION 1: Draw line y=2x+3; mark where it crosses x-axis (~x=-1.5); label 'x-intercept ≠ b'; pulse teal b=3 marker; text: 'b is where the line crosses the y-axis, not the x-axis'",
+        "MISCONCEPTION 2: Draw y=4x+3 and y=-7x+3 side by side; show |4|=4 and |-7|=7; label 'y=-7x+3 is steeper even though m is negative'; add steepness bars",
+        "MISCONCEPTION 3: Draw y=2x+1 and y=2x+5 (same m, different b); label 'parallel — same slope, different intercept'; then draw y=2x+3 and y=5x+3 (same b, different m); label 'same intercept, different slope'"
+      ],
+      "visual_end_state": "Three misconception diagrams visible as small annotated panels; running line y=2x+3 in background",
+      "transition_words": "These three mix-ups catch almost everyone at some point — now you've seen exactly why they're wrong."
+    },
+    {
+      "id": "S10",
+      "duration_seconds": 90,
+      "purpose": "Consolidation — rebuild the full equation y=mx+b from scratch on the running graph, narrating each component's role",
+      "new_inference": "The equation y=mx+b is a complete description: b places the line vertically, m determines its tilt; together they uniquely define any non-vertical straight line",
+      "prior_dependency": "All sections",
+      "visual_start_state": "Blank grid — running line temporarily hidden",
+      "visual_actions": [
+        "Start with just the point (0,3) in teal; label 'b=3: this is where we start'",
+        "Add red slope indicator: 'for every 1 step right, go m=2 steps up'",
+        "Animate line growing from (0,3) outward in both directions as slope m=2 is applied",
+        "Final line is y=2x+3 in purple; equation appears with colour-coded m and b",
+        "Add summary box: 'b = vertical position | m = tilt direction and rate | together = the line'"
+      ],
+      "visual_end_state": "Running line y=2x+3 fully restored; colour-coded equation; summary box visible",
+      "transition_words": "And there it is — built from the ground up. One equation, two numbers, infinite lines."
+    },
+    {
+      "id": "S11",
+      "duration_seconds": 80,
+      "purpose": "Closing reflection — connect to real-world use and preview next steps",
+      "new_inference": "y=mx+b models any situation with a constant rate of change (m) and a starting value (b); this is the foundation for systems of equations and functions",
+      "prior_dependency": "S10 — full consolidation",
+      "visual_start_state": "Running line y=2x+3 with summary box",
+      "visual_actions": [
+        "Overlay three real-world mini-graphs: taxi fare (b=base fare, m=per km rate), phone plan (b=monthly fee, m=per-minute cost), ramp angle (b=starting height, m=gradient)",
+        "Each mini-graph labelled with its m and b in matching colours",
+        "Final frame: equation y=mx+b centred, large, colour-coded, with tagline 'Two numbers. Every straight line.'"
+      ],
+      "visual_end_state": "Three real-world mini-graphs plus large colour-coded y=mx+b equation; lesson complete visual",
+      "transition_words": "Next time you see a straight-line graph anywhere — a bill, a ramp, a data chart — ask yourself: what's the m, what's the b? You'll have the answer faster than you think."
+    },
+    {
+      "id": "S12",
+      "duration_seconds": 100,
+      "purpose": "Buffer and review — recap key facts as a spoken checklist; allow re-engagement with any section",
+      "new_inference": "Synthesis: all five key facts restated with graph evidence visible",
+      "prior_dependency": "All sections",
+      "visual_start_state": "Running line y=2x+3; all annotation layers from lesson available",
+      "visual_actions": [
+        "Display checklist panel with five items appearing one by one:",
+        "1. m = Δy/Δx (red) — show rise-run triangle",
+        "2. b = y when x=0 (teal) — pulse intercept point",
+        "3. Change b → vertical slide (show ghost lines from S4)",
+        "4. Change m → pivot around (0,b) (show pivot animation thumbnail from S5)",
+        "5. Vertical lines x=c are outside y=mx+b (show grey x=c reminder)",
+        "Final prompt: 'If any of these feel shaky, rewind to the section marked on screen.'"
+      ],
+      "visual_end_state": "Five-item checklist fully visible; running line y=2x+3 with all colour-coded labels; section rewind markers displayed",
+      "transition_words": "That's the whole lesson. Five facts, one equation, one graph that grew with you from start to finish."
+    }
+  ],
+  "worked_problems": [
+    {
+      "id": "WP1",
+      "problem": "A straight line passes through the points (0, -1) and (3, 5). Write the equation of the line in the form y = mx + b.",
+      "solution": {
+        "step1": "Identify b directly: the point (0, -1) is on the y-axis, so b = -1.",
+        "step2": "Calculate slope m using the two points. Δy = 5 - (-1) = 6. Δx = 3 - 0 = 3. m = Δy/Δx = 6/3 = 2.",
+        "step3": "Substitute m and b into y = mx + b: y = 2x + (-1), which simplifies to y = 2x - 1.",
+        "step4": "Verify: plug in (3, 5). y = 2(3) - 1 = 6 - 1 = 5. Correct.",
+        "answer": "y = 2x - 1"
+      }
+    },
+    {
+      "id": "WP2",
+      "problem": "A straight line passes through the points (1, 4) and (3, 10). Write the equation of the line in the form y = mx + b.",
+      "solution": {
+        "step1": "Calculate slope m. Δy = 10 - 4 = 6. Δx = 3 - 1 = 2. m = 6/2 = 3.",
+        "step2": "We do not have the y-intercept directly, so substitute one point and m into y = mx + b. Using (1, 4): 4 = 3(1) + b. Solve: b = 4 - 3 = 1.",
+        "step3": "Write the equation: y = 3x + 1.",
+        "step4": "Verify with the second point (3, 10): y = 3(3) + 1 = 9 + 1 = 10. Correct.",
+        "answer": "y = 3x + 1"
+      }
+    }
+  ],
+  "independent_problems": [
+    {
+      "id": "IP_A",
+      "problem": "A line passes through (0, 2) and (4, 6). Write its equation in the form y = mx + b.",
+      "answer": "m = (6-2)/(4-0) = 4/4 = 1; b = 2 (read from (0,2)); equation: y = x + 2"
+    },
+    {
+      "id": "IP_B",
+      "problem": "A line has equation y = -2x + 5. State its slope, its y-intercept, and whether it rises or falls from left to right.",
+      "answer": "Slope m = -2 (red); y-intercept b = 5 (teal); the line falls from left to right because m is negative"
+    },
+    {
+      "id": "IP_C",
+      "problem": "Line 1 has slope m = 4 and Line 2 has slope m = -7. Which line is steeper, and why?",
+      "answer": "Line 2 is steeper. Steepness depends on the absolute value of the slope: |4| = 4 and |-7| = 7. Since 7 > 4, Line 2 has a greater steepness even though its slope is negative."
+    }
+  ],
+  "misconception_checks": [
+    {
+      "id": "MC1",
+      "misconception": "Students confuse the y-intercept b with the x-intercept (where the line crosses the x-axis).",
+      "correction": "b is specifically the y-coordinate when x = 0 — it is read off the y-axis, not the x-axis. The x-intercept is a different point and is not part of y = mx + b directly.",
+      "graph_evidence": "On y = 2x + 3, b = 3 is at (0, 3) on the y-axis. The x-intercept is at (-1.5, 0) — a completely different location."
+    },
+    {
+      "id": "MC2",
+      "misconception": "A larger signed value of m always means a steeper line (e.g., students think m = 4 is steeper than m = -7).",
+      "correction": "Steepness is determined by the absolute value |m|. A line with m = -7 is steeper than one with m = 4 because |-7| = 7 > |4| = 4. The sign tells you direction (up or down), not steepness.",
+      "graph_evidence": "Plotting y = 4x + 3 and y = -7x + 3 side by side shows y = -7x + 3 is visibly more tilted from horizontal, even though its m is negative."
+    },
+    {
+      "id": "MC3",
+      "misconception": "Students assume that if two lines share the same m they must be identical, or that changing m automatically changes b.",
+      "correction": "m and b are independent parameters. Two lines can share the same slope (making them parallel) while having different y-intercepts, or share the same y-intercept while having different slopes. Neither forces the other to change.",
+      "graph_evidence": "y = 2x + 1 and y = 2x + 5 are parallel (same m, different b). y = 2x + 3 and y = 5x + 3 cross at (0, 3) (same b, different m)."
+    },
+    {
+      "id": "MC4",
+      "misconception": "Students try to write a vertical line such as x = 4 in the form y = mx + b by assigning m a very large number.",
+      "correction": "A vertical line has Δx = 0 between any two points on it. Since m = Δy/Δx and division by zero is undefined, no finite value of m can represent a vertical line. Vertical lines must be written as x = c.",
+      "graph_evidence": "Attempting to compute slope for x = 4 using points (4, 0) and (4, 3): Δx = 0, so Δy/Δx = 3/0, which is undefined — no number can fill that slot."
+    }
+  ]
+}
+```

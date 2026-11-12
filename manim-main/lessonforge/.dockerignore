@@ -1,0 +1,14 @@
+.env
+*.env
+.venv/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+lessonforge_workspace/
+clients/lessonforge-app/node_modules/
+clients/lessonforge-app/dist/
+clients/lessonforge-app/.expo/
+examples/*/audio/
+examples/*/media/
+examples/*/logs/
+examples/*/output/

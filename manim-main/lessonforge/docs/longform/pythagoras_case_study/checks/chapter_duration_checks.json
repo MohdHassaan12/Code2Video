@@ -1,0 +1,62 @@
+[
+  {
+    "chapter": 1,
+    "video_seconds": 107.2,
+    "target_seconds": 107.20000000000002,
+    "error_seconds": -1.4210854715202004e-14
+  },
+  {
+    "chapter": 2,
+    "video_seconds": 126.0,
+    "target_seconds": 126.00000000000001,
+    "error_seconds": -1.4210854715202004e-14
+  },
+  {
+    "chapter": 3,
+    "video_seconds": 109.4,
+    "target_seconds": 109.4,
+    "error_seconds": 0.0
+  },
+  {
+    "chapter": 4,
+    "video_seconds": 115.8,
+    "target_seconds": 115.80000000000001,
+    "error_seconds": -1.4210854715202004e-14
+  },
+  {
+    "chapter": 5,
+    "video_seconds": 113.634,
+    "target_seconds": 113.63333333333334,
+    "error_seconds": 0.000666666666660376
+  },
+  {
+    "chapter": 6,
+    "video_seconds": 123.5,
+    "target_seconds": 123.5,
+    "error_seconds": 0.0
+  },
+  {
+    "chapter": 7,
+    "video_seconds": 128.067,
+    "target_seconds": 128.06666666666666,
+    "error_seconds": 0.00033333333334439885
+  },
+  {
+    "chapter": 8,
+    "video_seconds": 119.634,
+    "target_seconds": 119.63333333333335,
+    "error_seconds": 0.0006666666666461651
+  },
+  {
+    "chapter": 9,
+    "video_seconds": 134.334,
+    "target_seconds": 134.33333333333331,
+    "error_seconds": 0.0006666666666887977
+  },
+  {
+    "chapter": 10,
+    "video_seconds": 122.434,
+    "target_seconds": 122.43333333333334,
+    "error_seconds": 0.000666666666660376
+  }
+]

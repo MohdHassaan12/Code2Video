@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.pytest_cache/
+build/
+dist/
+
+# Secrets — never commit
+.env
+*.env
+!.env.example
+
+# Runtime workspace (renders, caches, videos) — see src/lessonforge/paths.py
+lessonforge_workspace/
+
+# Lesson builds: everything below lesson.json + the scene files is regenerated
+examples/*/audio/
+examples/*/media/
+examples/*/logs/
+examples/*/output/
+examples/*/timeline.json
+examples/*/audio_report.json
+examples/*/narrative.md
+examples/*/storyboard.md
+examples/*/review.html
+examples/*/_auto_chapters.py
+
+# Test scratch
+tests/engine/_layout_test_renders/
+
+# Model weights are downloaded, not committed
+*.onnx
+voices-*.bin
+
+# Browser test dependencies
+tests/browser/node_modules/
+tests/browser/out/
+
+# The improver (scripts/agent): this server's own settings
+scripts/agent/improver.env
+.claude/settings.local.json
+
+# Manim caches written into the cwd when tests render text/Tex
+media/

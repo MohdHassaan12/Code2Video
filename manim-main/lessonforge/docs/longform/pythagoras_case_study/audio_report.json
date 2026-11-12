@@ -1,0 +1,12 @@
+{
+  "voice": "Kokoro af_heart",
+  "synthesis_speed": 0.85,
+  "atempo": 0.9551566548881032,
+  "raw_speech_seconds": 1081.2373333333328,
+  "final_duration": 1200.0,
+  "sentence_count": 274,
+  "word_count": 2906,
+  "peak": 0.998443603515625,
+  "rms": 0.0747898742556572,
+  "sync": "Measured sentence boundaries; within-sentence visual cues use word-position estimates."
+}

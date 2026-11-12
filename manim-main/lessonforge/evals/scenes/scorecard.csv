@@ -1,0 +1,15 @@
+run,model,passed,first_try,failed_calls,cost_per_scene_usd,cost_per_passed_scene_usd,seconds_per_scene
+base,deepseek/deepseek-v4-pro,5/8,4/8,2,0.02856,0.04569,146.5
+base,deepseek/deepseek-v4-flash,8/8,6/8,0,0.00181,0.00181,79.9
+base,deepseek/deepseek-v3.2:none,8/8,8/8,0,0.00358,0.00358,123.7
+base,qwen/qwen3.8-flash:none,7/8,3/8,0,0.00132,0.00151,50.0
+base,qwen/qwen3-coder-next,7/8,6/8,0,0.00101,0.00115,19.6
+base,google/gemini-2.5-flash,4/8,3/8,0,0.00473,0.00946,11.6
+base,anthropic/claude-haiku-5.5,8/8,8/8,0,0.00224,0.00224,19.7
+base,openai/gpt-5.4-nano:none,4/8,4/8,2,0.00383,0.00767,19.2
+base,z-ai/glm-4.7-flash:none,4/8,4/8,2,0.00188,0.00377,94.8
+off,deepseek/deepseek-v4-flash:off,7/8,7/8,0,0.00029,0.00033,21.9
+off,deepseek/deepseek-v4-pro:off,7/8,5/8,0,0.00508,0.0058,19.4
+off,anthropic/claude-haiku-5.5,8/8,8/8,0,0.00224,0.00224,19.3
+off,qwen/qwen3-coder-next,5/8,5/8,0,0.00118,0.00189,26.5
+haikuoff,anthropic/claude-haiku-5.5:off,8/8,8/8,0,0.00081,0.00081,6.4
