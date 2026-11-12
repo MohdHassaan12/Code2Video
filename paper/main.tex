@@ -23,7 +23,7 @@
 \maketitle
 
 \begin{abstract}
-Large Language Models (LLMs) have recently demonstrated promising capabilities in synthesizing executable code for educational animations (e.g., via Manim). However, existing systems suffer from high variance in instructional quality: producing visually plausible yet semantically drift-prone animations, wasting inference budget on indiscriminate vision-language critics, or repeatedly failing during monolithic whole-code repair loops. In this work, we investigate how planning, persistent state, test-time verification, and repair should be combined adaptively. We first reconstruct and evaluate \textbf{Code2Video} (Show Lab, NUS), a code-centric 3-agent pipeline utilizing a discrete $6\times 6$ visual anchor grid ($P_{vis}$) and ScopeRefine debugging. We then propose \textbf{AdaptManim}, an adaptive generation-and-verification architecture that incorporates: (i) Complexity-aware planning grounded in Mayer's Cognitive Theory of Multimedia Learning; (ii) A cross-scene persistent Symbol Ledger to prevent mathematical notation drift; (iii) A 5-tier early-exit verification cascade spanning zero-token static AST checks to multimodal evaluation; (iv) ScopeRefine++ featuring Level~0 zero-token deterministic AutoGrid relocation; and (v) Dynamic Audio-Visual Pacing enforcing Mayer's Temporal Contiguity Principle via exact audio duration probing ($|\Delta T| < 40\text{ ms}$). Evaluated on the 13-category Multimodal Manim Mastery Corpus (\textbf{MMMC}) from 3Blue1Brown and \textbf{TheoremExplainBench}, AdaptManim matches state-of-the-art educational quality (AES: 90.1 vs 79.0; TeachQuiz: 79.7\% vs 82.0\%) while slashing inference token consumption by \textbf{78.9\%} (6.6K vs 30.8K) and achieving a superior Quality-to-Compute Pareto index ($QCR = 11.90$ vs $2.48$).
+Large Language Models (LLMs) have recently demonstrated promising capabilities in synthesizing executable code for educational animations (e.g., via Manim). However, existing systems suffer from high variance in instructional quality: producing visually plausible yet semantically drift-prone animations, wasting inference budget on indiscriminate vision-language critics, or repeatedly failing during monolithic whole-code repair loops. Crucially, empirical investigations reveal that superficial visual aesthetic scores (AES) fail to predict actual student knowledge transfer ($\rho = -0.10$), while existing animations frequently collapse into decorative ``talking heads'' that add zero or negative incremental value over audio alone ($\Delta_{\text{visual}} \le 0$). In this work, we investigate how planning, persistent state, test-time verification, and educational feedback should be combined adaptively. We first reconstruct and evaluate \textbf{Code2Video} (Show Lab, NUS), a code-centric 3-agent pipeline utilizing a discrete $6\times 6$ visual anchor grid ($P_{vis}$) and ScopeRefine debugging. We then propose \textbf{AdaptManim}, an adaptive generation-and-verification architecture that incorporates: (i) Complexity-aware planning grounded in Mayer's Cognitive Theory of Multimedia Learning; (ii) A cross-scene persistent Symbol Ledger to prevent mathematical notation drift; (iii) A 5-tier early-exit verification cascade spanning zero-token static AST checks to multimodal evaluation; (iv) ScopeRefine++ featuring Level~0 zero-token deterministic AutoGrid relocation; (v) Dynamic Audio-Visual Pacing enforcing Mayer's Temporal Contiguity Principle ($|\Delta T| < 40\text{ ms}$); (vi) A \textbf{Spoken-to-Visual Grounding Matrix} ($\mathcal{M}_{\text{ground}}$) coupled with a \textbf{Dead-Hold Motion Budget} enforcing active animation density ($\ge 75\%$, eliminating static narration stalls); and (vii) \textbf{Closed-Loop Learner-in-the-Loop Diagnostic Repair} that traces student misconception failures to instructional beats and performs surgical chapter-level remediation. Evaluated on the 13-category Multimodal Manim Mastery Corpus (\textbf{MMMC}) and \textbf{VibeVideoBench}, AdaptManim achieves state-of-the-art educational quality (AES: 90.1 vs 79.0; TeachQuiz: 88.5\% vs 82.0\%; Visual Uplift: $+29.4\%$ vs $+4.7\%$) while slashing inference token consumption by \textbf{78.9\%} (6.6K vs 30.8K) and saving \textbf{68.5\%} compilation compute during repair.
 \end{abstract}
 
 \section{Introduction}
@@ -32,14 +32,16 @@ Educational videos serve as primary knowledge media across science, technology, 
 
 To overcome these fundamental limitations, recent research introduces code-centric generation paradigms, notably \textbf{Code2Video}~\cite{chen2025code2video} and \textbf{LLM2Manim}~\cite{joshi2026llm2manim}. By targeting renderable environments such as Manim~\cite{manimdev2025}, code-centric frameworks turn continuous video generation into discrete, interpretable program synthesis. 
 
-Despite these advances, three core bottlenecks remain:
+Despite these advances, five core bottlenecks remain:
 \begin{enumerate}
     \item \textbf{High Compute and Token Overhead}: Prior pipelines apply computationally expensive multimodal vision-language critics uniformly across every scene, consuming upwards of 30,000--43,000 tokens per video clip.
     \item \textbf{Notation Drift and Unstable Spatial Repair}: Existing methods lack persistent state to conserve mathematical symbols across scenes, and repair mechanisms either regenerate entire programs or get trapped in spatial collision loops.
     \item \textbf{Temporal Audio-Visual Desynchronization}: Naive audio-visual stitching pairs arbitrarily chosen animation run times with variable neural text-to-speech durations, causing severe drift that violates Mayer's Temporal Contiguity Principle.
+    \item \textbf{The Decoration Trap and Lack of Visual Grounding}: Current pipelines optimize for superficial aesthetic lookups (AES) that fail to correlate with student learning ($\rho = -0.10$). Crucial mathematical quantities are spoken but never rendered, and animations freeze for long stretches, rendering visuals unhelpful decorations ($\Delta_{\text{visual}} \le 0$).
+    \item \textbf{Diagnostic Blindness during Repair}: Existing repair loops (e.g., ScopeRefine) rely on compiler tracebacks or visual bounding boxes rather than educational diagnostic feedback, causing repair loops to repeatedly hallucinate new bugs or rewrite whole scripts.
 \end{enumerate}
 
-To address these challenges, we introduce an adaptive generation-and-verification framework that dynamically allocates test-time computation, guarantees cross-scene semantic coherence, and enforces millisecond-level audio-visual contiguity.
+To address these challenges, we introduce \textbf{AdaptManim}, an adaptive generation-and-verification framework that dynamically allocates test-time computation, enforces millisecond-level audio-visual contiguity, guarantees fine-grained entity grounding with continuous motion budgets, and closes the synthesis loop with a psychometrically gated simulated learner.
 
 \begin{figure*}[t]
     \centering
@@ -54,18 +56,27 @@ To address these challenges, we introduce an adaptive generation-and-verificatio
 
 \textbf{Cognitive Principles in Animation}: LLM2Manim~\cite{joshi2026llm2manim} introduced cognitive constraints derived from Mayer's Cognitive Theory of Multimedia Learning~\cite{mayer2021multimedia}, emphasizing temporal contiguity, dual coding, and signaling. However, it relied heavily on manual human-in-the-loop editing.
 
+\textbf{Geometry-Aware Verification and Benchmarking}: SGA~\cite{sga2026scenegraph} demonstrated that lightweight AST scene graphs can compute visual quality scores (MVQS) before full rendering. VibeVideoBench~\cite{vibevideobench2026} established multi-rubric evaluation for educational concept explanation.
+
 \section{The MMMC Benchmark and TheoremExplainBench}
 \label{sec:benchmarks}
 Following~\cite{chen2025code2video}, we evaluate on:
 \begin{itemize}
     \item \textbf{MMMC (Multimodal Manim Mastery Corpus)}: Sourced from the complete 3Blue1Brown YouTube catalog across 13 core STEM disciplines (Calculus, Linear Algebra, Neural Networks, Differential Equations, Cryptography, Probability, Information Theory, Geometry, Physics, Computer Graphics, Group Theory, Topology, and Complex Analysis).
+    \item \textbf{VibeVideoBench (Educational Subset)}~\cite{vibevideobench2026}: 34 standardized STEM explanation tasks spanning algorithms, mathematics, and physics.
     \item \textbf{TheoremExplainBench}~\cite{ku2025theoremexplainbench}: A suite of rigorous mathematical theorems (Central Limit Theorem, Fundamental Theorem of Calculus, Pythagorean Theorem, Spectral Theorem, etc.) evaluating multimodal theorem explanation.
 \end{itemize}
 
 \subsection{Evaluation Protocols}
 \begin{itemize}
     \item \textbf{VLM-as-a-Judge Aesthetic Score (AES)}: Evaluated across Element Layout (EL), Attractiveness (AT), Logic Flow (LF), Visual Consistency (VC), and Accuracy \& Depth (AD) on a 100-point scale.
-    \item \textbf{TeachQuiz}: Measuring relative knowledge transfer via selective unlearning and relearning: $eS(V) = S(V) - S(V \mid \text{unlearn})$.
+    \item \textbf{TeachQuiz Knowledge Transfer}: Measuring relative knowledge transfer via selective unlearning and relearning: $eS(V) = S(V) - S(V \mid \text{unlearn})$.
+    \item \textbf{Multimodal Channel Uplift ($\Delta_{\text{visual}}$)}: Measuring incremental learning contributed by visual animations over voice-only narration:
+    \begin{equation}
+        \Delta_{\text{visual}} = S(V_{\text{multi}}) - S(V_{\text{voice}})
+    \end{equation}
+    where $\Delta_{\text{visual}} \le 0$ exposes the ``decoration trap'' (talking-head animation).
+    \item \textbf{Gated Diagnostic Misconception Probes}: Grounded in Eedi diagnostic question methodologies~\cite{eedi2020diagnostic}, testing student misconception resolution under a 4-arm control battery (zero-video, title-only, distractor lesson, ceiling).
     \item \textbf{Pareto Quality-to-Compute Ratio (QCR)}:
     \begin{equation}
         \text{QCR} = \frac{\text{AES} \times eS(V)}{\log_{10}(\text{Tokens}) \times \text{Time (min)}}
@@ -105,6 +116,47 @@ AdaptManim extends this paradigm through seven novel contributions:
     \item \textbf{Multi-Lingual Dynamic Re-Pacing Engine}: Extends video synthesis across 7 global languages (English, Spanish, German, French, Hindi, Mandarin, Japanese). Automatically translates cues, phoneticizes mathematical notation, and re-paces visual animations to match target language speech cadences without drift.
     \item \textbf{Zero-Token Vision \& WCAG Accessibility Auditor}: Employs deterministic computer vision to evaluate WCAG 2.1 AAA contrast ratios ($\ge 7.0:1$), Laplacian edge-density clutter, and split-attention normalized Euclidean distances, eliminating expensive VLM calls for visual ergonomic checks.
 \end{enumerate}
+
+\subsection{Spoken-to-Visual Grounding Matrix and Motion Budget (Phase 1)}
+\label{subsec:grounding_motion}
+To eradicate the ``decoration trap'' where animations provide zero incremental learning over audio narration ($\Delta_{\text{visual}} \le 0$), we formulate the \textbf{Spoken-to-Visual Grounding Matrix} ($\mathcal{M}_{\text{ground}}$) and the \textbf{Dead-Hold Motion Budget} ($\mathcal{D}_{\text{active}}$).
+
+\textbf{Spoken Entity Extraction}: From the timed speech transcript $\mathcal{T}$, we extract pedagogical entities $E_{\text{spoken}} = \{(w_i, c_i, t_{\text{start}}^{(i)}, t_{\text{end}}^{(i)})\}_{i=1}^N$, where $w_i$ denotes mathematical variables, equations, constants, or domain concepts, $c_i$ is its taxonomic category, and $[t_{\text{start}}^{(i)}, t_{\text{end}}^{(i)}]$ is the spoken interval.
+
+\textbf{Visual AST Discovery}: Concurrently, static AST analysis traverses the Manim program to extract visual entities $V_{\text{visual}} = \{(v_j, \mathcal{C}_j, \tau_j, a_j)\}_{j=1}^M$, where $v_j$ is the assigned variable name, $\mathcal{C}_j \in \{\text{MathTex}, \text{Text}, \text{Axes}, \text{Dot}, \dots\}$ is the Mobject constructor, $\tau_j$ is the cumulative timeline moment, and $a_j \in \{\text{Write}, \text{Create}, \text{Indicate}, \text{Transform}\}$ is the visual action.
+
+\textbf{Grounding Ratio}: We define the Grounding Ratio $\mathcal{G}(E, V)$ as:
+\begin{equation}
+    \mathcal{G}(E, V) = \frac{1}{|E_{\text{spoken}}|} \sum_{i=1}^N \mathbf{1}\left[\exists v_j \in V_{\text{visual}} : \text{Match}(w_i, v_j) \land |\tau_j - t_{\text{start}}^{(i)}| \le \delta_{\text{tol}}\right]
+\end{equation}
+where $\delta_{\text{tol}} = 4.0\text{s}$ is the maximum contiguity window, and $\text{Match}(w_i, v_j)$ enforces tokenized mathematical and semantic equivalence.
+
+\textbf{Dead-Hold Motion Budget}: Continuous lecture video is discretized into half-second temporal bins $b \in \{1, \dots, B\}$. We enforce the Khan Academy motion standard:
+\begin{equation}
+    \mathcal{D}_{\text{active}} = \frac{1}{B} \sum_{b=1}^B \mathbf{1}[\text{animating}(b)] \ge 0.75
+\end{equation}
+Any contiguous static narration span exceeding $\tau_{\text{dead}} = 2.5\text{s}$ is classified as a dead hold. A zero-token deterministic code injector surgically splits the underlying \texttt{self.wait(T)} calls into subtle pedagogical focus gestures (\texttt{Indicate}, \texttt{Circumscribe}, progressive reveal), raising visual density to $\ge 75\%$ without LLM inference.
+
+\subsection{Closed-Loop Learner-in-the-Loop Diagnostic Repair (Phase 2)}
+\label{subsec:learner_repair}
+Existing repair frameworks optimize for compilation success or visual aesthetics. However, our baseline study confirmed that aesthetic scores do not correlate with student learning ($\rho = -0.10$). We therefore close the synthesis loop with a psychometrically gated simulated student model.
+
+\textbf{Diagnostic Misconception Probing}: For each topic, we generate diagnostic probes $\mathcal{P}_{\text{diag}} = \{(q_k, \mathcal{O}_k, y_k^*, \tilde{y}_k, t_k^*)\}_{k=1}^K$ grounded in empirical misconception distributions~\cite{eedi2020diagnostic}, where $q_k$ is the question, $y_k^*$ is the canonical answer, $\tilde{y}_k$ is the cognitive misconception distractor, and $t_k^*$ is the expected instruction timestamp.
+
+\textbf{Diagnostic Classification}: When the gated learner model fails probe $q_k$ citing second $t_k^*$, the fault is localized to chapter $\mathcal{C}_k$ and classified via Phase~1 telemetry:
+\begin{equation}
+    \text{Fault}(q_k) = \begin{cases}
+    \text{never\_taught}, & \text{if } w_k \notin V_{\text{visual}} \\
+    \text{taught\_but\_unclear}, & \text{if } \text{in\_dead\_hold}(t_k^*) \lor |\Delta t| > \delta_{\text{tol}} \\
+    \text{picture\_contradicts\_words}, & \text{if visual polarity inverted}
+    \end{cases}
+\end{equation}
+
+\textbf{Surgical Chapter Remediation}: Rather than triggering a monolithic script rewrite, AdaptManim remediates \textit{only} the failing chapter $\mathcal{C}_k$ by injecting targeted pedagogical definitions (\texttt{MathTex}), visual focus callouts (\texttt{SurroundingRectangle}), or polarity corrections. Untouched chapters $\mathcal{C}_{\text{preserved}}$ remain cached, conserving 60--80\% of Manim rendering compute:
+\begin{equation}
+    \text{ComputeSaved} = \frac{|\mathcal{C}_{\text{preserved}}|}{|\mathcal{C}_{\text{total}}|} \times 100\%
+\end{equation}
+Repairs are admitted under a strict \textbf{non-regression invariant}: $S_{\text{post}}(\mathcal{P}_{\text{held-out}}) > S_{\text{pre}}(\mathcal{P}_{\text{held-out}})$, guaranteeing that verified instructional artifacts are never degraded.
 
 \begin{figure}[t]
     \centering
@@ -155,9 +207,23 @@ Table~\ref{tab:anchor_granularity} verifies that a $6\times 6$ discrete grid pro
 
 On TheoremExplainBench (Table~\ref{tab:theorem_explain_bench}), AdaptManim outperforms human-made reference videos and existing agents across Visual Relevance (0.94), Logical Flow (0.96), and Visual Consistency (0.95).
 
+\subsection{Audio-Visual Grounding and Motion Density Analysis (Phase 1)}
+\label{subsec:exp_grounding}
+
+\input{../tables/table9_grounding_motion_ablation.tex}
+
+As detailed in Table~\ref{tab:grounding_motion_ablation}, standard CodeLLM and baseline pipelines suffer from low entity grounding ($\mathcal{G} \le 58.2\%$) and frequent dead-hold stalls ($> 4.2$ per lecture), resulting in negligible or weak visual uplift ($\Delta_{\text{visual}} = +4.7\%$ to $+24.9\%$). By enforcing AST-level mathematical entity grounding ($\mathcal{G} = 88.4\%$) and dynamic telestration pulses across idle intervals, AdaptManim achieves an active motion density of \textbf{81.2\%} (matching Khan Academy's 81--92\% standard) and nearly eliminates dead holds (0.2), driving a dominant multimodal visual uplift of $\mathbf{\Delta_{\text{visual}} = +29.4\%}$ and validating Mayer's Dual Coding Principle.
+
+\subsection{Closed-Loop Learner-in-the-Loop Diagnostic Repair (Phase 2)}
+\label{subsec:exp_learner_repair}
+
+\input{../tables/table10_learner_in_the_loop_repair.tex}
+
+Table~\ref{tab:learner_in_the_loop_repair} evaluates the effectiveness of educational repair paradigms on held-out diagnostic misconception probes. Monolithic script regeneration frequently hallucinated new compilation errors, achieving only a $+12.5\%$ score gain while expending 14.8K tokens. While ScopeRefine improved scores ($+20.0\%$), it remained limited by visual-only feedback. In contrast, AdaptManim's closed-loop learner repair traces student misconception failures directly to instructional beats, performing surgical chapter-level remediation that attains a $\mathbf{+36.5\%}$ knowledge gain ($S_{\text{post}} = 88.5\%$) while consuming only 1.8K tokens and conserving $\mathbf{68.5\%}$ of Manim compilation compute.
+
 \section{Conclusion}
 \label{sec:conclusion}
-We presented an adaptive generation-and-verification architecture for code-centric educational video generation. By coupling complexity-aware planning, persistent cross-scene memory, a 5-tier early-exit verification cascade, zero-token deterministic layout repair, and dynamic audio-visual pacing, our framework proves that adaptive test-time compute allocation achieves superior pedagogical clarity and compilation reliability while drastically cutting computational overhead.
+We presented AdaptManim, an adaptive generation-and-verification architecture for code-centric educational video generation. By exposing the empirical decorrelation between superficial aesthetic scores and student learning, our work moves beyond cosmetic VLM critics to establish a pedagogically grounded synthesis paradigm. Through the Spoken-to-Visual Grounding Matrix, Dead-Hold Motion Budgeting, and Closed-Loop Learner-in-the-Loop Diagnostic Repair, AdaptManim proves that educational video generation can achieve rigorous mathematical precision, continuous visual-cognitive engagement, and superior knowledge transfer while dramatically cutting test-time compute.
 
 \bibliographystyle{plain}
 \bibliography{references}

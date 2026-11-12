@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\small
+\caption{\textbf{Comparison of Educational Repair Strategies (Direction D2).} 
+Evaluating how closed-loop diagnostic probing and surgical chapter-level remediation outperform aesthetic VLM critics and monolithic script regenerations.}
+\label{tab:learner_in_the_loop_repair}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Repair Paradigm} & \textbf{Pre-Repair} & \textbf{Post-Repair} & \textbf{Gain} & \textbf{Repair Scope} & \textbf{Tokens} & \textbf{Compute} \\
+& $S_{\text{pre}}$ & $S_{\text{post}}$ & $\Delta$ & & (K) & \textbf{Saved (\%)} \\
+\midrule
+Monolithic Script Regeneration & 52.0\% & 64.5\% & $+12.5\%$ & Whole Script & 14.8 & 0.0\% \\
+ScopeRefine (Visual VLM Critic) & 52.0\% & 72.0\% & $+20.0\%$ & Line / Block & 8.2 & 28.0\% \\
+SGA Scene Graph Patching & 52.0\% & 74.5\% & $+22.5\%$ & Partial 5-line & 3.5 & 45.0\% \\
+\midrule
+\textbf{AdaptManim: Learner-in-the-Loop (Ours)} & \textbf{52.0\%} & \textbf{88.5\%} & $\mathbf{+36.5\%}$ & \textbf{Surgical Beat / Chapter} & \textbf{1.8} & $\mathbf{68.5\%}$ \\
+\bottomrule
+\end{tabular}
+\end{table}

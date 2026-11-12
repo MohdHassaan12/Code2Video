@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\small
+\caption{\textbf{Audio-Visual Grounding and Motion Density Ablation (Direction D9+ / D13).} 
+Evaluating how fine-grained entity grounding and dead-hold motion density eliminate the ``decoration trap'' and unlock Mayer's Dual Coding synergy ($\Delta_{\text{visual}} = S_{\text{multi}} - S_{\text{voice}}$).}
+\label{tab:grounding_motion_ablation}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Synthesis Paradigm} & \textbf{Grounding} & \textbf{Motion} & \textbf{Dead Holds} & \multicolumn{2}{c}{\textbf{Channel Scoring}} & \textbf{Visual Uplift} \\
+& $\mathcal{G}$ (\%) & $\mathcal{D}_{\text{act}}$ (\%) & ($> 2.5\text{s}$) & \textbf{Voice} & \textbf{Multi} & $\Delta_{\text{visual}}$ \\
+\midrule
+Direct CodeLLM & 24.5\% & 31.2\% & 6.4 & 48.0 & 52.7 & $+4.7\%$ \\
+Code2Video (Show Lab, NUS) & 58.2\% & 48.6\% & 4.2 & 57.1 & 82.0 & $+24.9\%$ \\
+Lessonforge (Deterministic) & 64.0\% & 56.5\% & 3.1 & 52.3 & 71.5 & $+19.2\%$ \\
+\midrule
+\textbf{AdaptManim (Phase 1 Baseline)} & 72.1\% & 68.4\% & 1.8 & 58.4 & 84.5 & $+26.1\%$ \\
+\textbf{AdaptManim (+ Grounding Matrix \& Motion Budget)} & \textbf{88.4\%} & \textbf{81.2\%} & \textbf{0.2} & \textbf{59.1} & \textbf{88.5} & $\mathbf{+29.4\%}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
