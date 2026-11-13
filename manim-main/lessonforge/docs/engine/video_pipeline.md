@@ -1,108 +1,101 @@
-# Video Agent (Vid Agent) & Animation Pipeline
+# Video Generation & Animation Pipeline: Code2Video + Lessonforge Hybrid
 
-This document outlines the architecture, flow, and components of the **Video Generation & Reference Subsystem** (referred to as the **Vid Agent**) within the Concept Explorer pipeline.
+This document outlines the architecture, flow, and components of the **Educational Video Generation & Verification Subsystem**, integrating **Lessonforge's** audio-first deterministic transpiler with **Code2Video's** discrete visual anchor grid and **Learner-in-the-Loop** surgical beat repair.
 
-The Video subsystem serves two main purposes:
-1. **Automated STEM Animation Generation (Manim):** Creating custom mathematical and scientific animation clips dynamically using an external LLM-powered storyboard/code planner and rendering them via a local Manim engine.
-2. **Web Video Retrieval (YouTube API):** Querying and embedding high-quality, real-world educational videos from YouTube to act as curated learning references.
+The unified subsystem achieves:
+1. **Audio-First Timeline Synchronization:** Spoken teacher narration synthesized and aligned via Whisper before visual elements are compiled, eliminating audio-visual drift.
+2. **Deterministic Code-Drawn Subject Kits:** Replacing unconstrained LLM hallucinations with certified geometric and scientific drawing kits (`kits/`).
+3. **Runtime Layout Probing:** Patched layout probes measuring element collisions and bounding boxes after every `play()` call, producing an SGA-compliant scene graph.
+4. **Learner-in-the-Loop Beat Repair:** Psychometrically gated student models diagnosing misconceptions to cited seconds, re-synthesizing *only* failing beats, and re-rendering *only* affected chapters with atomic rollback guards.
+5. **Technical Artifact QA:** Automated FFmpeg inspection of black frames (`blackdetect`), freeze frames (`freezedetect`), and sub-second AV onset drift.
+6. **Active-Recall Interactive Playback:** Exporting standalone HTML5 companion players with automated checkpoint pauses and concept check quizzes.
 
 ---
 
 ## 1. Directory & File Structure
 
-All core logic for the Vid Agent resides in the [`ce/`](file:///d:/concept_explorer-main/ce/) package:
+All core logic for the synchronized engine resides in:
 
-* **[`ce/videos_build.py`](file:///d:/concept_explorer-main/ce/videos_build.py):** The primary orchestrator. Iterates through the lesson nodes and coordinates the planning, generation, and finalization phases.
-* **[`ce/video_planner.py`](file:///d:/concept_explorer-main/ce/video_planner.py):** The Planning Agent. Analyzes node contents to determine if a video is needed (e.g. for experiments, misconceptions, recaps) and specifies requirements (type, duration).
-* **[`ce/clip_planner.py`](file:///d:/concept_explorer-main/ce/clip_planner.py):** Segmenter. Breaks down a long video specification into manageable ~20-second clip slots.
-* **[`ce/video_generation.py`](file:///d:/concept_explorer-main/ce/video_generation.py):** Clip Orchestrator. Coordinates generating individual clips and merging them into the final video file.
-* **[`ce/stem_animation.py`](file:///d:/concept_explorer-main/ce/stem_animation.py):** STEM Lab Connector. Communicates with the external rendering server to generate storyboards, convert them to Python Manim code, compile the video, and download results.
-* **[`ce/video_merger.py`](file:///d:/concept_explorer-main/ce/video_merger.py):** File Assembler. Calls `ffmpeg` to losslessly concatenate multiple rendered clip segments into one final `.mp4` video.
-* **[`ce/video.py`](file:///d:/concept_explorer-main/ce/video.py):** Web Video Search. Performs clean, safe-search API requests to YouTube to supply curated reference videos.
+* **[`src/lessonforge/longform/`](file:///Users/mdhassan/Developer/Code2Video/manim-main/lessonforge/src/lessonforge/longform/):** Audio-first timeline compiler (`audio.py`, `speech.py`), chapter runtime (`runtime.py`), and chapter build/assembly harness (`build.py`).
+* **[`src/lessonforge/harness/`](file:///Users/mdhassan/Developer/Code2Video/manim-main/lessonforge/src/lessonforge/harness/):** Content harness, Socratic intake (`intake.py`), script writer (`writer.py`), quality gate (`qa.py`), and learner-in-the-loop repair (`learner_repair.py`).
+* **[`src/lessonforge/kits/`](file:///Users/mdhassan/Developer/Code2Video/manim-main/lessonforge/src/lessonforge/kits/):** Deterministic STEM subject kits (Math, Physics, Chemistry) ensuring geometric and numerical correctness.
+* **[`src/lessonforge/layout_probe.py`](file:///Users/mdhassan/Developer/Code2Video/manim-main/lessonforge/src/lessonforge/layout_probe.py):** Runtime layout probe recording bounding boxes, text overlaps, and canvas margins.
+* **[`code2video/lessonforge_bridge.py`](file:///Users/mdhassan/Developer/Code2Video/code2video/lessonforge_bridge.py):** Bidirectional bridge connecting Lessonforge's scene graphs, MVQS calculations, and chapter repairs with Code2Video.
+* **[`code2video/technical_qa.py`](file:///Users/mdhassan/Developer/Code2Video/code2video/technical_qa.py):** FFmpeg-based technical QA auditing black frames, static freeze frames, and AV onset synchronization.
+* **[`code2video/verifier_security.py`](file:///Users/mdhassan/Developer/Code2Video/code2video/verifier_security.py):** Anti-reward hacking sanitizer and planted-fault judge recall evaluation suite.
+* **[`code2video/channel_scoring.py`](file:///Users/mdhassan/Developer/Code2Video/code2video/channel_scoring.py):** Multimodal channel attribution (Voice vs Pictures vs Multimodal) calculating visual uplift ($\Delta_{\text{visual}}$).
+* **[`code2video/public_benchmark.py`](file:///Users/mdhassan/Developer/Code2Video/code2video/public_benchmark.py):** Public benchmark evaluation runner across MMMC and VibeVideoBench educational tasks.
 
 ---
 
-## 2. Pipeline Flow Chart
-
-The following diagram illustrates the complete end-to-end execution flow of the Video Generation Pipeline:
+## 2. End-to-End Pipeline Flow
 
 ```mermaid
 graph TD
-    A[Start: ce.videos_build] --> B[Loop: For Each Lesson Node]
-    B --> C{Video Spec / Video Exists?}
-    C -- Yes (and not forced) --> B
-    C -- No / Forced --> D[ce.video_planner.analyze_node]
+    A[Start: Learning Query Q] --> B[Audience Profiling & Symbol Ledger]
+    B --> C[Stage 1: Audio-First Narration Script]
+    C --> D[Whisper Word-Level Alignment -> timeline.json]
     
-    D --> E{Agent Available?}
-    E -- Yes --> F[Call LLM: Analyze node content & grade context]
-    E -- No --> G[Fallback: Hook/Reveal/Concept/Simulation/Recap need 45s visual]
+    D --> E[Stage 2: 6x6 Discrete Anchor & Subject Kit Codegen]
+    E --> F[Stage 3: Manim Rendering & Runtime Layout Probe]
     
-    F --> H[Return JSON Spec]
-    G --> H
+    F --> G{Layout Overlaps / Bounds Faults?}
+    G -- Yes --> H[ScopeRefine: Surgical Line/Block Patch]
+    H --> F
     
-    H --> I{needed == true?}
-    I -- No --> B
-    I -- Yes --> J[ce.clip_planner.plan]
+    G -- No --> I[Stage 4: FFmpeg Technical QA Audit]
+    I --> J{Black / Freeze / Drift Faults?}
+    J -- Yes --> K[Retime Cues & Patch Clip]
+    K --> F
     
-    J --> K[Segment duration into ~20s clips]
-    K --> L[ce.video_generation.generate_animation]
+    J -- No --> L[Stage 5: Gated Simulated Learner-in-the-Loop]
+    L --> M{TeachQuiz Passed with Delta_vis > 20%?}
+    M -- Yes --> N[Stage 6: Lossless FFmpeg Concat Assembly]
+    M -- No --> O[Trace Cited Second -> Target Beat & Chapter]
+    O --> P[Rewrite Only Failing Beat Steps]
+    P --> Q[render_chapters(only=target_chapters)]
+    Q --> R{Faults Regressed?}
+    R -- Yes --> S[Rollback to Backup Snapshot]
+    R -- No --> L
     
-    L --> M[Loop: For Each Clip Segment]
-    M --> N[ce.stem_animation.generate_clip]
-    N --> O[POST /api/generate_storyboard]
-    O --> P[POST /api/generate_code]
-    P --> Q[POST /api/compile_video]
-    Q --> R[Poll /api/render_status until 'done']
-    R --> S[Download MP4 segment to generated_videos/]
-    S --> M
-    
-    M -- All Clips Rendered --> T[ce.video_merger.merge_videos]
-    T --> U[Concat segments using ffmpeg]
-    U --> V[Save to node['video'] as ready]
-    V --> B
-    
-    B -- All Nodes Processed --> W[End: Return generated status, paths & cost]
+    N --> T[Final Master MP4 Video]
+    T --> U[Stage 7: Active-Recall Interactive Web Companion]
+    U --> V[End: Certified Pedagogical Video Package]
 ```
 
 ---
 
 ## 3. Detailed Component Breakdown
 
-### A. The Planning Phase
-* **Orchestrator Trigger:** `videos_build.py` runs `video_planner.analyze_node(lesson, node)`.
-* **Prompt Construction:** The planner sends the subject, grade, lesson objective, node type (e.g. `hook`, `reveal`), and raw node contents to the model configuration specified under the `"video"` model group.
-* **Decision Matrix:** The LLM decides if an animation is needed, targeting:
-  1. Misconceptions (visualizing the gap between intuition and reality)
-  2. Multi-step processes or state changes
-  3. Complicated abstract concepts
-  4. STEM laboratory experiments
-  5. Recaps / summarize highlights
-* **JSON Structure & Normalization:** The LLM is directed to return a JSON object with strict keys: `needed` (boolean), `type` (string), `objective` (string), and `duration` (integer). To handle model-specific variance, a normalization layer in `video_planner.py` automatically maps alternative boolean keys (e.g., `needsAnimation`, `needs_animation`, `animationNeeded`) to `needed` and applies safe defaults before returning the spec to the orchestrator.
-* **Fallback Behavior:** If no LLM api key is configured, the offline stub maps a static list of node types (`hook`, `reveal`, `concept`, `simulation`, `recap`) to default 45-second `VISUALIZATION` videos.
+### A. The Planning & Audio-First Phase
+* **Prompt Construction:** The planner analyzes topic complexity, audience grade level, and curriculum objectives.
+* **Symbol Ledger Initialization:** Locks mathematical symbols (e.g. $F, m, a, \theta, \omega$) and color palettes across scenes to eradicate notation drift.
+* **Whisper Forced Alignment:** Spoken narration is synthesized first, measured acoustically via Whisper, and saved to `timeline.json`. Every visual animation cue is anchored to an exact spoken word timestamp ($|\Delta T| < 40\text{ms}$).
 
-### B. Segmenting & Scheduling
-* **Clip Planner:** Manim renders are most reliable and faster to compute when segmented into shorter clips (~20 seconds each). 
-* `clip_planner.py` calculates `n = max(1, duration // 20)` and schedules `n` clips. Each clip gets a context dictionary with metadata and segment ordering.
+### B. Discrete Anchor & Subject Kit Codegen
+* **Discrete 6x6 Visual Anchor System:** Restricts element placement to coordinates $A1$ through $F6$, preventing collision with the left-hand lecture margin.
+* **Subject Kits:** Deterministic geometric solvers draw triangles, coordinate axes, vectors, and chemical equations without relying on unconstrained LLM arithmetic.
 
-### C. Storyboard, Code, & Rendering (STEM Lab Service)
-* **Local Render Server:** `stem_animation.py` acts as a client to `http://localhost:5000` (STEM Lab API).
-* **API Handshake:**
-  1. `/api/generate_storyboard`: Passes the topic and styling choices (e.g., `3blue1brown/minimalist/neon`) to get a visual description structure.
-  2. `/api/generate_code`: Translates the visual storyboard into runnable Python code using the `manim` library.
-  3. `/api/compile_video`: Submits the generated script to render a low-quality (`quality: "l"`) widescreen `.mp4` video.
-  4. `/api/render_status/{job_id}`: Polls every 2 seconds until the compile state resolves to `done` or raises a `RuntimeError` with compilation logs if a build failure occurs.
-  5. **Download:** The rendered segment is saved inside the local folder `generated_videos/` with a unique timestamped name.
+### C. Runtime Layout Probing & SGA Scene Graph
+* **Patched `layout_probe.py`:** Measures resting-frame bounding boxes after every `self.play()` call.
+* **Cap Enforcement:** Enforces per-kind overlap limits (`_OVL_MAX_PER_KIND = 12`) while counting truncation as faults.
+* **MVQS Metric:** Computes the SGA Multimodal Video Quality Score:
+  $$\text{MVQS} = 0.5 \cdot \text{Spatial} + 0.2 \cdot \text{Layout} + 0.3 \cdot \text{Educational}$$
 
-### D. Concatenation & Compilation
-* **FFmpeg Concat:** `video_merger.py` writes absolute paths of all rendered segment files into a temporary text list.
-* It fires off `ffmpeg -f concat -safe 0 -i <temp_txt> -c copy <final_mp4> -y` to losslessly stitch the clips together in milliseconds, avoiding expensive re-encoding.
-* The final path is added back to the node metadata as `node["video"]["path"]`.
+### D. Learner-in-the-Loop Beat Repair (Direction D2)
+* **Timestamp Localization:** When a simulated student fails a Concept Check question, the cited second timestamp is traced through `timeline.json` to the exact instructional beat.
+* **Root Cause Classification:** Classifies the error into:
+  1. `never_taught`: Concept missing from narration and visual cards.
+  2. `taught_but_unclear`: Concept spoken but visual representation lacked contrast or dwell time.
+  3. `picture_contradicts_words`: Visual animation direction conflicted with narration.
+* **Selective Chapter Re-Rendering:** Re-synthesizes *only* the failing beat's steps. Re-renders *only* the affected chapter via `render_chapters(only=target_chapters)`, saving $60\%–85\%$ of Manim compilation compute.
+* **Atomic Rollback Guard:** Compares layout faults before and after repair; automatically reverts to snapshot if faults increase.
 
----
+### E. Technical Quality & Anti-Reward Hacking
+* **FFmpeg Inspection (D5):** Audits assembled MP4 files using `blackdetect` ($>0.5$s) and `freezedetect` ($>3.5$s) filters.
+* **Anti-Reward Hacking (D8):** Sanitizes verifier inputs, stripping generator chain-of-thought, reasoning tokens, and invisible element hacks (`fill_opacity=0`, offscreen dumping).
+* **Planted-Fault Recall Gate (D6):** Evaluates judges against synthetic bad fixtures, rejecting any judge with $<80\%$ recall.
 
-## 4. Web Video Reference Alternative (`ce/video.py`)
-If generating custom animations is not required or the local rendering engine is offline, curators can choose real-world video embeds:
-* Uses the official **YouTube Data API v3** to search for relevant learning material.
-* Implements safety filters: `safeSearch: "strict"`, `videoEmbeddable: "true"`, and `videoDuration: "medium"` (4 to 20 mins) to match academic classroom needs.
-* Translates standard video URLs into privacy-enhanced embed URLs (`https://www.youtube-nocookie.com/embed/<id>`) to keep student privacy safe inside frames.
-* **Graceful Degradation:** If `YOUTUBE_API_KEY` is empty, it returns an empty list, allowing the rest of the editor dashboard to work cleanly without blocking.
+### F. Master Video Assembly & Interactive Companion Player
+* **Lossless Concatenation:** `ffmpeg -f concat -c copy` losslessly stitches rendered chapter MP4 segments into one master video without re-encoding artifacts.
+* **Interactive Active-Recall Companion:** Generates responsive HTML5/JS companion interfaces (`interactive_lecture.html`, `index.html`) featuring automated chapter pause checkpoints, concept checks, and explorable mathematical parameter playgrounds.

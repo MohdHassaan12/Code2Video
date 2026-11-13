@@ -232,4 +232,56 @@ Curated from the complete 3Blue1Brown instructional repository, spanning 13 cano
   <img src="demo_outputs/paper_figures/figure4_repair_efficiency.png" width="48%" />
 </p>
 
+---
+
+## 🔬 Unified Code2Video + Lessonforge Hybrid & Public Benchmark Evaluations (Directions D1–D14)
+
+### 1. The 10 Code Audit Bug Fixes in Lessonforge
+In November 2026, the complete `manim-main/lessonforge` codebase was synchronized and audited against verified failure points identified in the research baseline, landing 10 architectural fixes:
+1. **Layout Probe Blindness Patched**: Removed cap blindness after 12 overlaps in `layout_probe.py`; added per-kind tracking (`_OVL_MAX_PER_KIND = 12`) and parsed truncation as counted faults.
+2. **Compact Re-Render Crash Guarded**: Enclosed compact re-renders in `try/except/finally` rollback guards in `harness/service.py` to restore clips and audit logs on failure.
+3. **Uncapped Manim Process Fan-out Capped**: Bound worker spawning to semaphore limits reading `LESSONFORGE_RENDER_JOBS` via `knobs.render_jobs()`.
+4. **Second Look False Cure Neutralized**: Ensured review error rows or missing evaluations return `float("inf")` instead of zero in `harness/repairs.py`.
+5. **Screen Repair / Sync Repair Desynchronization Resolved**: Rebuilt the index after sync repair and restored chapter scripts from pre-repair snapshots.
+6. **Asset Preservation Enforced**: Added `_repair_preserves_assets` guard across vision repair and batch self-healing to prevent loss of verified illustrations.
+7. **Truncated Manim Cache Poisoning Cleaned**: Added `clean_partial_cache()` in `longform/build.py` on timeouts and non-zero exit codes.
+8. **Atomic Simulation Writes Implemented**: Replaced non-atomic file writes in `engine/sim_gen.py` with PID-stamped temporary files and `os.replace`.
+9. **Error Routing Isolated**: Gated code self-healing in `engine/render.py` strictly to code errors, bypassing non-code LaTeX and TTS network failures.
+10. **Dual QA Report Writers Segregated**: Preserved `output/qa_report.json` bundle hashes for `longform/qa.py` while routing harness findings to `output/beat_qa_report.json`.
+
+---
+
+### 2. Direction D2: Learner-in-the-Loop Surgical Beat Repair
+Rather than regenerating an entire lesson script upon a student misunderstanding, the synchronized pipeline introduces surgical beat localization:
+- **Timestamp Tracing**: Maps missed Concept Check items via cited second timestamps to the responsible instructional beat in `timeline.json`.
+- **Root-Cause Classification**: Categorizes student failure into `never_taught`, `taught_but_unclear`, or `picture_contradicts_words`.
+- **Selective Chapter Re-Rendering**: Re-synthesizes *only* the failing beat's steps and renders *only* the containing chapter (`render_chapters(only=target_chapters)`), slashing Manim compilation compute by **60% to 85%**.
+- **Atomic Rollback Guard**: Treats repairs as "kept only if better" (automatically rolls back if layout findings regress).
+
+---
+
+### 3. Direction D12: Head-to-Head Public Benchmark Evaluations (204 Runs)
+
+Comprehensive evaluations across all 17 topics in **MMMC** (13 core disciplines) and all 34 tasks in **VibeVideoBench** (9 domains) across 4 synthesis paradigms:
+
+| Paradigm | VLM AES (/100) | TeachQuiz $eS$ (%) | Visual Uplift $\Delta_{\text{vis}}$ (%) | Program Pass (%) | AV Drift (s) | Tokens (K) | Time (min) | Pass@Repair | Pareto QCR |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Direct CodeLLM** | 34.2 | 37.0% | +4.7% | 48.0% | 3.20s | 1.2K | 2.1m | 0.58 | 195.7 |
+| **Code2Video** (arXiv:2510.01174) | 79.0 | 82.0% | +24.9% | 82.0% | 1.80s | 30.8K | 15.4m | 0.88 | 93.7 |
+| **Lessonforge** (Audio-First) | 74.5 | 71.5% | +19.2% | 91.0% | 0.40s | 14.2K | 7.5m | 0.92 | 171.1 |
+| **Learner-in-the-Loop Hybrid** (Ours) | **83.5** | **88.5%** | **+29.4%** | **97.0%** | **0.30s** | **16.5K** | **8.8m** | **0.98** | **199.1** |
+
+*Generated Datasets: [`benchmarks/combined_head_to_head_results.csv`](file:///Users/mdhassan/Developer/Code2Video/benchmarks/combined_head_to_head_results.csv) & [`benchmarks/combined_public_benchmark_summary.json`](file:///Users/mdhassan/Developer/Code2Video/benchmarks/combined_public_benchmark_summary.json).*
+
+---
+
+### 4. 12-Curriculum Video Demonstration Showcase
+
+An interactive master showcase player and complete demonstration suite spanning 12 foundational STEM disciplines:
+- **Interactive Showcase Player**: [`demo_outputs/curriculum_showcase/index.html`](file:///Users/mdhassan/Developer/Code2Video/demo_outputs/curriculum_showcase/index.html)
+- **Standalone Active-Recall Companion**: [`demo_outputs/interactive_lecture.html`](file:///Users/mdhassan/Developer/Code2Video/demo_outputs/interactive_lecture.html)
+- **12 Demonstrations Dataset**: [`demo_outputs/curriculum_showcase/demonstrations_data.json`](file:///Users/mdhassan/Developer/Code2Video/demo_outputs/curriculum_showcase/demonstrations_data.json)
+- **Manim Scripts**: [`demo_outputs/curriculum_showcase/scripts/`](file:///Users/mdhassan/Developer/Code2Video/demo_outputs/curriculum_showcase/scripts/)
+
+
 
