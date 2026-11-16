@@ -82,34 +82,34 @@ This project undertakes the end-to-end redesign, implementation, and empirical v
 
 ```mermaid
 flowchart LR
-    subgraph Cognitive Science Foundations
-        CTML[Mayer's Cognitive Theory<br>of Multimedia Learning]
-        TE[Roediger & Karpicke<br>Testing Effect]
-        EEDI[Eedi Diagnostic<br>Misconception Distribution]
+    subgraph CSF ["Cognitive Science Foundations"]
+        CTML["Mayer's Cognitive Theory<br>of Multimedia Learning"]
+        TE["Roediger & Karpicke<br>Testing Effect"]
+        EEDI["Eedi Diagnostic<br>Misconception Distribution"]
     end
 
-    subgraph Prior Video Generation Paradigms
-        DIFF[Pixel Diffusion<br>OpenSora, Wan2.2, Veo3<br>Fails at math & typography]
-        C2V[Code2Video NUS<br>6x6 Grid & ScopeRefine<br>AES-learning decorrelation]
-        LLM2M[LLM2Manim<br>Pedagogical prompts<br>HITL required]
-        SGA[SGA Scene Graph<br>Geometry verification<br>Visual-only, no learning loop]
+    subgraph PVG ["Prior Video Generation Paradigms"]
+        DIFF["Pixel Diffusion<br>OpenSora, Wan2.2, Veo3<br>Fails at math & typography"]
+        C2V["Code2Video NUS<br>6x6 Grid & ScopeRefine<br>AES-learning decorrelation"]
+        LLM2M["LLM2Manim<br>Pedagogical prompts<br>HITL required"]
+        SGA["SGA Scene Graph<br>Geometry verification<br>Visual-only, no learning loop"]
     end
 
-    subgraph AdaptManim Proposed Framework
-        AM_P[Complexity-Aware Adaptive Planning]
-        AM_L[Persistent Symbol Ledger]
-        AM_C[5-Tier Early-Exit Cascade]
-        AM_G[Grounding Matrix & Motion Budget]
-        AM_R[Closed-Loop Learner Repair]
-        AM_E[EduDSL Certified Transpiler]
-        AM_I[Active-Recall Companion & Sandboxes]
+    subgraph APF ["AdaptManim Proposed Framework"]
+        AM_P["Complexity-Aware Adaptive Planning"]
+        AM_L["Persistent Symbol Ledger"]
+        AM_C["5-Tier Early-Exit Cascade"]
+        AM_G["Grounding Matrix & Motion Budget"]
+        AM_R["Closed-Loop Learner Repair"]
+        AM_E["EduDSL Certified Transpiler"]
+        AM_I["Active-Recall Companion & Sandboxes"]
     end
 
     CTML --> AM_G
     CTML --> AM_P
     TE --> AM_I
     EEDI --> AM_R
-    C2V -.->|Identified Flaws| AdaptManim
+    C2V -.->|Identified Flaws| APF
 ```
 
 ### 2.1 Code-Centric Programmatic Video Synthesis
@@ -190,7 +190,7 @@ $$\text{QCR} = \frac{\text{AES} \times eS(V)}{\log_{10}(\text{Tokens}) \times \t
 
 ```mermaid
 flowchart TD
-    subgraph Original Code2Video Paper Flaws
+    subgraph OCF ["Original Code2Video Paper Flaws"]
         F1["Flaw 1: Aesthetic Score Illusion<br>(AES vs TeachQuiz: ρ = -0.10)"]
         F2["Flaw 2: The Decoration Trap<br>(Grounding <= 58%, Visual Uplift +4.7%)"]
         F3["Flaw 3: Dead-Hold Stalls<br>(4.2 holds > 2.5s per clip, 48.6% motion)"]
@@ -201,7 +201,7 @@ flowchart TD
         F8["Flaw 8: Passive Media Trap<br>(Zero active recall, illusion of competence)"]
     end
 
-    subgraph AdaptManim Solutions
+    subgraph AMS ["AdaptManim Solutions"]
         S1["Closed-Loop Learner Repair<br>(Eedi diagnostic misconception gates)"]
         S2["Grounding Matrix M_ground<br>(AST-matched spoken entities, 88.4%)"]
         S3["Motion Budget Monitor<br>(Khan standard >= 75%, 0.2 dead holds)"]
@@ -283,27 +283,27 @@ Code2Video outputs raw `.mp4` video files. Educational psychology (*Roediger & K
 
 ```mermaid
 flowchart TD
-    Q[User Learning Query / STEM Concept] --> P[1. Complexity-Aware Adaptive Planner<br>Audience, Cognitive Chunks 60-120s]
-    P --> SL[2. Persistent Cross-Scene Symbol Ledger<br>Canonical Variables, LaTeX, Colors]
-    SL --> IR[3. EduDSL Declarative Primitives<br>Calculus, LinearAlg, Kinematics, ML, Phasor]
-    IR --> TRANS[4. Certified AST Transpiler<br>100% First-Pass Valid Manim Code]
+    Q["User Learning Query / STEM Concept"] --> P["1. Complexity-Aware Adaptive Planner<br>Audience, Cognitive Chunks 60-120s"]
+    P --> SL["2. Persistent Cross-Scene Symbol Ledger<br>Canonical Variables, LaTeX, Colors"]
+    SL --> IR["3. EduDSL Declarative Primitives<br>Calculus, LinearAlg, Kinematics, ML, Phasor"]
+    IR --> TRANS["4. Certified AST Transpiler<br>100% First-Pass Valid Manim Code"]
 
-    subgraph Verification & Grounding Engine
-        TRANS --> GM[5. Spoken-to-Visual Grounding Matrix<br>AST Entity Match within 4.0s]
-        GM --> MB[6. Dead-Hold Motion Budget Monitor<br>Active Density >= 75%, Khan Standard]
-        MB --> TIER[7. 5-Tier Early-Exit Verification Cascade<br>AST -> Invariants -> Sandbox -> 6x6 Grid -> VLM]
+    subgraph VGE ["Verification & Grounding Engine"]
+        TRANS --> GM["5. Spoken-to-Visual Grounding Matrix<br>AST Entity Match within 4.0s"]
+        GM --> MB["6. Dead-Hold Motion Budget Monitor<br>Active Density >= 75%, Khan Standard"]
+        MB --> TIER["7. 5-Tier Early-Exit Verification Cascade<br>AST to Invariants to Sandbox to 6x6 Grid to VLM"]
     end
 
-    subgraph Closed-Loop Diagnostic Repair
-        TIER -.->|Pedagogical Fault| DIAG[8. Psychometric Gated Learner<br>Eedi Misconception Probes]
-        DIAG --> LOC[Beat & Timestamp Localization]
-        LOC --> SURG[9. Surgical Chapter Remediation<br>Cache Unaffected Scenes, Save 68.5% Compute]
+    subgraph CDR ["Closed-Loop Diagnostic Repair"]
+        TIER -.->|Pedagogical Fault| DIAG["8. Psychometric Gated Learner<br>Eedi Misconception Probes"]
+        DIAG --> LOC["Beat & Timestamp Localization"]
+        LOC --> SURG["9. Surgical Chapter Remediation<br>Cache Unaffected Scenes, Save 68.5% Compute"]
         SURG --> TIER
     end
 
-    TIER -->|Pass| SYNC[10. Dynamic Audio-Visual Pacing<br>Exact Audio Probe, |ΔT| < 40ms]
-    SYNC --> LANG[11. Multi-Lingual Dynamic Re-Pacing<br>7 Languages, Formula Phoneticization]
-    LANG --> COMP[12. Active-Recall Companion & Sandboxes<br>Interactive HTML5 Player & Canvas Playgrounds]
+    TIER -->|Pass| SYNC["10. Dynamic Audio-Visual Pacing<br>Exact Audio Probe, |ΔT| < 40ms"]
+    SYNC --> LANG["11. Multi-Lingual Dynamic Re-Pacing<br>7 Languages, Formula Phoneticization"]
+    LANG --> COMP["12. Active-Recall Companion & Sandboxes<br>Interactive HTML5 Player & Canvas Playgrounds"]
 ```
 
 To eliminate the flaws identified in Code2Video, we developed **AdaptManim**, an adaptive, certified generation-and-verification system structured into twelve interconnected engineering modules.
@@ -356,10 +356,10 @@ This raises active motion density to $\ge 81\%$, matching the Khan Academy bench
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Learner as Psychometric Gated Learner (Eedi Probes)
-    participant Engine as AdaptManim Engine
-    participant Cache as Scene Media Cache
-    participant Compiler as Manim Renderer
+    actor Learner as "Psychometric Gated Learner (Eedi Probes)"
+    participant Engine as "AdaptManim Engine"
+    participant Cache as "Scene Media Cache"
+    participant Compiler as "Manim Renderer"
 
     Engine->>Learner: Evaluate Video with Diagnostic Probes
     Learner-->>Engine: Probe Missed at timestamp t* (Concept: w_k)
@@ -371,7 +371,7 @@ sequenceDiagram
     Engine->>Compiler: Re-render ONLY Chapter 2 (Saves 68.5% Compute)
     Compiler-->>Engine: Updated Video Re-assembled
     Engine->>Learner: Re-test Held-Out Probes
-    Note over Engine,Learner: Non-Regression Check: S_post > S_pre
+    Note over Engine,Learner: Non-Regression Check: S_post exceeds S_pre
     Learner-->>Engine: Score Improved (+36.5%), Accept Repair
 ```
 

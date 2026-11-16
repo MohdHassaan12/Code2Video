@@ -32,35 +32,35 @@ All core logic for the synchronized engine resides in:
 
 ```mermaid
 graph TD
-    A[Start: Learning Query Q] --> B[Audience Profiling & Symbol Ledger]
-    B --> C[Stage 1: Audio-First Narration Script]
-    C --> D[Whisper Word-Level Alignment -> timeline.json]
+    A["Start: Learning Query Q"] --> B["Audience Profiling & Symbol Ledger"]
+    B --> C["Stage 1: Audio-First Narration Script"]
+    C --> D["Whisper Word-Level Alignment -> timeline.json"]
     
-    D --> E[Stage 2: 6x6 Discrete Anchor & Subject Kit Codegen]
-    E --> F[Stage 3: Manim Rendering & Runtime Layout Probe]
+    D --> E["Stage 2: 6x6 Discrete Anchor & Subject Kit Codegen"]
+    E --> F["Stage 3: Manim Rendering & Runtime Layout Probe"]
     
-    F --> G{Layout Overlaps / Bounds Faults?}
-    G -- Yes --> H[ScopeRefine: Surgical Line/Block Patch]
+    F --> G{"Layout Overlaps / Bounds Faults?"}
+    G -- Yes --> H["ScopeRefine: Surgical Line/Block Patch"]
     H --> F
     
-    G -- No --> I[Stage 4: FFmpeg Technical QA Audit]
-    I --> J{Black / Freeze / Drift Faults?}
-    J -- Yes --> K[Retime Cues & Patch Clip]
+    G -- No --> I["Stage 4: FFmpeg Technical QA Audit"]
+    I --> J{"Black / Freeze / Drift Faults?"}
+    J -- Yes --> K["Retime Cues & Patch Clip"]
     K --> F
     
-    J -- No --> L[Stage 5: Gated Simulated Learner-in-the-Loop]
-    L --> M{TeachQuiz Passed with Delta_vis > 20%?}
-    M -- Yes --> N[Stage 6: Lossless FFmpeg Concat Assembly]
-    M -- No --> O[Trace Cited Second -> Target Beat & Chapter]
-    O --> P[Rewrite Only Failing Beat Steps]
-    P --> Q[render_chapters(only=target_chapters)]
-    Q --> R{Faults Regressed?}
-    R -- Yes --> S[Rollback to Backup Snapshot]
+    J -- No --> L["Stage 5: Gated Simulated Learner-in-the-Loop"]
+    L --> M{"TeachQuiz Passed with Delta_vis > 20%?"}
+    M -- Yes --> N["Stage 6: Lossless FFmpeg Concat Assembly"]
+    M -- No --> O["Trace Cited Second -> Target Beat & Chapter"]
+    O --> P["Rewrite Only Failing Beat Steps"]
+    P --> Q["render_chapters(only=target_chapters)"]
+    Q --> R{"Faults Regressed?"}
+    R -- Yes --> S["Rollback to Backup Snapshot"]
     R -- No --> L
     
-    N --> T[Final Master MP4 Video]
-    T --> U[Stage 7: Active-Recall Interactive Web Companion]
-    U --> V[End: Certified Pedagogical Video Package]
+    N --> T["Final Master MP4 Video"]
+    T --> U["Stage 7: Active-Recall Interactive Web Companion"]
+    U --> V["End: Certified Pedagogical Video Package"]
 ```
 
 ---

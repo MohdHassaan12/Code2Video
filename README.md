@@ -21,39 +21,39 @@ While existing paradigms such as **Code2Video** (arXiv:2510.01174) and **LLM2Man
 
 ```mermaid
 flowchart TD
-    Q[User Learning Query] --> P[Topic Complexity Profiler]
-    P --> OP[Audience-Aware Outline Planner]
-    OP --> SB[Storyboard Builder & Cue Synchronizer]
-    SB --> SL[Cross-Scene Symbol Ledger]
+    Q["User Learning Query"] --> P["Topic Complexity Profiler"]
+    P --> OP["Audience-Aware Outline Planner"]
+    OP --> SB["Storyboard Builder & Cue Synchronizer"]
+    SB --> SL["Cross-Scene Symbol Ledger"]
 
-    subgraph Generation & Verification Cascade
-        SL --> MC[Manim Coder (6x6 Visual Anchor System)]
-        MC --> T1[Tier 1: Static AST & Syntax Check]
-        T1 -->|Pass| T2[Tier 2: Symbolic & Pedagogical Invariants]
-        T2 -->|Pass| T3[Tier 3: Sandboxed Execution & Traceback]
-        T3 -->|Pass| T4[Tier 4: Discrete 6x6 Spatial Occupancy]
-        T4 -->|Pass| T5[Tier 5: Pedagogical Soundness & VLM Critic]
+    subgraph GVC ["Generation & Verification Cascade"]
+        SL --> MC["Manim Coder (6x6 Visual Anchor System)"]
+        MC --> T1["Tier 1: Static AST & Syntax Check"]
+        T1 -->|Pass| T2["Tier 2: Symbolic & Pedagogical Invariants"]
+        T2 -->|Pass| T3["Tier 3: Sandboxed Execution & Traceback"]
+        T3 -->|Pass| T4["Tier 4: Discrete 6x6 Spatial Occupancy"]
+        T4 -->|Pass| T5["Tier 5: Pedagogical Soundness & VLM Critic"]
     end
 
-    subgraph ScopeRefine++ Adaptive Repair
-        T1 -.->|Fail| AR[Adaptive Repair Router]
+    subgraph SRA ["ScopeRefine++ Adaptive Repair"]
+        T1 -.->|Fail| AR["Adaptive Repair Router"]
         T2 -.->|Fail| AR
         T3 -.->|Fail| AR
         T4 -.->|Fail| AR
         T5 -.->|Fail| AR
-        AR --> L0[Level 0: 0-Token AutoGrid & AST Migration]
-        AR --> L1[Level 1: Line Scope Repair (line ± 1)]
-        AR --> L2[Level 2: Block Scope Repair (lecture block)]
-        AR --> L3[Level 3: Section Scope Regeneration]
+        AR --> L0["Level 0: 0-Token AutoGrid & AST Migration"]
+        AR --> L1["Level 1: Line Scope Repair (line ± 1)"]
+        AR --> L2["Level 2: Block Scope Repair (lecture block)"]
+        AR --> L3["Level 3: Section Scope Regeneration"]
         L0 --> MC
         L1 --> MC
         L2 --> MC
         L3 --> MC
     end
 
-    T5 --> COMP[Composite Script Assembly]
-    COMP --> REND[Manim Headless Video Rendering]
-    REND --> EVAL[Evaluation: AES + TeachQuiz + Pareto QCR]
+    T5 --> COMP["Composite Script Assembly"]
+    COMP --> REND["Manim Headless Video Rendering"]
+    REND --> EVAL["Evaluation: AES + TeachQuiz + Pareto QCR"]
 ```
 
 ---
