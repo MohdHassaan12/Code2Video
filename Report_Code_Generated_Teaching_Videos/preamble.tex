@@ -1,0 +1,62 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\DeclareUnicodeCharacter{2295}{\ensuremath{\oplus}}
+\DeclareUnicodeCharacter{00D7}{\ensuremath{\times}}
+\DeclareUnicodeCharacter{00F7}{\ensuremath{\div}}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\le}}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{url}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+
+% Small coloured change next to a score, as in Code2Video's tables. The colour says better or worse, not up or
+% down: make_tables.delta() picks it from the column's direction (a drop on a lower-is-better column is \better),
+% and columns with no better direction (sections rewritten, revisions used) get \neutral.
+\definecolor{betterc}{HTML}{1F5FAD}\definecolor{worsec}{HTML}{C2491D}\definecolor{neutralc}{gray}{0.45}
+\newcommand{\better}[1]{\,{\scriptsize\textcolor{betterc}{#1}}}
+\newcommand{\worse}[1]{\,{\scriptsize\textcolor{worsec}{#1}}}
+\newcommand{\neutral}[1]{\,{\scriptsize\textcolor{neutralc}{#1}}}
+\newcommand{\hd}[1]{\begin{tabular}[b]{@{}c@{}}#1\end{tabular}}% a two-line table header
+
+% A method figure generated from a prompt in figures/IMAGE_PROMPTS.md (Part A); a box names the prompt until the
+% image file exists. Full text width in every document.
+\newcommand{\paperfig}[4]{%
+  \begin{figure*}[t]\centering
+  \IfFileExists{figures/#1}{\includegraphics[width=\textwidth]{figures/#1}}{%
+    \fbox{\parbox{0.92\textwidth}{\centering\small\vspace{22pt}\textit{Figure to generate: prompt #2 in}
+    \texttt{paper/figures/IMAGE\_PROMPTS.md}, saved as \texttt{\detokenize{paper/figures/#1}}\vspace{22pt}}}}
+  \caption{#3}\label{fig:#4}
+  \end{figure*}}
+
+% Every number below comes from paper/make_tables.py; a result that does not exist yet prints as [pending].
+\newcommand{\pend}{\textcolor{red!70!black}{\textbf{[pending]}}}
+\newcommand{\todo}[1]{\textcolor{red!70!black}{\textbf{[#1]}}}
+\IfFileExists{tables/numbers.tex}{\input{tables/numbers.tex}}{}
+\providecommand{\AllRuns}{\pend}\providecommand{\OrderRuns}{\pend}\providecommand{\OrderShare}{\pend}
+\providecommand{\NullWithVideo}{\pend}\providecommand{\NullNoVideo}{\pend}\providecommand{\PilotTies}{\pend}
+\providecommand{\FailedAttempts}{\pend}\providecommand{\FirstTryFail}{\pend}
+\providecommand{\PreflightFP}{\pend}\providecommand{\PilotNotKept}{\pend}\providecommand{\PilotRevisions}{\pend}\providecommand{\PreflightN}{\pend}\providecommand{\SyntaxAfterPatch}{\pend}\providecommand{\PilotGaps}{\pend}\providecommand{\PilotDev}{\pend}\providecommand{\PilotFlagged}{\pend}\providecommand{\PilotSections}{\pend}\providecommand{\PilotDevGain}{\pend}
+\providecommand{\mmmcpriorGemmaAcc}{\pend}\providecommand{\mmmcpriorGemmaP}{\pend}
+\providecommand{\mmmcpriorGemmaAllRight}{\pend}\providecommand{\mmmcpriorGemmaTopics}{\pend}
+\providecommand{\mmmcpriorQwenAcc}{\pend}\providecommand{\mmmcpriorQwenSmallAcc}{\pend}\providecommand{\mmmcpriorQwenP}{\pend}
+\providecommand{\novelpriorGemmaAcc}{\pend}\providecommand{\novelpriorGemmaP}{\pend}
+\providecommand{\novelcardGemmaAcc}{\pend}\providecommand{\novelcardGemmaP}{\pend}
+\providecommand{\LadMMMCBlindAllRight}{\pend}\providecommand{\LadMMMCTopics}{\pend}\providecommand{\LadMMMCAbstained}{\pend}
+\providecommand{\LadMMMCVideos}{\pend}\providecommand{\LadMMMCSepOne}{\pend}\providecommand{\LadMMMCSepTwo}{\pend}\providecommand{\LadMMMCLBOne}{\pend}\providecommand{\LadMMMCLBTwo}{\pend}\providecommand{\LadMMMCTiesOne}{\pend}\providecommand{\LadMMMCTiesTwo}{\pend}\providecommand{\LadMMMCDefinedNVG}{\pend}
+\providecommand{\LadSmallSBlind}{\pend}\providecommand{\LadSmallDefinedNine}{\pend}\providecommand{\LadSmallSepNine}{\pend}\providecommand{\LadSmallSepRawNine}{\pend}\providecommand{\LadSmallLBNine}{\pend}\providecommand{\LadSmallLBRawNine}{\pend}\providecommand{\LadSmallLGNine}{\pend}\providecommand{\LadMMMCSBlind}{\pend}\providecommand{\LadMMMCSVisual}{\pend}\providecommand{\LadMMMCSepRawNine}{\pend}
+\providecommand{\LadNovelSBlind}{\pend}\providecommand{\LadNovelDefinedNine}{\pend}\providecommand{\LadNovelSepNine}{\pend}\providecommand{\LadNovelDefinedSeven}{\pend}\providecommand{\LadNovelSepSeven}{\pend}\providecommand{\LadNovelSFrames}{\pend}\providecommand{\LadNovelSVisual}{\pend}\providecommand{\AdmIncompleteBefore}{\pend}\providecommand{\AdmTotal}{\pend}\providecommand{\AdmComplete}{\pend}\providecommand{\AdmClean}{\pend}\providecommand{\ClaudeFaults}{\pend}\providecommand{\ClaudeSections}{\pend}\providecommand{\ClaudeCost}{\pend}\providecommand{\ClaudeOverlap}{\pend}\providecommand{\ClaudeOther}{\pend}\providecommand{\ClaudeOffScreen}{\pend}\providecommand{\ClaudeLeftover}{\pend}\providecommand{\ClaudeCrowded}{\pend}\providecommand{\ClaudeUnreadable}{\pend}\providecommand{\ShiftsIn}{\pend}\providecommand{\ShiftsRemoved}{\pend}\providecommand{\ShiftNotes}{\pend}\providecommand{\LSDiff}{\pend}\providecommand{\LSWins}{\pend}\providecommand{\LSN}{\pend}\providecommand{\LSGate}{\pend}
+\providecommand{\LadNovelBlindAllRight}{\pend}\providecommand{\LadNovelTopics}{\pend}\providecommand{\LadNovelAbstained}{\pend}
+
+\newcommand{\Sblind}{S_{\text{none}}}
+\newcommand{\Sstatic}{S_{\text{static}}}
+\newcommand{\Svisual}{S_{\text{visual}}}
+\newcommand{\Beff}{B_{\text{eff}}}
+% noise model (bench/noise_model.py), filled by make_tables.py
+\providecommand{\LSOursConflicts}{\pend}\providecommand{\LSClaudeConflicts}{\pend}\providecommand{\LSOursAttach}{\pend}\providecommand{\LSClaudeAttach}{\pend}\providecommand{\LSOursMvqs}{\pend}\providecommand{\LSClaudeMvqs}{\pend}\providecommand{\NMRepeatMoved}{\pend}\providecommand{\NMRepeatN}{\pend}\providecommand{\NMFloorOne}{\pend}\providecommand{\NMFloorAll}{\pend}\providecommand{\NMGain}{\pend}\providecommand{\NMGainPos}{\pend}\providecommand{\NMGainN}{\pend}\providecommand{\NMSpec}{\pend}\providecommand{\NMSpecPos}{\pend}\providecommand{\NMSpecN}{\pend}\providecommand{\NMFramesDense}{\pend}\providecommand{\NMFramesDensePos}{\pend}\providecommand{\NMFramesDenseN}{\pend}\providecommand{\NMLayoutMDE}{\pend}\providecommand{\NMRuleFPR}{\pend}\providecommand{\NMSmallMDE}{\pend}

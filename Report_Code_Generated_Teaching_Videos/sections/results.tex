@@ -1,0 +1,77 @@
+\section{Results}\label{sec:results}
+
+\paragraph{Decision rules, fixed before the results.} A measure is usable if it scores most videos, a topic's own
+video scores higher than another topic's video, and two measurements of the same videos agree. The learner repair
+helps if it beats the generic repair of the same size; finding the weak section matters if it also beats rewriting
+every section. A pipeline feature helps if it raises these differences without hurting the layout. All numbers are
+means over topics on a 0--100 scale; paired bootstrap intervals and Wilcoxon tests are kept with the result files.
+We call a difference \emph{beyond noise} only if it passes two tests. First, it must survive randomly swapping the two
+versions' answers question by question. Second, its sign must hold across topics. The student is not fully
+repeatable. We re-asked \NMRepeatN{} questions on identical frames, and its confidence in the right answer moved on
+\NMRepeatMoved{} of them, a few times by up to half the scale. On one concept, repeat noise alone moves M9 by up to
+\NMFloorOne{} points (95\%); on the mean of all concepts, by up to \NMFloorAll{}.
+
+\paragraph{The ladder on MMMC} (Table~\ref{tab:ladder_mmmc}). Our analysis yields four insights.
+(i) \textbf{The student already knows MMMC.} Forced to choose, it answers every question right with no video on
+\LadMMMCBlindAllRight{} of \LadMMMCTopics{} pilot topics. There is nothing left to learn, so every gain measure
+(M3--M9) scores \LadMMMCDefinedNVG{} videos.
+(ii) \textbf{TeachQuiz sees the topic, not the repair.} With answers matched in order (M1), a topic's own video beats
+another topic's video by \LadMMMCSepOne{} points, but the learner repair beats the base video by only
+\LadMMMCLBOne{}, and \LadMMMCTiesOne{} of \LadMMMCTopics{} topics are ties. With forced choice (M2), all
+\LadMMMCTiesTwo{} topics are ties.
+(iii) \textbf{The raw scores sit at the prior ceiling.} Without normalisation, confidence in the right answer is
+\LadMMMCSBlind{} with no video and \LadMMMCSVisual{} with the dense video. Another topic's video lowers it further,
+which is all that the own-versus-other difference of R9 (\LadMMMCSepRawNine{}) measures.
+(iv) \textbf{A smaller student does not change the picture.} With \texttt{qwen2.5vl:3b}, confidence with no video is
+\LadSmallSBlind{}, so the gain on 3 frames per section (M9) scores \LadSmallDefinedNine{} videos
+(Table~\ref{tab:ladder_small}). Its own video beats another topic's by \LadSmallSepNine{} points, but the learner
+repair scores \LadSmallLBNine{} against the base video: each topic's gain rests on one or two questions. With so
+little room left, a learner-versus-base difference would have to reach about \NMSmallMDE{} points before this design
+could detect it.
+On MMMC, with this student, the repair can neither succeed nor fail; the pilot's null result is not evidence
+against it.
+
+\input{tables/ladder_small}
+
+\paragraph{The ladder on NOVEL-12} (Table~\ref{tab:ladder_novel}). On the \LadNovelTopics{} admitted concepts the
+student does not know the answers in advance (confidence \LadNovelSBlind{} with no video), so the gain measures give
+scores. Three insights follow.
+(i) \textbf{The videos teach invented concepts.} The gain on 3 frames per section (M9) scores
+\LadNovelDefinedNine{} base videos. It averages \NMGain{} points and is positive on \NMGainPos{} of \NMGainN{}
+concepts, which is beyond noise.
+(ii) \textbf{What the student learns is the topic of the video.} A topic's own video beats another topic's video by
+\LadNovelSepNine{} points of M9, on \NMSpecPos{} of \NMSpecN{} concepts. This is also beyond noise.
+(iii) \textbf{Three sharp frames per section teach more than the dense video, on these videos.} Confidence on the
+right answer is \LadNovelSFrames{} with 3 frames per section and \LadNovelSVisual{} with the dense video. D-VGAIN on
+the dense video (M7) scores \LadNovelDefinedSeven{} videos with \LadNovelSepSeven{} points of separation. M9 is
+\NMFramesDense{} points above the dense video's gain, on \NMFramesDensePos{} of \NMFramesDenseN{} concepts. The
+difference is beyond noise and holds across concepts, but only just: its interval barely excludes zero. Two things
+change together here: the 3 frames are larger (768 pixels wide, against 512) and far fewer. So we cannot yet say
+which of the two matters.
+
+A single concept's score is fragile. It rests on 8 questions, and a concept the student half knows leaves little room
+to learn. On \emph{Sorrel counts} (confidence 66.8 with no video), one changed answer in one option order moves M9 by
+about 19 points. The only negative gain in (i) is this concept's, and it is within noise.
+
+\paragraph{Video quality} (Tables~\ref{tab:quality} and~\ref{tab:layout_study}). \AdmIncompleteBefore{} of
+\AdmTotal{} NOVEL-12 base videos had silently dropped a section that failed to render. After one fresh attempt,
+\AdmComplete{} were complete and enter the study. Claude (\texttt{claude-opus-5-5}), seeing only code, frames and the
+automatic reports, fixed \ClaudeFaults{} visible faults in their \ClaudeSections{} sections (\ClaudeOverlap{} overlaps,
+\ClaudeOther{} objects missing or mistimed, \ClaudeOffScreen{} off screen, \ClaudeLeftover{} leftovers). By every
+check, the videos got cleaner. Lasting conflicts fell from \LSOursConflicts{} to \LSClaudeConflicts{}, and broken
+attachments fell from \LSOursAttach{} to \LSClaudeAttach{}. Yet MVQS rose only from \LSOursMvqs{} to
+\LSClaudeMvqs{}. It can even fall when a fix is right. On one \emph{Glint numbers} section, a shift had left two
+highlight boxes over empty space, and Claude moved them back onto the digits they mark. MVQS fell from 88.4 to 67.0,
+because the boxes now touch the digits. Our layout repair had inserted \ShiftsIn{} \texttt{shift} calls; Claude removed \ShiftsRemoved{}, and
+\ShiftNotes{} of its notes name a shift as the cause of a fault. By the rule written before scoring, layout changes
+learning if Claude-fixed beats ours by at least 5 points of M9 on average and on at least 7 of 10 concepts. The
+difference is \LSDiff{} points with \LSWins{} of \LSN{}, so the rule is \LSGate{}. On noise alone, the rule
+passes in \NMRuleFPR\% of random swaps. This is a weak null result. With 10 concepts of 8 questions each, the study
+can only detect a layout effect of about \NMLayoutMDE{} points or more, far above the rule's bar of 5. No large
+layout effect appeared; smaller effects remain possible. Single concepts moved both ways, from
+$-25.9$ (\emph{Mirthful triangles}) to $+62.7$ (\emph{Sorrel counts}). Once we allow for testing ten concepts, none of
+these moves is beyond noise. Sorrel's gain on 3 frames also reverses on the dense video ($-19.7$).
+
+\paragraph{Pipeline ablation.} The stages F0--F5
+(\S\ref{sec:ablation}) are built and their decision rules fixed; their runs, about 14 hours on the shared machine,
+continue after this draft.

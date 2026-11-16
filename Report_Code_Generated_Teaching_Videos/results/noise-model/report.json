@@ -1,0 +1,940 @@
+{
+ "repeat_noise": {
+  "pairs": 29,
+  "questions": 232,
+  "moved_over_0.01": 33,
+  "max_abs": 0.46181,
+  "floor_one_topic_M9": 0.07199468308632621,
+  "floor_mean_of_topics_M9": 0.019241395290861007,
+  "sources": [
+   "ours vs autofix (identical frames)",
+   "repeat r1",
+   "repeat r2"
+  ]
+ },
+ "comparisons": [
+  {
+   "id": "N1",
+   "family": "primary",
+   "question": "NOVEL-12: the base video teaches (M9 > 0, 3 frames vs no video)",
+   "n": 10,
+   "mean": 0.4244399660386534,
+   "ci": [
+    0.0691339153497645,
+    0.6223294545893034
+   ],
+   "se": 0.14087279334946487,
+   "mde": 0.3944438213785016,
+   "p_measurement": 9.999000099990002e-05,
+   "p_topics": 0.0078125,
+   "positive": 9,
+   "per_topic": [
+    {
+     "topic": "Tovan sums",
+     "value": 0.7642305854047768,
+     "p": 0.0081991800819918,
+     "sd_items": 0.12441941946000461
+    },
+    {
+     "topic": "Krell steps on a grid",
+     "value": 0.2577148333333334,
+     "p": 0.14808519148085192,
+     "sd_items": 0.2001313514913609
+    },
+    {
+     "topic": "Vorn sequences",
+     "value": 0.4270980302778158,
+     "p": 0.5295470452954705,
+     "sd_items": 0.5831637758897582
+    },
+    {
+     "topic": "Glint numbers",
+     "value": 0.7920070735439212,
+     "p": 0.08789121087891211,
+     "sd_items": 0.31242569987288293
+    },
+    {
+     "topic": "Mirthful triangles",
+     "value": 0.4202685019236287,
+     "p": 0.09809019098090191,
+     "sd_items": 0.22626750350484115
+    },
+    {
+     "topic": "Sorrel counts of lattice rectangles",
+     "value": -0.27904957128074415,
+     "p": 0.32226777322267774,
+     "sd_items": 0.41402195075339776
+    },
+    {
+     "topic": "Quill distance",
+     "value": 0.26856583984724525,
+     "p": 0.16918308169183083,
+     "sd_items": 0.1845904796397006
+    },
+    {
+     "topic": "Dapple numbers",
+     "value": 0.4564441516413873,
+     "p": 0.26017398260173985,
+     "sd_items": 0.3126817808925042
+    },
+    {
+     "topic": "Orbit words",
+     "value": 0.619020123589589,
+     "p": 0.10188981101889812,
+     "sd_items": 0.23332966376581285
+    },
+    {
+     "topic": "Vells of 2×2 grids",
+     "value": 0.518100092105581,
+     "p": 0.10798920107989202,
+     "sd_items": 0.2086630795287414
+    }
+   ],
+   "p_holm": 0.00039996000399960006,
+   "verdict": "real, and holds over topics"
+  },
+  {
+   "id": "N2",
+   "family": "primary",
+   "question": "NOVEL-12: the gain is specific (own video − another topic's video, M9)",
+   "n": 10,
+   "mean": 0.6443760802644798,
+   "ci": [
+    0.44189381044712417,
+    1.049484867984491
+   ],
+   "se": 0.15235216539989857,
+   "mde": 0.426586063119716,
+   "p_measurement": 9.999000099990002e-05,
+   "p_topics": 0.001953125,
+   "positive": 10,
+   "per_topic": [
+    {
+     "topic": "Tovan sums",
+     "value": 0.8330950346106953,
+     "p": 0.0072992700729927005,
+     "sd_items": 0.1726847872110039
+    },
+    {
+     "topic": "Krell steps on a grid",
+     "value": 0.31650975000000003,
+     "p": 0.18298170182981702,
+     "sd_items": 0.19544498944783284
+    },
+    {
+     "topic": "Vorn sequences",
+     "value": 0.9066774172931331,
+     "p": 0.0756924307569243,
+     "sd_items": 0.6608169293700709
+    },
+    {
+     "topic": "Glint numbers",
+     "value": 1.068155021080319,
+     "p": 0.008099190080991902,
+     "sd_items": 0.28463342717937373
+    },
+    {
+     "topic": "Mirthful triangles",
+     "value": 0.7362323031255787,
+     "p": 0.0164983501649835,
+     "sd_items": 0.37093173788708944
+    },
+    {
+     "topic": "Sorrel counts of lattice rectangles",
+     "value": 0.43070049051535597,
+     "p": 0.23007699230076992,
+     "sd_items": 0.640108029965006
+    },
+    {
+     "topic": "Quill distance",
+     "value": 0.2717844885595268,
+     "p": 0.0387961203879612,
+     "sd_items": 0.16903028165434827
+    },
+    {
+     "topic": "Dapple numbers",
+     "value": 0.5881211254073692,
+     "p": 0.15458454154584542,
+     "sd_items": 0.3918413453573721
+    },
+    {
+     "topic": "Orbit words",
+     "value": 0.6776839548889084,
+     "p": 0.039196080391960805,
+     "sd_items": 0.21420612224826285
+    },
+    {
+     "topic": "Vells of 2×2 grids",
+     "value": 0.6148012171639103,
+     "p": 0.0456954304569543,
+     "sd_items": 0.3439061554287494
+    }
+   ],
+   "p_holm": 0.00039996000399960006,
+   "verdict": "real, and holds over topics"
+  },
+  {
+   "id": "N3",
+   "family": "secondary",
+   "question": "NOVEL-12: the dense video teaches (NVG, dense vs no video)",
+   "n": 10,
+   "mean": 0.1406394198944086,
+   "ci": [
+    -0.10901177420065987,
+    0.2840510451367464
+   ],
+   "se": 0.1000031863367335,
+   "mde": 0.28000892174285374,
+   "p_measurement": 0.04989501049895011,
+   "p_topics": 0.015625,
+   "positive": 9,
+   "per_topic": [
+    {
+     "topic": "Tovan sums",
+     "value": 0.11540725285452161,
+     "p": 0.7536246375362464,
+     "sd_items": 0.1499401084856944
+    },
+    {
+     "topic": "Krell steps on a grid",
+     "value": 0.18108758333333333,
+     "p": 0.2940705929407059,
+     "sd_items": 0.17087978101564447
+    },
+    {
+     "topic": "Vorn sequences",
+     "value": 0.49692163076693013,
+     "p": 0.12438756124387561,
+     "sd_items": 0.2616684614464563
+    },
+    {
+     "topic": "Glint numbers",
+     "value": 0.1588630881720813,
+     "p": 0.6297370262973703,
+     "sd_items": 0.3454038775092249
+    },
+    {
+     "topic": "Mirthful triangles",
+     "value": 0.17471838734292872,
+     "p": 0.6759324067593241,
+     "sd_items": 0.2714516205796405
+    },
+    {
+     "topic": "Sorrel counts of lattice rectangles",
+     "value": -0.15983638836334813,
+     "p": 0.47085291470852914,
+     "sd_items": 0.29892873461919045
+    },
+    {
+     "topic": "Quill distance",
+     "value": 0.11625300630846444,
+     "p": 0.5252474752524747,
+     "sd_items": 0.1688118337443315
+    },
+    {
+     "topic": "Dapple numbers",
+     "value": 0.07944149095182594,
+     "p": 0.7971202879712029,
+     "sd_items": 0.28009088274350924
+    },
+    {
+     "topic": "Orbit words",
+     "value": 0.19547811850655333,
+     "p": 0.22447755224477553,
+     "sd_items": 0.16680716580710594
+    },
+    {
+     "topic": "Vells of 2×2 grids",
+     "value": 0.048060029070795277,
+     "p": 0.7602239776022398,
+     "sd_items": 0.2623500710661284
+    }
+   ],
+   "verdict": "beyond noise for these videos only (not over topics / not after correction)"
+  },
+  {
+   "id": "N4",
+   "family": "secondary",
+   "question": "NOVEL-12: 3 frames teach more than the dense video (M9 − NVG dense)",
+   "n": 10,
+   "mean": 0.2838005461442449,
+   "ci": [
+    0.004459627189750371,
+    0.5274573272980998
+   ],
+   "se": 0.13478158275632532,
+   "mde": 0.37738843171771086,
+   "p_measurement": 0.001999800019998,
+   "p_topics": 0.013671875,
+   "positive": 8,
+   "per_topic": [
+    {
+     "topic": "Tovan sums",
+     "value": 0.6488233325502553,
+     "p": 0.0066993300669933005,
+     "sd_items": 0.14156935312937097
+    },
+    {
+     "topic": "Krell steps on a grid",
+     "value": 0.07662725000000006,
+     "p": 0.785921407859214,
+     "sd_items": 0.2991904692799933
+    },
+    {
+     "topic": "Vorn sequences",
+     "value": -0.06982360048911435,
+     "p": 1.0,
+     "sd_items": 0.5453473895547084
+    },
+    {
+     "topic": "Glint numbers",
+     "value": 0.6331439853718399,
+     "p": 0.06829317068293171,
+     "sd_items": 0.27603346550520047
+    },
+    {
+     "topic": "Mirthful triangles",
+     "value": 0.24555011458069997,
+     "p": 0.536046395360464,
+     "sd_items": 0.4353952342758538
+    },
+    {
+     "topic": "Sorrel counts of lattice rectangles",
+     "value": -0.11921318291739602,
+     "p": 0.43975602439756023,
+     "sd_items": 0.17055029280521972
+    },
+    {
+     "topic": "Quill distance",
+     "value": 0.1523128335387808,
+     "p": 0.5504449555044496,
+     "sd_items": 0.21903301653589347
+    },
+    {
+     "topic": "Dapple numbers",
+     "value": 0.37700266068956134,
+     "p": 0.18848115188481152,
+     "sd_items": 0.27282754443160917
+    },
+    {
+     "topic": "Orbit words",
+     "value": 0.4235420050830357,
+     "p": 0.066993300669933,
+     "sd_items": 0.19378341302341176
+    },
+    {
+     "topic": "Vells of 2×2 grids",
+     "value": 0.4700400630347857,
+     "p": 0.11408859114088592,
+     "sd_items": 0.26656244196732093
+    }
+   ],
+   "verdict": "real, and holds over topics"
+  },
+  {
+   "id": "L1",
+   "family": "primary",
+   "question": "Layout study: Claude-fixed − ours (M9, preregistered)",
+   "n": 10,
+   "mean": 0.051401788518133706,
+   "ci": [
+    -0.09999275793296132,
+    0.22947818834097808
+   ],
+   "se": 0.08632821015891096,
+   "mde": 0.24171898844495066,
+   "p_measurement": 0.26607339266073393,
+   "p_topics": 0.619140625,
+   "positive": 5,
+   "per_topic": [
+    {
+     "topic": "Tovan sums",
+     "value": -0.10897230131759583,
+     "p": 0.20807919208079192,
+     "sd_items": 0.09559128550892533
+    },
+    {
+     "topic": "Krell steps on a grid",
+     "value": 0.2424194166666666,
+     "p": 0.0685931406859314,
+     "sd_items": 0.16076582856434332
+    },
+    {
+     "topic": "Vorn sequences",
+     "value": -0.031210732779100026,
+     "p": 0.24767523247675233,
+     "sd_items": 0.01534480624903373
+    },
+    {
+     "topic": "Glint numbers",
+     "value": -0.07985064488181426,
+     "p": 0.2756724327567243,
+     "sd_items": 0.10040061031980849
+    },
+    {
+     "topic": "Mirthful triangles",
+     "value": -0.2587332560822173,
+     "p": 0.15328467153284672,
+     "sd_items": 0.1575258306837434
+    },
+    {
+     "topic": "Sorrel counts of lattice rectangles",
+     "value": 0.6268389626525985,
+     "p": 0.014098590140985901,
+     "sd_items": 0.1884427082848661
+    },
+    {
+     "topic": "Quill distance",
+     "value": 0.0914217714799519,
+     "p": 0.32296770322967705,
+     "sd_items": 0.07704467663234502
+    },
+    {
+     "topic": "Dapple numbers",
+     "value": 0.028187994399858474,
+     "p": 0.6292370762923708,
+     "sd_items": 0.14147137668655885
+    },
+    {
+     "topic": "Orbit words",
+     "value": 0.031342721259620676,
+     "p": 0.7828217178282172,
+     "sd_items": 0.10480530210832366
+    },
+    {
+     "topic": "Vells of 2×2 grids",
+     "value": -0.027426046216631694,
+     "p": 0.5475452454754525,
+     "sd_items": 0.04665936314502292
+    }
+   ],
+   "rule_false_positive_rate": 0.0819,
+   "rule_fires": false,
+   "p_holm": 0.44515548445155484,
+   "verdict": "within noise"
+  },
+  {
+   "id": "L2",
+   "family": "secondary",
+   "question": "Layout study: autofix − ours (M9)",
+   "n": 10,
+   "mean": -0.0002638125804976466,
+   "ci": [
+    -0.015190675520126184,
+    0.015065256327622682
+   ],
+   "se": 0.007276077657006803,
+   "mde": 0.020373017439619046,
+   "p_measurement": 0.9481051894810519,
+   "p_topics": 1.0,
+   "positive": 1,
+   "per_topic": [
+    {
+     "topic": "Tovan sums",
+     "value": 0.0,
+     "p": 1.0,
+     "sd_items": 0.0
+    },
+    {
+     "topic": "Krell steps on a grid",
+     "value": 0.03562883333333333,
+     "p": 0.9873012698730127,
+     "sd_items": 0.038239576254415354
+    },
+    {
+     "topic": "Vorn sequences",
+     "value": 0.0,
+     "p": 1.0,
+     "sd_items": 0.0
+    },
+    {
+     "topic": "Glint numbers",
+     "value": 0.0,
+     "p": 1.0,
+     "sd_items": 0.0
+    },
+    {
+     "topic": "Mirthful triangles",
+     "value": 0.0,
+     "p": 1.0,
+     "sd_items": 0.0
+    },
+    {
+     "topic": "Sorrel counts of lattice rectangles",
+     "value": 0.0,
+     "p": 1.0,
+     "sd_items": 0.0
+    },
+    {
+     "topic": "Quill distance",
+     "value": 0.0,
+     "p": 1.0,
+     "sd_items": 0.0
+    },
+    {
+     "topic": "Dapple numbers",
+     "value": -0.004053180596260808,
+     "p": 0.7495250474952505,
+     "sd_items": 0.006026571053873738
+    },
+    {
+     "topic": "Orbit words",
+     "value": -0.02410292030520278,
+     "p": 0.5581441855814419,
+     "sd_items": 0.036434660380593856
+    },
+    {
+     "topic": "Vells of 2×2 grids",
+     "value": -0.01011085823684621,
+     "p": 0.5264473552644735,
+     "sd_items": 0.014260138389422248
+    }
+   ],
+   "verdict": "within noise"
+  },
+  {
+   "id": "L3",
+   "family": "secondary",
+   "question": "Layout study: Claude-fixed − ours (M7, dense video + motion bonus)",
+   "n": 10,
+   "mean": 0.014715248780856616,
+   "ci": [
+    -0.10686588895770684,
+    0.11420512194372809
+   ],
+   "se": 0.0553099475670489,
+   "mde": 0.1548678531877369,
+   "p_measurement": 0.6432356764323568,
+   "p_topics": 0.673828125,
+   "positive": 6,
+   "per_topic": [
+    {
+     "topic": "Tovan sums",
+     "value": 0.10117524914460571,
+     "p": 0.3281671832816718,
+     "sd_items": 0.08807959486464267
+    },
+    {
+     "topic": "Krell steps on a grid",
+     "value": -0.06597759375000001,
+     "p": 0.761023897610239,
+     "sd_items": 0.20679772802582533
+    },
+    {
+     "topic": "Vorn sequences",
+     "value": 0.1054607160164438,
+     "p": 0.014498550144985502,
+     "sd_items": 0.04246020625638491
+    },
+    {
+     "topic": "Glint numbers",
+     "value": 0.05291881932890133,
+     "p": 0.8976102389761024,
+     "sd_items": 0.08384309189179445
+    },
+    {
+     "topic": "Mirthful triangles",
+     "value": 0.04206401104856006,
+     "p": 0.8328167183281672,
+     "sd_items": 0.07675408605336044
+    },
+    {
+     "topic": "Sorrel counts of lattice rectangles",
+     "value": -0.19670671429900655,
+     "p": 0.054094590540945904,
+     "sd_items": 0.20111163685551772
+    },
+    {
+     "topic": "Quill distance",
+     "value": -0.02537104609759311,
+     "p": 0.25477452254774524,
+     "sd_items": 0.028252700157439352
+    },
+    {
+     "topic": "Dapple numbers",
+     "value": -0.07152166282629836,
+     "p": 0.6694330566943306,
+     "sd_items": 0.15760544019815984
+    },
+    {
+     "topic": "Orbit words",
+     "value": 0.01663912459503769,
+     "p": 0.9226077392260774,
+     "sd_items": 0.03435076738316458
+    },
+    {
+     "topic": "Vells of 2×2 grids",
+     "value": 0.18847158464791558,
+     "p": 0.0847915208479152,
+     "sd_items": 0.139539442070354
+    }
+   ],
+   "verdict": "within noise"
+  },
+  {
+   "id": "P1",
+   "family": "primary",
+   "question": "MMMC pilot, 3B student: learner − base (M9)",
+   "n": 9,
+   "mean": -0.23682539063633762,
+   "ci": [
+    -1.8616461464450949,
+    0.274224295231968
+   ],
+   "se": 0.5721335101612297,
+   "mde": 1.601973828451443,
+   "p_measurement": 0.22257774222577742,
+   "p_topics": 0.7265625,
+   "positive": 5,
+   "per_topic": [
+    {
+     "topic": "The inscribed square or rectangle problem in topology",
+     "value": 0.24579292732042038,
+     "p": 0.3154684531546845,
+     "sd_items": 0.4461586730271145
+    },
+    {
+     "topic": "Hamming error correction codes",
+     "value": -0.7210044634822355,
+     "p": 0.060493950604939506,
+     "sd_items": 0.14153314071467485
+    },
+    {
+     "topic": "Space-filling curves and the relationship between infinite and finite mathematics",
+     "value": -0.04550637591898704,
+     "p": 0.9405059494050595,
+     "sd_items": 0.07079413077304211
+    },
+    {
+     "topic": "Uncertainty Principle in the Context of Fourier Transforms",
+     "value": 0.04502242181545495,
+     "p": 0.3144685531446855,
+     "sd_items": 0.07526714023578028
+    },
+    {
+     "topic": "Holomorphic dynamics and iterated complex functions",
+     "value": null,
+     "p": null,
+     "sd_items": 0.05977620886582392
+    },
+    {
+     "topic": "Backpropagation calculus",
+     "value": null,
+     "p": null,
+     "sd_items": 0.00945946971894294
+    },
+    {
+     "topic": "Error correction codes and Hamming codes",
+     "value": 0.018455953998231925,
+     "p": 0.3180681931806819,
+     "sd_items": 0.010569365303501844
+    },
+    {
+     "topic": "Large Language Models and Transformers in Deep Learning",
+     "value": null,
+     "p": null,
+     "sd_items": 0.1735431942037078
+    },
+    {
+     "topic": "Interconnections in number theory: π, primes, complex numbers, and prime regularities",
+     "value": 0.7783887632633357,
+     "p": 0.6933306669333067,
+     "sd_items": 0.04442286802135428
+    },
+    {
+     "topic": "Higher order derivatives",
+     "value": 0.07489033039703259,
+     "p": 0.5614438556144385,
+     "sd_items": 0.036697733297871696
+    },
+    {
+     "topic": "Sum of normal distributions, Gaussian + Gaussian = Gaussian",
+     "value": -2.5274680731202914,
+     "p": 0.1255874412558744,
+     "sd_items": 2.8426247387660712
+    },
+    {
+     "topic": "The determinant",
+     "value": 0.0,
+     "p": 1.0,
+     "sd_items": 0.0
+    }
+   ],
+   "p_holm": 0.44515548445155484,
+   "verdict": "within noise"
+  },
+  {
+   "id": "P2",
+   "family": "secondary",
+   "question": "MMMC pilot, 3B student: own − other topic (raw P(right), R9)",
+   "n": 12,
+   "mean": 0.06368792499999996,
+   "ci": [
+    -0.0004322229166666627,
+    0.16831616291666665
+   ],
+   "se": 0.04473695766735973,
+   "mde": 0.12526348146860725,
+   "p_measurement": 0.0093990600939906,
+   "p_topics": 0.0283203125,
+   "positive": 9,
+   "per_topic": [
+    {
+     "topic": "The inscribed square or rectangle problem in topology",
+     "value": 0.07043659999999996,
+     "p": 0.565943405659434,
+     "sd_items": 0.11574987898913801
+    },
+    {
+     "topic": "Hamming error correction codes",
+     "value": 0.07585450000000016,
+     "p": 0.06269373062693731,
+     "sd_items": 0.05281296433502208
+    },
+    {
+     "topic": "Space-filling curves and the relationship between infinite and finite mathematics",
+     "value": -0.00260730000000009,
+     "p": 1.0,
+     "sd_items": 0.015273751913165146
+    },
+    {
+     "topic": "Uncertainty Principle in the Context of Fourier Transforms",
+     "value": 0.008991099999999919,
+     "p": 0.9383061693830617,
+     "sd_items": 0.04674799314177947
+    },
+    {
+     "topic": "Holomorphic dynamics and iterated complex functions",
+     "value": 0.019286899999999996,
+     "p": 0.567043295670433,
+     "sd_items": 0.01877069498638231
+    },
+    {
+     "topic": "Backpropagation calculus",
+     "value": 0.022745799999999816,
+     "p": 0.0608939106089391,
+     "sd_items": 0.01365444737261918
+    },
+    {
+     "topic": "Error correction codes and Hamming codes",
+     "value": 0.019172600000000095,
+     "p": 0.0628937106289371,
+     "sd_items": 0.007469060757430997
+    },
+    {
+     "topic": "Large Language Models and Transformers in Deep Learning",
+     "value": 0.001401399999999997,
+     "p": 0.8165183481651834,
+     "sd_items": 0.005169509440594264
+    },
+    {
+     "topic": "Interconnections in number theory: π, primes, complex numbers, and prime regularities",
+     "value": 0.04008259999999986,
+     "p": 0.12258774122587741,
+     "sd_items": 0.018709721216688936
+    },
+    {
+     "topic": "Higher order derivatives",
+     "value": -0.02859490000000009,
+     "p": 0.36796320367963203,
+     "sd_items": 0.023702404595106943
+    },
+    {
+     "topic": "Sum of normal distributions, Gaussian + Gaussian = Gaussian",
+     "value": 0.5374858,
+     "p": 0.1260873912608739,
+     "sd_items": 0.12692370033908318
+    },
+    {
+     "topic": "The determinant",
+     "value": 0.0,
+     "p": 1.0,
+     "sd_items": 0.0
+    }
+   ],
+   "verdict": "beyond noise for these videos only (not over topics / not after correction)"
+  },
+  {
+   "id": "P3",
+   "family": "secondary",
+   "question": "MMMC pilot, gemma: own − other topic (raw P(right), R9; M9 undefined at the ceiling)",
+   "n": 12,
+   "mean": 0.12954834999999998,
+   "ci": [
+    0.03519364333333332,
+    0.2504106468750001
+   ],
+   "se": 0.0556079395444918,
+   "mde": 0.15570223072457703,
+   "p_measurement": 9.999000099990002e-05,
+   "p_topics": 0.00048828125,
+   "positive": 12,
+   "per_topic": [
+    {
+     "topic": "The inscribed square or rectangle problem in topology",
+     "value": 0.5164945000000001,
+     "p": 0.05749425057494251,
+     "sd_items": 0.10308972807844577
+    },
+    {
+     "topic": "Hamming error correction codes",
+     "value": 0.0020167999999999298,
+     "p": 1.0,
+     "sd_items": 0.0018044779649959279
+    },
+    {
+     "topic": "Space-filling curves and the relationship between infinite and finite mathematics",
+     "value": 0.00321820000000006,
+     "p": 0.1222877712228777,
+     "sd_items": 0.002840054948381065
+    },
+    {
+     "topic": "Uncertainty Principle in the Context of Fourier Transforms",
+     "value": 0.12887519999999986,
+     "p": 0.05909409059094091,
+     "sd_items": 0.0779890419056432
+    },
+    {
+     "topic": "Holomorphic dynamics and iterated complex functions",
+     "value": 0.20043260000000018,
+     "p": 0.126987301269873,
+     "sd_items": 0.17580588794545454
+    },
+    {
+     "topic": "Backpropagation calculus",
+     "value": 0.10045659999999978,
+     "p": 0.0658934106589341,
+     "sd_items": 0.09026026369584467
+    },
+    {
+     "topic": "Error correction codes and Hamming codes",
+     "value": 0.10051569999999987,
+     "p": 0.31826817318268175,
+     "sd_items": 0.08295996590490173
+    },
+    {
+     "topic": "Large Language Models and Transformers in Deep Learning",
+     "value": 0.4742529000000001,
+     "p": 0.05909409059094091,
+     "sd_items": 0.08948654110594735
+    },
+    {
+     "topic": "Interconnections in number theory: π, primes, complex numbers, and prime regularities",
+     "value": 0.007700999999999958,
+     "p": 0.8724127587241276,
+     "sd_items": 0.007046654610480347
+    },
+    {
+     "topic": "Higher order derivatives",
+     "value": 6.330000000009939e-05,
+     "p": 1.0,
+     "sd_items": 6.030721554434458e-05
+    },
+    {
+     "topic": "Sum of normal distributions, Gaussian + Gaussian = Gaussian",
+     "value": 0.0006750999999999285,
+     "p": 1.0,
+     "sd_items": 0.0006077742332194951
+    },
+    {
+     "topic": "The determinant",
+     "value": 0.019878299999999904,
+     "p": 0.3705629437056294,
+     "sd_items": 0.01661405312631473
+    }
+   ],
+   "verdict": "real, and holds over topics"
+  },
+  {
+   "id": "P4",
+   "family": "secondary",
+   "question": "MMMC pilot, gemma: learner − base (raw P(right), R9)",
+   "n": 12,
+   "mean": 0.0008536416666666916,
+   "ci": [
+    -0.0008825735416667102,
+    0.003534720208333339
+   ],
+   "se": 0.0011338898076893342,
+   "mde": 0.0031748914615301353,
+   "p_measurement": 0.41425857414258577,
+   "p_topics": 0.41015625,
+   "positive": 6,
+   "per_topic": [
+    {
+     "topic": "The inscribed square or rectangle problem in topology",
+     "value": 0.008440599999999798,
+     "p": 0.6871312868713129,
+     "sd_items": 0.007634590409808765
+    },
+    {
+     "topic": "Hamming error correction codes",
+     "value": -1.600000000046009e-06,
+     "p": 1.0,
+     "sd_items": 5.53476372666898e-06
+    },
+    {
+     "topic": "Space-filling curves and the relationship between infinite and finite mathematics",
+     "value": 0.0036469000000000085,
+     "p": 0.7475252474752525,
+     "sd_items": 0.0033088523215791784
+    },
+    {
+     "topic": "Uncertainty Principle in the Context of Fourier Transforms",
+     "value": 0.0032190999999999192,
+     "p": 0.5004499550044995,
+     "sd_items": 0.002890355771244025
+    },
+    {
+     "topic": "Holomorphic dynamics and iterated complex functions",
+     "value": 1.6499999999974868e-05,
+     "p": 1.0,
+     "sd_items": 1.5439254992083386e-05
+    },
+    {
+     "topic": "Backpropagation calculus",
+     "value": -7.900000000060636e-06,
+     "p": 0.5066493350664933,
+     "sd_items": 6.272847958482106e-06
+    },
+    {
+     "topic": "Error correction codes and Hamming codes",
+     "value": -0.0029665999999998194,
+     "p": 0.8804119588041196,
+     "sd_items": 0.002740558387751675
+    },
+    {
+     "topic": "Large Language Models and Transformers in Deep Learning",
+     "value": 2.3199999999889975e-05,
+     "p": 1.0,
+     "sd_items": 2.1601168546167236e-05
+    },
+    {
+     "topic": "Interconnections in number theory: π, primes, complex numbers, and prime regularities",
+     "value": -0.0012513999999999026,
+     "p": 0.6963303669633036,
+     "sd_items": 0.0011118780084738132
+    },
+    {
+     "topic": "Higher order derivatives",
+     "value": -5.1999999998164625e-06,
+     "p": 1.0,
+     "sd_items": 4.799980649928242e-06
+    },
+    {
+     "topic": "Sum of normal distributions, Gaussian + Gaussian = Gaussian",
+     "value": 1.970000000017791e-05,
+     "p": 0.5038496150384961,
+     "sd_items": 1.69949473668142e-05
+    },
+    {
+     "topic": "The determinant",
+     "value": -0.0008895999999998239,
+     "p": 0.25777422257774224,
+     "sd_items": 0.000751232218610923
+    }
+   ],
+   "verdict": "within noise"
+  }
+ ]
+}

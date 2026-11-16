@@ -1,0 +1,14 @@
+\begin{table*}[t]\centering\small
+\caption{What the student already knows. Code2Video's unlearning prompt, but the student must choose A--D (no NULL). Accuracy: share of questions right. Confidence: mean probability the student puts on the right answer. Fully known: topics where every question is right with no video. Chance is 25.}\label{tab:priors}
+\begin{tabular}{llrrrrr}\toprule Material & Student & Topics & Questions & Accuracy (\%) & Confidence (\%) & Fully known\\
+\midrule
+\multicolumn{7}{c}{\textit{MMMC (real topics from 3Blue1Brown)}}\\
+No video & gemma4:26b & 117 & 585 & 99.0 & 99.0 & 108 \\
+No video & qwen2.5vl:7b & 117 & 585 & 97.4 & 95.6 & 99 \\
+No video & qwen2.5vl:3b & 117 & 585 & 91.9 & 86.6 & 67 \\
+\midrule
+\multicolumn{7}{c}{\textit{NOVEL-12 (invented concepts)}}\\
+No video & gemma4:26b & 12 & 96 & 41.1 & 41.4 & 0 \\
+Definition card as text & gemma4:26b & 12 & 96 & 84.9 & 83.7 & 1 \\
+\bottomrule\end{tabular}
+\end{table*}

@@ -1,0 +1,35 @@
+\section{Limitations}
+
+\begin{itemize}
+  \item \textbf{Local students see frames, not video.} The student receives up to 4 frames per second at 512 pixels
+  (about 70 tokens a frame), without audio. Code2Video's own protocol (Gemini on the mp4) is implemented and exported
+  for grading by hand, but not run.
+  \item \textbf{One student family.} The main student is \texttt{gemma4:26b}; the prior was also measured with
+  \texttt{qwen2.5vl:7b}. Students of other families may know more or less.
+  \item \textbf{Invented concepts are small.} NOVEL-12's concepts are definable on one card; they test whether a video
+  transmits a definition and its consequences, not deep understanding of a large theory. TEST was written by one model
+  (Claude) and not reviewed by teachers.
+  \item \textbf{The evidence judge is not calibrated.} Its decisions have not been compared with human annotations
+  (e.g. Cohen's $\kappa$~\cite{cohen1960}); the forced-choice versions do not use it.
+  \item \textbf{Twelve topics per set.} Means over 12 topics move a lot with one topic. We do not pool questions
+  across topics, because the topic, not the question, is what receives a repair; a larger set would make the means
+  steadier.
+  \item \textbf{The local coder.} After one retry, two of twelve NOVEL-12 videos were still incomplete and only
+  \AdmClean{} of \AdmTotal{} were clean. Stronger code models are future work; the Claude-fixed versions show the
+  room.
+  \item \textbf{The repair is not yet evaluated on NOVEL-12.} F0--F5 are built and their rules fixed in advance; the runs continue.
+  \item \textbf{The model-free checks are narrow.} The timing check covers two kinds of fault; the attachment check
+  skips labels anchored to a text glyph.
+  \item \textbf{Counterfactual relabelling was not applied to MMMC.} It would rewrite TEST per video and break the
+  paired design; NOVEL-12 controls the prior instead.
+\end{itemize}
+
+\section{Conclusion}
+
+TeachQuiz, as published and as we first ran it, could not have detected teaching: a grading bug dropped answers,
+the student's refusals set $S_1$, and the questions were answered from prior knowledge. Forced choice, a measured
+prior, normalisation, dense silent frames, a motion control, continuous scoring and option rotation each address a
+named failure, and the ladder shows which of them a teaching metric actually needs. A benchmark whose prior is
+controlled by construction is the precondition for asking whether a repair teaches. The layout score has the same
+weakness from the other side: it measures box separation, not whether a viewer can read what belongs to what. The
+repair evaluation itself (F0--F5) is the next step.

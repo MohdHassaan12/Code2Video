@@ -1,0 +1,754 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\input{preamble}
+\usepackage[section]{placeins}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc}
+\usepackage[most]{tcolorbox}
+\newtcolorbox{inshort}{colback=blue!4,colframe=blue!40!black,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,
+  fonttitle=\bfseries\small,title=In short}
+\newtcolorbox{example}[1][]{colback=gray!5,colframe=gray!50,boxrule=0.5pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt,
+  fonttitle=\bfseries\small,title=Example#1}
+\setlength{\parskip}{4pt}
+\input{sections/diagrams}
+
+\title{Does a Generated Teaching Video Actually Teach?\\[4pt]
+\large A detailed account of the problem, the earlier work, what we tried, what broke, what we built, and what we
+found}
+\author{Manideep}
+\date{Working report, 13 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{inshort}
+Computers can now write short animated maths lessons by themselves. We wanted to make such a lesson \emph{better} by
+watching where a simulated student fails to learn and fixing only that part of the video. Our first test showed
+nothing, and finding out why became the main result. Two measures that the field relies on measure something real,
+but not what they are used for. \textbf{TeachQuiz}, Code2Video's quiz score, measures whether the student will answer at all: a grading
+mistake threw away answers, the student refused instead of forgetting, and it already knew almost every answer.
+\textbf{The layout score} measures the distance between boxes: it went up when a label was pushed off its circle (a worse
+layout scored better), and barely moved when \ClaudeFaults{} visible faults were fixed. We built a measure that reads what the student already knows, a
+benchmark of invented concepts that no model has seen, an admission check for videos, and two model-free checks for when
+objects are on screen and what they are attached to. The repair features themselves are built and their rules fixed in advance;
+their evaluation is the next step.
+\end{inshort}
+
+\paperfig{fig_overview.png}{F1}{\textbf{Overview.} Top: TeachQuiz asks the student to forget the topic; instead it refuses, it already knows
+MMMC, and the grader lost answers. Our measurement makes the student choose, measures what it knew, and uses invented
+concepts. Bottom: how we repair a video with learner feedback, and how we evaluate the repair.}{overview}
+
+\imageslot{cover.png}{P1}{A simulated student watches a generated lesson and answers a quiz about it.}
+
+\tableofcontents
+\newpage
+
+%=====================================================================================================================
+\section{The problem in plain words}
+
+\subsection{What a ``code-generated teaching video'' is}
+
+A teaching video in the style of the YouTube channel 3Blue1Brown is an animation: shapes move, equations appear,
+a graph bends, and each step shows an idea. Such videos are usually made with \emph{Manim}~\cite{manim}, a Python
+library in which every animation is a few lines of code. Because the video is code, a language model can write it.
+A \emph{pipeline} for this has three steps (Figure~\ref{fig:pipeline}):
+\begin{enumerate}
+  \item a \textbf{planner} model reads a topic (``the determinant'') and writes a lesson plan: a few sections, each
+  with what it teaches, what it shows and what it says;
+  \item a \textbf{coder} model writes one Manim scene per section;
+  \item the \textbf{renderer} runs the code and joins the clips into one video.
+\end{enumerate}
+The code often fails to run, so a \textbf{repair} step reads the error and asks the coder to fix it. Shapes and text
+often overlap, so a \textbf{layout} step finds and fixes overlaps.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[node distance=0.55cm and 0.5cm, every node/.style={font=\small},
+  box/.style={draw, rounded corners, fill=blue!5, minimum height=0.8cm, align=center, text width=2.2cm},
+  ours/.style={draw, rounded corners, fill=orange!15, minimum height=0.8cm, align=center, text width=2.4cm},
+  >={Stealth}]
+\node[box] (topic) {Topic};
+\node[box, right=of topic] (plan) {Planner:\\lesson plan};
+\node[box, right=of plan] (code) {Coder:\\Manim code};
+\node[box, right=of code] (render) {Render,\\repair, layout};
+\node[box, below=of render] (video) {Video};
+\node[ours, left=of video] (student) {Simulated student\\answers a quiz};
+\node[ours, left=of student] (diag) {Which section\\failed to teach?};
+\node[ours, left=of diag] (fix) {Rewrite only\\that section};
+\draw[->] (topic) -- (plan); \draw[->] (plan) -- (code); \draw[->] (code) -- (render); \draw[->] (render) -- (video);
+\draw[->] (video) -- (student); \draw[->] (student) -- (diag); \draw[->] (diag) -- (fix);
+\draw[->] (fix.north) |- ++(0,0.35) -| (code.south);
+\end{tikzpicture}
+\caption{The pipeline. Blue: the generation steps that earlier work built. Orange: the learner-feedback loop we
+add.}\label{fig:pipeline}
+\end{figure}
+
+\subsection{The question: how do you know the video teaches?}
+
+Rendering without errors and having a clean layout do not mean a video teaches. The honest test would be to show the
+video to real students and quiz them, but that is slow, costly and impossible to repeat for every version of every
+video. So recent work uses a \emph{simulated student}: a vision--language model that ``watches'' the video and
+answers a multiple-choice quiz about the topic.
+
+The catch is obvious once said: a large language model has read most of the internet. It already knows what a
+determinant is. If it answers the quiz correctly after watching, did the video teach it, or did it know already?
+Every result in this report comes back to this question.
+
+\subsection{Our idea}
+
+If a simulated student can tell us whether a video teaches, it can also tell us \emph{where} it fails to teach. Our
+idea, called \textbf{learner-feedback repair}, is to (1) let the student take a practice quiz with the video, (2)
+trace each question it fails to the section of the video that should have taught it, and (3) rewrite only that
+section. The claim we want to test is narrow: \emph{a repair guided by the student's failures improves teaching on
+new questions, written by other people, more than an equally large repair without that guidance.}
+
+\begin{inshort}
+Teaching videos can be generated as code. To improve them we use a simulated student's failures to find and fix the
+weak section. To know whether that works, we must first be able to measure ``the video taught something'', and that
+turned out to be the hard part.
+\end{inshort}
+
+%=====================================================================================================================
+\section{Earlier work and what it leaves open}
+
+\subsection{Code2Video and TeachQuiz}
+
+Code2Video~\cite{code2video} is the closest earlier system. It builds the pipeline of Figure~\ref{fig:pipeline} (its
+code repair, \emph{ScopeRefine}, fixes the failing line first, then a block around it, then the whole scene), and it
+introduces two things we use:
+\begin{itemize}
+  \item \textbf{MMMC}, a benchmark of 117 topics taken from 3Blue1Brown lessons, each with 5 multiple-choice questions.
+  \item \textbf{TeachQuiz}, its measure of teaching. A strong vision--language model (Gemini) gets a system prompt
+  that tells it to \emph{forget} the topic: it may only use what the video shows, and it must answer \texttt{NULL}
+  (``insufficient evidence'') when the video does not show the answer. It answers the quiz twice, without the video
+  (score $S_1$) and with it ($S_2$). TeachQuiz is the difference $S_2 - S_1$.
+\end{itemize}
+
+\begin{example}[: how TeachQuiz is meant to work]
+Question: ``What does the determinant of a $2\times2$ matrix measure?'' Without the video, the forgetful student
+should answer \texttt{NULL}. After a video that shows a unit square being stretched into a parallelogram whose area
+equals the determinant, it should answer ``the factor by which areas are scaled''. That change from \texttt{NULL}
+to the right answer counts as teaching.
+\end{example}
+
+\DiagTeachQuiz
+\imageslot{forget.png}{P2}{The idea behind TeachQuiz: a student told to forget, so that only the video can teach it.}
+
+\textbf{What it leaves open.} TeachQuiz scores finished videos; it is not used to change them. And it relies on the
+model actually forgetting when told to. Nobody had checked whether it does. (\hyperref[sec:refuse]{Breaks 2 and 3} shows that it
+does not.)
+
+\subsection{SGA: layout without rendering}
+
+SGA~\cite{sga} runs a scene's code without drawing it, records the position and size of every object after every
+animation (a \emph{scene graph}), and scores the layout with \textbf{MVQS}: overlaps, objects off the screen, text
+too close together. It can tell the coder which object to move and in which direction. \textbf{What it leaves
+open:} a perfect layout can still teach nothing; SGA does not measure learning.
+
+\subsection{Other work}
+
+\begin{center}\small
+\begin{tabular}{p{2.6cm}p{5.4cm}p{6.4cm}}
+\toprule
+Work & What it does & What it leaves open for us \\
+\midrule
+ManimCode~\cite{manimcode} & makes generated Manim code render more often & render success, not teaching \\
+EduPanel~\cite{edupanel} & a panel of models judges a teaching video & opinions about a video, not learning from it \\
+PIVOT~\cite{pivot} & links quizzes to generated videos; a wrong answer makes a new remedial video for that learner &
+fixes the learner, not the video; no link from a wrong answer to a part of the video \\
+He-Yueya et al.~\cite{heyueya2024} & improves text worksheets using simulated learning gains & text, not video; no
+localisation \\
+VideoMathQA~\cite{videomathqa} & shows models answer video maths questions from text and narration, skipping the
+visuals & a warning about shortcuts, not a teaching measure \\
+TOFU~\cite{tofu} & tests ``forgetting'' on \emph{invented} authors, because real knowledge cannot be controlled & the
+idea we borrow for NOVEL-12 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{inshort}
+Earlier work can generate the video, repair its code and its layout, and score how much a simulated student learns.
+No one had used the student's failures to repair the video, and no one had checked whether the student really forgets
+what it is told to forget.
+\end{inshort}
+
+%=====================================================================================================================
+\section{How we set up the test}\label{sec:setup}
+
+\subsection{Two quizzes that never mix}
+
+A repair that looks at a quiz can simply teach that quiz's questions. To prevent this, every topic has two quizzes:
+\begin{itemize}
+  \item \textbf{DEV} (practice): written by our own planner. The repair may look at it.
+  \item \textbf{TEST} (final exam): written by \emph{other people} (MMMC's official questions). No step of the
+  pipeline ever sees it. All results are on TEST.
+\end{itemize}
+
+\DiagDevTest
+
+\subsection{Three ways to rewrite, so the comparison is fair}
+
+Rewriting a video might help just because it was rewritten. So we compare three conditions that use the same first
+video and the same diagnosis:
+\begin{itemize}
+  \item \textbf{learner} (ours): rewrite the sections the diagnosis blames, telling the coder what idea was missing;
+  \item \textbf{generic}: rewrite the \emph{same number} of sections, chosen at random, with ``teach this more
+  clearly'';
+  \item \textbf{learner\_all}: rewrite \emph{every} section with all the missing ideas.
+\end{itemize}
+If learner beats generic, the student's signal matters (same amount of rewriting). If learner beats learner\_all,
+\emph{where} you fix matters too.
+
+\subsection{Which model does what}
+
+All models run locally (Ollama). Table~\ref{tab:models} lists the model behind every part. Three choices matter.
+\begin{itemize}
+  \item \textbf{The student and the judge come from different families} (\texttt{gemma4:26b} and
+  \texttt{qwen2.5vl:7b}), so the judge is less likely to share the student's weak spots. We did not test this.
+  \item \textbf{The NOVEL-12 final quiz is written by a family the pipeline never uses} (Claude). The numeric answers
+  are computed by code.
+  \item \textbf{Several parts use no model at all:} the code check, the layout score, the weak-section score and the
+  gate. Their behaviour is fixed and can be checked by reading the code.
+\end{itemize}
+
+\input{tables/models}
+
+\subsection{How we decide}
+
+As in Code2Video, every score is on a 0--100 scale and every table shows one number per cell: the mean over the 12
+topics. A comparison such as ``learner $-$ base'' is the mean, over topics, of the learner video's score minus the base
+video's score; above 0 favours the learner repair. We also count \emph{ties}: topics where both videos score the same,
+which tell us nothing about which is better. (Statistical checks over topics are kept with the result files.)
+
+%=====================================================================================================================
+\section{The study, step by step}
+
+The study has four steps, and each one explains the next (Figure~\ref{fig:study-flow}).
+\begin{itemize}
+  \item \textbf{Step 0, pilot and audit.} We ran the repair on 12 MMMC topics, saw no effect, and looked for the
+  reason. We found three breaks in the measure, not only in the method. \emph{Models:} \texttt{qwen3.6} plans,
+  \texttt{qwen3-coder:30b} codes, \texttt{gemma4:26b} is the student, \texttt{qwen2.5vl:7b} judges the evidence
+  and is the second student for the no-video check.
+  \item \textbf{Step 1, the metric ladder on MMMC.} We rebuild the measure one change at a time (M0 to M9) and test
+  every version on the pilot's videos, with our student and with a smaller one. \emph{Models:} students
+  \texttt{gemma4:26b} and \texttt{qwen2.5vl:3b}; no video is generated in this step.
+  \item \textbf{Step 2, the metric ladder on NOVEL-12.} We repeat the ladder on invented concepts that no model has
+  seen, and fix the measure for Step 3: the gain on 3 frames per section (M9), with the full D-VGAIN on the dense video (M7)
+  as a second measure. \emph{Models:} the same generator and student
+  as Step 0; the cards and the final quiz are written by Claude, with answers computed by code.
+  \item \textbf{Step 3, the pipeline features F0 to F5.} We add one feature at a time to the repair loop, the gate
+  first, and score every stage with M9 and M7. \emph{Models:} \texttt{qwen3.6} diagnoses, maps questions
+  to sections and merges ideas; \texttt{qwen3-coder:30b} rewrites or edits; \texttt{gemma4:26b} scores the practice
+  quiz and the final quiz.
+\end{itemize}
+
+\textbf{How a version of the measure is judged.} Every version on the ladder faces the same four tests on the same
+videos:
+\begin{enumerate}
+  \item does it give a score at all;
+  \item does a topic's own video score higher than another topic's video on the same quiz, which is the core check
+  that it measures the video;
+  \item do two measurements of the same videos agree;
+  \item how many repaired videos tie with their base video.
+\end{enumerate}
+These tests and the decision rules of Section~\ref{sec:results-long} were fixed before the NOVEL-12 results existed.
+
+\DiagStudy
+
+\subsection{Step 0: the pilot and the audit}
+
+This step is the history of the first runs: what we tried, what came out, and the three breaks we found.
+
+\subsubsection*{The first single topic}
+
+We first ran the whole loop on one topic (Pythagoras' theorem). The learner repair scored slightly higher than the
+generic one. One topic is an anecdote, not evidence. But the run exposed problems that we fixed before going further:
+\begin{itemize}
+  \item practice questions the student could answer with no video at all (now filtered out);
+  \item a small judge model, asked to judge a list, copied the example ids from the instructions, so every ``yes'' was
+  lost (now one question per call; remember this pattern, it returns in \hyperref[sec:idbug]{Break 1});
+  \item a rewrite that failed to render deleted its section (now the old section is kept);
+  \item Manim's error message hides the failing line (now taken from SGA-style partial execution).
+\end{itemize}
+
+\subsubsection*{The pilot on 12 MMMC topics, and no signal}
+
+We then ran the full protocol on 12 MMMC topics (Table~\ref{tab:pilot}). The learner repair beat the base video by only a
+point or two, and \PilotTies{} of 12 topics were exact ties, most of them at a TeachQuiz of 0.
+
+\input{tables/pilot}
+\datafig{pilot}{The pilot, topic by topic: TeachQuiz for the four conditions (graded before the fix of \hyperref[sec:idbug]{Break 1}). Most
+points sit at 0 in every condition; a tie at 0 says nothing about which repair is better.}
+
+\subsubsection*{Listing what breaks}\phantomsection\label{sec:breaks}
+
+We measured every part of the pilot to see why. Four problems stood out. They are symptoms; the three breaks in the measure that explain most of them follow in \hyperref[sec:idbug]{Breaks 1--3}.
+\begin{enumerate}
+  \item \textbf{Floor.} Most videos scored 0 in every condition. With 5 questions a topic, one question is worth 20
+  points; a tie at 0 carries no information.
+  \item \textbf{Localisation never happened.} The diagnosis called \PilotGaps{} of \PilotDev{} practice questions
+  ``gaps'', meaning questions the student did not learn from the video. It flagged on average \PilotFlagged{} of \PilotSections{} sections. ``Fix only the weak section'' became
+  ``fix almost everything'', the same as learner\_all. We call this \emph{localisation collapse}.
+  \item \textbf{Practice gains did not carry over.} The learner repair raised its own DEV score by \PilotDevGain{}
+  points on average, while TEST did not move. Either the repair taught the practice questions, or something made DEV
+  and TEST behave differently (\hyperref[sec:idbug]{Break 1} found the second).
+  \item \textbf{Code that does not run.} \FirstTryFail\% of sections failed to render on the first try. The
+  pilot's \FailedAttempts{} failed attempts are broken down in Table~\ref{tab:failures}; \SyntaxAfterPatch{} of them
+  were syntax errors that \emph{our own} repair created when it pasted a fixed line back into the file.
+  A rewrite that never renders leaves the old section in place, so conditions differ less than intended.
+\end{enumerate}
+
+\input{tables/failures}
+\datafig[0.75]{failures}{Why generated code fails to render (pilot). The orange part of the syntax bar was created by
+our own repair pasting a fixed line back into the file.}
+
+\subsubsection*{Break 1: a grading bug}\phantomsection\label{sec:idbug}
+
+To test whether the floor came from the student, we re-scored the pilot's videos with variants of the student. The
+scores came back strangely all-or-nothing: a run was either fully right or fully \texttt{NULL}. Reading the raw
+replies showed why. The answer template in the prompt shows an example answer with id \texttt{q1}. MMMC's TEST
+questions are named \texttt{t1} to \texttt{t5}. The student often wrote its answers as \texttt{q1..q5}, and the grader,
+matching answers to questions by id, found none: every answer of that run was scored \texttt{NULL}. This happened in
+\OrderRuns{} of \AllRuns{} graded runs (\OrderShare\%).
+
+\DiagIdBug
+
+It explains problem 3 in the \hyperref[sec:breaks]{list of problems}. DEV questions are named \texttt{q1..} like the template, so DEV was never affected:
+the bug alone made DEV look better than TEST. We fixed it by matching answers in order when no id matches. Every
+TEST number from the pilot had to be measured again; the student-variant study was stopped and replaced.
+
+\subsubsection*{Breaks 2 and 3: the student refuses, and it already knows}\phantomsection\label{sec:refuse}
+
+Graded correctly, the student still answered \texttt{NULL} on \NullNoVideo\% of questions without the video and on
+\NullWithVideo\% with it. When it did answer with the video, it was right \AnsweredRight{} times out of
+\AnsweredWithVideo{}: it answered only what it already knew. So we asked a simple question: what if the student is not allowed to say \texttt{NULL}? We
+kept Code2Video's ``forget this topic'' prompt word for word, removed the \texttt{NULL} option, showed it
+\emph{nothing}, and asked every one of MMMC's questions (Table~\ref{tab:priors}).
+
+\input{tables/priors}
+\datafig{refusal}{What the student's answers are. Under TeachQuiz it refuses almost everything; when it does answer
+with the video, it is almost never wrong, which is what one expects when the answers come from what it already
+knew. Forced to choose with no video, it is right on most MMMC questions.}
+\datafig{priors}{Per question, the probability the student without the video puts on the right answer. On MMMC almost every
+question sits at 1 (already known). On NOVEL-12 the questions spread out, and the card (the ideal lesson) moves them
+to the right.}
+\imageslot{refuse.png}{P3}{Refusing is not forgetting: the student says ``insufficient evidence'' while it knows the
+answer.}
+\imageslot{knows.png}{P4}{The prior ceiling: on MMMC the student knows the answers before the video starts.}
+
+The student, supposedly ignorant, answered \mmmcpriorGemmaAcc\% of MMMC's questions correctly with no video at all,
+and was nearly certain each time (average confidence in the right answer \mmmcpriorGemmaP\%). Smaller models did
+the same: \mmmcpriorQwenAcc\% for a 7B model and \mmmcpriorQwenSmallAcc\% for a 3B model. We checked that this is not a preference for some letter: when the options are
+shifted (the text of A moves to B, and so on) the student follows the right text.
+
+\begin{inshort}
+TeachQuiz's ``before'' score of 0 was never ignorance. The student refused to answer what it knew (\emph{refusal}). Its ``after''
+score measured when the video made it willing to answer, and on MMMC the answers were already known (a \emph{prior
+ceiling}). No change to
+the scoring can show learning on questions the student already knows.
+\end{inshort}
+
+\paperfig{fig_failures.png}{F3}{\textbf{Why TeachQuiz cannot see teaching on MMMC.} (i) The grader lost answers whose ids copied the prompt's
+template. (ii) The student refuses instead of forgetting. (iii) It already knows the answers. Bottom: our fix for
+each.}{failures3}
+
+\subsection{Step 1: a new measure, built one change at a time and tested on MMMC}
+
+D-VGAIN (Dynamic Video-Grounded Gain) was proposed in our discussions to replace TeachQuiz. Its parts, each
+answering one problem above:
+\begin{itemize}
+  \item \textbf{No \texttt{NULL}.} The student must choose. A refusal can no longer pass as ignorance.
+  \item \textbf{Measure the prior instead of asking to forget it.} $\Sblind$ is the score with no video. With 4
+  options, chance is $c = 0.25$, and the baseline is $\Beff = \max(c, \Sblind)$.
+  \item \textbf{Normalised gain} (Hake's $g$~\cite{hake1998}, from physics education): how much of the room left
+  above the baseline the video filled,
+  \[ \mathrm{NVG} = \frac{S - \Beff}{1 - \Beff}. \]
+  A student who already knows everything leaves no room, and NVG is then \emph{undefined}, not 0.
+  \item \textbf{A silent, dense video.} $\Svisual$ uses up to 4 frames a second of the muted video, so the student
+  must read the animation, not a narration.
+  \item \textbf{A motion control.} $\Sstatic$ shows only the first and last frame of each section: a slide deck of
+  start and end states. $\mathrm{DML} = \Svisual - \Sstatic$ is what the animation adds. The full measure is
+  $\text{D-VGAIN} = \mathrm{NVG}(\Svisual) + 0.5 \max(0, \mathrm{DML})$.
+  \item \textbf{Continuous scores.} Instead of right/wrong, read the probability the student puts on the right letter,
+  so a video that raises confidence from 25\% to 45\% counts even if the top answer does not change.
+  \item \textbf{Option rotation.} Ask twice with the options shifted, and average, so a liking for one letter cancels.
+\end{itemize}
+
+\paragraph{What we changed from the proposal, and why.}
+\begin{itemize}
+  \item \emph{One letter per call did not work}: the student's first word was often not a letter, and one call per
+  question with 400 frames took 90 seconds. The student now answers all questions in one reply (``\texttt{1: B}'' per
+  line) and we read the probabilities at each letter.
+  \item \emph{Forced choice still refused sometimes}: the student wrote an explanation of why it could not answer.
+  Such replies are asked again (at most twice) with a stricter line.
+  \item \emph{The normalised gain explodes near the prior ceiling}: with continuous scores, a no-video probability of
+  0.99999 leaves 0.00001 of room, and dividing by it turned tiny noise into ``gains'' of $\pm 10$ on a scale meant to
+  run from $-1$ to $1$. NVG is now undefined when less than 0.05 of room is left.
+  \item \emph{Pooling questions across topics was not used}: a video is made per topic, so the topic, not the
+  question, is what receives a treatment; pooling 60 questions would pretend there are 60 independent experiments.
+  \item \emph{Multiplying by the evidence judge was not used}: the judge can only check answered questions, so
+  multiplying by it brings back the refusal floor.
+\end{itemize}
+
+\DiagDVGAIN
+\paperfig{fig_measure.png}{F4}{\textbf{How we measure.} The same student, without NULL, answers the quiz from four materials. We read its
+confidence in each letter, average two option orders, and report the gain over what it knew with no video.}{measure}
+
+\paragraph{The ladder.} To see which part matters, we add the parts one at a time, M0 to M9, and judge every version by
+the same four tests on the same videos: is the score \emph{defined}; does a topic's own video beat \emph{another
+topic's video} (if it does not, the measure cannot be measuring teaching); is it \emph{reliable} (two measurements
+agree); and does it \emph{resolve} differences (few ties). Table~\ref{tab:ladder_mmmc} is the ladder on the pilot's
+videos.
+
+\DiagLadder
+\input{tables/ladder_mmmc}
+\datafig{ladder_mmmc}{The ladder on the MMMC pilot videos. Left: does a topic's own video beat another topic's video
+(mean difference in points)? Right: for how many videos the measure gives a score at all.}
+
+\paragraph{A smaller student.} If the student knows less, does the measure come alive on MMMC? A 3B model
+(\texttt{qwen2.5vl:3b}) still answers \mmmcpriorQwenSmallAcc\% of all MMMC questions with no video. On the 12 pilot
+topics its confidence in the right answer with no video is \LadSmallSBlind{}, so the gain on 3 frames per section (M9)
+now scores \LadSmallDefinedNine{} videos (Table~\ref{tab:ladder_small}). Our analysis yields two insights.
+(i) \textbf{The measure sees the video.} A topic's own video beats another topic's video by \LadSmallSepNine{} points
+(raw confidence: \LadSmallSepRawNine{}).
+(ii) \textbf{It still cannot see the repair.} The learner repair scores \LadSmallLBNine{} points against the base video
+(raw: \LadSmallLBRawNine{}) and \LadSmallLGNine{} against the generic repair. With so little room left, each topic's
+gain rests on one or two questions, and one question can move it by tens of points. Even for a small student, MMMC
+is a poor test of repair; NOVEL-12 leaves far more room.
+
+\input{tables/ladder_small}
+
+\subsection{Step 2: concepts the student cannot already know (NOVEL-12)}
+
+If the student knows the answers, nothing can measure learning. So we made topics that no model has seen. Following
+TOFU's invented authors~\cite{tofu}, we wrote 12 small \emph{invented} mathematical concepts. Each has a \emph{card}:
+a definition, three or four rules and a worked example (all cards are in Appendix~\ref{app:cards}).
+
+\begin{example}[: an invented concept]
+\textbf{Tovan sum.} $a \oplus b = a + b + a \times b$. Rules: order does not matter; 0 is neutral; $-1$ swallows
+everything. Worked example: $2 \oplus 3 = 2 + 3 + 6 = 11$.
+A TEST question: ``What is $1 \oplus 4$?'' A) 5, B) 9, C) 4, D) 10. No model has seen this definition, so to answer B
+it must learn the rule from the video.
+\end{example}
+
+The planner, coder and practice-quiz writer are given the card, because otherwise they could not write about the
+topic. TEST (8 questions per concept, 96 in all) was written from the cards by a different model family that the
+pipeline never uses, and the correct answers to computation questions were calculated by code. So the arithmetic in
+the key is checked by construction; no teacher has reviewed the questions yet. The right letters are spread evenly (24 each of A to D).
+
+\textbf{Checks that the benchmark works.} Without the video, the student scores \novelpriorGemmaAcc\% (25\% is pure guessing;
+on MMMC it was \mmmcpriorGemmaAcc\%). Given the card as plain text, the ideal lesson, it scores
+\novelcardGemmaAcc\%. So a video has room to show teaching, between about \novelpriorGemmaAcc\% and
+\novelcardGemmaAcc\%. We checked every question the student misses even with the card: in each case the key is right
+and the student made an arithmetic slip. Some questions can be guessed from their wording (``is $a \oplus b$ the same
+as $b \oplus a$?''); the baseline $\Beff$ and version M8 (only questions the student does not know beforehand) take
+care of them.
+
+\imageslot{invented.png}{P5}{Invented concepts: new mathematics that no model has seen, so only the lesson can
+teach it.}
+\paperfig{fig_novel.png}{F5}{\textbf{NOVEL-12.} Twelve invented concepts, each defined on one card, with 96 TEST questions. Without the video, the
+student is close to chance; the card shows how much a perfect lesson could teach.}{novelfig}
+
+\subsubsection*{First look: do the pipeline's videos teach invented concepts?}
+
+Table~\ref{tab:novel_first} and Figure~\ref{fig:novel_first} show the NOVEL-12 base videos measured so far, before any
+repair. Not all 12 are in yet; the Mean row is over the concepts listed. Table~\ref{tab:novel_items} takes one concept question by question. Two things are already visible.
+
+\textbf{The frames teach what the student could not know.} Take computation questions that the student without the video
+gets wrong, such as the value of a tovan sum. With 3 frames per section, the probability on the right answer rises on
+several of them (Table~\ref{tab:novel_items}). The dense video helps less. These are questions it cannot have known before: this is the signal MMMC could never show. The
+questions it already got right without the video are the guessable ones (``does order matter?''), and they stay right.
+
+\textbf{How the video is shown matters.} TeachQuiz's material, three sharp frames per section, taught at least as
+much as the dense silent video of up to 4 frames a second, and on one concept far more. A local student sees each
+dense frame at low resolution (about 70 tokens) among hundreds of others, and seems to lose the on-screen text. This
+is why version M9 measures the gain on the three-frame material; the full ladder (Table~\ref{tab:ladder_novel}) will show
+over all 12 concepts whether the dense video helps, hurts or does not matter.
+
+\input{tables/novel_first}
+\datafig[0.75]{novel_first}{NOVEL-12 videos measured so far: mean probability on the right answer with no video,
+three frames per section, the first and last frame of each section, and the dense silent video. Dotted line:
+chance.}
+\input{tables/novel_items}
+
+\paragraph{The ladder on the admitted NOVEL-12 videos.} Table~\ref{tab:ladder_novel} repeats the ladder on the
+\LadNovelTopics{} concepts whose videos passed admission (next section), on their base videos. The repairs are not
+measured here; that is Step~3. Four things stand out.
+
+\textbf{Where the student has room to learn, every version gives a score.} Without the video, its confidence on the
+right answer is \LadNovelSBlind{}. Every version from M1 on scores all \LadNovelVideos{} videos. On MMMC, the gain
+versions scored none.
+
+\textbf{A topic's own video beats another topic's video by a wide margin.} With the gain on 3 frames per section (M9),
+the own video is \LadNovelSepNine{} points ahead. With the full D-VGAIN on the dense video (M7: with confidence and
+both option orders), it is \LadNovelSepSeven{} points ahead.
+
+\textbf{Even TeachQuiz separates the videos here, once its answers are matched in order.} M1 puts the own video
+\LadNovelSepOne{} points ahead. This suggests that on MMMC the grading bug and the prior ceiling, more than the quiz
+itself, hid the signal. We did not test this directly. Refusal has not gone away: with the video, the student still refused \LadNovelAbstained\% of
+TeachQuiz questions (\NullWithVideo\% on MMMC).
+
+\textbf{Three frames per section teach more than the dense video, and their scores repeat better.} Confidence on the
+right answer is \LadNovelSFrames{} with 3 frames per section, \LadNovelSVisual{} with the dense video, and
+\LadNovelSStatic{} with only the first and last frame of each section. We check whether a score repeats by measuring it
+again with the answer options in a different order, and taking the rank correlation across the 10 concepts. For the
+raw gain on 3 frames it is \LadNovelAgreeRawNine{}, which is modest. The dense-video versions barely agree with themselves (M4 to M6
+and R7). This supports M9 as the main measure for Step~3. Two limits apply. M7 to M9 average both option orders, so
+their agreement is not measured. And these are 10 concepts and one student.
+
+\input{tables/ladder_novel}
+
+\subsection{Step 2b: are the videos good enough to test?}\label{sec:quality}
+
+Before measuring whether a repair improves a video, the video itself must be complete and readable. Looking at the
+frames showed it often was not.
+
+\paragraph{Admission.} \AdmIncompleteBefore{} of \AdmTotal{} NOVEL-12 base videos were missing sections. When a
+section still failed after its repairs, the pipeline dropped it and joined the rest. The MMMC pilot had the same
+fault in half its base videos (6 of 12), which may be part of why the pilot showed nothing. A video now enters a study only if
+\begin{enumerate}
+  \item every planned section renders;
+  \item every section scores at least 70 on layout (SGA's MVQS) with no lasting conflict;
+  \item a person approves a sheet of its frames.
+\end{enumerate}
+A failing section gets one fresh attempt, with the code check and explicit layout rules. After that attempt,
+\AdmComplete{} of \AdmTotal{} videos were complete and \AdmClean{} also clean (Table~\ref{tab:quality}). The two
+that stayed incomplete are excluded and reported as a limit of the local coder.
+
+\input{tables/quality}
+
+\paragraph{What the layout score cannot see.} To learn what a strong model would fix, Claude
+(\texttt{claude-opus-5-5}) repaired the layout and timing of every section of the \AdmComplete{} admitted videos. The
+fixer saw only the section's code, six frames and the automatic reports, never the plan, the definition card or any
+quiz, and every on-screen string was checked in code to be unchanged. It fixed \ClaudeFaults{} faults in
+\ClaudeSections{} sections, for about \$\ClaudeCost{}:
+\begin{itemize}
+  \item \ClaudeOverlap{} overlaps;
+  \item \ClaudeOther{} objects missing or shown at the wrong time;
+  \item \ClaudeOffScreen{} objects off screen;
+  \item \ClaudeLeftover{} leftovers from a transform;
+  \item \ClaudeCrowded{} crowded scenes;
+  \item \ClaudeUnreadable{} unreadable texts.
+\end{itemize}
+The layout score barely moved. Worse, our own layout repair caused some of the faults: to clear an overlap it
+inserts \texttt{name.shift(v)}, which moves one object and leaves behind what it belongs to. It had inserted
+\ShiftsIn{} such shifts; Claude removed \ShiftsRemoved{}, and \ShiftNotes{} of its fix notes name a shift as the
+cause (for example, an arrow that no longer starts at its point).
+
+\paragraph{Two checks without a model.}
+\begin{itemize}
+  \item \textbf{Timing check.} It reads the code for a Manim trap: \texttt{Transform(a, b)} leaves \texttt{a} on
+  screen, so a later \texttt{FadeOut(b)} does nothing and the old text stays. We call this a \emph{timing
+  leftover}. It also catches sentences typeset as
+  maths, which lose their spaces. Both are fixed automatically, keeping a fix only if the code still parses.
+  \item \textbf{Attachment check.} It reads from the code what each label, arrow or box was attached to
+  (\texttt{next\_to}, \texttt{move\_to}, an arrow's end points). It flags it when, at rest, it is far from that object
+  or nearer another shape of the same kind. We call such a case a \emph{broken attachment}. The check skips labels
+  anchored to a text glyph, which gave false alarms.
+\end{itemize}
+
+\paragraph{Does better layout teach more?} Table~\ref{tab:layout_study} compares the three versions. The decision
+rule was written down before any score existed: layout changes learning only if the Claude-fixed versions beat ours by
+at least 5 points of M9 on average and on at least 7 of the 10 concepts. The difference is \LSDiff{} points, with
+Claude-fixed at least as good on \LSWins{} of \LSN{} concepts, so the rule is \textbf{\LSGate}.
+
+\textbf{Cleaner videos did not clearly teach more.} By every layout check, Claude's versions were cleaner. Lasting
+conflicts fell from \LSOursConflicts{} to \LSClaudeConflicts{}, and broken attachments from \LSOursAttach{} to
+\LSClaudeAttach{}. But Claude-fixed was behind ours on \LSLosses{} of \LSN{} concepts. One concept carries the
+mean: on \emph{\LSTopTopic}, Claude-fixed gained \LSTopDiff{} points. Without it, the mean difference is
+\LSDiffWithoutTop{} points. The timing fixes alone changed only 3 of the 10 videos, and the gain stayed the same
+(\LSAutoMNine{} against \LSOursMNine{}).
+
+\textbf{This is a weak null result.} With 10 concepts of 8 questions each, the study can detect a layout effect only
+of about \NMLayoutMDE{} points or more. That is far above the 5 points in the rule, so the rule could not have
+detected a 5-point effect. What we can say is that no large layout effect appeared for this student; smaller effects
+remain possible. The rule names this outcome ``layout is mostly cosmetic for this student'' and fixes what follows:
+the report keeps the attachment-safe fix and this side table, and the comparison of layout fixers is not run. One dense-video score (\emph{Quill distance}, ours) was measured twice and moved by half a
+point; M9 did not change.
+
+\input{tables/layout_study}
+
+\subsection{Step 3: improving the pipeline, one feature at a time (F0--F5)}
+
+\paperfig{fig_pipeline.png}{F2}{\textbf{Illustration of the pipeline.} Given a topic (and, for an invented concept, its definition card),
+(i) the Planner writes a lesson plan, (ii) the Coder writes one Manim scene per section, and (iii) checks fix the code
+and the layout before the base video is rendered. The learner-feedback loop then lets the student take a practice
+quiz, finds the weak section like a debugger, makes a small edit there, and keeps the revision only if it passes the
+gate. The final quiz (TEST) is never seen by any step.}{pipelinefull}
+
+\textbf{Status: built, with rules fixed in advance; not yet evaluated in this report.} The runs need about 14 hours of
+generation on the shared machine and continue after this report; the decision rules below are fixed. With a measure
+that works and topics the student cannot know, we test improvements to the repair loop. Each stage
+adds one feature to the one before; the first video of every topic stays the same, and all
+three conditions use the same machinery inside a stage, so comparisons stay fair. Each feature answers a problem from the
+\hyperref[sec:breaks]{list of breaks} in Step 0.
+
+\begin{description}
+  \item[F0, the pilot's loop.] The starting point.
+  \item[F1, enforce the gate.] This is a protocol fix, like M1 for the measure, so it comes first. The loop already
+  checked each revision (the practice score must not drop, and the layout must fall by less than 5 points) but then
+  scored it anyway: in the pilot \PilotNotKept{} of \PilotRevisions{} revisions failed the
+  check. Now a failed revision is not used, and the original video is scored instead.
+  \item[F2, check code before running it.] Before rendering, the code is read (not run) and checked: does it parse;
+  is every name defined; does every Manim object accept the options it is given (read from the installed library
+  itself); does every method called exist; does it try to load a file or web address that is not there. Problems are
+  fixed without a slow render. A pasted fix is kept only if the file still parses, otherwise it is re-indented, and
+  otherwise the repair moves to a larger scope. Errors from a 2-D point used where Manim needs 3-D get a hint for the
+  coder; the check does not rewrite them itself. On \PreflightN{} sections that rendered fine, the check raised
+  \PreflightFP{} false alarm.
+  \item[F3, find the weak section like a debugger.] Software engineering locates a bug by comparing which code runs
+  in failing and in passing tests (spectrum-based fault localisation~\cite{tarantula,ochiai}). We do the same: every
+  practice question, passed or failed, is mapped to the section that should teach it (in education research this map
+  is called a Q-matrix~\cite{tatsuoka1983}), and each section gets an Ochiai suspiciousness score,
+  $e_f / \sqrt{F(e_f + e_p)}$, where $e_f$ and $e_p$ count the failed and passed questions mapped to it and $F$ all
+  failed questions. Only the top one or two sections are repaired. This needs both passing and failing questions,
+  which forced choice with probabilities provides.
+  \item[F4, stop teaching the practice test.] A suggested fix that repeats numbers or answer options of its practice
+  question is refused, and the fixes for one section are merged into one general principle with new numbers.
+  \item[F5, edit instead of rewrite.] The working scene is edited as little as possible instead of written again, so
+  what already worked is kept. The size of every edit is recorded. (Moving overlapping shapes apart is the layout
+  step, which runs in every stage. In the pilot, rewriting every section lowered the layout score from
+  \PilotLayoutBase{} to \PilotLayoutAll{}.)
+\end{description}
+
+\DiagSBFL
+\paperfig{fig_localise.png}{F6}{\textbf{Finding the weak section like a debugger} (illustrative numbers, as in
+Figure~\ref{fig:sbfl}). A section is suspicious when the practice questions it should teach fail and the others pass;
+it is edited first.}{localise}
+\imageslot{debugger.png}{P6}{Finding the weak section the way a debugger finds a bug.}
+
+
+%=====================================================================================================================
+\section{Results so far, and what they mean}\label{sec:results-long}
+
+\begin{enumerate}
+  \item \textbf{TeachQuiz, as published, cannot detect teaching on MMMC with our student.} A grading bug removed
+  \OrderShare\% of graded runs; refusals set the ``before'' score; and the student already knows
+  \mmmcpriorGemmaAcc\% of the answers. These three findings are measured, not suspected.
+  \item \textbf{The new measure is honest about it.} On MMMC, \LadMMMCBlindAllRight{} of \LadMMMCTopics{} pilot topics
+  are fully known without the video, so D-VGAIN is \emph{undefined} there instead of reporting a false 0 or a false
+  gain (Table~\ref{tab:ladder_mmmc}). The measures that do give a score agree: the corrected TeachQuiz (M1) tells a
+  topic's own video from another topic's (\LadMMMCSepOne{} points), but not a repaired video from its base
+  (\LadMMMCLBOne{} points, \LadMMMCTiesOne{} of \LadMMMCTopics{} topics tied); with forced choice (M2) all
+  \LadMMMCTiesTwo{} topics are tied, because the student is already right on everything. Even the raw confidence is at
+  the prior ceiling: \LadMMMCSBlind{} with no video, \LadMMMCSVisual{} with the dense video. A 3B student leaves some room
+  (the gain scores \LadSmallDefinedNine{} videos), but still shows no benefit of the repair (\LadSmallLBNine{} points
+  against the base video).
+  \item \textbf{Invented concepts leave room to learn, and the videos use it.} \novelpriorGemmaAcc\% without the video against
+  \novelcardGemmaAcc\% with the definition. The first measured videos raise the probability on the right answer on
+  questions the student could not have known (Table~\ref{tab:novel_first}).
+  \item \textbf{On invented concepts, the measures give scores and tell one topic's video from another's.} On the \LadNovelTopics{} admitted concepts, every
+  version scores every video. With M9, a topic's own video beats another topic's by \LadNovelSepNine{} points; even
+  TeachQuiz with the grading fixed (M1) separates them by \LadNovelSepOne{} points (Table~\ref{tab:ladder_novel}). Three
+  frames per section beat the dense video: confidence on the right answer is \LadNovelSFrames{} against
+  \LadNovelSVisual{}, and the dense-video scores barely repeat when the option order changes. These are 10 concepts and
+  one student.
+  \item \textbf{The layout score barely sees the faults a viewer sees.}
+  Claude fixed \ClaudeFaults{} visible faults in \ClaudeSections{} sections while the layout score barely moved;
+  Claude's notes trace \ShiftNotes{} faults to a shift our layout repair inserted (Section~\ref{sec:quality}).
+  \item \textbf{Cleaner layout did not clearly teach more.} The rule fixed in advance is \LSGate{}: Claude-fixed minus
+  ours is \LSDiff{} points of M9, and Claude-fixed is at least as good on only \LSWins{} of \LSN{} concepts
+  (Table~\ref{tab:layout_study}). One concept carries the mean; without it, the difference is \LSDiffWithoutTop{}
+  points. The study can detect only effects of about \NMLayoutMDE{} points or more, so smaller effects remain
+  possible.
+  \item \textbf{Which pipeline features help} is not answered yet: F0--F5 are built and their rules fixed in advance, and their runs
+  continue after this report.
+\end{enumerate}
+
+\paragraph{Rules fixed before the results.} A measure is usable if it scores most videos, a topic's own video
+scores higher than another topic's video, and two measurements of the same videos agree. The learner repair helps if
+it beats the generic repair of the same size; finding the weak section matters if it also beats rewriting every
+section. We wrote these rules before seeing the NOVEL-12 results so that the results cannot shape them.
+
+%=====================================================================================================================
+\section{Limits, and what comes next}
+
+\begin{itemize}
+  \item \textbf{Frames, not video.} Our local student sees up to 4 frames a second, without sound. Code2Video's own
+  setup (Gemini watching the actual video file) is implemented and exported for grading by hand, but not run, because
+  it needs a paid key.
+  \item \textbf{One student.} Results are for \texttt{gemma4:26b}; the prior was also checked with a 7B model.
+  \item \textbf{Invented concepts are small.} They test whether a video passes on a definition and its consequences,
+  not deep understanding. TEST was written by one model and has not been reviewed by teachers.
+  \item \textbf{The evidence judge is not checked against people.} About 100 of its decisions should be labelled by
+  hand and compared (Cohen's $\kappa$~\cite{cohen1960}). The forced-choice measure does not rely on it.
+  \item \textbf{Twelve topics, ten admitted.} A mean over 10 topics can move a lot with one topic; a larger NOVEL set
+  would make it steadier.
+  \item \textbf{The local coder.} After one retry, \AdmTotal{} minus \AdmComplete{} videos were still incomplete and
+  only \AdmClean{} were clean. Stronger code models are the obvious next step; the Claude-fixed versions show how much a
+  strong model changes.
+  \item \textbf{The repair is not yet evaluated on NOVEL-12.} F0--F5 are built and documented, with rules fixed in advance; their
+  runs (about 14 hours) continue after this report.
+  \item \textbf{The checks have limits.} The attachment check skips labels anchored to a text glyph; the timing check
+  covers two kinds of fault. A strong model found many more kinds.
+\end{itemize}
+
+\paragraph{Future work.}
+\begin{enumerate}
+  \item Run F0--F5 on the admitted NOVEL-12 concepts with the rules already fixed.
+  \item Make the layout repair attachment-safe: move a label together with its anchor, or change its
+  \texttt{next\_to} direction, instead of shifting it alone.
+  \item If the layout rule passes, compare layout fixers on the 40 base sections one choice at a time: the method,
+  then what the fixer sees (code and reports, or code and frames), then the model.
+  \item Stronger models for the coder and the student; Code2Video's own setup (Gemini on the video file with sound).
+  \item Check the evidence judge against about 100 human labels.
+\end{enumerate}
+
+%=====================================================================================================================
+\section*{Glossary}
+\addcontentsline{toc}{section}{Glossary}
+\begin{description}
+  \item[Manim] A Python library for mathematical animation; each scene is code.
+  \item[Simulated student] A vision--language model that ``watches'' frames of a video and answers a quiz.
+  \item[TeachQuiz, $S_1$, $S_2$] Code2Video's measure: quiz score without ($S_1$) and with ($S_2$) the video, under a
+  prompt to forget the topic; TeachQuiz $= S_2 - S_1$.
+  \item[NULL] The ``insufficient evidence'' answer TeachQuiz allows.
+  \item[Forced choice] The student must pick A, B, C or D.
+  \item[DEV, TEST] The practice quiz the repair may see, and the final quiz by other authors that nothing sees.
+  \item[base, learner, generic, learner\_all] The first video, and the three ways of rewriting it
+  (Section~\ref{sec:setup}).
+  \item[Gap] A practice question the student did not learn from the video.
+  \item[Refusal] The student answers ``I don't know'' (NULL) instead of guessing, although it knows the answer.
+  \item[Prior ceiling] The student already knows the answers without the video, so no video can raise its score.
+  \item[Localisation collapse] The diagnosis blames almost every section, so ``fix the weak section'' becomes ``fix
+  everything''.
+  \item[Admission] The check a video must pass before a study uses it: every section renders, layout at least 70 with
+  no lasting conflict, and a person approves its frames.
+  \item[Timing leftover] Old text that stays on screen because a \texttt{Transform} target was used as if it were
+  shown.
+  \item[Broken attachment] A label, arrow or box that ends up far from the object it belongs to, or nearer another
+  shape of the same kind.
+  \item[MVQS] SGA's layout score (overlaps, objects off screen, crowded text).
+  \item[Prior, $\Sblind$] What the student scores with no video.
+  \item[NVG] Normalised gain: the share of the room above the prior that the video filled.
+  \item[DML] What animation adds over its start and end frames.
+  \item[Log-probability] The model's confidence in each letter, read from its output; gives a continuous score.
+  \item[Points] Scores on a 0--100 scale, as in Code2Video. For a gain, 100 means the video taught everything the
+  student did not know.
+  \item[Ties] Topics where two videos score exactly the same.
+  \item[Ochiai, Q-matrix] A debugger's suspiciousness score; a map from questions to the sections that teach them.
+  \item[NOVEL-12] Our 12 invented concepts with 96 TEST questions.
+\end{description}
+
+\appendix
+\section{The NOVEL-12 cards, with one TEST question each}\label{app:cards}
+\input{tables/novel_cards}
+
+\section{How to reproduce everything}
+All runs are local (Ollama) and resume where they stopped; every step saves its output in \texttt{runs/<topic>/}.
+{\footnotesize
+\begin{verbatim}
+python bench/run_bench.py --n 12 --seed 0 --workers 3                      # MMMC pilot (F0)
+python bench/metric_ladder.py bench/results/mmmc-n12-seed0                 # ladder on MMMC
+python bench/mmmc_prior.py [--student qwen2.5vl:7b]                        # what the student knows
+python bench/novel/build.py                                                # NOVEL-12 cards and TEST
+python bench/run_bench.py --name novel12 --n 12 --questions bench/novel/questions.json \
+       --cards bench/novel/cards.json                                      # NOVEL-12 (F0)
+python bench/metric_ladder.py bench/results/novel12                        # ladder on NOVEL-12
+python bench/stages.py bench/results/novel12 --stage F1   (... to F5)      # pipeline ablation
+paper/build.sh                                                             # every table, number and PDF
+\end{verbatim}}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

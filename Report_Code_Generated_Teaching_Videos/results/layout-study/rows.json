@@ -1,0 +1,1603 @@
+[
+ {
+  "topic": "Tovan sums",
+  "admission": {
+   "topic": "Tovan sums",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 85.17,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 80.63,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 85.01,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 86.39,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "regenerated": {},
+   "min_mvqs": 70.0,
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 85.17,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 80.63,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 85.01,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 86.39,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "complete": true,
+   "clean": true
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.0,
+    "mvqs_min": 82.4,
+    "conflicts": 0,
+    "timing": 1,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.506,
+    "frames": 0.884,
+    "static": 0.477,
+    "visual": 0.563,
+    "M9": 0.7642305854047771,
+    "M7": 0.15840609660452185
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.0,
+    "mvqs_min": 82.4,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.506,
+    "frames": 0.884,
+    "static": 0.477,
+    "visual": 0.563,
+    "M9": 0.7642305854047771,
+    "M7": 0.15840609660452185
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.6,
+    "mvqs_min": 81.0,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.506,
+    "frames": 0.83,
+    "static": 0.476,
+    "visual": 0.603,
+    "M9": 0.655258284087181,
+    "M7": 0.2595813457491273
+   }
+  },
+  "claude_issues": {
+   "overlap": 2,
+   "other": 4,
+   "crowded": 1,
+   "leftover": 1
+  },
+  "claude_tokens": {
+   "in": 13690,
+   "out": 5984
+  },
+  "claude_kept": "4/4"
+ },
+ {
+  "topic": "Krell steps on a grid",
+  "admission": {
+   "topic": "Krell steps on a grid",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 72.2,
+     "conflicts": 2,
+     "ok": false
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": false,
+     "mvqs": null,
+     "conflicts": null,
+     "ok": false
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 85.06,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": false,
+     "mvqs": null,
+     "conflicts": null,
+     "ok": false
+    }
+   },
+   "regenerated": {
+    "s1": {
+     "tries": [
+      {
+       "id": "s1",
+       "mvqs": 81.26,
+       "conflicts": 3,
+       "rendered": true,
+       "ok": false
+      }
+     ],
+     "kept": "s1_try0"
+    },
+    "s2": {
+     "tries": [
+      {
+       "id": "s2",
+       "mvqs": 82.38,
+       "conflicts": 1,
+       "rendered": true,
+       "ok": false
+      }
+     ],
+     "kept": "s2_try1"
+    },
+    "s4": {
+     "tries": [
+      {
+       "id": "s4",
+       "mvqs": 77.51,
+       "conflicts": 2,
+       "rendered": true,
+       "ok": false
+      }
+     ],
+     "kept": "s4_try1"
+    }
+   },
+   "min_mvqs": 70.0,
+   "superseded": "/home/mani/c2v-lab/runs/krell-steps-on-a-grid/_superseded/20261113-084343",
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 72.2,
+     "conflicts": 2,
+     "ok": false
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 82.38,
+     "conflicts": 1,
+     "ok": false
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 85.06,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 77.51,
+     "conflicts": 2,
+     "ok": false
+    }
+   },
+   "complete": true,
+   "clean": false
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 78.9,
+    "mvqs_min": 72.2,
+    "conflicts": 5,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.2,
+    "frames": 0.443,
+    "static": 0.277,
+    "visual": 0.386,
+    "M9": 0.2577148333333334,
+    "M7": 0.23561389583333334
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 78.9,
+    "mvqs_min": 72.2,
+    "conflicts": 5,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.2,
+    "frames": 0.47,
+    "static": 0.332,
+    "visual": 0.386,
+    "M9": 0.29334366666666667,
+    "M7": 0.20794158333333335
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 84.5,
+    "mvqs_min": 80.7,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.2,
+    "frames": 0.625,
+    "static": 0.359,
+    "visual": 0.372,
+    "M9": 0.50013425,
+    "M7": 0.16963630208333333
+   }
+  },
+  "claude_issues": {
+   "overlap": 7,
+   "off_screen": 1,
+   "other": 2
+  },
+  "claude_tokens": {
+   "in": 16050,
+   "out": 9759
+  },
+  "claude_kept": "4/4"
+ },
+ {
+  "topic": "Vorn sequences",
+  "admission": {
+   "topic": "Vorn sequences",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": false,
+     "mvqs": null,
+     "conflicts": null,
+     "ok": false
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 88.41,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 73.22,
+     "conflicts": 2,
+     "ok": false
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 90.18,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "regenerated": {
+    "s1": {
+     "tries": [
+      {
+       "id": "s1",
+       "mvqs": 90.49,
+       "conflicts": 1,
+       "rendered": true,
+       "ok": false
+      }
+     ],
+     "kept": "s1_try1"
+    },
+    "s3": {
+     "tries": [
+      {
+       "id": "s3",
+       "mvqs": 86.48,
+       "conflicts": 0,
+       "rendered": true,
+       "ok": true
+      }
+     ],
+     "kept": "s3_try1"
+    }
+   },
+   "min_mvqs": 70.0,
+   "superseded": "/home/mani/c2v-lab/runs/vorn-sequences/_superseded/20261113-084343",
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 90.49,
+     "conflicts": 1,
+     "ok": false
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 88.41,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 86.48,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 90.18,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "complete": true,
+   "clean": false
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 88.9,
+    "mvqs_min": 86.5,
+    "conflicts": 1,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.585,
+    "frames": 0.762,
+    "static": 0.603,
+    "visual": 0.791,
+    "M9": 0.42709803027781607,
+    "M7": 0.5910259745169302
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 88.9,
+    "mvqs_min": 86.5,
+    "conflicts": 1,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.585,
+    "frames": 0.762,
+    "static": 0.624,
+    "visual": 0.8,
+    "M9": 0.42709803027781607,
+    "M7": 0.6059303166101699
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 89.0,
+    "mvqs_min": 87.0,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.585,
+    "frames": 0.75,
+    "static": 0.466,
+    "visual": 0.804,
+    "M9": 0.39588729749871576,
+    "M7": 0.696486690533374
+   }
+  },
+  "claude_issues": {
+   "off_screen": 1,
+   "other": 4,
+   "crowded": 3,
+   "leftover": 1
+  },
+  "claude_tokens": {
+   "in": 14767,
+   "out": 7327
+  },
+  "claude_kept": "4/4"
+ },
+ {
+  "topic": "Glint numbers",
+  "admission": {
+   "topic": "Glint numbers",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 93.67,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": false,
+     "mvqs": null,
+     "conflicts": null,
+     "ok": false
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 84.5,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": false,
+     "mvqs": null,
+     "conflicts": null,
+     "ok": false
+    }
+   },
+   "regenerated": {
+    "s2": {
+     "tries": [
+      {
+       "id": "s2",
+       "mvqs": 92.82,
+       "conflicts": 0,
+       "rendered": true,
+       "ok": true
+      }
+     ],
+     "kept": "s2_try1"
+    },
+    "s4": {
+     "tries": [
+      {
+       "id": "s4",
+       "mvqs": 88.38,
+       "conflicts": 0,
+       "rendered": true,
+       "ok": true
+      }
+     ],
+     "kept": "s4_try1"
+    }
+   },
+   "min_mvqs": 70.0,
+   "superseded": "/home/mani/c2v-lab/runs/glint-numbers/_superseded/20261113-084343",
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 93.67,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 92.82,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 84.5,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 88.38,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "complete": true,
+   "clean": true
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 88.6,
+    "mvqs_min": 84.5,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.439,
+    "frames": 0.883,
+    "static": 0.389,
+    "visual": 0.528,
+    "M9": 0.7920070735439214,
+    "M7": 0.2283447756720813
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 88.6,
+    "mvqs_min": 84.5,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.439,
+    "frames": 0.883,
+    "static": 0.389,
+    "visual": 0.528,
+    "M9": 0.7920070735439214,
+    "M7": 0.2283447756720813
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 83.3,
+    "mvqs_min": 67.0,
+    "conflicts": 2,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.439,
+    "frames": 0.838,
+    "static": 0.363,
+    "visual": 0.546,
+    "M9": 0.7121564286621069,
+    "M7": 0.28126359500098264
+   }
+  },
+  "claude_issues": {
+   "overlap": 2,
+   "crowded": 1,
+   "leftover": 1,
+   "unreadable_text": 1,
+   "other": 2
+  },
+  "claude_tokens": {
+   "in": 14924,
+   "out": 7675
+  },
+  "claude_kept": "4/4"
+ },
+ {
+  "topic": "Mirthful triangles",
+  "admission": {
+   "topic": "Mirthful triangles",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 86.72,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 90.12,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 72.21,
+     "conflicts": 3,
+     "ok": false
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 91.42,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "regenerated": {
+    "s3": {
+     "tries": [
+      {
+       "id": "s3",
+       "mvqs": 85.35,
+       "conflicts": 4,
+       "rendered": true,
+       "ok": false
+      }
+     ],
+     "kept": "s3_try0"
+    }
+   },
+   "min_mvqs": 70.0,
+   "superseded": "/home/mani/c2v-lab/runs/mirthful-triangles/_superseded/20261113-084502",
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 86.72,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 90.12,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 72.21,
+     "conflicts": 3,
+     "ok": false
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 91.42,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "complete": true,
+   "clean": false
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.2,
+    "mvqs_min": 72.9,
+    "conflicts": 3,
+    "timing": 0,
+    "broken_attachments": 4
+   },
+   "teaching": {
+    "blind": 0.474,
+    "frames": 0.695,
+    "static": 0.379,
+    "visual": 0.566,
+    "M9": 0.4202685019236289,
+    "M7": 0.26839935609292875
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.2,
+    "mvqs_min": 72.9,
+    "conflicts": 3,
+    "timing": 0,
+    "broken_attachments": 4
+   },
+   "teaching": {
+    "blind": 0.474,
+    "frames": 0.695,
+    "static": 0.379,
+    "visual": 0.566,
+    "M9": 0.4202685019236289,
+    "M7": 0.26839935609292875
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 86.4,
+    "mvqs_min": 77.7,
+    "conflicts": 1,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.474,
+    "frames": 0.559,
+    "static": 0.376,
+    "visual": 0.583,
+    "M9": 0.16153524584141138,
+    "M7": 0.3104633671414888
+   }
+  },
+  "claude_issues": {
+   "overlap": 5,
+   "crowded": 1,
+   "other": 3,
+   "off_screen": 1
+  },
+  "claude_tokens": {
+   "in": 16843,
+   "out": 11098
+  },
+  "claude_kept": "4/4"
+ },
+ {
+  "topic": "Sorrel counts of lattice rectangles",
+  "admission": {
+   "topic": "Sorrel counts of lattice rectangles",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 71.52,
+     "conflicts": 4,
+     "ok": false
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 92.12,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 81.13,
+     "conflicts": 4,
+     "ok": false
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 76.21,
+     "conflicts": 2,
+     "ok": false
+    }
+   },
+   "regenerated": {
+    "s1": {
+     "tries": [
+      {
+       "id": "s1",
+       "mvqs": 67.0,
+       "conflicts": 3,
+       "rendered": true,
+       "ok": false
+      }
+     ],
+     "kept": "s1_try1"
+    },
+    "s3": {
+     "tries": [
+      {
+       "id": "s3",
+       "mvqs": 87.0,
+       "conflicts": 1,
+       "rendered": true,
+       "ok": false
+      }
+     ],
+     "kept": "s3_try1"
+    },
+    "s4": {
+     "tries": [
+      {
+       "id": "s4",
+       "mvqs": 73.94,
+       "conflicts": 1,
+       "rendered": true,
+       "ok": false
+      }
+     ],
+     "kept": "s4_try1"
+    }
+   },
+   "min_mvqs": 70.0,
+   "superseded": "/home/mani/c2v-lab/runs/sorrel-counts-of-lattice-rectangles/_superseded/20261113-084509",
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 67.0,
+     "conflicts": 3,
+     "ok": false
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 92.12,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 87.0,
+     "conflicts": 1,
+     "ok": false
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 73.94,
+     "conflicts": 1,
+     "ok": false
+    }
+   },
+   "complete": true,
+   "clean": false
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 81.7,
+    "mvqs_min": 72.1,
+    "conflicts": 4,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.668,
+    "frames": 0.575,
+    "static": 0.633,
+    "visual": 0.614,
+    "M9": -0.27904957128074415,
+    "M7": -0.1598363883633478
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 81.7,
+    "mvqs_min": 72.1,
+    "conflicts": 4,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.668,
+    "frames": 0.575,
+    "static": 0.633,
+    "visual": 0.614,
+    "M9": -0.27904957128074415,
+    "M7": -0.1598363883633478
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 83.4,
+    "mvqs_min": 79.5,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.668,
+    "frames": 0.783,
+    "static": 0.632,
+    "visual": 0.549,
+    "M9": 0.3477893913718547,
+    "M7": -0.35654310266235467
+   }
+  },
+  "claude_issues": {
+   "overlap": 8,
+   "other": 2,
+   "leftover": 2,
+   "off_screen": 3
+  },
+  "claude_tokens": {
+   "in": 15659,
+   "out": 9476
+  },
+  "claude_kept": "4/4"
+ },
+ {
+  "topic": "Quill distance",
+  "admission": {
+   "topic": "Quill distance",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 68.75,
+     "conflicts": 3,
+     "ok": false
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 85.59,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": false,
+     "mvqs": null,
+     "conflicts": null,
+     "ok": false
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 83.69,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "regenerated": {
+    "s1": {
+     "tries": [
+      {
+       "id": "s1",
+       "mvqs": 83.04,
+       "conflicts": 0,
+       "rendered": true,
+       "ok": true
+      }
+     ],
+     "kept": "s1_try1"
+    },
+    "s3": {
+     "tries": [
+      {
+       "id": "s3",
+       "mvqs": 87.72,
+       "conflicts": 0,
+       "rendered": true,
+       "ok": true
+      }
+     ],
+     "kept": "s3_try1"
+    }
+   },
+   "min_mvqs": 70.0,
+   "superseded": "/home/mani/c2v-lab/runs/quill-distance/_superseded/20261113-084539",
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 83.04,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 85.59,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 87.72,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 83.69,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "complete": true,
+   "clean": true
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.0,
+    "mvqs_min": 83.0,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 3
+   },
+   "teaching": {
+    "blind": 0.252,
+    "frames": 0.453,
+    "static": 0.43,
+    "visual": 0.339,
+    "M9": 0.2685658398472454,
+    "M7": 0.1162530063084646
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.0,
+    "mvqs_min": 83.0,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 3
+   },
+   "teaching": {
+    "blind": 0.252,
+    "frames": 0.453,
+    "static": 0.43,
+    "visual": 0.336,
+    "M9": 0.2685658398472454,
+    "M7": 0.11250916743406592
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.4,
+    "mvqs_min": 83.2,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.252,
+    "frames": 0.521,
+    "static": 0.481,
+    "visual": 0.32,
+    "M9": 0.3599876113271972,
+    "M7": 0.09088196021087148
+   }
+  },
+  "claude_issues": {
+   "overlap": 6,
+   "unreadable_text": 3,
+   "other": 1,
+   "leftover": 1
+  },
+  "claude_tokens": {
+   "in": 15598,
+   "out": 9643
+  },
+  "claude_kept": "4/4"
+ },
+ {
+  "topic": "Dapple numbers",
+  "admission": {
+   "topic": "Dapple numbers",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 85.11,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 48.09,
+     "conflicts": 11,
+     "ok": false
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 84.06,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 82.9,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "regenerated": {
+    "s2": {
+     "tries": [
+      {
+       "id": "s2",
+       "mvqs": 78.43,
+       "conflicts": 7,
+       "rendered": true,
+       "ok": false
+      }
+     ],
+     "kept": "s2_try1"
+    }
+   },
+   "min_mvqs": 70.0,
+   "superseded": "/home/mani/c2v-lab/runs/dapple-numbers/_superseded/20261113-084618",
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 85.11,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 78.43,
+     "conflicts": 7,
+     "ok": false
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 84.06,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 82.9,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "complete": true,
+   "clean": false
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 80.3,
+    "mvqs_min": 73.6,
+    "conflicts": 15,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.337,
+    "frames": 0.64,
+    "static": 0.395,
+    "visual": 0.39,
+    "M9": 0.4564441516413873,
+    "M7": 0.07944149095182602
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 80.3,
+    "mvqs_min": 73.6,
+    "conflicts": 13,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.337,
+    "frames": 0.637,
+    "static": 0.384,
+    "visual": 0.389,
+    "M9": 0.4523909710451265,
+    "M7": 0.08120905517515271
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.4,
+    "mvqs_min": 83.0,
+    "conflicts": 1,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.337,
+    "frames": 0.658,
+    "static": 0.39,
+    "visual": 0.342,
+    "M9": 0.48463214604124594,
+    "M7": 0.007919828125527491
+   }
+  },
+  "claude_issues": {
+   "other": 2,
+   "off_screen": 2,
+   "overlap": 5,
+   "crowded": 1,
+   "leftover": 1
+  },
+  "claude_tokens": {
+   "in": 15254,
+   "out": 10631
+  },
+  "claude_kept": "4/4"
+ },
+ {
+  "topic": "Orbit words",
+  "admission": {
+   "topic": "Orbit words",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 87.56,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 89.74,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 86.47,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 87.76,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "regenerated": {},
+   "min_mvqs": 70.0,
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 87.56,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 89.74,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 86.47,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 87.76,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "complete": true,
+   "clean": true
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 83.3,
+    "mvqs_min": 68.4,
+    "conflicts": 3,
+    "timing": 1,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.32,
+    "frames": 0.741,
+    "static": 0.731,
+    "visual": 0.453,
+    "M9": 0.619020123589589,
+    "M7": 0.19547811850655333
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 83.2,
+    "mvqs_min": 68.4,
+    "conflicts": 3,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.32,
+    "frames": 0.725,
+    "static": 0.767,
+    "visual": 0.514,
+    "M9": 0.5949172032843862,
+    "M7": 0.2850808003405235
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 88.4,
+    "mvqs_min": 87.4,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 0
+   },
+   "teaching": {
+    "blind": 0.32,
+    "frames": 0.762,
+    "static": 0.777,
+    "visual": 0.464,
+    "M9": 0.6503628448492099,
+    "M7": 0.2121172431015911
+   }
+  },
+  "claude_issues": {
+   "off_screen": 1,
+   "overlap": 4,
+   "leftover": 2,
+   "other": 1
+  },
+  "claude_tokens": {
+   "in": 15014,
+   "out": 7390
+  },
+  "claude_kept": "4/4"
+ },
+ {
+  "topic": "Vells of 2×2 grids",
+  "admission": {
+   "topic": "Vells of 2×2 grids",
+   "before": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 80.3,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 80.94,
+     "conflicts": 1,
+     "ok": false
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 62.17,
+     "conflicts": 6,
+     "ok": false
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": false,
+     "mvqs": null,
+     "conflicts": null,
+     "ok": false
+    }
+   },
+   "regenerated": {
+    "s2": {
+     "tries": [
+      {
+       "id": "s2",
+       "mvqs": 83.22,
+       "conflicts": 0,
+       "rendered": true,
+       "ok": true
+      }
+     ],
+     "kept": "s2_try1"
+    },
+    "s3": {
+     "tries": [
+      {
+       "id": "s3",
+       "mvqs": 85.87,
+       "conflicts": 0,
+       "rendered": true,
+       "ok": true
+      }
+     ],
+     "kept": "s3_try1"
+    },
+    "s4": {
+     "tries": [
+      {
+       "id": "s4",
+       "mvqs": 90.64,
+       "conflicts": 0,
+       "rendered": true,
+       "ok": true
+      }
+     ],
+     "kept": "s4_try1"
+    }
+   },
+   "min_mvqs": 70.0,
+   "superseded": "/home/mani/c2v-lab/runs/vells-of-2-2-grids/_superseded/20261113-084658",
+   "after": {
+    "s1": {
+     "id": "s1",
+     "rendered": true,
+     "mvqs": 80.3,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s2": {
+     "id": "s2",
+     "rendered": true,
+     "mvqs": 83.22,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s3": {
+     "id": "s3",
+     "rendered": true,
+     "mvqs": 85.87,
+     "conflicts": 0,
+     "ok": true
+    },
+    "s4": {
+     "id": "s4",
+     "rendered": true,
+     "mvqs": 90.64,
+     "conflicts": 0,
+     "ok": true
+    }
+   },
+   "complete": true,
+   "clean": true
+  },
+  "ours": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.0,
+    "mvqs_min": 80.3,
+    "conflicts": 0,
+    "timing": 2,
+    "broken_attachments": 2
+   },
+   "teaching": {
+    "blind": 0.319,
+    "frames": 0.672,
+    "static": 0.41,
+    "visual": 0.352,
+    "M9": 0.518100092105581,
+    "M7": 0.048060029070795277
+   }
+  },
+  "autofix": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 85.0,
+    "mvqs_min": 80.3,
+    "conflicts": 0,
+    "timing": 2,
+    "broken_attachments": 2
+   },
+   "teaching": {
+    "blind": 0.319,
+    "frames": 0.665,
+    "static": 0.406,
+    "visual": 0.364,
+    "M9": 0.5079892338687347,
+    "M7": 0.06585268929653068
+   }
+  },
+  "claude": {
+   "layout": {
+    "sections": 4,
+    "planned": 4,
+    "mvqs_mean": 84.8,
+    "mvqs_min": 79.9,
+    "conflicts": 0,
+    "timing": 0,
+    "broken_attachments": 1
+   },
+   "teaching": {
+    "blind": 0.319,
+    "frames": 0.653,
+    "static": 0.473,
+    "visual": 0.479,
+    "M9": 0.49067404588894925,
+    "M7": 0.23653161371871084
+   }
+  },
+  "claude_issues": {
+   "overlap": 3,
+   "off_screen": 2,
+   "other": 1,
+   "leftover": 1
+  },
+  "claude_tokens": {
+   "in": 15563,
+   "out": 7934
+  },
+  "claude_kept": "4/4"
+ }
+]

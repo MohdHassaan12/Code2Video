@@ -1,0 +1,21 @@
+\begin{table*}[t]\centering\footnotesize
+\caption{Metric ladder on the MMMC pilot videos. 12 topics, 48 videos. Each row adds one change to the row above; points on a 0--100 scale. Scored: videos that get a score (-- : the student already knew everything). Own $-$ other: a topic's video minus another topic's video on the same quiz. Agreement: rank correlation of two measurements of the same videos. Learner $-$ \ldots: mean change over topics. Ties: topics where learner and base score the same.}\label{tab:ladder_mmmc}
+\setlength{\tabcolsep}{4pt}\begin{tabular}{@{}llrrrrrrr@{}}\toprule & & \multicolumn{3}{c}{Does it measure teaching?} & \multicolumn{4}{c}{Does the learner repair help?}\\
+\cmidrule(lr){3-5}\cmidrule(lr){6-9}
+& Measure & Scored & \hd{Own $-$\\other ($\uparrow$)} & \hd{Agree-\\ment ($\uparrow$)} & \hd{Learner\\$-$ base} & \hd{Learner\\$-$ generic} & \hd{Learner $-$\\every section} & Ties ($\downarrow$)\\\midrule
+M0 & TeachQuiz (Code2Video) & 48/48 & +10.6 & -- & +1.7 & $-$2.2 & $-$4.5 & 7/12 \\
+M1 & + answers matched in order & 47/48 & +10.6 & 0.96 & +7.2 & +2.8 & +0.6 & 7/12 \\
+M2 & + must choose (no NULL) & 48/48 & +16.7 & 1.00 & 0.0 & 0.0 & 0.0 & 12/12 \\
+M3 & + gain over what it knew & 0/48 & -- & -- & -- & -- & -- & -- \\
+M4 & + dense silent video & 0/48 & -- & -- & -- & -- & -- & -- \\
+M5 & + motion bonus (D-VGAIN) & 0/48 & -- & -- & -- & -- & -- & -- \\
+M6 & + confidence, not right/wrong & 0/48 & -- & -- & -- & -- & -- & -- \\
+M7 & + two option orders & 0/48 & -- & -- & -- & -- & -- & -- \\
+M8 & + only questions it did not know & 0/48 & -- & -- & -- & -- & -- & -- \\
+M9 & M7 on 3 frames per section & 0/48 & -- & -- & -- & -- & -- & -- \\
+\midrule
+\multicolumn{9}{c}{\textit{Raw difference in confidence, not normalised (for reference)}}\\
+R7 & Dense video minus no video & 48/48 & +4.1 & 0.65 & +1.4 & $-$0.1 & +0.3 & 1/12 \\
+R9 & 3 frames minus no video & 48/48 & +13.0 & 0.77 & +0.1 & 0.0 & +0.1 & 0/12 \\
+\bottomrule\end{tabular}
+\end{table*}

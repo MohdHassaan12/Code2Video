@@ -1,0 +1,19 @@
+\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{NOVEL-12 base videos (the pipeline's first attempt, before any repair). Confidence: mean probability on the right answer over 8 TEST questions and two option orders, in \%; chance is 25. TeachQuiz: Code2Video's measure on the same video. Gain: share of what the student did not know that the video taught (100 = all of it), from 3 frames per section (M9) or the same gain on the dense video; D-VGAIN (M7) adds the motion bonus to the dense-video gain.}\label{tab:novel_first}
+\begin{tabular}{lrrrrrrrr}\toprule & \multicolumn{4}{c}{Confidence on the right answer} & & \multicolumn{3}{c}{Ours ($\uparrow$)}\\
+\cmidrule(lr){2-5}\cmidrule(lr){7-9}
+Concept & No video & 3 frames & Start/end & Dense video & TeachQuiz & Gain, 3 frames & Gain, dense & D-VGAIN\\\midrule
+Tovan sums & 50.6 & 88.4 & 47.7 & 56.3 & +33.3 & +76.4 & +11.5 & +15.8 \\
+Krell steps on a grid & 20.0 & 44.3 & 27.7 & 38.6 & +50.0 & +25.8 & +18.1 & +23.6 \\
+Vorn sequences & 58.5 & 76.2 & 60.3 & 79.1 & +87.5 & +42.7 & +49.7 & +59.1 \\
+Glint numbers & 43.9 & 88.3 & 38.9 & 52.8 & +62.5 & +79.2 & +15.9 & +22.8 \\
+Mirthful triangles & 47.4 & 69.5 & 37.9 & 56.6 & +37.5 & +42.0 & +17.5 & +26.8 \\
+Sorrel counts of lattice rectangles & 66.8 & 57.5 & 63.3 & 61.4 & +12.5 & $-$27.9 & $-$16.0 & $-$16.0 \\
+Quill distance & 25.2 & 45.3 & 43.0 & 33.9 & +25.0 & +26.9 & +11.6 & +11.6 \\
+Dapple numbers & 33.7 & 64.0 & 39.5 & 39.0 & +37.5 & +45.6 & +7.9 & +7.9 \\
+Orbit words & 32.0 & 74.1 & 73.1 & 45.3 & +79.2 & +61.9 & +19.5 & +19.5 \\
+Vells of 2×2 grids & 31.9 & 67.2 & 41.0 & 35.2 & +58.3 & +51.8 & +4.8 & +4.8 \\
+\midrule
+Mean & \textbf{41.0} & \textbf{67.5} & \textbf{47.2} & \textbf{49.8} & \textbf{+48.3} & \textbf{+42.4} & \textbf{+14.1} & \textbf{+17.6} \\
+\bottomrule\end{tabular}
+\end{table*}

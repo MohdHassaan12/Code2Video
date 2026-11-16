@@ -1,0 +1,31 @@
+\section{Pipeline ablation}\label{sec:ablation}
+
+On the admitted NOVEL-12 concepts, with the base videos fixed, we add features one at a time; each stage is cumulative
+and is scored on TEST with M9 and M7. \emph{Status: built, with rules fixed in advance; evaluation ongoing.} The three conditions use the same mechanism within a stage, so the
+comparisons stay fair.
+
+\begin{description}
+  \item[F0] The pilot's loop (\S\ref{sec:pipeline}).
+  \item[F1 Gate enforced.] A revision that fails the gate is not served; TEST sees the base video. In the pilot, \PilotNotKept{} of
+  \PilotRevisions{} revisions failed the gate and were scored anyway. As in rejection sampling, a rejected candidate falls back to the
+  verified incumbent.
+  \item[F2 Code reliability.] Generated code is checked statically before every render (Table~\ref{tab:failures}):
+  it must parse; every name must be defined in Manim, Python or the code; keywords given to a Manim class must be
+  accepted by its constructor chain (read with \texttt{inspect.signature} from the installed library); a called
+  method must exist on some Manim class, numpy array or container; no external files or URLs. A problem found
+  this way is repaired without a render. A line or block patch is kept only if the file still parses (else
+  re-indented, else the repair escalates): of the pilot's \FailedAttempts{} failed attempts, \SyntaxAfterPatch{} were
+  syntax or indentation errors introduced by our own splice of a patch. On sections that rendered, the check raised \PreflightFP{} false alarm in
+  \PreflightN.
+  \item[F3 Spectrum-based localisation.] DEV is scored by forced-choice $p(\text{right})$ on the video, so every topic
+  has passing and failing items. Every DEV item is mapped to a section (a Q-matrix~\cite{tatsuoka1983}); sections are
+  ranked by Ochiai suspiciousness~\cite{ochiai}, $e_f / \sqrt{F (e_f + e_p)}$, with $e_f, e_p$ the failing and passing
+  items mapped to the section and $F$ all failing items; only the top $k$ ($k = 1$ for three sections or fewer, else 2)
+  are repaired. The gate reads the same DEV score.
+  \item[F4 Leak gate and abstraction.] An idea that restates two or more numbers of its DEV item (absent from the plan
+  and card) or one of its options is refused, and the ideas of one section are merged into a single general principle
+  with new numbers, against adaptive overfitting of DEV~\cite{dwork2015}.
+  \item[F5 Minimal edits.] The working scene is edited as little as possible instead of written again, for
+  locality~\cite{rome}; the edit size (1 $-$ line similarity) is recorded.
+\end{description}
+F2 also applies the timing fixes of \S\ref{sec:quality} to every section a repair writes.

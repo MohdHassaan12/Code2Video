@@ -1,0 +1,60 @@
+\section{What TeachQuiz measures}\label{sec:audit}
+
+\paperfig{fig_failures.png}{F3}{\textbf{Why TeachQuiz cannot see teaching on MMMC.} (i) The grader lost answers whose ids copied the prompt's
+template. (ii) The student refuses instead of forgetting. (iii) It already knows the answers. Bottom: our fix for
+each.}{failures3}
+
+TeachQuiz~\cite{code2video} gives a student a system prompt that forbids knowledge of the topic and allows
+\texttt{NULL} (``insufficient evidence''). Our local student (\texttt{gemma4:26b}) sees 3 frames per section, since a
+local model cannot take an mp4; Code2Video's protocol (whole video to Gemini) is implemented but not run here.
+
+\paragraph{Grading.} The answer template's example id is \texttt{q1}. On MMMC's TEST items, named \texttt{t1..t5},
+the student copied the template's ids in \OrderRuns{} of \AllRuns{} runs (\OrderShare\%); matched by id only, every
+answer of those runs was scored \texttt{NULL}. DEV items are named \texttt{q1..} and were unaffected, which by itself
+manufactures a DEV gain that cannot appear on TEST. We match by order when no id matches and the counts agree (M1).
+
+\paragraph{Refusal.} Even when graded correctly, the student refuses \NullNoVideo\% of items without the video and
+\NullWithVideo\% with it. $S_1$ is zero because the student obeys. A ``gain'' is then any change in its willingness to
+answer.
+
+\paragraph{Prior.} Table~\ref{tab:priors} removes NULL and shows the student nothing. It answers most MMMC items
+correctly; the probabilities are near 1 and survive a cyclic shift of the options, so this is knowledge, not a letter
+preference. Behind the NULL answers in $S_1$ is a prior ceiling, not a floor.
+
+\input{tables/priors}
+
+\section{D-VGAIN and the metric ladder}\label{sec:ladder}
+
+\paperfig{fig_measure.png}{F4}{\textbf{How we measure.} The same student, without NULL, answers the quiz from four materials. We read its
+confidence in each letter, average two option orders, and report the gain over what it knew with no video.}{measure}
+
+\paragraph{D-VGAIN.} The student must choose (no NULL), and we measure the prior instead of asking the student to
+forget it. Four materials: none ($\Sblind$), TeachQuiz's 3 frames per section ($S_{\text{frames}}$), the first and
+last frame of every section ($\Sstatic$, a slide deck of start and end states) and the silent video sampled at up to 4
+frames per second ($\Svisual$; at most 410 frames, about 70 tokens each, so the prompt fits a 32k context, which we
+check, because Ollama truncates silently). With $K = 4$ options, $c = 1/K$ and $\Beff = \max(c, \Sblind)$:
+\begin{align}
+  \mathrm{NVG}(S) &= \frac{S - \Beff}{1 - \Beff}, \qquad \mathrm{DML} = \Svisual - \Sstatic,\\
+  \text{D-VGAIN} &= \mathrm{NVG}(\Svisual) + \lambda \max(0, \mathrm{DML}),
+\end{align}
+with $\lambda = 0.5$. NVG is Hake's normalised gain~\cite{hake1998} with the prior as pre-test. It is undefined when
+less than $0.05$ of room is left ($1 - \Beff < 0.05$), and we report it as undefined, never as 0: with continuous
+scores a no-video probability of $0.99999$ leaves $10^{-5}$ of room, and dividing by it turned noise into ``gains'' of
+$\pm 10$ on the pilot's controls. DML credits what animation adds over its end states.
+
+\paragraph{One probe, every version.} The student answers all questions of one material in one reply (``\texttt{1: B}'',
+one line each) at temperature 0, and we read the log-probabilities of A--D at each letter's position: the top letter
+is the forced-choice answer, $p(\text{right})$ the continuous score. Asking for a single letter per call failed:
+the model's first token was often not a letter. The reply is repeated (at most twice, with a stricter line) when a
+letter is missing, which happened when the student wrote an explanation of why it could not answer. Each material is
+probed under two cyclic option orders and mapped back.
+
+\paragraph{The ladder.} Each version of the measure adds one change: M0 TeachQuiz as published; M1 answers matched by order; M2 forced
+choice ($S_{\text{frames}} - \Sblind$); M3 normalised gain; M4 the dense silent video; M5 the motion control
+(D-VGAIN); M6 continuous scoring; M7 the mean of two option orders; M8 only items the student does not know without the video
+($p_{\text{none}}(\text{right}) < 0.5$). Every version is judged by the same tests on the same videos:
+\emph{defined} (share of videos with a score), \emph{separation} (a topic's own base video against another topic's
+video, paired over topics; a teaching metric must put this above 0), \emph{reliability} (agreement of two measurements
+over videos) and \emph{resolution} (ties among learner $-$ base differences).
+
+\input{tables/ladder_mmmc}

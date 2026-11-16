@@ -1,0 +1,49 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[margin=0.75in]{geometry}
+\input{preamble}
+
+\title{Does the Video Teach? Refusal, Priors and Repair\\in Code-Generated Teaching Videos}
+\author{Manideep}
+\date{Working draft, 13 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We set out to repair code-generated teaching videos where a simulated learner fails, and to show that the repair
+teaches on unseen questions. A 12-topic pilot found no effect, and auditing it showed that the standard measure,
+TeachQuiz, could not have found one. The student copied the answer template's question ids, which erased
+\OrderShare\% of its graded runs. Prompted forgetting produced refusal (NULL on \NullNoVideo\% of items without the
+video), not ignorance. And forced to choose, the student already answered \mmmcpriorGemmaAcc\% of the benchmark's
+questions with no video at all. We introduce D-VGAIN, a measure scored from log-probabilities. It makes the student choose,
+subtracts what it knew before, and compares the moving video with its start and end frames. A metric ladder adds its parts one at a time and judges each version by whether it is
+defined, separates a topic's video from another topic's, is reliable, and resolves differences. Because no metric can
+show learning on known items, we also introduce NOVEL-12, twelve invented concepts whose questions the student
+answers at \novelpriorGemmaAcc\% without the video (\novelcardGemmaAcc\% given the definition). On the
+\LadNovelTopics{} admitted concepts, every version from M1 on scores every video, and a topic's own video beats
+another topic's by \LadNovelSepNine{} points of the gain on 3 frames per section. Inspecting the generated videos
+showed a second proxy failure: the layout score (MVQS) measures distance between boxes. It barely moved when a strong
+model fixed \ClaudeFaults{} visible faults in \ClaudeSections{} sections, and it rewarded our own layout repair for
+shifting labels off the objects they name. We add an admission check for videos and two model-free checks, one for
+when objects are on screen and one for what they are attached to, and test whether better layout teaches more. It did not clearly: Claude's cleaner versions
+gained \LSDiff{} points on average, but were at least as good on only \LSWins{} of \LSN{} concepts, so our rule fixed in advance
+was not met. The
+repair features (an enforced gate, pre-flight code checks, spectrum-based localisation, a leak gate, minimal edits)
+are built and their rules fixed in advance; their evaluation is ongoing.
+\end{abstract}
+
+\input{sections/intro}
+\input{sections/related}
+\input{sections/pipeline}
+\input{sections/metric}
+\input{sections/novel}
+\input{sections/ablation}
+\input{sections/results}
+\input{sections/limits}
+
+\input{tables/pilot}
+\input{tables/failures}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

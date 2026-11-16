@@ -1,0 +1,24 @@
+\section{Related work}
+
+\paragraph{Generating and judging teaching videos.} Code2Video~\cite{code2video} plans, codes and renders Manim lessons,
+repairs failing code from the failing line outward (ScopeRefine), and introduces MMMC (117 topics, 5 questions each)
+and TeachQuiz. SGA~\cite{sga} checks layout without rendering, from a scene graph recorded by partial execution, and
+scores it with MVQS. ManimCode~\cite{manimcode} improves render success; EduPanel~\cite{edupanel} judges videos with an
+LLM panel; PIVOT~\cite{pivot} ties quizzes to generated videos but remediates the learner, not the video. Closest in
+principle, He-Yueya et al.~\cite{heyueya2024} optimise text worksheets against simulated learning gains. No prior work
+repairs a generated video from learner failures and tests the repair on questions it never saw.
+
+\paragraph{Shortcuts in video question answering.} VideoMathQA~\cite{videomathqa} shows that models answer video
+questions from text and narration without the visuals, and argues for separating text-only, image-only and video passes.
+CounterVQA~\cite{countervqa} and ACQUIRED~\cite{acquired} use counterfactual questions so that priors cannot answer.
+
+\paragraph{Unlearning and fictitious knowledge.} Prompted or fine-tuned unlearning is known to suppress outputs rather
+than remove knowledge; TOFU~\cite{tofu} evaluates forgetting on fictitious authors precisely because real knowledge
+cannot be controlled, and WMDP~\cite{wmdp} measures hazardous knowledge directly. Our NOVEL-12 applies TOFU's device to
+teaching: invented concepts make the prior controllable.
+
+\paragraph{Measurement.} Hake's normalised gain~\cite{hake1998} divides a gain by the room left above the pre-test.
+Spectrum-based fault localisation~\cite{tarantula,ochiai} ranks code by how often it runs in failing versus passing
+tests; the Q-matrix of cognitive diagnosis~\cite{tatsuoka1983,dina} maps items to the skills they need. Adaptive reuse
+of a holdout overfits it~\cite{dwork2015}; model editing values locality~\cite{rome}; self-refinement and
+self-debugging~\cite{selfrefine,selfdebug} improve outputs from feedback.

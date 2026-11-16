@@ -1,0 +1,27 @@
+\section{Pipeline and the learner-feedback repair}\label{sec:pipeline}
+
+\paperfig{fig_pipeline.png}{F2}{\textbf{Illustration of the pipeline.} Given a topic (and, for an invented concept, its definition card),
+(i) the Planner writes a lesson plan, (ii) the Coder writes one Manim scene per section, and (iii) checks fix the code
+and the layout before the base video is rendered. The learner-feedback loop then lets the student take a practice
+quiz, finds the weak section like a debugger, makes a small edit there, and keeps the revision only if it passes the
+gate. The final quiz (TEST) is never seen by any step.}{pipelinefull}
+
+\paragraph{Generation.} A planner (\texttt{qwen3.6}) writes four sections, each with what it teaches, what it shows and
+its narration. A coder (\texttt{qwen3-coder:30b}) writes one Manim scene per section; a failing render is repaired at
+the failing line, then a block, then the whole section, as in Code2Video's ScopeRefine, with the failing line taken
+from SGA-style partial execution. Layout is checked on the scene graph (MVQS) and repaired by shifting along the
+separation vector, then by the model. The video is silent.
+
+\paragraph{Repair (F0).} A DEV quiz is written by the planner from the topic (or, for NOVEL-12, from the concept's
+card). The student answers DEV with the video; a DEV item is a \emph{gap} unless it was answered right with a cited
+moment that an evidence judge (\texttt{qwen2.5vl:7b}) accepts. Each gap is mapped by the planner to the section that
+should have taught it and the missing idea, in its own words; an idea sharing six consecutive words with the item is
+refused. Only those sections are rewritten with their ideas; a rewrite that fails to render keeps the old section. A
+gate marks a revision \emph{kept} if DEV does not fall and MVQS falls by less than 5 points.
+
+\paragraph{Conditions.} \emph{learner} rewrites the diagnosed sections with their ideas; \emph{generic} rewrites as
+many sections, chosen at random, with ``teach this more clearly''; \emph{learner\_all} rewrites every section with all
+ideas. learner $-$ generic tests the learner signal at a fixed rewriting budget; learner $-$ learner\_all tests
+localisation. TEST is never shown to any step. Table~\ref{tab:models} lists the model behind every part.
+
+\input{tables/models}

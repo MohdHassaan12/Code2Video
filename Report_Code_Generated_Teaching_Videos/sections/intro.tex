@@ -1,0 +1,48 @@
+\section{Introduction}
+
+\paperfig{fig_overview.png}{F1}{\textbf{Overview.} Top: TeachQuiz asks the student to forget the topic; instead it refuses, it already knows
+MMMC, and the grader lost answers. Our measurement makes the student choose, measures what it knew, and uses invented
+concepts. Bottom: how we repair a video with learner feedback, and how we evaluate the repair.}{overview}
+
+Code-generated teaching videos are made in three steps: a planner writes a lesson, a coder writes Manim~\cite{manim}
+scenes, and a renderer turns them into video. Such videos are now judged by whether a model \emph{learns} from them.
+Code2Video's TeachQuiz~\cite{code2video} tells a vision--language student to forget a topic. It then measures the
+student's quiz score without the video ($S_1$) and with it ($S_2$), and reports $S_2 - S_1$.
+
+We set out to use this measure for a stronger claim: that a generated video can be \emph{repaired} where a simulated
+learner failed. The repair traces each failure to the section that should have taught it and rewrites only that
+section. The test is whether teaching improves on unseen questions written by other people.
+
+A pilot on 12 MMMC topics found no signal (Table~\ref{tab:pilot}). The learner repair barely moved TeachQuiz, and
+\PilotTies{} of 12 topics were ties with the base video. When we looked for the cause, we found that the measure was
+at fault, not only the method. It failed in three ways that add up:
+\begin{enumerate}
+  \item \textbf{The grader loses answers.} The questions are named \texttt{t1..t5}, but the student copies the
+  example id from the answer template (\texttt{q1}). Matched by id, all its answers are lost. This happened in \OrderRuns{} of \AllRuns{} student
+  runs (\OrderShare\%) on TEST, and not on DEV, whose ids match the template.
+  \item \textbf{The student refuses instead of forgetting.} Told to forget, it
+  answers ``I don't know'' instead of guessing (\emph{refusal}). Without the video it answers NULL on \NullNoVideo\% of
+  items; with the video, still on \NullWithVideo\%. So $S_1 = 0$ measures obedience, and $S_2$ measures when the student
+  feels allowed to answer.
+  \item \textbf{The student already knows the answers.} Made to choose and shown nothing, it answers
+  \mmmcpriorGemmaAcc\% of all MMMC TEST items correctly. Its mean confidence in the right letter is
+  \mmmcpriorGemmaP\%, and it gets \mmmcpriorGemmaAllRight{} of \mmmcpriorGemmaTopics{} topics entirely right. A 7B
+  student does the same (\mmmcpriorQwenAcc\%). We call this a \emph{prior ceiling}: no video can show a gain on items
+  the student already knows.
+\end{enumerate}
+
+\paragraph{Contributions.}
+\begin{itemize}
+  \item An audit of TeachQuiz that separates the three failure modes above, with the evidence for each.
+  \item D-VGAIN, a replacement measure. It makes the student choose, subtracts what the student knew before, and
+  compares the moving video with its start and end frames. A \emph{metric ladder} adds these parts one at a time, giving ten
+  versions of the measure (M0 to M9). Each version must pass four tests: it gives a score, it separates a topic's own video from another topic's, it repeats, and it
+  breaks ties (\S\ref{sec:ladder}).
+  \item NOVEL-12, a benchmark of invented concepts that no model has seen, so a gain cannot come from memory
+  (\S\ref{sec:novel}).
+  \item An admission check for videos and two model-free checks: one for when objects are on screen, one for what
+  they are attached to. With them we show that the layout score misses faults a viewer sees (\S\ref{sec:quality}).
+  \item A pipeline ablation that adds five repair features one at a time: an enforced gate, code checks before
+  rendering, finding the weak section like a debugger, a leak guard, and minimal edits. It is built and its rules are
+  fixed in advance; its evaluation is future work (\S\ref{sec:ablation}).
+\end{itemize}

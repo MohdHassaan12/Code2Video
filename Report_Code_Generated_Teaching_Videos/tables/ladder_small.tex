@@ -1,0 +1,12 @@
+\begin{table*}[t]\centering\footnotesize
+\caption{A smaller student (qwen2.5vl:3b) on the MMMC pilot videos, 3 frames per section only; measures it could not score are left out. 12 topics, 48 videos. Each row adds one change to the row above; points on a 0--100 scale. Scored: videos that get a score (-- : the student already knew everything). Own $-$ other: a topic's video minus another topic's video on the same quiz. Agreement: rank correlation of two measurements of the same videos. Learner $-$ \ldots: mean change over topics. Ties: topics where learner and base score the same.}\label{tab:ladder_small}
+\setlength{\tabcolsep}{4pt}\begin{tabular}{@{}llrrrrrrr@{}}\toprule & & \multicolumn{3}{c}{Does it measure teaching?} & \multicolumn{4}{c}{Does the learner repair help?}\\
+\cmidrule(lr){3-5}\cmidrule(lr){6-9}
+& Measure & Scored & \hd{Own $-$\\other ($\uparrow$)} & \hd{Agree-\\ment ($\uparrow$)} & \hd{Learner\\$-$ base} & \hd{Learner\\$-$ generic} & \hd{Learner $-$\\every section} & Ties ($\downarrow$)\\\midrule
+M0 & TeachQuiz (Code2Video) & 48/48 & -- & -- & +1.7 & $-$2.2 & $-$4.5 & 7/12 \\
+M2 & + must choose (no NULL) & 48/48 & +10.0 & 0.65 & $-$3.3 & +1.7 & +3.3 & 9/12 \\
+M3 & + gain over what it knew & 24/48 & +16.7 & 0.72 & +25.0 & +8.3 & +16.7 & 4/12 \\
+M9 & M7 on 3 frames per section & 36/48 & +37.9 & -- & $-$23.7 & $-$0.6 & +5.9 & 1/12 \\
+R9 & 3 frames minus no video & 48/48 & +6.4 & 0.70 & $-$2.9 & +0.2 & +1.2 & 1/12 \\
+\bottomrule\end{tabular}
+\end{table*}

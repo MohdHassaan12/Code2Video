@@ -1,0 +1,164 @@
+% Conceptual diagrams for the long report (TikZ). Data figures come from make_figures.py; illustrations from the
+% prompts in figures/IMAGE_PROMPTS.md (\imageslot shows the prompt id until the image file exists).
+
+\tikzset{
+  box/.style={draw, rounded corners=2pt, fill=blue!5, minimum height=0.75cm, align=center, font=\small},
+  ours/.style={draw, rounded corners=2pt, fill=orange!14, minimum height=0.75cm, align=center, font=\small},
+  bad/.style={draw, rounded corners=2pt, fill=red!8, minimum height=0.75cm, align=center, font=\small},
+  note/.style={font=\footnotesize, align=center, text=black!70},
+  >={Stealth}
+}
+
+% An illustration to be generated from a prompt; until the file exists, a box names the prompt.
+\newcommand{\imageslot}[3]{%
+  \begin{figure}[htbp]\centering
+  \IfFileExists{figures/#1}{\includegraphics[width=0.62\linewidth]{figures/#1}}{%
+    \fbox{\parbox{0.62\linewidth}{\centering\small\vspace{14pt}\textit{Illustration to generate: prompt #2 in}\\
+    \texttt{paper/figures/IMAGE\_PROMPTS.md}, saved as \texttt{paper/figures/#1}\vspace{14pt}}}}
+  \caption{#3}
+  \end{figure}}
+
+% A data figure from make_figures.py; a pending box until its data exists.
+\newcommand{\datafig}[3][0.9]{%
+  \begin{figure}[htbp]\centering
+  \IfFileExists{figures/#2.pdf}{\includegraphics[width=#1\linewidth]{figures/#2.pdf}}{%
+    \fbox{\parbox{0.8\linewidth}{\centering\small\textit{Pending: this figure is drawn when its run finishes.}}}}
+  \caption{#3}\label{fig:#2}
+  \end{figure}}
+
+\newcommand{\DiagTeachQuiz}{%
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[node distance=0.4cm and 0.45cm]
+\node[box, text width=3.3cm] (p) {System prompt:\\``forget the topic;\\answer NULL if the\\video does not show it''};
+\node[box, right=of p, text width=2.3cm, yshift=0.75cm] (a1) {Quiz,\\no video};
+\node[box, right=of p, text width=2.3cm, yshift=-0.75cm] (a2) {Quiz,\\with the video};
+\node[box, right=of a1, text width=1.6cm] (s1) {$S_1$};
+\node[box, right=of a2, text width=1.6cm] (s2) {$S_2$};
+\node[box, right=1.1cm of $(s1)!0.5!(s2)$, text width=2.2cm] (tq) {TeachQuiz\\$= S_2 - S_1$};
+\draw[->] (p) -- (a1); \draw[->] (p) -- (a2); \draw[->] (a1) -- (s1); \draw[->] (a2) -- (s2);
+\draw[->] (s1) -- (tq); \draw[->] (s2) -- (tq);
+\node[note, below=0.25cm of a2, text width=9cm] {Assumption: the student really forgets, so $S_1$ is what it knows
+without the video. We test this assumption in \hyperref[sec:refuse]{Breaks 2 and 3}.};
+\end{tikzpicture}
+\caption{How Code2Video's TeachQuiz measures teaching.}\label{fig:teachquiz}
+\end{figure}}
+
+\newcommand{\DiagDVGAIN}{%
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[node distance=0.35cm and 0.45cm]
+\node[ours, text width=2.9cm] (p) at (0,0) {Same student, same prompt, but \textbf{no NULL}: it must choose A, B, C or D};
+\node[ours, text width=2.8cm] (b) at (4.6, 2.1) {nothing $\to S_{\text{none}}$};
+\node[ours, text width=2.8cm] (f) at (4.6, 0.7) {3 frames / section $\to S_{\text{frames}}$};
+\node[ours, text width=2.8cm] (s) at (4.6, -0.7) {first + last frames $\to S_{\text{static}}$};
+\node[ours, text width=2.8cm] (v) at (4.6, -2.1) {dense silent video $\to S_{\text{visual}}$};
+\node[ours, text width=4.4cm] (m) at (10.0, 0)
+  {probability on the right letter,\\two option orders\\[2pt]
+   $\mathrm{NVG} = \dfrac{S - B_{\text{eff}}}{1 - B_{\text{eff}}}$, $B_{\text{eff}} = \max(0.25, S_{\text{none}})$\\[2pt]
+   undefined if $1 - B_{\text{eff}} < 0.05$};
+\foreach \n in {b,f,s,v} {\draw[->] (p.east) -- (\n.west); \draw[->] (\n.east) -- (m.west);}
+\end{tikzpicture}
+\caption{How we measure: the prior is measured, not wished away, and the materials separate what the student
+knew, what sharp frames show, what start/end states show, and what the animation shows.}\label{fig:dvgain}
+\end{figure}}
+
+\newcommand{\DiagIdBug}{%
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[node distance=0.35cm and 0.55cm]
+\node[box, text width=3.9cm] (tpl) at (0, 0.9) {Template in the prompt:\\\texttt{\{"id": "q1", "choice": ...\}}};
+\node[box, text width=3.9cm] (qs) at (0, -0.9) {TEST questions are named\\\texttt{t1, t2, t3, t4, t5}};
+\node[bad, text width=3.3cm] (rep) at (5.2, 0) {Student replies:\\\texttt{q1: B, q2: C, q3: B,}\\\texttt{q4: C, q5: C}};
+\node[bad, text width=3.1cm] (gr) at (9.6, 0) {Grader looks for \texttt{t1}..\texttt{t5}: finds none $\Rightarrow$ all NULL, 0\%};
+\draw[->] (tpl.east) -- (rep.west); \draw[->] (qs.east) -- (rep.west); \draw[->] (rep) -- (gr);
+\node[note, text width=6cm] at (7.4, -1.7) {DEV questions are named \texttt{q1..}, so DEV was
+never hit: the bug alone made DEV look better than TEST.};
+\end{tikzpicture}
+\caption{The grading bug (\hyperref[sec:idbug]{Break 1}). Fixed by matching answers in order when no id matches.}\label{fig:idbug}
+\end{figure}}
+
+\newcommand{\DiagDevTest}{%
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}
+\node[box, text width=2.2cm] (v) at (0, 0) {Base video};
+\node[ours, text width=2.5cm] (dev) at (3.3, 0) {DEV quiz\\(our planner)};
+\node[ours, text width=2.5cm] (fix) at (6.8, 0) {Diagnose and\\repair};
+\node[box, text width=2.3cm] (v2) at (10.2, 0) {Repaired video};
+\node[box, text width=3.0cm] (test) at (5.0, -2.4) {TEST quiz\\(other authors)};
+\node[box, text width=2.3cm] (score) at (10.2, -2.4) {Score\\(all results)};
+\draw[->] (v) -- (dev); \draw[->] (dev) -- (fix); \draw[->] (fix) -- (v2); \draw[->] (v2) -- (score);
+\draw[->] (v.south) |- (test.west); \draw[->] (test) -- (score);
+\draw[red!60!black, thick, dashed] (1.6, -1.15) -- (8.6, -1.15);
+\node[font=\footnotesize, text=red!60!black, fill=white] at (5.0, -1.15) {nothing that makes or repairs the video ever sees TEST};
+\end{tikzpicture}
+\caption{Two quizzes that never mix. The repair may look at DEV; every result is measured on TEST.}\label{fig:devtest}
+\end{figure}}
+
+\newcommand{\DiagSBFL}{%
+\begin{figure}[htbp]\centering
+\small
+\begin{tabular}{l|cccc|c}
+\toprule
+Practice question & s1 & s2 & s3 & s4 & Student \\
+\midrule
+q1 & \textbullet & & & & passed \\
+q2 & & \textbullet & & & \textcolor{red!60!black}{failed} \\
+q3 & & \textbullet & & & \textcolor{red!60!black}{failed} \\
+q4 & & \textbullet & & & passed \\
+q5 & & & \textbullet & & \textcolor{red!60!black}{failed} \\
+\midrule
+failed / passed mapped & 0 / 1 & 2 / 1 & 1 / 0 & 0 / 0 & $F = 3$ \\
+Ochiai $e_f/\sqrt{F(e_f+e_p)}$ & 0 & \textbf{0.67} & 0.58 & 0 & \\
+\bottomrule
+\end{tabular}
+\caption{Spectrum-based localisation, an illustrative example. Each practice question is mapped to the section that
+should teach it (a Q-matrix). A section is suspicious when the questions it should teach fail and the others pass;
+here s2 is repaired first, then s3 if the budget allows two. The pilot's diagnosis instead flagged almost every
+section, because it saw only failures.}\label{fig:sbfl}
+\end{figure}}
+
+\newcommand{\DiagLadder}{%
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[node distance=0.12cm, every node/.style={font=\footnotesize}]
+\foreach \i/\t [count=\k] in {M0/TeachQuiz (Code2Video), M1/+ answers matched in order, M2/+ must choose (no NULL),
+  M3/+ gain over what it knew, M4/+ dense silent video, M5/+ motion bonus (D-VGAIN), M6/+ confidence{,} not right/wrong,
+  M7/+ two option orders, M8/+ only questions it did not know, M9/M7 on 3 frames per section} {
+  \node[draw, rounded corners=1pt, fill=orange!\the\numexpr 4+\k*2\relax, minimum width=6.6cm, minimum height=0.5cm,
+        anchor=west] at (\k*0.25, -\k*0.6) {\textbf{\i}\quad \t};
+}
+\end{tikzpicture}
+\caption{The metric ladder. Each version of the measure changes one thing; every version is judged by the same four tests on the same
+videos.}\label{fig:ladder}
+\end{figure}}
+
+% The study in four steps (every number is a macro from make_tables.py).
+\newcommand{\DiagStudy}{%
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[every node/.style={font=\small},
+  stage/.style={draw, rounded corners=3pt, text width=5.3cm, minimum height=1.75cm, align=center},
+  s0/.style={stage, fill=gray!10, draw=gray!60!black}, s1/.style={stage, fill=red!6, draw=red!50!black},
+  s2/.style={stage, fill=blue!6, draw=blue!50!black}, s3/.style={stage, fill=orange!14, draw=orange!60!black},
+  snote/.style={draw=gray!60, dashed, rounded corners=2pt, fill=gray!4, text width=8.3cm, align=left, inner sep=4pt,
+    font=\footnotesize, minimum height=1.75cm},
+  >={Stealth[length=2.2mm]}]
+\node[s0] (p0) at (0, 0) {\textbf{Step 0: pilot and audit}\\12 MMMC topics, \LadMMMCVideos{} videos\\{\scriptsize qwen3.6, qwen3-coder:30b, gemma4:26b}};
+\node[snote, anchor=west] (n0) at (3.2, 0) {\PilotTies{} of 12 topics tied. Three breaks: the id bug lost
+  \OrderShare\% of graded runs; the student said NULL on \NullWithVideo\% of answers with the video (right on
+  \AnsweredRight{} of the \AnsweredWithVideo{} it gave); it already knows MMMC (\mmmcpriorGemmaAcc\%; a 3B model
+  \mmmcpriorQwenSmallAcc\%).};
+\node[s1] (p1) at (0, -2.4) {\textbf{Step 1: ladder on MMMC}\\M0--M9, R7/R9\\{\scriptsize students gemma4:26b, qwen2.5vl:3b}};
+\node[snote, anchor=west] (n1) at (3.2, -2.4) {M1 tells topics apart but not repairs (learner $-$ base
+  \LadMMMCLBOne{}, \LadMMMCTiesOne{} of 12 tied). Gain versions score \LadMMMCDefinedThree{} videos for gemma; for the 3B
+  student M9 scores \LadSmallDefinedNine{}, but the repair reads \LadSmallLBNine{} (noisy).};
+\node[s2] (p2) at (0, -4.8) {\textbf{Step 2: ladder on NOVEL-12}\\12 invented concepts\\{\scriptsize student gemma4:26b; TEST by Claude}};
+\node[snote, anchor=west] (n2) at (3.2, -4.8) {No video \novelpriorGemmaAcc\%, with the card \novelcardGemmaAcc\%;
+  \NovelUnknown{} of \NovelItems{} TEST questions unknown. The four tests (scored, own $-$ other, agreement, ties)
+  use M9 and M7 for Step 3; forced-choice confidence also gives the passing and failing practice questions F3 needs.};
+\node[s3] (p3) at (0, -7.2) {\textbf{Step 3: stages F0--F5}\\NOVEL-12, scored with M9 and M7\\{\scriptsize qwen3.6, qwen3-coder:30b, gemma4:26b}};
+\node[snote, anchor=west] (n3) at (3.2, -7.2) {F0 pilot loop $\to$ F1 enforce the gate $\to$ F2 code check and clean
+  patching $\to$ F3 find the weak section $\to$ F4 leak guard and one general idea $\to$ F5 small edits.};
+\foreach \a/\b in {p0/p1, p1/p2, p2/p3} {\draw[->, thick] (\a) -- (\b);}
+\foreach \a/\b in {p0/n0, p1/n1, p2/n2, p3/n3} {\draw[gray!70] (\a.east) -- (\b.west);}
+\end{tikzpicture}
+\caption{The study in four steps: diagnose the pilot (Step 0), test the measure where the student already knows the
+answers (Step 1) and where it cannot (Step 2), then add pipeline features one at a time, gate first (Step 3).}
+\label{fig:study-flow}
+\end{figure}}

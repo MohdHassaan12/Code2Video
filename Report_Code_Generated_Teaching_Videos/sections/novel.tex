@@ -1,0 +1,37 @@
+\section{NOVEL-12: concepts no model knows}\label{sec:novel}
+
+\paperfig{fig_novel.png}{F5}{\textbf{NOVEL-12.} Twelve invented concepts, each defined on one card, with 96 TEST questions. Without the video, the
+student is close to chance; the card shows how much a perfect lesson could teach.}{novelfig}
+
+If the student knows the answers, no measure of learning from a video can work. Following TOFU's fictitious
+authors~\cite{tofu}, we invent the topics. Each of 12 concepts (tovan sums, krell steps on a grid, vorn sequences,
+glint numbers, mirthful triangles, sorrel counts of lattice rectangles, quill distance, dapple numbers, brisk folds of
+a list, orbit words, vells of $2\times2$ grids, lumen clocks) is a small, self-consistent definition with three or four
+rules and one worked example: its \emph{card}. Every step that writes about the topic (planner, coder, DEV quiz writer
+and its validity check, gap mapper) is given the card; nothing else about the topic exists.
+
+TEST has 8 items per concept (96 in all), written from the card by a model family the pipeline never uses (Claude),
+mixing definition, computation with small numbers, properties, a misconception and a reading of a described picture.
+Numeric keys are computed by code from the definitions, so their arithmetic is checked by construction; no teacher
+has reviewed the questions yet. The correct letters are balanced (24 each). No pipeline step sees TEST.
+
+Without being taught, the student scores \novelpriorGemmaAcc\% (confidence \novelpriorGemmaP\%; chance is 25\%), against
+\mmmcpriorGemmaAcc\% on MMMC; given the card as text it scores \novelcardGemmaAcc\% (confidence \novelcardGemmaP\%), the
+most a perfect lesson could teach. Some items remain guessable from their wording alone (``is $a \oplus b$ equal to
+$b \oplus a$?''); $\Beff$ and version M8 account for them.
+
+\input{tables/ladder_novel}
+
+\subsection{Admitting videos, and what the layout score misses}\label{sec:quality}
+
+A video enters a study only if every planned section renders, every section scores at least 70 on MVQS with no
+lasting conflict, and a person approves a sheet of its frames; a failing section gets one fresh attempt. Two
+model-free checks complement MVQS. A \emph{timing} check finds \texttt{Transform(a, b)} followed by use of \texttt{b}
+(Manim leaves \texttt{a} on screen, so the old text stays) and sentences typeset as maths (their spaces vanish), and
+fixes both. An \emph{attachment} check reads from the code what each label, arrow or box was attached to
+(\texttt{next\_to}, \texttt{move\_to}, an arrow's end points) and flags it when, at rest, it is far from that object or
+nearer another shape of the same kind. As a reference, Claude repairs layout and timing only, seeing code, frames and
+the reports but no plan, card or quiz, with every on-screen string checked unchanged.
+
+\input{tables/quality}
+\input{tables/layout_study}

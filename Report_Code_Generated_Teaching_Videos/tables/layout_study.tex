@@ -1,0 +1,10 @@
+\begin{table*}[t]\centering\small
+\caption{Layout side study on the 10 admitted NOVEL-12 videos, three versions of each. Layout: mean MVQS over sections. Conflicts: lasting overlaps or off-screen objects (SGA). Timing: leftovers and merged words (our timing check). Attachments: labels, arrows or boxes detached from, or nearer another shape than, the object the code attached them to (our attachment check). Confidence: the student's probability on the right answer (\%). Gain: share of what it did not know that it learned (M9: 3 frames per section; M7: dense video with the motion bonus).}\label{tab:layout_study}
+\begin{tabular}{lrrrrrrrr}\toprule & \multicolumn{4}{c}{Video quality} & \multicolumn{2}{c}{Confidence} & \multicolumn{2}{c}{Gain ($\uparrow$)}\\
+\cmidrule(lr){2-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Version & Layout ($\uparrow$) & Conflicts ($\downarrow$) & Timing ($\downarrow$) & Attachments ($\downarrow$) & 3 frames & Dense & M9 & M7\\\midrule
+Ours (admitted) & 84.2 & 31 & 4 & 13 & 67.5 & 49.8 & 42.4 & 17.6 \\
+Ours + timing fixes & 84.2 & 29 & 2 & 13 & 67.5 & 50.6 & 42.4 & 18.5 \\
+Claude-fixed (reference) & 85.6 & 4 & 0 & 4 & 69.8 & 50.6 & 47.6 & 19.1 \\
+\bottomrule\end{tabular}
+\end{table*}

@@ -1,0 +1,48 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\input{preamble}
+
+\title{Measuring and Repairing Teaching in Code-Generated Videos:\\Technical Report}
+\author{Manideep}
+\date{Working draft, 13 November 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\input{sections/intro}
+\input{sections/related}
+\input{sections/pipeline}
+
+\input{tables/pilot}
+
+\input{sections/metric}
+\input{sections/novel}
+\input{sections/ablation}
+\input{tables/failures}
+\input{sections/results}
+\input{sections/limits}
+
+\appendix
+\section{Reproduction}
+All runs are local (Ollama) and resumable; every step caches its output in \texttt{runs/<topic>/}.
+{\footnotesize
+\begin{verbatim}
+PY=/path/to/python   # manim >= 0.19, numpy, scipy, ffmpeg, Ollama (docs/models.md)
+$PY bench/run_bench.py --n 12 --seed 0 --workers 3                      # MMMC pilot (F0)
+$PY bench/metric_ladder.py bench/results/mmmc-n12-seed0                 # ladder on MMMC
+$PY bench/mmmc_prior.py [--student qwen2.5vl:7b]                        # MMMC prior
+$PY bench/novel/build.py                                                # NOVEL-12 cards and TEST
+$PY bench/run_bench.py --name novel12 --n 12 --questions bench/novel/questions.json \
+    --cards bench/novel/cards.json                                      # NOVEL-12 (F0)
+$PY bench/metric_ladder.py bench/results/novel12                        # ladder on NOVEL-12
+$PY bench/stages.py bench/results/novel12 --stage F1 ... F5             # pipeline ablation
+$PY paper/make_tables.py                                                # every table and number here
+\end{verbatim}}
+
+\section{NOVEL-12 cards and a sample TEST item each}
+\input{tables/novel_cards}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

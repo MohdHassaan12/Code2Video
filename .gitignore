@@ -24,6 +24,8 @@ Thumbs.db
 
 # Large external reference papers
 *.pdf
+!Report_Code_Generated_Teaching_Videos/**/*.pdf
+!Report_Code_Generated_Teaching_Videos/*.pdf
 
 # Generated outputs & media files
 demo_outputs/*

@@ -1,0 +1,38 @@
+\begin{table*}[t]\centering\footnotesize
+\caption{Which model does each part. Every model runs locally through Ollama, except the authors of the final quizzes. The student and the judge come from different families; the NOVEL-12 final quiz is written by a family the pipeline never uses.}\label{tab:models}
+\begin{tabular}{@{}lp{9.2cm}l@{}}\toprule Part & What it does & Model\\
+\midrule
+\multicolumn{3}{c}{\textit{Making the video (every step and stage)}}\\
+Planner & lesson plan: what each section teaches, shows and says & \texttt{qwen3.6:latest} \\
+Coder & one Manim scene per section; render repairs (line, block, section) & \texttt{qwen3-coder:30b} \\
+Code check (F2) & reads the code and the installed Manim library before rendering & \textit{no model} \\
+Timing check (F2) & leftovers after Transform, prose typeset as maths; fixed automatically & \textit{no model} \\
+Admission & all sections render, layout at least 70, a person approves the frames & \textit{no model} \\
+Layout check & SGA scene graph and MVQS; the coder writes the fixes & \textit{no model}; \texttt{qwen3-coder:30b} \\
+\midrule
+\multicolumn{3}{c}{\textit{Learner feedback (the repair)}}\\
+Practice quiz (DEV) & written from the topic, or from the card of an invented concept & \texttt{qwen3.6:latest} \\
+Practice-quiz check & keeps questions the student solves with the card and not without the video & \texttt{gemma4:26b} \\
+Diagnosis & the missing idea of each failed question; question-to-section map (F3) & \texttt{qwen3.6:latest} \\
+Weak-section score (F3) & Ochiai score from passed and failed practice questions & \textit{no model} \\
+Leak guard (F4) & refuses fixes that copy the practice question; merges ideas into one & rules; \texttt{qwen3.6:latest} \\
+Small edit (F5) & edits the working scene instead of rewriting it & \texttt{qwen3-coder:30b} \\
+Gate (F1) & practice score must not drop; layout must fall by less than 5 & \textit{no model} \\
+\midrule
+\multicolumn{3}{c}{\textit{Measuring}}\\
+Student & TeachQuiz, forced choice, D-VGAIN, practice scores (Steps 0--3) & \texttt{gemma4:26b} \\
+Evidence judge & does a frame show the answer (TeachQuiz pilot only) & \texttt{qwen2.5vl:7b} \\
+Second student & what a different family knows with no video (Step 0) & \texttt{qwen2.5vl:7b} \\
+Small student & MMMC ladder with a 3B model (Step 1) & \texttt{qwen2.5vl:3b} \\
+\midrule
+\multicolumn{3}{c}{\textit{Final quizzes (TEST), never seen by the pipeline}}\\
+MMMC & Code2Video's official questions, 5 per topic & Code2Video \\
+NOVEL-12 & cards and 8 questions per concept; numeric answers computed by code & Claude (Anthropic) \\
+\midrule
+\multicolumn{3}{c}{\textit{Layout reference (side study on the 10 admitted videos)}}\\
+Claude fixer & repairs layout and timing only; sees code, frames and reports, never the plan, card or quiz & \texttt{claude-opus-5-5} \\
+\midrule
+\multicolumn{3}{c}{\textit{Reference, not run here}}\\
+Code2Video's student & watches the video file with sound (needs a paid key) & Gemini \\
+\bottomrule\end{tabular}
+\end{table*}
